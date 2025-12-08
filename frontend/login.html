@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedCentral | Sign In</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>">
+</head>
+<body>
+
+    <div class="login-container">
+        
+        <header class="system-header">
+            <img src="images/MedCentral_logo_small.png">
+        </header>
+
+        <div class="login-card">
+            
+            <h2 class="card-title">SIGN IN</h2>
+
+            <form id="loginForm">
+                
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                    <small class="error-text" id="usernameError"></small>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <small class="error-text" id="passwordError"></small>
+                </div>
+
+                <div class="action-links">
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+
+                <button type="submit" id="loginButton">Sign In</button>
+
+            </form>
+            
+        </div>
+        
+    </div>
+
+    <footer class="system-footer">
+        <p>© 2025 MedCentral</p>
+    </footer>
+
+    <script src="login.js"></script>
+</body>
+</html>
