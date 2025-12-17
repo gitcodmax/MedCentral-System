@@ -2,6 +2,41 @@
 // JavaScript for Form Validation (MedCentral Login)
 //
 
+document.querySelector('.js-login-container')
+  .innerHTML = `        
+    <header class="system-header">
+        <img src="images/MedCentral_logo_small.png">
+    </header>
+
+    <div class="login-card">
+        
+        <h2 class="card-title">SIGN IN</h2>
+
+        <form id="loginForm">
+            
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                <small class="error-text" id="usernameError"></small>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <small class="error-text" id="passwordError"></small>
+            </div>
+
+            <div class="action-links">
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+
+            <button type="submit" id="loginButton">Sign In</button>
+
+        </form>
+        
+    </div>            
+  `
+
 document.addEventListener('DOMContentLoaded', () => {
     // Get the form and the submit button
     const loginForm = document.getElementById('loginForm');

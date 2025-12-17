@@ -1,0 +1,163 @@
+/* Global Styles */
+body {
+    padding: 40px;
+}
+
+/* Form Wrapper and Header */
+.form-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-header {
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.form-header h1 {
+    color: var(--color-primary);
+    text-decoration: underline;
+}
+.form-header i{
+    color: red;
+}
+.form-header i:hover{
+    font-size: medium;
+    font-weight: bold;
+}
+
+.main-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+/* Form Sections and Titles */
+.form-section {
+    border: 1px solid var(--color-primary);
+    padding: 15px 20px 5px;
+    margin-bottom: 25px;
+    border-radius: 4px;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-top: -35px;
+    background-color: var(--color-background);
+    padding: 0 8px;
+    display: inline-block;
+    position: relative;
+    left: -8px;
+}
+
+/* Input Grid */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding-top: 10px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+input {
+    margin-right: 40px;
+}
+
+label {
+    display: block;
+    margin-bottom: 3px;
+    font-weight: 400;
+    /* Regular weight for labels */
+    font-size: 1rem;
+    color: var(--color-text);
+}
+
+input,
+select,
+textarea {
+    width: 80%;
+    padding: 8px 10px;
+    border: 1px solid var(--color-quarantine);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--color-primary);
+    outline: none;
+    box-shadow: 2px 2px 3px 1px var(--color-primary);
+}
+
+/* Button Styling */
+.center-button-container {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.clear-details-btn {
+    background-color: red;
+    color: var(--color-white);
+}
+
+.clear-details-btn:hover {
+    background-color: rgb(172, 0, 0);
+}
+
+button {
+    padding: 10px 40px;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+/* Blue "Add Another Item" button */
+.add-item-btn {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.add-item-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Green "Confirm Receipt" button */
+.confirm-btn {
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    padding: 12px 60px;
+    /* Slightly larger confirm button */
+}
+
+.confirm-btn:hover {
+    background-color: #006400;
+}
+
+/* Item Entry Card (Styling for repeatable items) */
+.item-entry-card {
+    /* No visual border or padding here, relies on parent section border */
+    margin-bottom: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .form-wrapper {
+        padding: 0 10px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        /* Single column on mobile */
+    }
+}

@@ -1,0 +1,18 @@
+/* Color Palette */
+:root {
+    --color-primary: #007BFF;       
+    --color-secondary: #008B00;
+    --color-quarantine: #6C757D; /*Light grey*/
+    --color-background: #F8F9FA; /*Body background*/
+    --color-green-bg: #008B001A; /*When hovering over the nav links*/
+    --color-white: #FFFFFF;
+    --color-text: #212529;
+    --shadow-subtle: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    min-height: 100vh;
+}

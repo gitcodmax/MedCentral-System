@@ -1,0 +1,202 @@
+/* Color Palette */
+:root {
+  --color-border: #dee2e6;
+  --color-critical: #DC3545;
+  --color-warning: #FFC107;
+}
+
+/* Global Styles */
+body {
+  line-height: 1.6;
+  padding: 20px;
+}
+
+.receipt-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  border-radius: 8px;
+}
+
+/* Header */
+.receipt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid var(--color-primary);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  color: var(--color-secondary);
+}
+
+.logo-icon {
+  font-size: 2rem;
+  margin-right: 10px;
+}
+
+.receipt-header h1 {
+  font-size: 1.8rem;
+  color: var(--color-secondary);
+  margin: 0;
+}
+
+.receipt-header p {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* Meta Data */
+.meta-data-grid {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 20px;
+}
+
+.meta-item label {
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.status-verified {
+  color: var(--color-secondary);
+  font-weight: 700;
+}
+
+/* Section Styling */
+.section-box {
+  margin-bottom: 30px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.section-box:hover{
+  transform: translateY(-10px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.section-title {
+  font-size: 1.2rem;
+  color: var(--color-text);
+  border-bottom: 1px dashed var(--color-border);
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+}
+
+/* Delivery Summary Grid */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.summary-item label {
+  font-weight: 600;
+  color: #6c757d;
+  display: block;
+  font-size: 0.9rem;
+}
+
+.summary-item span {
+  font-weight: 500;
+  display: block;
+  font-size: 1rem;
+}
+
+/* Item Table */
+.item-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.item-table th,
+.item-table td {
+  padding: 10px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-quarantine);
+}
+
+.item-table th {
+  background-color: var(--color-primary);
+  font-weight: 700;
+  color: var(--color-white);
+  border-top: 1px solid var(--color-border);
+}
+
+.item-table tr:hover {
+  background-color: #fcfcfc;
+}
+
+.rejected-qty {
+  color: var(--color-critical);
+  font-weight: 600;
+}
+
+.critical {
+  color: var(--color-critical);
+}
+
+.warning {
+  color: var(--color-warning);
+}
+
+
+/* Print Button Styling (Hidden when actually printing) */
+.print-btn {
+  display: block;
+  background-color: var(--color-secondary);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.print-btn:hover {
+  background-color: rgb(0, 99, 0);
+}
+
+.btn-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.btn-container button {
+  padding: 12px 30px;
+  border-radius: 4px;
+    border: none;
+    color: var(--color-white);
+  font-size: 1.1rem;
+}
+
+.go-back-btn {
+  background-color: var(--color-primary);
+}
+.go-back-btn:hover{
+  background-color: #0058b6;
+}
+
+/* Print Styles: Hide unnecessary elements for printing */
+@media print {
+  body {
+    background-color: white !important;
+    padding: 0;
+  }
+
+  .receipt-container {
+    box-shadow: none;
+    border: none;
+  }
+
+  .print-btn {
+    display: none;
+  }
+}
