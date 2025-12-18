@@ -1,12 +1,11 @@
 import { updateUnitOfMeasureOptions } from "./handle_item_category_unit_measure.js";
 import {
   createAnotherItemDetailsContainer, validateStockForm,
-  saveFormData, renderSavedFormData, getItemsContainer
+  saveFormData, renderSavedFormData, getItemsContainer,
+  getFormData, handleAddingItem
 } from "./receive_stock_functions.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-  
-  
 
   document.querySelector('.form-wrapper')
     .innerHTML = `
@@ -42,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </form>
     `
-  
+
   //Keeps track of the number of items created
   let itemIndexed = 0;
 
@@ -64,12 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
   stockForm.addEventListener('click', (event) => {
     if (event.target.classList.contains('js-add-item-btn')) {
       validateStockForm(event, stockForm, () => {
-        itemIndexed++
-        const container = getItemsContainer();
-        if (container) {
-          container.insertAdjacentHTML('beforeend', 
-            createAnotherItemDetailsContainer(itemIndexed)
-          )
+
+        const stockData = getFormData()
+        if (stockData.items) {
+          const itemIndexesList = Object.keys(stockData.items)
+          itemIndexed = Math.max(...itemIndexesList)
+          handleAddingItem(itemIndexed)
+        } else {
+          handleAddingItem(itemIndexed)
         }
       })
 

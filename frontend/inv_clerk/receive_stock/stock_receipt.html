@@ -13,110 +13,11 @@
 
 <body>
 
-  <div class="receipt-container">
-    <header class="receipt-header">
-      <div class="header-left">
-        <div class="logo">
-          <img src="../images/MedCentral_logo_small.png" class="dash-logo">
-        </div>
-      </div>
-      <div class="header-right">
-        <h1>GOODS RECEIVED NOTE (GRN)</h1>
-        <p>Receipt #<span id="receiptNumber">GRN-005698</span></p>
-      </div>
-    </header>
+  <div class="receipt-container"></div>
 
-    <div class="meta-data-grid">
-      <div class="meta-item">
-        <label>Date Generated:</label>
-        <span id="dateGenerated">2025-12-14 09:50 AM</span>
-      </div>
-      <div class="meta-item">
-        <label>Clerk ID:</label>
-        <span id="clerkId">Peter_CWH_001</span>
-      </div>
-      <div class="meta-item">
-        <label>Status:</label>
-        <span id="status" class="status-verified">VERIFIED & POSTED</span>
-      </div>
-    </div>
+  <script type="module" src="stock_receipt.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 
-    <section class="delivery-summary section-box">
-      <h3 class="section-title"><i class="fas fa-truck-loading"></i> Delivery Details</h3>
-      <div class="summary-grid">
-        <div class="summary-item">
-          <label>Supplier Name:</label>
-          <span id="supplierName">PharmaSource Inc.</span>
-        </div>
-        <div class="summary-item">
-          <label>Delivery Note Number:</label>
-          <span id="deliveryNote">INV-PS-3452</span>
-        </div>
-        <div class="summary-item">
-          <label>Delivery Date & Time:</label>
-          <span id="deliveryDate">2025-12-14 09:30 AM</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="items-summary section-box">
-      <h3 class="section-title"><i class="fas fa-box-open"></i> Item Verification Summary</h3>
-
-      <table class="item-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Item Code/SKU</th>
-            <th>Item Name</th>
-            <th>Category</th>
-            <th>Batch No.</th>
-            <th>Expiry Date</th>
-            <th>Unit</th>
-            <th>Qty Delivered</th>
-          </tr>
-        </thead>
-        <tbody id="itemDetailsBody">
-          <tr>
-            <td>1</td>
-            <td>PAR-500MG</td>
-            <td>Paracetamol 500mg Tablets</td>
-            <td>Pharmaceuticals (Packaged)</td>
-            <td>A30B45</td>
-            <td class="critical">2026-06-30</td>
-            <td>BOX</td>
-            <td>100</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>IV-GLUCO1L</td>
-            <td>Dextrose 5% Solution</td>
-            <td>Pharmaceuticals (Liquid)</td>
-            <td>LQD901</td>
-            <td class="warning">2026-03-15</td>
-            <td>LTR</td>
-            <td>50</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>GLOV-LAT-M</td>
-            <td>Latex Gloves (Size M)</td>
-            <td>Consumables</td>
-            <td>C45F20</td>
-            <td>N/A</td>
-            <td>CARTON</td>
-            <td>20</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <div class="btn-container">
-      <button class="go-back-btn js-go-back-btn">Go Back</button>
-      <button class="print-btn">Confirm Details</button>
-    </div>
-  </div>
-
-  <script src="stock_receipt.js"></script>
 </body>
 
 </html>

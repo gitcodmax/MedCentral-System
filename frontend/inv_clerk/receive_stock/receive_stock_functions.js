@@ -131,8 +131,20 @@ export function saveFormData(stockForm) {
 }
 
 // Get form data from the session storage
-function getFormData() {
+export function getFormData() {
   return JSON.parse(sessionStorage.getItem('stockReceipt')) || {}
+}
+
+//Adds an item container in the page
+export function handleAddingItem(itemIndexed) {
+  itemIndexed++
+  const container = getItemsContainer();
+
+  if (container) {
+    container.insertAdjacentHTML('beforeend',
+      createAnotherItemDetailsContainer(itemIndexed)
+    )
+  }
 }
 
 
@@ -165,7 +177,7 @@ export function renderSavedFormData(itemIndexed) {
     }
 
     //First create the empty containers for the items
-    for (const i in itemIndexes) {
+    for (let i in itemIndexes) {
       itemDetailsSection.innerHTML += createAnotherItemDetailsContainer(i)
     }
 

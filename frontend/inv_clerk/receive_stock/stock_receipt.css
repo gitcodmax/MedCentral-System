@@ -143,14 +143,6 @@ body {
   font-weight: 600;
 }
 
-.critical {
-  color: var(--color-critical);
-}
-
-.warning {
-  color: var(--color-warning);
-}
-
 
 /* Print Button Styling (Hidden when actually printing) */
 .print-btn {
