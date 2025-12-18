@@ -13,102 +13,15 @@
 
 <body>
 
-    <header class="main-header">
-        <div class="logo">
-            <img src="../images/MedCentral_logo_small.png" class="dash-logo">
-        </div>
+    <header class="main-header"></header>
 
-        <nav class="main-nav">
-            <a href="#" class="nav-item active">Dashboard</a>
-
-            <div class="nav-item dropdown-container">
-                <a href="#" class="nav-link stock-link">Stock <i class="fas fa-caret-down"></i></a>
-
-                <div class="dropdown-menu">
-                    <a href="/inv_clerk/receive_stock/receive_stock.html" class="dropdown-item">
-                        <i class="fas fa-box-open"></i> Receive New Stock
-                    </a>
-                    <a href="report_damage.html" class="dropdown-item">
-                        <i class="fas fa-exclamation-triangle"></i> Report Damaged Items
-                    </a>
-                </div>
-            </div>
-
-            <a href="#" class="nav-item">Completed Orders</a>
-            <a href="#" class="nav-item">Reports</a>
-        </nav>
-
-        <div class="user-info">
-            <div class="user-details">
-                Peter, Inventory Clerk (Nairobi)
-            </div>
-            <div class="time-and-alerts">
-                <span id="current-time">10:45 AM</span>
-                <span id="current-date">WED, APR 16</span>
-                <i class="fas fa-bell notification-bell"></i>
-            </div>
-        </div>
-    </header>
-
-    <main class="dashboard-stack">
-
-        <section class="stock-alerts card layout-section">
-            <div class="card-title-container">
-                <h2>Stock Alerts</h2>
-                <div class="alert-key">
-                    <span class="key-item">
-                        <span class="key-color yellow"></span> Warning
-                    </span>
-                    <span class="key-item">
-                        <span class="key-color orange"></span> Low
-                    </span>
-                    <span class="key-item">
-                        <span class="key-color red"></span> Critical
-                    </span>
-                </div>
-            </div>
-            <div class="alerts-container">
-                <div class="alert-pill low-stock" data-alert-type="low">Paracetamol 500mg(20 boxes)</div>
-                <div class="alert-pill low-stock-warning" data-alert-type="low">Paracetamol 100mg(10 boxes)</div>
-                <div class="alert-pill expiring" data-alert-type="critical">Paracetamol 100mg(2 boxes)</div>
-            </div>
-        </section>
-
-        <section class="pending-orders card layout-section">
-            <h2>Pending Orders</h2>
-            <div class="order-cards-container">
-
-                <div class="order-card-item">
-                    <h3>Order #MXDGS</h3>
-                    <p>Hospital: Mbagathi Hospital</p>
-                    <p>Items: 2 Items, 17 Units</p>
-                    <button class="action-btn primary small-pack-btn" data-order-id="MXDGS-1">Pack Order</button>
-                </div>
-
-                <div class="order-card-item">
-                    <h3>Order #MXDGS</h3>
-                    <p>Hospital: Mbagathi Hospital</p>
-                    <p>Items: 2 Items, 17 Units</p>
-                    <button class="action-btn primary small-pack-btn" data-order-id="MXDGS-2">Pack Order</button>
-                </div>
-
-                <div class="order-card-item">
-                    <h3>Order #MXDGS</h3>
-                    <p>Hospital: Mbagathi Hospital</p>
-                    <p>Items: 2 Items, 17 Units</p>
-                    <button class="action-btn primary small-pack-btn" data-order-id="MXDGS-3">Pack Order</button>
-                </div>
-
-            </div>
-        </section>
-
-    </main>
+    <main class="dashboard-stack"></main>
 
     <footer class="main-footer">
         © 2025 MedCentral
     </footer>
 
-    <script src="inv_clerk_dash.js"></script>
+    <script type="module" src="inv_clerk_dash.js"></script>
 </body>
 
 </html>

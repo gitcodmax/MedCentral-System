@@ -1,3 +1,4 @@
+import { renderHeader } from "../header.js";
 import { updateUnitOfMeasureOptions } from "./handle_item_category_unit_measure.js";
 import {
   createAnotherItemDetailsContainer, validateStockForm,
@@ -6,6 +7,8 @@ import {
 } from "./receive_stock_functions.js";
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  renderHeader()
 
   document.querySelector('.form-wrapper')
     .innerHTML = `

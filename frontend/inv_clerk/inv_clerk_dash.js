@@ -1,5 +1,67 @@
+import { renderHeader } from "./header.js";
+
 document.addEventListener('DOMContentLoaded', () => {
 
+    renderHeader()
+
+    document.querySelector('.dashboard-stack')
+        .innerHTML = `
+        <section class="stock-alerts card layout-section">
+            <div class="card-title-container">
+                <h2>Stock Alerts</h2>
+                <div class="alert-key">
+                    <span class="key-item">
+                        <span class="key-color yellow"></span> Warning
+                    </span>
+                    <span class="key-item">
+                        <span class="key-color orange"></span> Low
+                    </span>
+                    <span class="key-item">
+                        <span class="key-color red"></span> Critical
+                    </span>
+                </div>
+            </div>
+            <div class="alerts-container">
+                <div class="alert-pill low-stock" data-alert-type="low">Paracetamol 500mg(20 boxes)</div>
+                <div class="alert-pill low-stock-warning" data-alert-type="low">Paracetamol 100mg(10 boxes)</div>
+                <div class="alert-pill expiring" data-alert-type="critical">Paracetamol 100mg(2 boxes)</div>
+            </div>
+        </section>
+
+        <section class="pending-orders card layout-section">
+            <h2>Pending Orders</h2>
+            <div class="order-cards-container">
+
+                <div class="order-card-item">
+                    <h3>Order #MXDGS</h3>
+                    <p>Hospital: Mbagathi Hospital</p>
+                    <p>Items: 2 Items, 17 Units</p>
+                    <button class="action-btn primary small-pack-btn" data-order-id="MXDGS-1">Pack Order</button>
+                </div>
+
+                <div class="order-card-item">
+                    <h3>Order #MXDGS</h3>
+                    <p>Hospital: Mbagathi Hospital</p>
+                    <p>Items: 2 Items, 17 Units</p>
+                    <button class="action-btn primary small-pack-btn" data-order-id="MXDGS-2">Pack Order</button>
+                </div>
+
+                <div class="order-card-item">
+                    <h3>Order #MXDGS</h3>
+                    <p>Hospital: Mbagathi Hospital</p>
+                    <p>Items: 2 Items, 17 Units</p>
+                    <button class="action-btn primary small-pack-btn" data-order-id="MXDGS-3">Pack Order</button>
+                </div>
+
+            </div>
+        </section>
+        
+        `
+
+
+    //========================================
+    //========================================
+    //========================================
     // Real-Time Clock Update
     const updateClock = () => {
         const now = new Date();
