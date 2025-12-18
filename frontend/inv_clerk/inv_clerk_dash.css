@@ -111,7 +111,6 @@ h2 {
 }
 
 .stock-alerts h2 {
-    /* Remove default h2 margin to prevent double spacing */
     margin-bottom: 0; 
     font-weight: 700;
 }
