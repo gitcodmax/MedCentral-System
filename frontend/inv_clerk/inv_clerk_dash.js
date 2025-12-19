@@ -30,175 +30,176 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <section class="pending-orders card layout-section">
             <h2>Pending Orders</h2>
-            <div class="order-cards-container">
-
-                <div class="order-card-item">
-                    <h3>Order #MXDGS</h3>
-                    <p>Hospital: Mbagathi Hospital</p>
-                    <p>Items: 2 Items, 17 Units</p>
-                    <button class="action-btn primary small-pack-btn" data-order-id="MXDGS-1">Pack Order</button>
-                </div>
-
-                <div class="order-card-item">
-                    <h3>Order #MXDGS</h3>
-                    <p>Hospital: Mbagathi Hospital</p>
-                    <p>Items: 2 Items, 17 Units</p>
-                    <button class="action-btn primary small-pack-btn" data-order-id="MXDGS-2">Pack Order</button>
-                </div>
-
-                <div class="order-card-item">
-                    <h3>Order #MXDGS</h3>
-                    <p>Hospital: Mbagathi Hospital</p>
-                    <p>Items: 2 Items, 17 Units</p>
-                    <button class="action-btn primary small-pack-btn" data-order-id="MXDGS-3">Pack Order</button>
-                </div>
-
-            </div>
+            <div class="order-cards-container"></div>
         </section>
+
+        <div id="orderOverlay" class="overlay">
+            <div class="overlay-content">
+                <header class="overlay-header">
+                    <div class="order-info">
+                        <h2>Order #<span id="displayOrderId"></span> for <span id="hospital-name">Hospital</span></h2>
+                        <div class="order-date-status">
+                            <p>Order Created On: <span class="status-tag" id="date-confirmed"></span></p>
+                            <p>Status: <span class="status-tag">Ready for Packing</span></p>
+                        </div>
+                    </div>
+                    <button class="close-overlay-btn js-close-overlay-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </header>
+
+                <section class="overlay-body">
+                    <p class="instruction">Please retrieve and verify the following items for this order.</p>
+
+                    <table class="picking-table">
+                        <thead>
+                            <tr>
+                                <th>Item Details</th>
+                                <th>Batch/Lot No.</th>
+                                <th>Qty to Pack</th>
+                                <th>Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pickingItemList"></tbody>
+                    </table>
+                </section>
+
+                <footer class="overlay-footer">
+                    <button class="packed-btn" onclick="markOrderAsPacked()">
+                        <i class="fas fa-check-circle"></i> Confirm All Items Packed
+                    </button>
+                </footer>
+            </div>
+        </div>
         
         `
 
-
-    //========================================
-    //========================================
-    //========================================
-    // Real-Time Clock Update
-    const updateClock = () => {
-        const now = new Date();
-
-        // Time format (e.g., 10:45 AM)
-        const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: true };
-        document.getElementById('current-time').textContent = now.toLocaleTimeString('en-US', timeOptions);
-
-        // Date format (e.g., WED, APR 16)
-        const dateOptions = { weekday: 'short', month: 'short', day: 'numeric' };
-        document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', dateOptions).toUpperCase();
-    };
-
-    // Update immediately and then every minute
-    updateClock();
-    setInterval(updateClock, 60000);
-
-    // --- 2. Quick Actions Simulation ---
-    const actionButtons = document.querySelectorAll('.action-btn');
-
-    actionButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const action = button.getAttribute('data-action');
-
-            // Simple alert for demonstration purposes
-            switch (action) {
-                case 'receive-stock':
-                    //alert('Action: Opening "Receive Stock" form...');
-
-                    // --- Modal Control ---
-                    const receiveStockBtn = document.querySelector('.js-receive-stock-btn');
-                    const modal = document.getElementById('receiveStockModal');
-                    const closeModalBtn = document.getElementById('closeModalBtn');
-
-                    //Show Modal
-                    if (receiveStockBtn) {
-                        receiveStockBtn.addEventListener('click', (event) => {
-                            console.log('Receive Stock Clicked')
-                            event.preventDefault();
-                            modal.classList.remove('hidden');
-                            // Disable scrolling on the body when modal is open
-                            document.body.style.overflow = 'hidden';
-                        });
-                    }
-
-                    //Hide Modal Function
-                    const hideModal = () => {
-                        modal.classList.add('hidden');
-                        document.body.style.overflow = ''; // Restore scrolling
-                    };
-
-                    //Hide Modal via Close Button
-                    if (closeModalBtn) {
-                        closeModalBtn.addEventListener('click', hideModal);
-                    }
-
-                    //Hide Modal by clicking the backdrop (outside the form)
-                    if (modal) {
-                        modal.addEventListener('click', (event) => {
-                            if (event.target === modal) {
-                                hideModal();
-                            }
-                        });
-                    }
-
-                    //Hide Modal via Escape key
-                    document.addEventListener('keydown', (event) => {
-                        if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
-                            hideModal();
-                        }
-                    });
-
-                    break;
-                case 'pick-orders':
-                    alert('Action: Opening "Pick Orders" list interface...');
-                    break;
-                case 'stock-count':
-                    alert('Action: Launching "Stock Count" cycle tool...');
-                    break;
-                case 'report-damage':
-                    alert('Action: Opening "Report Damaged Items" form...');
-                    break;
-                case 'update-location':
-                    alert('Action: Opening "Update Bin Location" tool...');
-                    break;
-                default:
-                    console.log(`Action triggered: ${action}`);
-            }
-        });
-    });
-
-    // --- 3. Progress Bar Simulation (Based on Task Completion) ---
-    const totalTasks = parseInt(document.getElementById('total-tasks').textContent);
-    let completedTasks = parseInt(document.getElementById('completed-tasks').textContent);
-    const progressBar = document.getElementById('progress-bar');
-
-    const updateProgress = () => {
-        if (totalTasks > 0) {
-            const percentage = Math.round((completedTasks / totalTasks) * 100);
-            progressBar.style.width = `${percentage}%`;
-        }
-    };
-
-    // Simulate task completion when a picking list is completed
-    const startPickingButton = document.querySelector('.picking-list-item button[data-order-id="MC-ORD-2034"]');
-
-    if (startPickingButton) {
-        startPickingButton.addEventListener('click', (event) => {
-            event.preventDefault();
-
-            // Simulate completion
-            if (startPickingButton.textContent === 'Start Picking') {
-                startPickingButton.textContent = 'Picking in Progress...';
-                startPickingButton.classList.remove('primary');
-                startPickingButton.classList.add('outline');
-
-                document.getElementById('in-progress-tasks').textContent = '1 (Currently Picking #MC-ORD-2034)';
-
-            } else if (startPickingButton.textContent === 'Picking in Progress...') {
-                // On second click, simulate completion of the task
-                alert('Order MC-ORD-2034 completed and sent to Packing!');
-
-                completedTasks++;
-                document.getElementById('completed-tasks').textContent = completedTasks;
-
-                // Hide or remove the completed order
-                startPickingButton.closest('.picking-list-item').style.display = 'none';
-
-                document.getElementById('in-progress-tasks').textContent = '0 (None)';
-                updateProgress();
-            }
-        });
+    //Handle clicking the pack order button 
+    // Function to show the overlay
+    function openOrderOverlay(orderId) {
+        document.getElementById('displayOrderId').innerText = orderId;
+        document.getElementById('orderOverlay').style.display = 'flex';
     }
 
-    // Initial progress bar load
-    updateProgress();
+    // Function to hide the overlay
+    function closeOrderOverlay() {
+        document.getElementById('orderOverlay').style.display = 'none';
+        tableBody.innerHTML = ``
+    }
+
+    // Function to handle the packing confirmation
+    //========================================
+    //Once an order has been packed, update the table in the database and 
+    // remove it from pending orders
+    function markOrderAsPacked() {
+        const orderId = document.getElementById('displayOrderId').innerText;
+
+        // In a real system, you'd send an API call here
+        alert(`Order ${orderId} has been successfully packed and inventory levels updated!`);
+
+        closeOrderOverlay();
+        // You could also refresh the UI here to show the order as 'Packed'
+    }
+
+    // Close overlay if user clicks outside the modal box
+    window.onclick = function (event) {
+        const overlay = document.getElementById('orderOverlay');
+        if (event.target == overlay) {
+            closeOrderOverlay();
+        }
+    }
+
+    //Mock up data for the order
+    const ordersData = [
+        {
+            "ORD-8821": {
+                customerName: "St. Jude Medical Center",
+                orderCreatedDate: "2025-12-18",
+                items: [
+                    { itemName: "Paracetamol 500mg", sku: "PAR-500MG", batchNumber: "A30B45", quantityToPack: 50, unitOfMeasure: "BOX" },
+                    { itemName: "Latex Gloves (Size M)", sku: "GLOV-LAT-M", batchNumber: "C45F20", quantityToPack: 5, unitOfMeasure: "CARTON" }
+                ]
+            }
+        },
+        {
+            "ORD-8822": {
+                customerName: "City General Clinic",
+                orderCreatedDate: "2025-12-19",
+                items: [
+                    { itemName: "Amoxicillin 250mg", sku: "AMOX-250", batchNumber: "AMX-992", quantityToPack: 20, unitOfMeasure: "BOTTLE" }
+                ]
+            }
+        },
+        {
+            "ORD-8823": {
+                customerName: "Hope Children's Hospital",
+                orderCreatedDate: "2025-12-20",
+                items: [
+                    { itemName: "Insulin Vials", sku: "INS-V10", batchNumber: "ICE-442", quantityToPack: 100, unitOfMeasure: "VIAL" }
+                ]
+            }
+        }
+    ];
+
+    //Display all the pending orders
+    const ordersContainer = document.querySelector('.order-cards-container')
+    ordersData.forEach((order) => {
+        for (const orderId in order) {
+            const orderDetails = order[orderId]
+
+            ordersContainer.innerHTML += `
+                <div class="order-card-item">
+                    <h3>Order #${orderId}</h3>
+                    <p>Hospital: ${orderDetails.customerName}</p>
+                    <p>Items: ${orderDetails.items.length} Item(s)</p>
+                    <button class="action-btn primary small-pack-btn js-pack-order-btn" data-order-id=${orderId}>Pack Order</button>
+                </div>
+            `
+        }
+    })
 
 
+    //Display the pending orders and the right order details in the overlay
+    const tableBody = document.getElementById('pickingItemList');
+    document.querySelectorAll('.js-pack-order-btn')
+        .forEach((packOrderBtn) => {
+            packOrderBtn.addEventListener('click', () => {
+                const btnOrderId = packOrderBtn.dataset.orderId
 
+                openOrderOverlay(btnOrderId)
+
+                ordersData.forEach((order) => {
+                    for (const orderId in order) {
+                        if (btnOrderId === orderId) {
+                            const orderDetails = order[orderId]
+                            document.getElementById('displayOrderId').innerText = orderId
+                            document.getElementById('hospital-name').innerText = orderDetails.customerName
+                            document.getElementById('date-confirmed').innerText = orderDetails.orderCreatedDate
+
+                            const orderItems = orderDetails.items
+                            orderItems.forEach((item) => {
+                                const row = `
+                                    <tr>
+                                        <td>
+                                            <strong>${item.itemName}</strong><br>
+                                            <small>SKU: ${item.sku}</small>
+                                        </td>
+                                        <td><span class="batch-tag">${item.batchNumber}</span></td>
+                                        <td class="qty-cell">${item.quantityToPack}</td>
+                                        <td>${item.unitOfMeasure}</td>
+                                    </tr>
+                                `
+                                tableBody.innerHTML += row;
+                            })
+                        }
+                    }
+                })
+            })
+        })
+
+    //Close the Order details card overlay
+    document.querySelector('.js-close-overlay-btn')
+        .addEventListener('click', () => {
+            closeOrderOverlay()
+        })
 });

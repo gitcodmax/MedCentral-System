@@ -17,7 +17,7 @@ export function renderHeader() {
                     <a href="/inv_clerk/receive_stock/receive_stock.html" class="dropdown-item">
                         <i class="fas fa-box-open"></i> Receive New Stock
                     </a>
-                    <a href="report_damage.html" class="dropdown-item">
+                    <a href="/inv_clerk/receive_stock/report_damage.html" class="dropdown-item">
                         <i class="fas fa-exclamation-triangle"></i> Report Damaged Items
                     </a>
                 </div>
@@ -32,11 +32,26 @@ export function renderHeader() {
                 Peter, Inventory Clerk (Nairobi)
             </div>
             <div class="time-and-alerts">
-                <span id="current-time">10:45 AM</span>
-                <span id="current-date">WED, APR 16</span>
+                <span id="current-time"></span>
+                <span id="current-date"></span>
                 <i class="fas fa-bell notification-bell"></i>
             </div>
         </div>
     
         `
+    clockUpdate()
+}
+
+function clockUpdate() {
+  // Real-Time Clock Update
+  const updateClock = () => {
+    document.getElementById('current-time')
+      .textContent = dayjs().format('hh:mm A');
+    document.getElementById('current-date')
+      .textContent = dayjs().format('ddd, MMM D').toUpperCase();
+  };
+
+  // Update immediately and then every minute
+  updateClock();
+  setInterval(updateClock, 60000);
 }

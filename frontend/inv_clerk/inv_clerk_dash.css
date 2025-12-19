@@ -221,6 +221,123 @@ h2 {
     font-weight: 600;
 }
 
+/* Overlay Background */
+.overlay {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal Box */
+.overlay-content {
+    background-color: #fff;
+    width: 90%;
+    max-width: 750px; /* Narrowed slightly since we have fewer columns */
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+/* Header */
+.overlay-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+.order-info{
+    width: 100%;
+}
+.order-info h2{
+    color: var(--color-secondary);
+    text-align: center;
+}
+.order-date-status{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.status-tag {
+    background: #e7f3ff;
+    color: #007bff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* Table Styling */
+.overlay-body { padding: 25px; }
+
+.instruction {
+    margin-bottom: 20px;
+    color: #6c757d;
+    font-size: 0.95rem;
+}
+
+.picking-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.picking-table th {
+    text-align: left;
+    background: #f1f3f5;
+    padding: 12px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: #495057;
+}
+
+.picking-table td {
+    padding: 15px 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.batch-tag {
+    background: #fff3cd;
+    padding: 4px 8px;
+    border: 1px solid #ffeeba;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 600;
+}
+
+.qty-cell {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #212529;
+}
+
+/* Footer & Button */
+.overlay-footer {
+    padding: 20px;
+    text-align: center;
+    background: #f8f9fa;
+}
+
+.packed-btn {
+    background-color: #008B00;
+    color: white;
+    border: none;
+    padding: 14px 50px;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.packed-btn:hover { background-color: #007000; }
+
 /* Footer Styling */
 .main-footer {
     padding: 15px;
