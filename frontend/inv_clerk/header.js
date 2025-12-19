@@ -23,8 +23,7 @@ export function renderHeader() {
                 </div>
             </div>
 
-            <a href="#" class="nav-item">Completed Orders</a>
-            <a href="#" class="nav-item">Reports</a>
+            <a href="/inv_clerk/completed_orders.html" class="nav-item">Completed Orders</a>
         </nav>
 
         <div class="user-info">
