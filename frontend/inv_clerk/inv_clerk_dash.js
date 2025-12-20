@@ -21,11 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </span>
                 </div>
             </div>
-            <div class="alerts-container">
-                <div class="alert-pill low-stock" data-alert-type="low">Paracetamol 500mg(20 boxes)</div>
-                <div class="alert-pill low-stock-warning" data-alert-type="low">Paracetamol 100mg(10 boxes)</div>
-                <div class="alert-pill expiring" data-alert-type="critical">Paracetamol 100mg(2 boxes)</div>
-            </div>
+            <div class="alerts-container js-alerts-container"></div>
         </section>
 
         <section class="pending-orders card layout-section">
@@ -73,6 +69,31 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         
         `
+
+    //Mock data from the API for use in the stock alerts
+    const inventory = {
+        "PAR-500MG": {
+            itemDetails: "Paracetamol 500mg(20 boxes)",
+            stockLevel: "low" // Value sent from API: 'warning', 'low', 'critical', or 'healthy'
+        },
+        "AMX-250": {
+            itemDetails: "Amoxicillin 250mg(5 bottles)",
+            stockLevel: "critical"
+        },
+        "GLOV-LAT-M": {
+            itemDetails: "Latex Gloves(10 cartons)",
+            stockLevel: "warning"
+        }
+    };
+
+    //Handles display of the stock alerts in the dash
+    const alertsContainer = document.querySelector('.js-alerts-container')
+    for (const item in inventory) {
+        const itemDetails = inventory[item]
+        alertsContainer.innerHTML += `
+                <div class="alert-pill ${itemDetails['stockLevel']}-stock">${itemDetails['itemDetails']}</div>
+            `
+    }
 
     //Handle clicking the pack order button 
     // Function to show the overlay

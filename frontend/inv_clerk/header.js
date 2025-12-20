@@ -71,5 +71,3 @@ function clockUpdate() {
     updateClock();
     setInterval(updateClock, 60000);
 }
-
-console.log(window.location.href)

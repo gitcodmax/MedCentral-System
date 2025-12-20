@@ -165,11 +165,11 @@ h2 {
     background-color: var(--color-orange-low);
 }
 
-.alert-pill.low-stock-warning {
+.alert-pill.warning-stock {
     background-color: var(--color-yellow-warning); 
 }
 
-.alert-pill.expiring {
+.alert-pill.critical-stock {
     background-color: var(--color-red-critical); 
     color: var(--color-white);
 }
