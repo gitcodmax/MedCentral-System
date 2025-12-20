@@ -25,53 +25,79 @@
 
 /* Filter bar styling */
 
-.filter-bar {
-    display: flex;
-    gap: 20px;
-    align-items: flex-end;
-    margin-bottom: 25px;
-    background: #fff;
-    padding: 15px;
-    border-radius: 4px;
-    border: 1px solid #dee2e6;
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  background: var(--color-white);
+  padding: 25px;
+  border-radius: 12px;
+  align-items: flex-end;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
-.search-box {
-    flex: 2;
-    position: relative;
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 160px;
 }
 
-.search-box i {
-    position: absolute;
-    left: 10px;
-    top: 10px;
-    color: #888;
+.filter-group label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: #777;
 }
 
-.search-box input {
-    padding: 10px 10px 10px 35px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
+.filter-group input, 
+.filter-group select {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
 }
 
-.date-filter { flex: 1; }
-
-.date-filter input {
-    width: 100%;
-    padding: 9px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
+.filter-group input:focus, 
+.filter-group select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+  outline: none;
 }
 
-.reset-btn {
-    padding: 10px 15px;
-    background: #f8f9fa;
-    border: 1px solid #ced4da;
-    cursor: pointer;
-    border-radius: 4px;
+.filter-container button{
+  padding: 12px 25px;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  height: 40px;
+  transition: transform 0.1s;
 }
 
-.reset-btn:hover { background: #e2e6ea; }
+.filter-btn {
+  background-color: #28a745;
+}
+.clear-filter-btn{
+  background-color: var(--color-primary);
+}
+.clear-filter-btn:hover{
+  background-color: #0058b6;
+}
+
+.filter-btn:hover {
+  background-color: var(--color-secondary);
+}
+
+.filter-btn:active, .clear-filter-btn:active {
+  transform: scale(0.98);
+}
+
+/* ===================== */
 
 .title {
   font-size: 1.5rem;
@@ -127,8 +153,17 @@ td {
   color: white;
 }
 
-.empty-state {
+.no-match-container{
+  border: 1px solid var(--color-primary);
+  border-radius: 5px;
+  font-weight: bolder;
+  font-size: large;
   text-align: center;
-  padding: 50px;
-  color: #888;
+  width: 300px;
+  margin: 10px auto;
+  align-items: center;
+  background-color: var(--color-white);
+}
+.hidden{
+  display: none;
 }

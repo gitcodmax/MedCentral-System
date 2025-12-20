@@ -6,16 +6,42 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.js-container')
     .innerHTML = `
 
-    <div class="filter-bar">
-      <div class="search-box">
-          <i class="fas fa-search"></i>
-          <input type="text" id="searchInput" placeholder="Search by Hospital or Order ID..." onkeyup="filterOrders()">
+    <div class="filter-container">
+      <div class="filter-group">
+        <label for="search">Search</label>
+        <input type="text" id="search" placeholder="Order ID, Hospital N...">
       </div>
-      <div class="date-filter">
-          <label for="dateFilter">Filter by Creation Date:</label>
-          <input type="date" id="dateFilter" onchange="filterOrders()">
+
+      <div class="filter-group">
+        <label for="date-type">Filter Date By</label>
+        <select id="date-type">
+          <option value="creationDate">Creation Date</option>
+          <option value="packingDate">Packing Date</option>
+        </select>
       </div>
-      <button class="reset-btn" onclick="resetFilters()">Clear Filters</button>
+
+      <div class="filter-group">
+        <label for="start-date">From</label>
+        <input type="date" id="start-date">
+      </div>
+
+      <div class="filter-group">
+        <label for="end-date">To</label>
+        <input type="date" id="end-date">
+      </div>
+
+      <div class="filter-group">
+        <label for="status">Status</label>
+        <select id="status">
+          <option value="all">All Statuses</option>
+          <option value="pending">Pending</option>
+          <option value="shipped">Shipped</option>
+          <option value="delivered">Delivered</option>
+        </select>
+      </div>
+
+      <button class="filter-btn" id="filter-btn">Apply Filter</button>
+      <button class="clear-filter-btn" id="clear-filter-btn">Clear Filter</button>
     </div>
     
     <div class="header">
@@ -32,66 +58,135 @@ document.addEventListener('DOMContentLoaded', () => {
                 <th>Status</th>
             </tr>
         </thead>
-        <tbody id="completedOrdersBody">
-            </tbody>
+        <tbody id="completedOrdersBody"></tbody>
     </table>
-    
-    <div id="emptyState" class="empty-state" style="display: none;">
-        <i class="fas fa-archive" style="font-size: 3rem; margin-bottom: 10px;"></i>
-        <p>No completed orders found in this session.</p>
+    <div class="no-match-container js-no-match-container">
+      <p>No orders match the filters!!</p>
     </div>
     `
 
-  renderCompletedOrders();
-})
-
-// This would ideally be stored in localStorage or a database
-// For now, it imitates the object structure you requested
-const completedOrdersData = {
-  "ORD-8820": {
-    customerName: "Memorial Clinic",
-    orderDate: "2025-12-18",
-    dispatchDate: "2025-12-19",
-    packedOn: "2025-12-20",
-    items: [
-      { itemName: "Surgical Masks", sku: "MASK-SURG", batchNumber: "M991", quantityToPack: 200, unitOfMeasure: "BOX" }
-    ]
-  }, 
+  const completedOrdersData = {
     "ORD-8821": {
-    customerName: "Memorial Clinic",
-    orderDate: "2025-12-18",
-    dispatchDate: "2025-12-19",
-    packedOn: "2025-12-19",
-    items: [
-      { itemName: "Surgical Masks", sku: "MASK-SURG", batchNumber: "M991", quantityToPack: 200, unitOfMeasure: "BOX" }
-    ]
+      customerName: "St. Jude Medical Center",
+      creationDate: "2025-12-15",
+      packingDate: "2025-12-18",
+      status: "PENDING"
+    },
+    "ORD-8822": {
+      customerName: "City General Clinic",
+      creationDate: "2025-12-16",
+      packingDate: "2025-12-19",
+      status: "SHIPPED"
+    },
+    "ORD-8823": {
+      customerName: "Hope Children's Hospital",
+      creationDate: "2025-12-18",
+      packingDate: "2025-12-20",
+      status: "DELIVERED"
+    }
   }
-};
 
-//Display the orders in the table
-function renderCompletedOrders() {
+  //Completed orders table body
   const body = document.getElementById('completedOrdersBody');
-  const emptyState = document.getElementById('emptyState');
-  const entries = Object.entries(completedOrdersData);
+  //Display the orders in the table
+  function renderCompletedOrders() {
 
-  if (entries.length === 0) {
-    body.parentElement.style.display = 'none';
-    emptyState.style.display = 'block';
-    return;
+    const emptyState = document.getElementById('emptyState');
+    const entries = Object.entries(completedOrdersData);
+
+    if (entries.length === 0) {
+      body.parentElement.style.display = 'none';
+      emptyState.style.display = 'block';
+      return;
+    }
+
+    displayOrders(body, entries)
   }
 
-  body.innerHTML = '';
+  //The container that appears when there is no order found by filtering
+  document.querySelector('.js-no-match-container').classList.add('hidden')
 
-  entries.forEach(([orderId, details]) => {
-    const row = `
+  //Setting the filtering functionality
+  const applyBtn = document.getElementById('filter-btn')
+  const clearFilterBtn = document.getElementById('clear-filter-btn')
+  const searchInput = document.getElementById('search')
+  const dateType = document.getElementById('date-type')
+  const startDate = document.getElementById('start-date')
+  const endDate = document.getElementById('end-date')
+  const statusFilter = document.getElementById('status')
+
+  //Set the button to filter orders
+  applyBtn.addEventListener('click', () => {
+    const searchValue = searchInput.value.trim().toLowerCase()
+    const dateTypeValue = dateType.value
+    const startDateValue = startDate.value
+    const endDateValue = endDate.value
+    const statusValue = statusFilter.value
+
+    const filteredResults = Object.entries(completedOrdersData).filter(([orderId, details]) => {
+      //Checks whether the order id or customer name matches any of the values
+      const matchesSearch = orderId.toLowerCase().includes(searchValue)
+        || details.customerName.toLowerCase().includes(searchValue)
+
+      //Checks the date type chosen and filters the date depending
+      //  on the date type and start and end date
+      const orderTargetDate = details[dateTypeValue]
+      let matchesDate = true
+
+      if (startDateValue && orderTargetDate < startDateValue) {
+        matchesDate = false
+      }
+      if (endDateValue && orderTargetDate > endDateValue) {
+        matchesDate = false
+      }
+
+      //Checks the status selected and returns the one that matches
+      const matchesStatus = (statusValue === 'all')
+        || (details.status.toLowerCase() === statusValue)
+
+      //Result should contain both the values as true
+      return matchesSearch && matchesDate && matchesStatus
+    })
+
+    if (filteredResults.length > 0) {
+      displayOrders(body, filteredResults)
+    } else {
+      body.innerHTML = '';
+      document.querySelector('.js-no-match-container').classList.remove('hidden')
+    }
+  })
+
+  //Populates the completed orders table with the necessary info
+  function displayOrders(body, orders) {
+    body.innerHTML = '';
+    orders.forEach(([id, info]) => {
+      const row = `
             <tr>
-                <td class="order-id"><strong>${orderId}</strong></td>
-                <td>${details.customerName}</td>
-                <td>${details.dispatchDate}</td>
-                <td>${details.packedOn}</td>
-                <td><span class="status-badge">AWAITING DISPATCH</span></td>
+                <td class="order-id"><strong>${id}</strong></td>
+                <td>${info.customerName}</td>
+                <td>${info.creationDate}</td>
+                <td>${info.packingDate}</td>
+                <td><span class="status-badge">${info.status}</span></td>
             </tr>
         `;
-    body.innerHTML += row;
-  });
-}
+      body.innerHTML += row;
+    })
+  }
+
+  //Set the button to clear the filtering details
+  clearFilterBtn.addEventListener('click', () => {
+    if (document.querySelector('.js-no-match-container')) {
+      document.querySelector('.js-no-match-container').classList.add('hidden')
+    }
+    searchInput.value = ''
+    dateType.selectedIndex = 0
+    startDate.value = ''
+    endDate.value = ''
+    statusFilter.selectedIndex = 0
+
+    renderCompletedOrders()
+  })
+
+
+  renderCompletedOrders();
+})
