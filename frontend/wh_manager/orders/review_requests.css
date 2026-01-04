@@ -1,0 +1,99 @@
+/* Request Card Styling */
+.request-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.request-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-left: 5px solid var(--color-primary);
+    overflow: hidden;
+}
+
+.request-card:hover{
+  border-left: 5px solid var(--color-secondary);
+}
+
+.request-header {
+    padding: 15px 25px;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+}
+
+.hospital-name { font-weight: bold; font-size: 1.1rem; }
+.request-id { color: var(--color-secondary); margin-left: 10px; font-family: monospace; }
+.total-amt { color: var(--color-primary); font-weight: bold;}
+
+.item-review-table {
+    width: 100%;
+    padding: 20px;
+    border-collapse: collapse;
+}
+
+.item-review-table td, .item-review-table th {
+    padding: 12px 25px;
+    text-align: left;
+}
+
+.item-review-table th{
+  color: var(--color-quarantine);
+}
+
+.text-success { color: var(--color-secondary); font-weight: 600; }
+.text-danger { color: var(--color-red-critical); font-weight: 600; }
+
+.request-footer {
+    padding: 20px 25px;
+    background: #fff;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.denial-reason { flex: 1; margin-right: 10px; }
+.denial-reason input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.denial-reason input:focus{
+  border: 2px solid var(--color-primary);
+  outline: none;
+}
+
+.action-buttons { display: flex; gap: 10px; }
+
+.btn-approve {
+    background-color: var(--color-secondary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.btn-approve:hover{
+  background: var(--color-white);
+  color: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
+}
+
+.btn-deny {
+    background-color: transparent;
+    color: var(--color-red-critical);
+    border: 1px solid var(--color-red-critical);
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-deny:hover { background: var(--color-red-critical); color: white; }

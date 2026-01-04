@@ -1,4 +1,74 @@
+import { renderSidebar } from "./sidebar.js"
+
 document.addEventListener('DOMContentLoaded', () => {
+
+  document.querySelector('.js-dashboard-container')
+    .innerHTML = `
+      <nav class="sidebar"></nav>
+
+      <main class="main-content">
+        <header class="top-header">
+          <img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">
+        </header>
+
+        <section class="welcome">
+          <h1>Hello John</h1>
+          <p>Welcome back to the dashboard. Here is what needs your attention.</p>
+        </section>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-number js-orders-review"></span>
+            <span class="stat-label">Orders for Review</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number js-orders-assign-clerk"></span>
+            <span class="stat-label">To Assign (Packaging)</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number js-orders-assign-driver"></span>
+            <span class="stat-label">To Assign (Dispatch)</span>
+          </div>
+        </div>
+
+        <section class="stock-alerts">
+          <div class="card-title-container">
+            <h2>Stock Alerts</h2>
+            <div class="alert-key">
+              <span class="key-item">
+                <span class="key-color yellow"></span> Warning
+              </span>
+              <span class="key-item">
+                <span class="key-color orange"></span> Low
+              </span>
+              <span class="key-item">
+                <span class="key-color red"></span> Critical
+              </span>
+            </div>
+          </div>
+          <div class="alerts-container js-alerts-container"></div>
+        </section>
+
+        <section class="recent-orders">
+          <h2>Recently Delivered Orders</h2>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Hospital</th>
+                <th>Order ID</th>
+                <th>Creation Date</th>
+                <th>Delivered On</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </section>
+      </main>
+    `
+  
+  //Function to render the sidebar
+  renderSidebar()
 
   //Mock data for dash summary
   const summaryStats = {
@@ -16,14 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelector('.js-orders-assign-driver')
     .innerText = summaryStats.totalToAssignDriver
-
-  //Controls the hamburger icon for the sidebar
-  const sidebar = document.querySelector('.sidebar');
-  const toggleBtn = document.getElementById('sidebarToggle');
-
-  toggleBtn.addEventListener('click', () => {
-    sidebar.classList.toggle('collapsed');
-  });
 
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   //Code for the stock alerts has been repeated in another file(inv_clerk)
