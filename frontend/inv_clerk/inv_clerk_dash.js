@@ -69,7 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         
         `
-
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //Code for the stock alerts has been repeated in another file(wh_manager)
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //Mock data from the API for use in the stock alerts
     const inventory = {
         "PAR-500MG": {
