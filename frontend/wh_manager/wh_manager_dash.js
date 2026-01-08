@@ -7,9 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <nav class="sidebar"></nav>
 
       <main class="main-content">
-        <header class="top-header">
-          <img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">
-        </header>
+        <header class="logo-container"></header>
 
         <section class="welcome">
           <h1>Hello John</h1>

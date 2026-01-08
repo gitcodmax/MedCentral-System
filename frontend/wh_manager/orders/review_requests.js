@@ -2,14 +2,10 @@ import { renderSidebar } from "../sidebar.js";
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  renderSidebar()
-
   //Display the main content
   document.querySelector('.main-content')
     .innerHTML = `      
-      <header class="top-header">
-        <img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">
-      </header>
+      <header class="logo-container"></header>
 
       <div class="page-title-container">
         <h2>Request Approval Queue</h2>
@@ -41,6 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
       <section class="request-container js-request-container"></section>
     
     `
+  
+  renderSidebar()
 
   //Mock data for the requests made
   const pendingReview = [

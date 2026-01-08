@@ -1,5 +1,12 @@
 
 export function renderSidebar() {
+
+  //Display the logo
+  document.querySelector('.logo-container')
+    .innerHTML = `
+    <img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">
+    `
+  //Display the nav links
   document.querySelector('nav')
     .innerHTML = `    
       <div class="user-profile">
@@ -45,7 +52,7 @@ export function renderSidebar() {
       </div>
     
     `
-  
+
   controlSidebar()
 }
 
