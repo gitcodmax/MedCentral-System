@@ -1,11 +1,12 @@
-.stat{
+.stat {
   border-left: 2px solid var(--color-secondary);
   padding: 10px;
   margin: 0;
   color: var(--color-primary);
   font-weight: bold;
 }
-h2{
+
+h2 {
   margin: 5px 0;
 }
 
@@ -42,10 +43,17 @@ h2{
   border-radius: 50%;
 }
 
-.order-no {
+.order-no,
+.package-id {
   font-size: 0.8rem;
   color: var(--color-quarantine);
   font-family: monospace;
+}
+
+.order-no {
+  margin-right: 10px;
+  border-right: 2px solid var(--color-secondary);
+  padding-right: 10px;
 }
 
 .dispatch-card h3 {
@@ -91,6 +99,10 @@ h2{
   font-weight: bold;
 }
 
+.assign-driver-key {
+  text-transform: none;
+}
+
 .action-row {
   display: flex;
   gap: 10px;
@@ -119,7 +131,7 @@ h2{
 }
 
 /* Styling the view items button */
-.view-items-btn{
+.view-items-btn {
   padding: 5px;
   background-color: white;
   border: 1px solid var(--color-primary);
@@ -127,17 +139,93 @@ h2{
   width: 100px;
   cursor: pointer;
 }
-.view-items-btn:hover{
+
+.view-items-btn:hover {
   background-color: var(--color-secondary);
   color: white;
   border: none;
 }
-.view-items-text{
+
+.view-items-text {
   display: none;
 }
-.view-items-btn:hover .no-of-items{
+
+.view-items-btn:hover .no-of-items {
   display: none;
 }
-.view-items-btn:hover .view-items-text{
+
+.view-items-btn:hover .view-items-text {
   display: inline;
+}
+
+/* Overlay and displayed container */
+table {
+  width: 100%;
+  text-align: left;
+}
+
+th {
+  color: var(--color-quarantine);
+  border-bottom: 2px solid var(--color-secondary);
+}
+
+.order-package-ids {
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+.org-name {
+  color: var(--color-secondary);
+}
+
+
+/* Style the notification container for dispatch */
+.highlight-order {
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+.highlight-driver {
+  color: var(--color-secondary);
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.modal-footer {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.btn-yes {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-no {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-yes:hover {
+  background-color: #059669;
+}
+
+.btn-no:hover {
+  background-color: #dc2626;
+}
+
+.dispatch-org-name{
+  font-size: small;
 }

@@ -1,4 +1,5 @@
 import { renderSidebar } from "../sidebar.js";
+import { xRemoveOverlay, clickToRemoveOverlay } from "./overlay.js";
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -171,14 +172,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
           overlay.innerHTML = `
             <div class="items-preview-container">
-              <div class="preview-header">
-                <h3>Items in Order #<span class="order-id">${btn.dataset.orderId}</span></h3>
-              </div>
+              <div class="header-close-container">
+                <div class="preview-header">
+                  <h3>Items in Order #<span class="order-id">${btn.dataset.orderId}</span></h3>
+                </div>
 
-              <div class="close-btn-container">
-                <button class="close-overlay-btn js-close-overlay-btn">
-                  <i class="fas fa-times"></i>
-                </button>
+                <div>
+                  <button class="close-overlay-btn js-close-overlay-btn">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
               </div>
 
               <table class="items-detail-table">
@@ -220,22 +223,12 @@ document.addEventListener('DOMContentLoaded', () => {
           document.querySelector('.js-items-tbody')
             .appendChild(itemsFragment)
           
-          //Close the overlay by clicking the x icon
-          if (overlay.classList.contains('active')) {
-            document.querySelector('.js-close-overlay-btn')
-              .addEventListener('click', () => {
-                overlay.classList.remove('active')
-              })
-          }
+          xRemoveOverlay(overlay)
         })
       }
     })
   })
 
-  //Close the overlay by clicking outside the items preview
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) {
-      overlay.classList.remove('active')
-    }
-  })
+
+  clickToRemoveOverlay(overlay)
 })
