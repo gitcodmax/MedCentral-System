@@ -118,21 +118,24 @@
   margin-right: 4px;
 }
 
-.ambient {
+.A {
   background: #f59e0b;
 }
 
-.refrigerated {
+.R {
   background: #3b82f6;
 }
 
-.frozen {
+.F {
   background: #6366f1;
+}
+.C{
+  background: #10b981;
 }
 
 .view-btn {
   background: white;
-  border: 1px solid var(--color-quarantine);
+  border: 1px solid var(--color-primary);
   padding: 5px 12px;
   border-radius: 4px;
   cursor: pointer;
@@ -140,11 +143,12 @@
 }
 
 .view-btn:hover {
-  background: #f8fafc;
+  background: var(--color-primary);
+  color: white;
 }
 
 /* Packges details table */
-.order-details-container {
+.packages-details-container {
   background: #ffffff;
   border: 1px solid #cbd5e1;
   border-radius: 12px;
