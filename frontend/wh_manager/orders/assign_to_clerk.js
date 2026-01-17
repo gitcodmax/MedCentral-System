@@ -1,5 +1,5 @@
 import { renderSidebar } from "../sidebar.js";
-import { xRemoveOverlay, clickToRemoveOverlay } from "./overlay.js";
+import { xRemoveOverlay, clickToRemoveOverlay } from "../overlay.js";
 
 document.addEventListener('DOMContentLoaded', () => {
 

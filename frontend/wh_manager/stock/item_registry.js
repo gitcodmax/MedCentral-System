@@ -98,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const itemsFragment = document.createDocumentFragment()
     catalogItems.forEach(item => {
-        console.log(item)
         const tblRow = document.createElement('tr')
         const tempLetter = (item.temp).slice(0, 1)
 
