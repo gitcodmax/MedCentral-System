@@ -11,7 +11,7 @@ export const createAnotherItemDetailsContainer = (itemIndexed) => {
             <div class="item-entry-card js-item-entry-card" id="item-entry-card-${itemIndexed}">
                 <div class="form-grid item-identity-grid">
                     <div class="input-group">
-                        <label for="itemCode">Item Code:</label>
+                        <label for="itemCode">Item SKU Code:</label>
                         <input type="text" id="itemCode-${itemIndexed}" required>
                     </div>
                     <div class="input-group">
