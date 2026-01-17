@@ -1,6 +1,8 @@
 import { renderSidebar } from "../sidebar.js";
 import { xRemoveOverlay, clickToRemoveOverlay } from "./overlay.js";
 
+dayjs.extend(window.dayjs_plugin_isBetween);
+
 document.addEventListener('DOMContentLoaded', () => {
   renderSidebar()
 
@@ -121,40 +123,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
+  const ordersTableBody = document.querySelector('.js-orders-table')
+
   // Display all the orders in the table
-  const tblRowFragment = document.createDocumentFragment()
-  orders.forEach(ord => {
-    const tblRow = document.createElement('tr')
+  function displayOrders(orders) {
+    const tblRowFragment = document.createDocumentFragment()
+    orders.forEach(ord => {
+      const tblRow = document.createElement('tr')
 
-    tblRow.innerHTML = `
-      <td class="order-id"><strong>${ord.orderId}</strong></td>
-      <td>
-        <strong>${ord.institutionName}</strong><br>
-        <small>${ord.destination}</small>
-      </td>
-      <td class="js-packages-${ord.orderId}"></td>
-      <td>${ord.creationDate}</td>
-      <td>${ord.paymentDate}</td>
-      <td><span class="deliv-${ord.delivered.toLowerCase()}">${ord.delivered}</span></td>
-      <td><button class="view-btn js-view-btn" data-order-id="${ord.orderId}">Details</button></td>
-    `
+      tblRow.innerHTML = `
+        <td class="order-id"><strong>${ord.orderId}</strong></td>
+        <td>
+          <strong>${ord.institutionName}</strong><br>
+          <small>${ord.destination}</small>
+        </td>
+        <td class="js-packages-${ord.orderId}"></td>
+        <td>${ord.creationDate}</td>
+        <td>${ord.paymentDate}</td>
+        <td><span class="deliv-${ord.delivered.toLowerCase()}">${ord.delivered}</span></td>
+        <td><button class="view-btn js-view-btn" data-order-id="${ord.orderId}">Details</button></td>
+      `
 
-    const packagesCol = tblRow.querySelector(`.js-packages-${ord.orderId}`)
+      const packagesCol = tblRow.querySelector(`.js-packages-${ord.orderId}`)
 
-    ord.packages.forEach(pkg => {
-      const storageTemp = pkg.packageId.slice(-1)
-      const badge = document.createElement('span')
-      badge.className = `badge ${storageTemp}`
-      badge.textContent = storageTemp
+      ord.packages.forEach(pkg => {
+        const storageTemp = pkg.packageId.slice(-1)
+        const badge = document.createElement('span')
+        badge.className = `badge ${storageTemp}`
+        badge.textContent = storageTemp
 
-      packagesCol.appendChild(badge)
+        packagesCol.appendChild(badge)
+      })
+
+      tblRowFragment.appendChild(tblRow)
     })
 
-    tblRowFragment.appendChild(tblRow)
-  })
+    return tblRowFragment
+  }
 
-  document.querySelector('.js-orders-table')
-    .appendChild(tblRowFragment)
+  ordersTableBody.appendChild(displayOrders(orders))
 
   // Controls when to display the overlay and close it 
   const overlay = document.getElementById('packages-overlay')
@@ -194,7 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
             })
 
             packagesTableElem.appendChild(packagesFragment)
-
           }
 
           xRemoveOverlay(overlay)
@@ -202,4 +208,115 @@ document.addEventListener('DOMContentLoaded', () => {
         })
       })
     })
+
+  // ##Filtering logic
+  const searchbarElem = document.getElementById('masterSearch')
+  const deliveryStatusDropdown = document.getElementById('deliveryFilter')
+  const dateCreatedRadioElem = document.getElementById('dateCreate')
+  const datePayRadioElem = document.getElementById('datePay')
+  const startDatetElem = document.getElementById('startDate')
+  const endDateElem = document.getElementById('endDate')
+
+  // Function to enable searching/filtering of the orders
+  function filterOrders(searchText, deliveryStatusPicked, startDate, endDate) {
+    const searchTerm = searchText.toLowerCase().trim()
+
+    const searchResult = orders.filter(ord => {
+      const { orderId, institutionName, delivered, creationDate, paymentDate } = ord
+
+      const orderMatch = orderId.toLowerCase().includes(searchTerm)
+      const orgMatch = institutionName.toLowerCase().includes(searchTerm)
+
+      const deliveryMatch = deliveryStatusPicked === 'all' || deliveryStatusPicked === delivered.toLowerCase()
+
+      const dateMatch = filterDates(creationDate, paymentDate, startDate, endDate)
+
+      return (orderMatch || orgMatch) && dateMatch && deliveryMatch
+    })
+
+    return searchResult
+  }
+
+  dateCreatedRadioElem.checked = true
+
+  //Filters date depending on the date type selected
+  function filterDates(creationDate, paymentDate, startDate, endDate) {
+    if (dateCreatedRadioElem.checked) {
+      return dayjs(creationDate).isBetween(startDate, endDate, 'day', '[]')
+    } else {
+      return dayjs(paymentDate).isBetween(startDate, endDate, 'day', '[]')
+    }
+  }
+
+  const noMatchContainerElem = document.querySelector('.no-match-container')
+  noMatchContainerElem.classList.add('hidden')
+
+  const noOfResultsElem = document.querySelector('.no-of-results')
+  function filterOrdersCore() {
+    const searchResult = filterOrders(searchbarElem.value,
+      deliveryStatusDropdown.value,
+      startDatetElem.value,
+      endDateElem.value
+    )
+
+    noMatchContainerElem.classList.add('hidden')
+
+    noOfResultsElem.textContent = searchResult.length
+
+    ordersTableBody.innerHTML = ``
+    ordersTableBody.appendChild(displayOrders(searchResult))
+
+    if(searchResult.length === 0) 
+      noMatchContainerElem.classList.remove('hidden')
+  }
+
+  datePayRadioElem.addEventListener('click', () => {
+    dateCreatedRadioElem.checked = false
+    datePayRadioElem.checked = true
+    filterOrdersCore()
+  })
+
+  dateCreatedRadioElem.addEventListener('click', () => {
+    datePayRadioElem.checked = false
+    dateCreatedRadioElem.checked = true
+    filterOrdersCore()
+  })
+
+  searchbarElem.addEventListener('keyup', filterOrdersCore)
+  deliveryStatusDropdown.addEventListener('change', filterOrdersCore)
+  startDatetElem.addEventListener('change', filterOrdersCore)
+  endDateElem.addEventListener('change', filterOrdersCore)
+
+  // Button to clear the filters applied
+  document.querySelector('.js-btn-apply')
+    .addEventListener('click', () => {
+      searchbarElem.value = ''
+      deliveryStatusDropdown.value = 'all'
+      startDatetElem.value = ''
+      endDateElem.value = ''
+      noOfResultsElem.textContent = '0'
+
+      ordersTableBody.appendChild(displayOrders(orders))
+    })
+
+  //##End of filtering logic
+
+  //Displays the order statistics at the top of the page
+  function displayStats() {
+    document.querySelector('.js-no-total-orders')
+      .textContent = orders.length
+
+    let noOfPackages = 0
+    let completedOrders = 0
+    orders.forEach(ord => {
+      noOfPackages += ord.packages.length
+      if (ord.delivered === 'Yes') completedOrders += 1
+    })
+    document.querySelector('.js-no-total-pkg')
+      .textContent = noOfPackages
+    document.querySelector('.js-no-total-delivered')
+      .textContent = completedOrders
+  }
+
+  displayStats()
 })

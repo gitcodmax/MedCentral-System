@@ -24,24 +24,66 @@
       <div class="log-header">
         <h2><i class="fas fa-archive"></i> Orders Log</h2>
         <div class="log-stats">
-          <div class="stat-card"><span>Total Orders:</span> <strong>1,240</strong></div>
-          <div class="stat-card"><span>In Transit:</span> <strong class="blue">85</strong></div>
-          <div class="stat-card"><span>Completed:</span> <strong class="green">1,150</strong></div>
+          <div class="stat-card"><span>Total Orders:</span> 
+            <strong class="js-no-total-orders"></strong>
+          </div>
+          <div class="stat-card"><span>Total Packages:</span> 
+            <strong class="blue js-no-total-pkg"></strong>
+          </div>
+          <div class="stat-card"><span>Completed:</span> 
+            <strong class="green js-no-total-delivered"></strong>
+          </div>
         </div>
       </div>
 
-      <div class="log-controls">
-        <div class="search-box">
-          <i class="fas fa-search"></i>
-          <input type="text" placeholder="Search Hospital, ID, or Items...">
+      <div class="filter-dashboard">
+        <div class="filter-row">
+          <div class="filter-group flex-2">
+            <label>Search Order</label>
+            <div class="input-with-icon">
+              <i class="fas fa-search"></i>
+              <input type="text" id="masterSearch" 
+              placeholder="Search Order ID or Institution Name...">
+            </div>
+          </div>
+
+          <div class="filter-group flex-1">
+            <label>Delivery Status</label>
+            <select id="deliveryFilter">
+              <option value="all">All Statuses</option>
+              <option value="yes">Delivered (Yes)</option>
+              <option value="no">Not Delivered (No)</option>
+            </select>
+          </div>
         </div>
-        <select class="log-select">
-          <option>All Statuses</option>
-          <option>Pending</option>
-          <option>Dispatched</option>
-          <option>Delivered</option>
-        </select>
-        <button class="export-btn"><i class="fas fa-file-export"></i> Export CSV</button>
+
+        <div class="filter-row date-row">
+          <div class="filter-group">
+            <label>Filter by Date Type</label>
+            <div class="toggle-container">
+              <input type="radio" id="dateCreate" name="dateType" value="creationDate">
+              <label for="dateCreate">Creation Date</label>
+
+              <input type="radio" id="datePay" name="dateType" value="paymentDate">
+              <label for="datePay">Payment Date</label>
+            </div>
+          </div>
+
+          <div class="filter-group flex-1">
+            <label>From</label>
+            <input type="date" id="startDate">
+          </div>
+
+          <div class="filter-group flex-1">
+            <label>To</label>
+            <input type="date" id="endDate">
+          </div>
+
+          <div class="filter-actions">
+            <p class="results-label">Showing <span class="no-of-results">0</span> Results</p>
+            <button class="btn-apply js-btn-apply">Clear Filters</button>
+          </div>
+        </div>
       </div>
 
       <div class="table-wrapper">
@@ -61,6 +103,13 @@
         </table>
       </div>
 
+      <div class="no-match-container">
+        <div class="no-match-elements">
+          <i class="fa-solid fa-face-frown frowned-face"></i>
+          <p>No Match Found!!</p>
+        </div>
+      </div>
+
       <div class="overlay" id="packages-overlay">
         <div class="packages-details-container">
           <div class="details-header">
@@ -70,7 +119,7 @@
 
           <div class="details-body">
             <p class="destination-text">
-              <strong>Destination:</strong> 
+              <strong>Destination:</strong>
               <span class="js-destination"></span>
             </p>
 
@@ -94,6 +143,8 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/isBetween.min.js"></script>
   <script type="module" src="/wh_manager/orders/order_requests.js"></script>
 </body>
 
