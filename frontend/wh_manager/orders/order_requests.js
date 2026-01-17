@@ -4,6 +4,138 @@ import { xRemoveOverlay, clickToRemoveOverlay } from "./overlay.js";
 dayjs.extend(window.dayjs_plugin_isBetween);
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  //Render the page content
+  document.querySelector('.page-container')
+    .innerHTML = `
+      
+      <nav class="sidebar"></nav>
+
+      <div class="master-container">
+        <header class="logo-container"></header>
+
+        <div class="log-header">
+          <h2><i class="fas fa-archive"></i> Orders Log</h2>
+          <div class="log-stats">
+            <div class="stat-card"><span>Total Orders:</span> 
+              <strong class="js-no-total-orders"></strong>
+            </div>
+            <div class="stat-card"><span>Total Packages:</span> 
+              <strong class="blue js-no-total-pkg"></strong>
+            </div>
+            <div class="stat-card"><span>Completed:</span> 
+              <strong class="green js-no-total-delivered"></strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-dashboard">
+          <div class="filter-row">
+            <div class="filter-group flex-2">
+              <label>Search Order</label>
+              <div class="input-with-icon">
+                <i class="fas fa-search"></i>
+                <input type="text" id="masterSearch" 
+                placeholder="Search Order ID or Institution Name...">
+              </div>
+            </div>
+
+            <div class="filter-group flex-1">
+              <label>Delivery Status</label>
+              <select id="deliveryFilter">
+                <option value="all">All Statuses</option>
+                <option value="yes">Delivered (Yes)</option>
+                <option value="no">Not Delivered (No)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="filter-row date-row">
+            <div class="filter-group">
+              <label>Filter by Date Type</label>
+              <div class="toggle-container">
+                <input type="radio" id="dateCreate" name="dateType" value="creationDate">
+                <label for="dateCreate">Creation Date</label>
+
+                <input type="radio" id="datePay" name="dateType" value="paymentDate">
+                <label for="datePay">Payment Date</label>
+              </div>
+            </div>
+
+            <div class="filter-group flex-1">
+              <label>From</label>
+              <input type="date" id="startDate">
+            </div>
+
+            <div class="filter-group flex-1">
+              <label>To</label>
+              <input type="date" id="endDate">
+            </div>
+
+            <div class="filter-actions">
+              <p class="results-label">Showing <span class="no-of-results">0</span> Results</p>
+              <button class="btn-apply js-btn-apply">Clear Filters</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="master-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Destination</th>
+                <th>Packages</th>
+                <th>Creation Date</th>
+                <th>Payment Date</th>
+                <th>Delivered</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody class="js-orders-table"></tbody>
+          </table>
+        </div>
+
+        <div class="no-match-container">
+          <div class="no-match-elements">
+            <i class="fa-solid fa-face-frown frowned-face"></i>
+            <p>No Match Found!!</p>
+          </div>
+        </div>
+
+        <div class="overlay" id="packages-overlay">
+          <div class="packages-details-container">
+            <div class="details-header">
+              <h3><i class="fas fa-box-open"></i> Order Progress: <span class="order-id"></span></h3>
+              <button class="close-btn js-close-overlay-btn">&times;</button>
+            </div>
+
+            <div class="details-body">
+              <p class="destination-text">
+                <strong>Destination:</strong>
+                <span class="js-destination"></span>
+              </p>
+
+              <table class="package-status-table">
+                <thead>
+                  <tr>
+                    <th>Package ID</th>
+                    <th>No. of Items</th>
+                    <th>Processing</th>
+                    <th>Ready</th>
+                    <th>In Transit</th>
+                    <th>Completed</th>
+                  </tr>
+                </thead>
+                <tbody class="js-packages-table"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    `
+
   renderSidebar()
 
   const orders = [
