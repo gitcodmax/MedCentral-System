@@ -242,34 +242,6 @@
 }
 
 /* Status & Badges */
-.badge {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  text-align: center;
-  line-height: 20px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: bold;
-  color: white;
-  margin-right: 4px;
-}
-
-.A {
-  background: #f59e0b;
-}
-
-.R {
-  background: #3b82f6;
-}
-
-.F {
-  background: #6366f1;
-}
-
-.C {
-  background: #10b981;
-}
 
 .view-btn {
   background: white;
