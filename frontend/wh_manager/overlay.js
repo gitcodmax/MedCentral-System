@@ -5,7 +5,6 @@ export function xRemoveOverlay(overlay) {
     document.querySelectorAll('.js-close-overlay-btn, .js-btn-no')
       .forEach(btn => {
         btn.addEventListener('click', () => {
-          console.log('Button clicked');
           overlay.classList.remove('active');
         });
       });

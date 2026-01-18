@@ -127,3 +127,11 @@
     color: red;
     border: 1px solid var(--color-primary);
 }
+
+/* Overlay container styling */
+.confirm-sku{
+    color: var(--color-secondary);
+}
+.confirm-name{
+    color: var(--color-primary);
+}

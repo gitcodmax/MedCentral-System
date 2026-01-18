@@ -1,4 +1,5 @@
 import { renderSidebar } from "../sidebar.js";
+import { xRemoveOverlay, clickToRemoveOverlay } from "../overlay.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     renderSidebar()
@@ -105,13 +106,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const tempLetter = (item.temp).slice(0, 1)
 
             tblRow.innerHTML = `
-            <td class="sku-code"><strong>${item.sku}</strong></td>
-            <td>${item.name}</td>
-            <td>${item.uom} / ${item.sellingUnit}</td>
-            <td><span class="badge ${tempLetter}">${tempLetter}</span></td>
-            <td>${item.price}</td>
-            <td class="btn-td"><button class="delete-item-btn">DELETE</button></td>
-        `
+                <td class="sku-code"><strong>${item.sku}</strong></td>
+                <td>${item.name}</td>
+                <td>${item.uom} / ${item.sellingUnit}</td>
+                <td><span class="badge ${tempLetter}">${tempLetter}</span></td>
+                <td>${item.price}</td>
+                <td class="btn-td"><button 
+                class="delete-item-btn" 
+                data-sku="${item.sku}">
+                DELETE</button></td>
+            `
 
             itemsFragment.appendChild(tblRow)
         })
@@ -121,10 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     itemsTbody.appendChild(displayItems(catalogItems))
 
-
     // Search logic
     const searchTerm = document.getElementById('search-input')
-    searchTerm.addEventListener('keyup', () => {
+    searchTerm.addEventListener('keyup', handleSearch)
+    function handleSearch(){
         const searchValue = searchTerm.value.toLowerCase().trim()
         const searchResult = catalogItems.filter(item => {
             const searchMatch = item.sku.toLowerCase().includes(searchValue)
@@ -135,6 +139,28 @@ document.addEventListener('DOMContentLoaded', () => {
         itemsTbody.innerHTML = ``
         if(searchResult.length > 0) {
             itemsTbody.appendChild(displayItems(searchResult))
+        }
+    }
+
+    // Notification Message to delete item
+    const overlay = document.getElementById('delete-item-overlay')
+    itemsTbody.addEventListener('click', (e) => {
+        if(e.target.classList.contains('delete-item-btn')){
+            const deleteBtn = e.target
+            const btnSku = deleteBtn.dataset.sku
+
+            catalogItems.forEach(item => {
+                if(item.sku === btnSku){
+                    document.querySelector('.js-confirm-sku')
+                        .textContent = btnSku
+                    document.querySelector('.js-confirm-name')
+                        .textContent = item.name
+                    overlay.classList.add('active')
+
+                    clickToRemoveOverlay(overlay)
+                    xRemoveOverlay(overlay)
+                }
+            })
         }
     })
 })
