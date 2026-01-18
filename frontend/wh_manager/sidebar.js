@@ -39,7 +39,7 @@ export function renderSidebar() {
         </li>
         <li class="section-label">Stock</li>
         <li><i class="fas fa-boxes"></i>
-          <a href="#">View Inventory</a>
+          <a href="#">Item Registry</a>
         </li>
         <li><i class="fas fa-th"></i>
           <a href="#">Shelf Details</a>

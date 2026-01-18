@@ -2,6 +2,174 @@ import { renderSidebar } from "../sidebar.js";
 import { xRemoveOverlay, clickToRemoveOverlay } from "../overlay.js";
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    document.querySelector('.page-container')
+        .innerHTML = `
+            <nav class="sidebar"></nav>
+
+            <div class="registry-container">
+                <header class="logo-container"></header>
+
+                <section class="form-panel">
+                    <div class="header">
+                        <h2><i class="fas fa-plus-circle"></i> Register New Item</h2>
+                        <p>Classify stock based on Admin-defined standards.</p>
+                    </div>
+
+                    <form id="itemForm">
+                        <div class="input-grid">
+
+                            <div class="form-group margin-set">
+                                <label>Item Name</label>
+                                <input type="text" id="itemName" placeholder="e.g. Amoxicillin 500mg" required>
+                            </div>
+
+                            <div class="form-group margin-set">
+                                <label>SKU Code</label>
+                                <input type="text" id="sku" placeholder="REF-00123" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Category <small>(Admin Standard)</small></label>
+                                <select id="categorySelect" required>
+                                    <option value="">Select category...</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Storage Temp <small>(Admin Standard)</small></label>
+                                <select id="tempSelect" required>
+                                    <option value="">Select Storage Temp...</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>UOM <small>(Bulk Unit)</small></label>
+                                <select id="uomSelect" required>
+                                    <option value="">Select Unit of Measurement...</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Selling Unit <small>(Retail Unit)</small></label>
+                                <select id="sellingUnitSelect" required>
+                                    <option value="">Select Selling Unit...</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group margin-set">
+                                <label>Price per Selling Unit (Ksh)</label>
+                                <input type="number" id="pricePerUnit" placeholder="0.00" required>
+                            </div>
+
+                            <button type="submit" class="submit-btn">Add to Registry</button>   
+                        </div>
+                    </form>
+                </section>
+
+                <div class="overlay" id="confirmItemOverlay">
+                    <div class="confirmation-card">
+                        <div class="confirm-header">
+                            <h3><i class="fas fa-check-double"></i> Confirm Item Details</h3>
+                            <p>Please verify the information below before finalizing the registry entry.</p>
+                        </div>
+                
+                        <div class="confirm-body">
+                            <div class="confirm-section">
+                                <span class="label">Product Name</span>
+                                <div class="value large" id="conf-name">Amoxicillin 500mg Capsules</div>
+                            </div>
+                
+                            <div class="confirm-row">
+                                <div class="confirm-section">
+                                    <span class="label">SKU Code</span>
+                                    <div class="value" id="conf-sku">MED-AMX-001</div>
+                                </div>
+                                <div class="confirm-section">
+                                    <span class="label">Category</span>
+                                    <div class="value" id="conf-category">Antibiotics</div>
+                                </div>
+                            </div>
+                
+                            <div class="confirm-row">
+                                <div class="confirm-section">
+                                    <span class="label">Storage Temperature</span>
+                                    <div class="value" id="conf-temp">Ambient (15°C to 25°C)</div>
+                                </div>
+                                <div class="confirm-section">
+                                    <span class="label">Unit Price (Ksh)</span>
+                                    <div class="value highlight" id="conf-price">450.00</div>
+                                </div>
+                            </div>
+                
+                            <div class="confirm-unit-logic">
+                                <div class="unit-box">
+                                    <span class="label">Bulk UOM</span>
+                                    <div class="value" id="conf-uom">Carton</div>
+                                </div>
+                                <i class="fas fa-arrow-right"></i>
+                                <div class="unit-box">
+                                    <span class="label">Selling Unit</span>
+                                    <div class="value" id="conf-sell">Strip</div>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="confirm-footer">
+                            <button class="btn-edit js-btn-no">Back to Edit</button>
+                            <button class="btn-confirm">Confirm & Save</button>
+                        </div>
+                    </div>
+                </div>
+
+                <section class="catalog-panel">
+                    <div class="catalog-header">
+                        <div class="left-catalog-header">
+                            <h3><i class="fas fa-list"></i> Current Catalog</h3>
+                        </div>
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-input" placeholder="Search SKU/Name...">
+                        </div>
+                    </div>
+
+                    <div class="table-scroll">
+                        <table class="catalog-table">
+                            <thead>
+                                <tr>
+                                    <th>SKU</th>
+                                    <th>Name</th>
+                                    <th>UOM / Selling Unit</th>
+                                    <th>Temp</th>
+                                    <th>Price</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody class="js-items-tbody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <div class="overlay" id="delete-item-overlay">
+                    <div class="notification-container">
+                        <div class="modal-content">
+                        <h3>Confirm Deletion</h3>
+                        
+                        <p class="item-info">
+                            Delete <strong>SKU: <span class="confirm-sku js-confirm-sku"></span> </strong>
+                            Name: <span class="confirm-name js-confirm-name"></span>?
+                        </p>
+                    
+                        <div class="buttons">
+                            <button class="btn-no js-btn-no" id="cancelDelete">No, Cancel</button>
+                            <button class="btn-yes" id="confirmDelete">Yes, Delete</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `
+
     renderSidebar()
 
     const catalogItems = [
