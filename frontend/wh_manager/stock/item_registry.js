@@ -125,10 +125,103 @@ document.addEventListener('DOMContentLoaded', () => {
 
     itemsTbody.appendChild(displayItems(catalogItems))
 
+    const adminStandards = {
+        categories: [
+            "Antibiotics",
+            "Vaccines",
+            "Analgesics",
+            "Surgical Gear",
+            "IV Fluids",
+            "Diagnostics",
+            "Consumables",
+            "Diabetes Care"
+        ],
+
+        storageTemps: [
+            "Ambient (15°C to 25°C)",
+            "CRT (Controlled Room Temp)",
+            "Refrigerated (2°C to 8°C)",
+            "Frozen (-20°C)"
+        ],
+
+        uomOptions: [
+            "Pallet",
+            "Crate",
+            "Carton",
+            "Box",
+            "Pack",
+            "Bundle"
+        ],
+
+        sellingUnits: [
+            "Vial",
+            "Tablet",
+            "Strip",
+            "Pen",
+            "Bottle",
+            "Dose",
+            "Pair",
+            "Kit",
+            "Single Item"
+        ]
+    };
+
+    //Displays all the options in the select tags as defined by the admin
+    function populateDropdowns() {
+        const mappings = [
+            { data: adminStandards.categories, elementId: 'categorySelect' },
+            { data: adminStandards.storageTemps, elementId: 'tempSelect' },
+            { data: adminStandards.uomOptions, elementId: 'uomSelect' },
+            { data: adminStandards.sellingUnits, elementId: 'sellingUnitSelect' }
+        ];
+
+        mappings.forEach(mapping => {
+            const selectElement = document.getElementById(mapping.elementId);
+            if (selectElement) {
+                mapping.data.forEach(optionText => {
+                    const opt = document.createElement('option');
+                    opt.value = optionText;
+                    opt.textContent = optionText;
+                    selectElement.appendChild(opt);
+                });
+            }
+        });
+    }
+
+    populateDropdowns()
+
+    //Populating the overlay with data from the inputs for confirmation
+    const form = document.getElementById('itemForm')
+    const confirmItemOverlay = document.getElementById('confirmItemOverlay')
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const itemName = form.elements.itemName.value.trim()
+        const sku = form.elements.sku.value.trim()
+        const categorySelected = form.elements.categorySelect.value
+        const tempSelected = form.elements.tempSelect.value
+        const uomSelected = form.elements.uomSelect.value
+        const sellingUnitSelected = form.elements.sellingUnitSelect.value
+        const pricePerUnit = form.elements.pricePerUnit.value
+
+        document.getElementById('conf-name').textContent = itemName
+        document.getElementById('conf-sku').textContent = sku
+        document.getElementById('conf-category').textContent = categorySelected
+        document.getElementById('conf-temp').textContent = tempSelected
+        document.getElementById('conf-price').textContent = pricePerUnit
+        document.getElementById('conf-uom').textContent = uomSelected
+        document.getElementById('conf-sell').textContent = sellingUnitSelected
+
+        confirmItemOverlay.classList.add('active')
+
+        xRemoveOverlay(confirmItemOverlay)
+        clickToRemoveOverlay(confirmItemOverlay)
+    })
+
     // Search logic
     const searchTerm = document.getElementById('search-input')
     searchTerm.addEventListener('keyup', handleSearch)
-    function handleSearch(){
+    function handleSearch() {
         const searchValue = searchTerm.value.toLowerCase().trim()
         const searchResult = catalogItems.filter(item => {
             const searchMatch = item.sku.toLowerCase().includes(searchValue)
@@ -137,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
 
         itemsTbody.innerHTML = ``
-        if(searchResult.length > 0) {
+        if (searchResult.length > 0) {
             itemsTbody.appendChild(displayItems(searchResult))
         }
     }
@@ -145,12 +238,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Notification Message to delete item
     const overlay = document.getElementById('delete-item-overlay')
     itemsTbody.addEventListener('click', (e) => {
-        if(e.target.classList.contains('delete-item-btn')){
+        if (e.target.classList.contains('delete-item-btn')) {
             const deleteBtn = e.target
             const btnSku = deleteBtn.dataset.sku
 
             catalogItems.forEach(item => {
-                if(item.sku === btnSku){
+                if (item.sku === btnSku) {
                     document.querySelector('.js-confirm-sku')
                         .textContent = btnSku
                     document.querySelector('.js-confirm-name')

@@ -6,72 +6,87 @@
     margin: 0 auto;
 }
 
-.form-panel, .catalog-panel {
+.form-panel,
+.catalog-panel {
     background: white;
     padding: 25px;
     border-radius: 12px;
     border: 1px solid #e2e8f0;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
+.header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: var(--color-primary);
+}
 
+.header p {
+    font-size: 13px;
+    color: var(--color-quarantine);
+    margin: 5px 0 20px;
+}
 
-.header h2 { margin: 0; font-size: 20px; color: var(--color-primary); }
-.header p { font-size: 13px; color: var(--color-quarantine); margin: 5px 0 20px; }
-
-.input-grid{
+.input-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 10px;
 }
-.form-group-row{
+
+.form-group-row {
     display: flex;
 }
 
 
-.form-group label { 
-    display: block; 
-    font-size: 12px; 
-    font-weight: 700; 
-    margin-bottom: 5px; 
-    color: var(--color-quarantine); 
+.form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: var(--color-quarantine);
 }
-.margin-set{
+
+.margin-set {
     margin-right: 20px;
 }
-.form-group input, .form-group select { 
-    width: 100%; 
-    padding: 10px; 
-    border: 1px solid #e2e8f0; 
-    border-radius: 6px; 
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
     font-size: 14px;
 }
 
-.submit-btn { 
-    width: 100%; 
-    margin-top: 20px; 
-    padding: 12px; 
-    background: var(--color-primary); 
-    color: white; 
-    border: none; 
-    border-radius: 6px; 
-    font-weight: 600; 
-    cursor: pointer; 
+.submit-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
     grid-column: 2 / 4;
 }
-.submit-btn:hover{
+
+.submit-btn:hover {
     background-color: var(--color-secondary);
 }
 
 /* Table Styling */
-.catalog-header{
+.catalog-header {
     display: flex;
     justify-content: space-between;
 }
-.left-catalog-header{
+
+.left-catalog-header {
     color: var(--color-primary);
 }
-.search-box{
+
+.search-box {
     margin-top: 10px;
     border: 1px solid;
     padding: 5px 5px 0px 5px;
@@ -81,7 +96,8 @@
     border-radius: 5px;
     background-color: var(--color-background);
 }
-.search-box input{
+
+.search-box input {
     width: 90%;
     margin-bottom: -10px;
     height: 70%;
@@ -91,47 +107,177 @@
     background-color: var(--color-background);
 }
 
-.catalog-table { 
-    width: 100%; 
-    border-collapse: collapse; 
-    margin-top: 15px; 
+.catalog-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
 }
-.catalog-table th { 
-    text-align: left; 
-    padding: 12px; 
-    background: var(--color-primary); 
-    font-size: 12px; 
-    color: white; 
+
+.catalog-table th {
+    text-align: left;
+    padding: 12px;
+    background: var(--color-primary);
+    font-size: 12px;
+    color: white;
 }
-.catalog-table td { 
-    padding: 12px; 
-    border-bottom: 1px solid #f8fafc; 
-    font-size: 14px; 
+
+.catalog-table td {
+    padding: 12px;
+    border-bottom: 1px solid #f8fafc;
+    font-size: 14px;
 }
-.sku-code{
+
+.sku-code {
     color: var(--color-secondary);
 }
-.btn-td{
+
+.btn-td {
     width: 100px;
     height: 35px;
 }
-.delete-item-btn{
+
+.delete-item-btn {
     background-color: var(--color-primary);
     padding: 8px;
     border: none;
     color: white;
     border-radius: 5px;
 }
-.delete-item-btn:hover{
+
+.delete-item-btn:hover {
     background: transparent;
     color: red;
     border: 1px solid var(--color-primary);
 }
 
 /* Overlay container styling */
-.confirm-sku{
+.confirm-sku {
     color: var(--color-secondary);
 }
-.confirm-name{
+
+.confirm-name {
     color: var(--color-primary);
+}
+
+/* Item confirmation overlay */
+.confirmation-card {
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.confirm-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--color-primary);
+}
+
+.confirm-header h3 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-secondary);
+}
+
+.confirm-header p {
+    font-size: 13px;
+    color: var(--color-quarantine);
+    margin: 5px 0 0;
+}
+
+.confirm-body {
+    padding: 25px;
+}
+
+.confirm-section {
+    margin-bottom: 20px;
+}
+
+.confirm-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.confirm-body .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--color-quarantine);
+    letter-spacing: 0.5px;
+}
+
+.confirm-body .value {
+    font-size: 15px;
+    font-weight: 500;
+    color: #1e293b;
+    margin-top: 4px;
+}
+
+.confirm-body .value.large {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.confirm-body .value.highlight {
+    color: var(--color-secondary);
+    font-weight: 700;
+}
+
+.confirm-unit-logic {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--color-background);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.confirm-unit-logic i {
+    color: var(--color-secondary);
+}
+
+.unit-box {
+    text-align: center;
+    flex: 1;
+}
+
+.confirm-footer {
+    display: flex;
+    padding: 20px;
+    gap: 15px;
+}
+
+.btn-edit {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    background: white;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-confirm {
+    flex: 1;
+    padding: 12px;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-confirm:hover{
+    background-color: var(--color-secondary);
+}
+.btn-edit:hover{
+    background-color: red;
+    color: white;
 }
