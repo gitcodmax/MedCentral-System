@@ -96,12 +96,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
-    const itemsFragment = document.createDocumentFragment()
-    catalogItems.forEach(item => {
-        const tblRow = document.createElement('tr')
-        const tempLetter = (item.temp).slice(0, 1)
+    const itemsTbody = document.querySelector('.js-items-tbody')
 
-        tblRow.innerHTML = `
+    function displayItems(catalogItems) {
+        const itemsFragment = document.createDocumentFragment()
+        catalogItems.forEach(item => {
+            const tblRow = document.createElement('tr')
+            const tempLetter = (item.temp).slice(0, 1)
+
+            tblRow.innerHTML = `
             <td class="sku-code"><strong>${item.sku}</strong></td>
             <td>${item.name}</td>
             <td>${item.uom} / ${item.sellingUnit}</td>
@@ -110,9 +113,28 @@ document.addEventListener('DOMContentLoaded', () => {
             <td class="btn-td"><button class="delete-item-btn">DELETE</button></td>
         `
 
-        itemsFragment.appendChild(tblRow)
-    })
+            itemsFragment.appendChild(tblRow)
+        })
 
-    document.querySelector('.js-items-tbody')
-        .appendChild(itemsFragment)
+        return itemsFragment
+    }
+
+    itemsTbody.appendChild(displayItems(catalogItems))
+
+
+    // Search logic
+    const searchTerm = document.getElementById('search-input')
+    searchTerm.addEventListener('keyup', () => {
+        const searchValue = searchTerm.value.toLowerCase().trim()
+        const searchResult = catalogItems.filter(item => {
+            const searchMatch = item.sku.toLowerCase().includes(searchValue)
+                || item.name.toLowerCase().includes(searchValue)
+            return searchMatch
+        })
+
+        itemsTbody.innerHTML = ``
+        if(searchResult.length > 0) {
+            itemsTbody.appendChild(displayItems(searchResult))
+        }
+    })
 })
