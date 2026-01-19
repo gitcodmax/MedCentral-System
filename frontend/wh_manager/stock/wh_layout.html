@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shelf Management | Warehouse Admin</title>
 
+  <link rel="stylesheet" href="/wh_manager/sidebar.css">
   <link rel="stylesheet" href="/wh_manager/stock/wh_layout.css">
   <link rel="stylesheet" href="/global.css">
   <link rel="stylesheet" href="/wh_manager/wh_manager_global.css">
@@ -14,218 +15,232 @@
 
 <body>
 
-  <div class="shelf-mgmt-container">
-    <section class="shelf-form-card">
-      <div class="card-header">
-        <h2><i class="fas fa-ruler-combined"></i> <span class="container-title">Define Storage Capacity</span></h2>
-        <p>Set the physical limits and unit types for this location.</p>
-      </div>
+  <div class="page-container">
+    <nav class="sidebar"></nav>
 
-      <form id="shelfCreationForm">
-        <div class="form-group">
-          <label>Shelf/Rack ID</label>
-          <input type="text" id="shelfId" class="shelf-id-input" placeholder="e.g., AISLE-04-RACK-B" required>
+    <div class="shelf-mgmt-container">
+      <header class="logo-container"></header>
+
+      <section class="shelf-form-card">
+        <div class="card-header">
+          <h2><i class="fas grn-i fa-ruler-combined"></i> <span class="container-title">Define Storage Capacity</span></h2>
+          <p>Set the physical limits and unit types for this location.</p>
         </div>
 
-        <div class="form-row">
+        <form id="shelfCreationForm">
           <div class="form-group">
-            <label>Storage Zone</label>
-            <select id="shelfTempZone" required>
-              <option>Ambient</option>
-              <option>Refrigerated</option>
-              <option>Frozen</option>
-            </select>
+            <label>Shelf/Rack ID</label>
+            <input type="text" id="shelfId" class="shelf-id-input" placeholder="e.g., AISLE-04-RACK-B" required>
           </div>
-          <div class="form-group">
-            <label>Target Bulk UOM</label>
-            <select id="targetUOM" required>
-              <option value="">Select UOM...</option>
-              <option>Pallet</option>
-              <option>Crate</option>
-              <option>Carton</option>
-              <option>Box</option>
-            </select>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Storage Zone</label>
+              <select id="shelfTempZone" required>
+                <option>Ambient</option>
+                <option>Refrigerated</option>
+                <option>Frozen</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Target Bulk UOM</label>
+              <select id="targetUOM" required>
+                <option value="">Select UOM...</option>
+                <option>Pallet</option>
+                <option>Crate</option>
+                <option>Carton</option>
+                <option>Box</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Max Unit Capacity</label>
+              <input type="number" id="binCapacity" class="unit-wt-no" placeholder="e.g. 50 Cartons">
+            </div>
+            <div class="form-group">
+              <label>Weight Limit (kg)</label>
+              <input type="number" id="weightLimit" class="unit-wt-no" placeholder="Max load">
+            </div>
+          </div>
+
+          <button type="submit" class="create-btn">Register Shelf Location</button>
+        </form>
+      </section>
+
+      <section class="shelf-display-card">
+        <div class="display-header">
+          <h3><i class="fas grn-i fa-th-list"></i> 
+            <span class="container-title">Warehouse Inventory Map</span>
+          </h3>
+
+          <div class="filter-container">
+            <div class="filter-wrapper">
+
+              <div class="filter-inputs">
+                <div class="filter-group search-flex">
+                  <label><i class="fas fa-search"></i> Search Inventory</label>
+                  <div class="search-input-wrapper">
+                    <input type="text" id="inventorySearch" placeholder="Enter Shelf ID or Item Name...">
+                  </div>
+                </div>
+  
+                <div class="filter-group">
+                  <label><i class="fas fa-door-open"></i> Occupancy Status</label>
+                  <select id="filterOccupancy">
+                    <option value="all">All Shelves</option>
+                    <option value="empty">Unallocated (Empty)</option>
+                    <option value="occupied">Occupied</option>
+                  </select>
+                </div>
+  
+                <div class="filter-group">
+                  <label><i class="fas fa-thermometer-half"></i> Temp Zone</label>
+                  <select id="filterTemp">
+                    <option value="all">All Zones</option>
+                    <option value="Ambient">Ambient | A</option>
+                    <option value="CRT">CRT | C</option>
+                    <option value="Refrigerated">Refrigerated | R</option>
+                    <option value="Frozen">Frozen | F</option>
+                  </select>
+                </div>
+  
+                <div class="filter-group">
+                  <label><i class="fas fa-box-open"></i> Bulk UOM</label>
+                  <select id="filterUOM">
+                    <option value="all">All Units</option>
+                    <option value="Pallet">Pallet</option>
+                    <option value="Crate">Crate</option>
+                    <option value="Carton">Carton</option>
+                    <option value="Box">Box</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="filter-group filter-btn-container">
+                <button class="reset-btn" onclick="resetFilters()">
+                  <i class="fas fa-undo"></i> Reset
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>Max Unit Capacity</label>
-            <input type="number" id="binCapacity" class="unit-wt-no" placeholder="e.g. 50 Cartons">
-          </div>
-          <div class="form-group">
-            <label>Weight Limit (kg)</label>
-            <input type="number" id="weightLimit" class="unit-wt-no" placeholder="Max load">
-          </div>
+        <div class="table-wrapper">
+          <table class="shelf-master-table">
+            <thead>
+              <tr>
+                <th>Shelf ID</th>
+                <th>Item Name</th>
+                <th>Temp Zone</th>
+                <th>Bulk UOM</th>
+                <th>Remaining Space</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody id="shelfTableBody" class="shelf-tbody">
+              <tr>
+                <td><strong class="shelf-id-cell">AISLE-01-A</strong></td>
+                <td>Amoxicillin 500mg</td>
+                <td><span class="badge A">A</span></td>
+                <td>Carton</td>
+                <td>
+                  <div class="capacity-container">
+                    <div class="capacity-bar">
+                      <div class="fill" style="width: 70%;"></div>
+                    </div>
+                    <small>15 / 50 Left</small>
+                  </div>
+                </td>
+                <td><button class="delete-shelf">DELETE</button></td>
+              </tr>
+              <tr>
+                <td><strong class="shelf-id-cell">COLD-04-B</strong></td>
+                <td>BCG Vaccine</td>
+                <td><span class="badge R">R</span></td>
+                <td>Box</td>
+                <td>
+                  <div class="capacity-container">
+                    <div class="capacity-bar">
+                      <div class="fill" style="width: 20%;"></div>
+                    </div>
+                    <small>80 / 100 Left</small>
+                  </div>
+                </td>
+                <td class="btn-container"><button class="delete-shelf">DELETE</button></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <button type="submit" class="create-btn">Register Shelf Location</button>
-      </form>
-    </section>
 
-    <section class="shelf-display-card">
-      <div class="display-header">
-        <h3><i class="fas fa-th-list"></i> <span class="container-title">Warehouse Inventory Map</span></h3>
-        <div class="filter-container">
-          <div class="filter-wrapper">
-            <div class="filter-group search-flex">
-              <label><i class="fas fa-search"></i> Search Inventory</label>
-              <div class="search-input-wrapper">
-                <input type="text" id="inventorySearch" placeholder="Enter Shelf ID or Item Name...">
+        <div class="modal-overlay" id="assignmentModal">
+          <div class="assignment-card">
+            <div class="assignment-header">
+              <div class="shelf-context">
+                <span class="context-label">Assigning to Shelf:</span>
+                <span class="context-id" id="targetShelfId">AISLE-04-RACK-B</span>
+              </div>
+              <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+
+            <div class="assignment-body">
+              <div class="instruction-text">
+                <h3>Select Item to Allocate</h3>
+                <p>Choose an item from the registry. Ensure the Bulk UOM matches the shelf's designated type.</p>
+              </div>
+
+              <div class="item-search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="registrySearch" placeholder="Search by SKU or Name...">
+              </div>
+
+              <div class="table-container">
+                <table class="assignment-table">
+                  <thead>
+                    <tr>
+                      <th>Select</th>
+                      <th>SKU</th>
+                      <th>Item Name</th>
+                      <th>Bulk UOM</th>
+                      <th>No. of Items to Assign</th>
+                    </tr>
+                  </thead>
+                  <tbody id="registryItemsToAssign">
+                    <tr>
+                      <td><input type="radio" name="selectedItem" value="SKU101"></td>
+                      <td><strong>MED-AMX-001</strong></td>
+                      <td>Amoxicillin 500mg</td>
+                      <td>Carton</td>
+                      <td>
+                        <div class="qty-input-wrapper">
+                          <input type="number" class="qty-field" value="0" min="0" placeholder="0">
+                          <small class="helper-text">Enter quantity if stock exists</small>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
 
-            <div class="filter-group">
-              <label><i class="fas fa-door-open"></i> Occupancy Status</label>
-              <select id="filterOccupancy">
-                <option value="all">All Shelves</option>
-                <option value="empty">Unallocated (Empty)</option>
-                <option value="occupied">Occupied</option>
-              </select>
-            </div>
-
-            <div class="filter-group">
-              <label><i class="fas fa-thermometer-half"></i> Temp Zone</label>
-              <select id="filterTemp">
-                <option value="all">All Zones</option>
-                <option value="Ambient">Ambient | A</option>
-                <option value="CRT">CRT | C</option>
-                <option value="Refrigerated">Refrigerated | R</option>
-                <option value="Frozen">Frozen | F</option>
-              </select>
-            </div>
-
-            <div class="filter-group">
-              <label><i class="fas fa-box-open"></i> Bulk UOM</label>
-              <select id="filterUOM">
-                <option value="all">All Units</option>
-                <option value="Pallet">Pallet</option>
-                <option value="Crate">Crate</option>
-                <option value="Carton">Carton</option>
-                <option value="Box">Box</option>
-              </select>
-            </div>
-
-            <div class="filter-group flex-end">
-              <button class="reset-btn" onclick="resetFilters()">
-                <i class="fas fa-undo"></i> Reset
-              </button>
+            <div class="assignment-footer">
+              <div class="capacity-warning" id="capWarning">
+                <i class="fas fa-exclamation-triangle"></i> Remaining Shelf Space: <span id="spaceLimit">50</span> Units
+              </div>
+              <div class="action-buttons">
+                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="btn-save" onclick="processAssignment()">Confirm Assignment</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="table-wrapper">
-        <table class="shelf-master-table">
-          <thead>
-            <tr>
-              <th>Shelf ID</th>
-              <th>Item Name</th>
-              <th>Temp Zone</th>
-              <th>Bulk UOM</th>
-              <th>Remaining Space</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody id="shelfTableBody" class="shelf-tbody">
-            <tr>
-              <td><strong class="shelf-id-cell">AISLE-01-A</strong></td>
-              <td>Amoxicillin 500mg</td>
-              <td><span class="badge A">A</span></td>
-              <td>Carton</td>
-              <td>
-                <div class="capacity-container">
-                  <div class="capacity-bar">
-                    <div class="fill" style="width: 70%;"></div>
-                  </div>
-                  <small>15 / 50 Left</small>
-                </div>
-              </td>
-              <td><button class="delete-shelf">DELETE</button></td>
-            </tr>
-            <tr>
-              <td><strong class="shelf-id-cell">COLD-04-B</strong></td>
-              <td>BCG Vaccine</td>
-              <td><span class="badge R">R</span></td>
-              <td>Box</td>
-              <td>
-                <div class="capacity-container">
-                  <div class="capacity-bar">
-                    <div class="fill" style="width: 20%;"></div>
-                  </div>
-                  <small>80 / 100 Left</small>
-                </div>
-              </td>
-              <td class="btn-container"><button class="delete-shelf">DELETE</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-
-      <div class="modal-overlay" id="assignmentModal">
-        <div class="assignment-card">
-          <div class="assignment-header">
-            <div class="shelf-context">
-              <span class="context-label">Assigning to Shelf:</span>
-              <span class="context-id" id="targetShelfId">AISLE-04-RACK-B</span>
-            </div>
-            <button class="close-modal" onclick="closeModal()">&times;</button>
-          </div>
-
-          <div class="assignment-body">
-            <div class="instruction-text">
-              <h3>Select Item to Allocate</h3>
-              <p>Choose an item from the registry. Ensure the Bulk UOM matches the shelf's designated type.</p>
-            </div>
-
-            <div class="item-search-box">
-              <i class="fas fa-search"></i>
-              <input type="text" id="registrySearch" placeholder="Search by SKU or Name...">
-            </div>
-
-            <div class="table-container">
-              <table class="assignment-table">
-                <thead>
-                  <tr>
-                    <th>Select</th>
-                    <th>SKU</th>
-                    <th>Item Name</th>
-                    <th>Bulk UOM</th>
-                    <th>No. of Items to Assign</th>
-                  </tr>
-                </thead>
-                <tbody id="registryItemsToAssign">
-                  <tr>
-                    <td><input type="radio" name="selectedItem" value="SKU101"></td>
-                    <td><strong>MED-AMX-001</strong></td>
-                    <td>Amoxicillin 500mg</td>
-                    <td>Carton</td>
-                    <td>
-                      <div class="qty-input-wrapper">
-                        <input type="number" class="qty-field" value="0" min="0" placeholder="0">
-                        <small class="helper-text">Enter quantity if stock exists</small>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="assignment-footer">
-            <div class="capacity-warning" id="capWarning">
-              <i class="fas fa-exclamation-triangle"></i> Remaining Shelf Space: <span id="spaceLimit">50</span> Units
-            </div>
-            <div class="action-buttons">
-              <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-              <button class="btn-save" onclick="processAssignment()">Confirm Assignment</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
+    </div>
   </div>
+
+  <script type="module" src="/wh_manager/stock/wh_layout.js"></script>
 
 </body>
 
