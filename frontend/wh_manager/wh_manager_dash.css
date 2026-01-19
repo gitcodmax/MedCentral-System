@@ -1,9 +1,3 @@
-:root {
-    --warning: #f1c40f;
-    --low: #e67e22;
-    --critical: #e74c3c;
-}
-
 /* Main Content Area */
 .stats-grid {
     display: grid;
