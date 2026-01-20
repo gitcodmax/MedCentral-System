@@ -8,6 +8,7 @@
 
   <link rel="stylesheet" href="/wh_manager/sidebar.css">
   <link rel="stylesheet" href="/wh_manager/stock/wh_layout.css">
+  <link rel="stylesheet" href="/wh_manager/overlay.css">
   <link rel="stylesheet" href="/global.css">
   <link rel="stylesheet" href="/wh_manager/wh_manager_global.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -128,7 +129,7 @@
         </div>
 
         <div class="table-wrapper">
-          <table class="shelf-master-table">
+          <table class="shelf-master-table" id="shelfMasterTable">
             <thead>
               <tr>
                 <th>Shelf ID</th>
@@ -136,12 +137,12 @@
                 <th>Temp Zone</th>
                 <th>Bulk UOM</th>
                 <th>Remaining Space</th>
-                <th>Delete</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody id="shelfTableBody" class="shelf-tbody">
               <tr>
-                <td><strong class="shelf-id-cell">AISLE-01-A</strong></td>
+                <td><strong class="grn-cell">AISLE-01-A</strong></td>
                 <td>Amoxicillin 500mg</td>
                 <td><span class="badge A">A</span></td>
                 <td>Carton</td>
@@ -156,7 +157,7 @@
                 <td><button class="delete-shelf">DELETE</button></td>
               </tr>
               <tr>
-                <td><strong class="shelf-id-cell">COLD-04-B</strong></td>
+                <td><strong class="grn-cell">COLD-04-B</strong></td>
                 <td>BCG Vaccine</td>
                 <td><span class="badge R">R</span></td>
                 <td>Box</td>
@@ -175,14 +176,14 @@
         </div>
 
 
-        <div class="modal-overlay" id="assignmentModal">
+        <div class="overlay" id="assignmentModal">
           <div class="assignment-card">
             <div class="assignment-header">
               <div class="shelf-context">
                 <span class="context-label">Assigning to Shelf:</span>
                 <span class="context-id" id="targetShelfId">AISLE-04-RACK-B</span>
               </div>
-              <button class="close-modal" onclick="closeModal()">&times;</button>
+              <button class="close-overlay-btn js-close-overlay-btn">&times;</button>
             </div>
 
             <div class="assignment-body">
@@ -210,7 +211,7 @@
                   <tbody id="registryItemsToAssign">
                     <tr>
                       <td><input type="radio" name="selectedItem" value="SKU101"></td>
-                      <td><strong>MED-AMX-001</strong></td>
+                      <td><strong class="grn-cell">MED-AMX-001</strong></td>
                       <td>Amoxicillin 500mg</td>
                       <td>Carton</td>
                       <td>
@@ -230,8 +231,8 @@
                 <i class="fas fa-exclamation-triangle"></i> Remaining Shelf Space: <span id="spaceLimit">50</span> Units
               </div>
               <div class="action-buttons">
-                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-                <button class="btn-save" onclick="processAssignment()">Confirm Assignment</button>
+                <button class="btn-no js-btn-no">Cancel</button>
+                <button class="btn-yes">Confirm Assignment</button>
               </div>
             </div>
           </div>
