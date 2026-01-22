@@ -24,7 +24,8 @@
 
       <section class="shelf-form-card">
         <div class="card-header">
-          <h2><i class="fas grn-i fa-ruler-combined"></i> <span class="container-title">Define Storage Capacity</span></h2>
+          <h2><i class="fas grn-i fa-ruler-combined"></i> <span class="container-title">Define Storage Capacity</span>
+          </h2>
           <p>Set the physical limits and unit types for this location.</p>
         </div>
 
@@ -37,20 +38,14 @@
           <div class="form-row">
             <div class="form-group">
               <label>Storage Zone</label>
-              <select id="shelfTempZone" required>
-                <option>Ambient</option>
-                <option>Refrigerated</option>
-                <option>Frozen</option>
+              <select id="tempSelect" required>
+                <option value="">Select Storage Zone...</option>
               </select>
             </div>
             <div class="form-group">
               <label>Target Bulk UOM</label>
-              <select id="targetUOM" required>
+              <select id="uomSelect" required>
                 <option value="">Select UOM...</option>
-                <option>Pallet</option>
-                <option>Crate</option>
-                <option>Carton</option>
-                <option>Box</option>
               </select>
             </div>
           </div>
@@ -58,11 +53,11 @@
           <div class="form-row">
             <div class="form-group">
               <label>Max Unit Capacity</label>
-              <input type="number" id="binCapacity" class="unit-wt-no" placeholder="e.g. 50 Cartons">
+              <input type="number" id="binCapacity" class="unit-wt-no" placeholder="e.g. 50 Cartons" min="1" required>
             </div>
             <div class="form-group">
               <label>Weight Limit (kg)</label>
-              <input type="number" id="weightLimit" class="unit-wt-no" placeholder="Max load">
+              <input type="number" id="weightLimit" class="unit-wt-no" placeholder="Max load" min="0">
             </div>
           </div>
 
@@ -70,9 +65,53 @@
         </form>
       </section>
 
+      <div id="shelfConfirmOverlay" class="overlay">
+        <div class="confirmation-card">
+          <div class="confirm-header">
+            <h3><i class="fas fa-barcode grn-i"></i> Verify Shelf Configuration</h3>
+            <p>Please confirm the physical limits and storage standards for this unit.</p>
+          </div>
+
+          <div class="confirm-body">
+            <div class="confirm-section highlight-bg">
+              <span class="label">Storage Location ID</span>
+              <div class="value large" id="show-shelfId"></div>
+            </div>
+
+            <div class="confirm-row">
+              <div class="confirm-section">
+                <span class="label">Temperature Zone</span>
+                <div class="value" id="show-shelfZone">
+                </div>
+              </div>
+              <div class="confirm-section">
+                <span class="label">Target Bulk UOM</span>
+                <div class="value" id="show-shelfUom"></div>
+              </div>
+            </div>
+
+            <div class="confirm-row">
+              <div class="confirm-section">
+                <span class="label">Max Unit Capacity</span>
+                <div class="value" id="show-shelfCap"></div>
+              </div>
+              <div class="confirm-section">
+                <span class="label">Max Weight Limit</span>
+                <div class="value" id="show-shelfWeight"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="confirm-footer">
+            <button class="btn-no js-btn-no">Adjust Details</button>
+            <button class="btn-yes">Confirm & Initialize</button>
+          </div>
+        </div>
+      </div>
+
       <section class="shelf-display-card">
         <div class="display-header">
-          <h3><i class="fas grn-i fa-th-list"></i> 
+          <h3><i class="fas grn-i fa-th-list"></i>
             <span class="container-title">Warehouse Inventory Map</span>
           </h3>
 
@@ -86,7 +125,7 @@
                     <input type="text" id="inventorySearch" placeholder="Enter Shelf ID or Item Name...">
                   </div>
                 </div>
-  
+
                 <div class="filter-group">
                   <label><i class="fas fa-door-open"></i> Occupancy Status</label>
                   <select id="filterOccupancy">
@@ -95,7 +134,7 @@
                     <option value="occupied">Occupied</option>
                   </select>
                 </div>
-  
+
                 <div class="filter-group">
                   <label><i class="fas fa-thermometer-half"></i> Temp Zone</label>
                   <select id="filterTemp">
@@ -106,7 +145,7 @@
                     <option value="Frozen">Frozen | F</option>
                   </select>
                 </div>
-  
+
                 <div class="filter-group">
                   <label><i class="fas fa-box-open"></i> Bulk UOM</label>
                   <select id="filterUOM">
