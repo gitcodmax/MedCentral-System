@@ -129,7 +129,7 @@
                 <div class="filter-group">
                   <label><i class="fas fa-door-open"></i> Occupancy Status</label>
                   <select id="filterOccupancy">
-                    <option value="all">All Shelves</option>
+                    <option value="">All Shelves</option>
                     <option value="empty">Unallocated (Empty)</option>
                     <option value="occupied">Occupied</option>
                   </select>
@@ -138,18 +138,18 @@
                 <div class="filter-group">
                   <label><i class="fas fa-thermometer-half"></i> Temp Zone</label>
                   <select id="filterTemp">
-                    <option value="all">All Zones</option>
-                    <option value="Ambient">Ambient | A</option>
-                    <option value="CRT">CRT | C</option>
-                    <option value="Refrigerated">Refrigerated | R</option>
-                    <option value="Frozen">Frozen | F</option>
+                    <option value="">All Zones</option>
+                    <option value="A">Ambient | A</option>
+                    <option value="C">CRT | C</option>
+                    <option value="R">Refrigerated | R</option>
+                    <option value="F">Frozen | F</option>
                   </select>
                 </div>
 
                 <div class="filter-group">
                   <label><i class="fas fa-box-open"></i> Bulk UOM</label>
                   <select id="filterUOM">
-                    <option value="all">All Units</option>
+                    <option value="">All Units</option>
                     <option value="Pallet">Pallet</option>
                     <option value="Crate">Crate</option>
                     <option value="Carton">Carton</option>
@@ -159,7 +159,7 @@
               </div>
 
               <div class="filter-group filter-btn-container">
-                <button class="reset-btn" onclick="resetFilters()">
+                <button class="reset-btn js-reset-btn">
                   <i class="fas fa-undo"></i> Reset
                 </button>
               </div>

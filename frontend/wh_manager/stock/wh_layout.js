@@ -155,38 +155,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
-  const shelfTableFragment = document.createDocumentFragment()
-  warehouseInventoryMap.forEach(shelf => {
-    const tblRow = document.createElement('tr')
+  const shelfTableBodyElem = document.getElementById('shelfTableBody')
 
-    const itemName = shelf.itemName
-    const buttonHtml = itemName === 'UNALLOCATED'
-      ? `<button data-shelf-id="${shelf.shelfId}" class="assign-shelf">ASSIGN</button>`
-      : `<button data-shelf-id="${shelf.shelfId}" class="delete-shelf">DELETE</button>`;
-    const displayItemName = itemName === 'UNALLOCATED'
-      ? `<span class="unallocated-tag"><strong>UNALLOCATED</strong></span>`
-      : `${itemName}`
+  function displayShelves(shelves) {
+    const shelfTableFragment = document.createDocumentFragment()
+    shelves.forEach(shelf => {
+      const tblRow = document.createElement('tr')
 
-    tblRow.innerHTML = `              
-      <td><strong class="grn-cell">${shelf.shelfId}</strong></td>
-      <td>${displayItemName}</td>
-      <td><span class="badge ${shelf.tempZone}">${shelf.tempZone}</span></td>
-      <td>${shelf.bulkUOM}</td>
-      <td>
-        <div class="capacity-container">
-          <div class="capacity-bar">
-            <div class="fill" style="width: ${shelf.spaceLeftPercent}%;"></div>
+      const itemName = shelf.itemName
+      const buttonHtml = itemName === 'UNALLOCATED'
+        ? `<button data-shelf-id="${shelf.shelfId}" class="assign-shelf">ASSIGN</button>`
+        : `<button data-shelf-id="${shelf.shelfId}" class="delete-shelf">DELETE</button>`;
+      const displayItemName = itemName === 'UNALLOCATED'
+        ? `<span class="unallocated-tag"><strong>UNALLOCATED</strong></span>`
+        : `${itemName}`
+
+      tblRow.innerHTML = `              
+        <td><strong class="grn-cell">${shelf.shelfId}</strong></td>
+        <td>${displayItemName}</td>
+        <td><span class="badge ${shelf.tempZone}">${shelf.tempZone}</span></td>
+        <td>${shelf.bulkUOM}</td>
+        <td>
+          <div class="capacity-container">
+            <div class="capacity-bar">
+              <div class="fill" style="width: ${shelf.spaceLeftPercent}%;"></div>
+            </div>
+            <small>${shelf.remainingUnits} / ${shelf.totalCapacity} Left</small>
           </div>
-          <small>${shelf.remainingUnits} / ${shelf.totalCapacity} Left</small>
-        </div>
-      </td>
-      <td class="btn-container">${buttonHtml}</td>             
-    `
+        </td>
+        <td class="btn-container">${buttonHtml}</td>             
+      `
 
-    shelfTableFragment.appendChild(tblRow)
-  })
-  document.getElementById('shelfTableBody')
-    .appendChild(shelfTableFragment)
+      shelfTableFragment.appendChild(tblRow)
+    })
+
+    return shelfTableFragment
+  }
+  shelfTableBodyElem.appendChild(displayShelves(warehouseInventoryMap))
 
 
   // Set up the overlay
@@ -198,6 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const btnShelfId = btn.dataset.shelfId
       const shelfDetails = getShelf(btnShelfId)
 
+      //Set up the delete shelf button
       if (e.target.classList.contains('delete-shelf')) {
         document.querySelector('.js-shelf-id').textContent = btnShelfId
         document.querySelector('.js-item-name').textContent = shelfDetails.itemName
@@ -208,6 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clickToRemoveOverlay(deleteItemOverlay)
       }
 
+      //Set up the assign shelf button and display items in the items to assign table
       if (e.target.classList.contains('assign-shelf')) {
         const registryItemsTbody = document.getElementById('registryItemsToAssign')
         document.getElementById('targetShelfId').textContent = shelfDetails.shelfId
@@ -240,7 +247,48 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
 
+  //Returns the shelf details that matches the button shelf id
   function getShelf(btnShelfId) {
     return warehouseInventoryMap.find(shelf => shelf.shelfId === btnShelfId)
   }
+
+  //FIltering logic for the warehouse inventory map table
+  const invSearchElem = document.getElementById('inventorySearch')
+  const occupancyElem = document.getElementById('filterOccupancy')
+  const tempElem = document.getElementById('filterTemp')
+  const uomElem = document.getElementById('filterUOM')
+
+  function filterShelves() {
+    const result = warehouseInventoryMap.filter(shelf => {
+      const shelfIdMatch = shelf.shelfId.toLowerCase().includes(invSearchElem.value.toLowerCase().trim())
+      const itemNameMatch = shelf.itemName.toLowerCase().includes(invSearchElem.value.toLowerCase().trim())
+
+      const unallocatedMatch = occupancyElem.value === ''
+        || (shelf.itemName === 'UNALLOCATED' && occupancyElem.value === 'empty')
+      const allocatedMatch = occupancyElem.value === ''
+        || (shelf.itemName !== 'UNALLOCATED' && occupancyElem.value === 'occupied')
+
+      const tempMatch = tempElem.value === '' || shelf.tempZone === tempElem.value
+
+      const uomMatch = uomElem.value === '' || shelf.bulkUOM.toLowerCase() === uomElem.value.toLowerCase()
+
+      return (shelfIdMatch || itemNameMatch) && (unallocatedMatch || allocatedMatch)
+        && tempMatch && uomMatch
+    })
+
+    shelfTableBodyElem.innerHTML = ``
+    shelfTableBodyElem.appendChild(displayShelves(result))
+  }
+
+  invSearchElem.addEventListener('keyup', filterShelves)
+  occupancyElem.addEventListener('change', filterShelves)
+  tempElem.addEventListener('change', filterShelves)
+  uomElem.addEventListener('change', filterShelves)
+
+  document.querySelector('.js-reset-btn')
+    .addEventListener('click', () => {
+      invSearchElem.value = occupancyElem.value = tempElem.value = uomElem.value = ``
+      
+      shelfTableBodyElem.appendChild(displayShelves(warehouseInventoryMap))
+    })
 })
