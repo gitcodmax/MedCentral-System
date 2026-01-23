@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `
   
   //Function to render the sidebar
-  renderSidebar()
+  renderSidebar('wh_manager_dash')
 
   //Mock data for dash summary
   const summaryStats = {

@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `
 
-    renderSidebar()
+    renderSidebar('item_registry')
     displayNoMatch()
 
     const catalogItems = [

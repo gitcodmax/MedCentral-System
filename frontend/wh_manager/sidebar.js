@@ -1,5 +1,5 @@
 
-export function renderSidebar() {
+export function renderSidebar(pageName) {
 
   //Display the logo
   document.querySelector('.logo-container')
@@ -21,28 +21,50 @@ export function renderSidebar() {
       </div>
 
       <ul class="nav-links">
-        <li class="active"><i class="fas fa-home"></i>
-          <a href="/wh_manager/wh_manager_dash.html">Home</a>
+        <li class="wh_manager_dash">   
+          <a href="/wh_manager/wh_manager_dash.html">
+            <i class="fas fa-home"></i>
+            Home
+          </a>
         </li>
+
         <li class="section-label">Orders</li>
-        <li><i class="fas fa-search-dollar"></i>
-          <a href="#">Review Requests</a>
+        <li class="review_requests">         
+          <a href="/wh_manager/orders/review_requests.html">
+            <i class="fas fa-search-dollar"></i>
+            Review Requests
+          </a>
         </li>
-        <li><i class="fas fa-user-tag"></i>
-          <a href="#">Assign to Clerk</a>
+        <li class="assign_to_clerk">          
+          <a href="/wh_manager/orders/assign_to_clerk.html">
+            <i class="fas fa-user-tag"></i>
+            Assign to Clerk
+          </a>
         </li>
-        <li><i class="fas fa-truck-loading"></i>
-          <a href="#">Assign to Driver</a>
+        <li class="assign_to_driver">
+          <a href="/wh_manager/orders/assign_to_driver.html">
+            <i class="fas fa-truck-loading"></i>
+            Assign to Driver
+          </a>
         </li>
-        <li><i class="fas fa-list"></i>
-          <a href="#">All Orders</a>
+        <li class="orders_requests">
+          <a href="/wh_manager/orders/orders_requests.html">
+            <i class="fas fa-list"></i>
+            All Orders
+          </a>
         </li>
+
         <li class="section-label">Stock</li>
-        <li><i class="fas fa-boxes"></i>
-          <a href="#">Item Registry</a>
+        <li class="item_registry">
+          <a href="/wh_manager/stock/item_registry.html">
+            <i class="fas fa-boxes"></i>
+            Item Registry
+          </a>
         </li>
-        <li><i class="fas fa-th"></i>
-          <a href="#">Shelf Details</a>
+        <li class="wh_layout">
+          <a href="/wh_manager/stock/wh_layout.html">
+            <i class="fas fa-th"></i>
+            Shelf Details</a>
         </li>
       </ul>
 
@@ -54,6 +76,11 @@ export function renderSidebar() {
     `
 
   controlSidebar()
+
+  if(window.location.href.includes(pageName)){
+    document.querySelector(`.${pageName}`)
+      .classList.add('active')
+  }
 }
 
 //Controls the hamburger icon for the sidebar

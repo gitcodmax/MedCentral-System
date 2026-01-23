@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </main>
     `
 
-  renderSidebar()
+  renderSidebar('assign_to_driver')
 
   const orderDriverData = {
     "dispatchQueue": [
@@ -546,6 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.t-btn').forEach(b => b.classList.remove('active'));
 
       displayAllPackages(orderDriverData)
+      displayRightDrivers(orderDriverData)
     })
   // ##End of code that handles the filtering logic
 })

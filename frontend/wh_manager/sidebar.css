@@ -6,6 +6,15 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    white-space: nowrap;
+    max-height: 100vh;
+
+    position: sticky;
+    left: 0;
+    top: 0;
+    bottom: 0;
 }
 
 .user-profile {
@@ -15,12 +24,15 @@
     padding-bottom: 10px;
     border-bottom: 1px solid var(--color-white);
 }
-.user-info{
+
+.user-info {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
-.user-info p, h3{
+
+.user-info p,
+h3 {
     margin: 0;
     padding: 0;
 }
@@ -32,41 +44,52 @@
     border-radius: 50%;
 }
 
-a{
-    color: var(--color-white);
+
+a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     text-decoration: none;
-    padding: 10px;
+    color: white;
+    width: 100%;
+    border-radius: 8px;
 }
 
-.nav-links { list-style: none; padding: 0; margin-top: 30px; }
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin-top: 30px;
+}
+
 .nav-links li {
-    padding: 12px 15px;
+    padding: 10px 15px;
     cursor: pointer;
     transition: 0.3s;
     border-radius: 5px;
     margin-bottom: 5px;
 }
 
-.nav-links li:hover, .nav-links li.active { background-color: var(--color-secondary); }
-.nav-links li.section-label:hover{
+.nav-links li:hover,
+.nav-links li.active {
+    background-color: var(--color-secondary);
+}
+
+.nav-links li.section-label:hover {
     background-color: transparent;
 }
-.section-label { 
-    font-size: 0.8rem; 
-    color: var(--color-white); 
-    margin: 20px 0 10px 15px; 
-    text-transform: uppercase; 
+
+.section-label {
+    font-size: 0.8rem;
+    color: var(--color-white);
+    margin: 10px 0 10px 15px;
+    text-transform: uppercase;
     font-weight: bold;
     border-bottom: 1px solid;
     padding-bottom: 0;
 }
 
-/* Sidebar default width */
-.sidebar {
-    width: 260px;
-    transition: all 0.3s ease;
-    overflow: hidden;
-    white-space: nowrap;
+.section-label:hover {
+    cursor: default;
 }
 
 /* Sidebar collapsed width */
@@ -89,7 +112,7 @@ a{
 }
 
 .sidebar.collapsed .nav-links li i {
-    margin-right: 0;
+    margin-right: 5px;
     font-size: 1.2rem;
 }
 
@@ -103,13 +126,19 @@ a{
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    color: var(--sidebar-bg);
+    color: white;
 }
 
-.page-container { display: flex; min-height: 100vh; }
-
-.logo-container{
-  text-align: center;
+.page-container {
+    display: flex;
+    min-height: 100vh;
 }
 
-.main-content { flex: 1; padding: 30px; }
+.logo-container {
+    text-align: center;
+}
+
+.main-content {
+    flex: 1;
+    padding: 30px;
+}

@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </div> 
     `
 
-  renderSidebar()
+  renderSidebar('wh_layout')
   populateDropdowns()
   displayNoMatch()
 

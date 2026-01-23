@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const paidOrders = Object.values(paidOrdersObj['paidOrders'])
   const paidOrdersFragment = document.createDocumentFragment()
-  console.log(paidOrders.length)
 
   document.querySelector('.page-container')
     .innerHTML = `      
@@ -95,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </main>
   
     `
-  renderSidebar()
+  renderSidebar('assign_to_clerk')
 
   paidOrders.forEach((order) => {
 

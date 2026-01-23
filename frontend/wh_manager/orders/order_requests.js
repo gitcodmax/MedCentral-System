@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `
 
-  renderSidebar()
+  renderSidebar('orders_requests')
   displayNoMatch()
 
   const orders = [

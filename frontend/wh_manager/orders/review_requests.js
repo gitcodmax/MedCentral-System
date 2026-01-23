@@ -37,8 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
       <section class="request-container js-request-container"></section>
     
     `
+    console.log(window.location.href)
   
-  renderSidebar()
+  renderSidebar('review_requests')
 
   //Mock data for the requests made
   const pendingReview = [
