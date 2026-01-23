@@ -3,6 +3,250 @@ import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay
 import { populateDropdowns } from "../standards.js";
 
 document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('.page-container')
+    .innerHTML = `     
+    <nav class="sidebar"></nav>
+
+    <div class="shelf-mgmt-container">
+      <header class="logo-container"></header>
+
+      <section class="shelf-form-card">
+        <div class="card-header">
+          <h2><i class="fas grn-i fa-ruler-combined"></i> <span class="container-title">Define Storage Capacity</span>
+          </h2>
+          <p>Set the physical limits and unit types for this location.</p>
+        </div>
+
+        <form id="shelfCreationForm">
+          <div class="form-group">
+            <label>Shelf/Rack ID</label>
+            <input type="text" id="shelfId" class="shelf-id-input" placeholder="e.g., AISLE-04-RACK-B" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Storage Zone</label>
+              <select id="tempSelect" required>
+                <option value="">Select Storage Zone...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Target Bulk UOM</label>
+              <select id="uomSelect" required>
+                <option value="">Select UOM...</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Max Unit Capacity</label>
+              <input type="number" id="binCapacity" class="unit-wt-no" placeholder="e.g. 50 Cartons" min="1" required>
+            </div>
+            <div class="form-group">
+              <label>Weight Limit (kg)</label>
+              <input type="number" id="weightLimit" class="unit-wt-no" placeholder="Max load" min="0">
+            </div>
+          </div>
+
+          <button type="submit" class="create-btn">Register Shelf Location</button>
+        </form>
+      </section>
+
+      <div id="shelfConfirmOverlay" class="overlay">
+        <div class="confirmation-card">
+          <div class="confirm-header">
+            <h3><i class="fas fa-barcode grn-i"></i> Verify Shelf Configuration</h3>
+            <p>Please confirm the physical limits and storage standards for this unit.</p>
+          </div>
+
+          <div class="confirm-body">
+            <div class="confirm-section highlight-bg">
+              <span class="label">Storage Location ID</span>
+              <div class="value large" id="show-shelfId"></div>
+            </div>
+
+            <div class="confirm-row">
+              <div class="confirm-section">
+                <span class="label">Temperature Zone</span>
+                <div class="value" id="show-shelfZone">
+                </div>
+              </div>
+              <div class="confirm-section">
+                <span class="label">Target Bulk UOM</span>
+                <div class="value" id="show-shelfUom"></div>
+              </div>
+            </div>
+
+            <div class="confirm-row">
+              <div class="confirm-section">
+                <span class="label">Max Unit Capacity</span>
+                <div class="value" id="show-shelfCap"></div>
+              </div>
+              <div class="confirm-section">
+                <span class="label">Max Weight Limit</span>
+                <div class="value" id="show-shelfWeight"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="confirm-footer">
+            <button class="btn-no js-btn-no">Adjust Details</button>
+            <button class="btn-yes">Confirm & Initialize</button>
+          </div>
+        </div>
+      </div>
+
+      <section class="shelf-display-card">
+        <div class="display-header">
+          <h3><i class="fas grn-i fa-th-list"></i>
+            <span class="container-title">Warehouse Inventory Map</span>
+          </h3>
+
+          <div class="filter-container">
+            <div class="filter-wrapper">
+
+              <div class="filter-inputs">
+                <div class="filter-group search-flex">
+                  <label><i class="fas fa-search"></i> Search Inventory</label>
+                  <div class="search-input-wrapper">
+                    <input type="text" id="inventorySearch" placeholder="Enter Shelf ID or Item Name...">
+                  </div>
+                </div>
+
+                <div class="filter-group">
+                  <label><i class="fas fa-door-open"></i> Occupancy Status</label>
+                  <select id="filterOccupancy">
+                    <option value="">All Shelves</option>
+                    <option value="empty">Unallocated (Empty)</option>
+                    <option value="occupied">Occupied</option>
+                  </select>
+                </div>
+
+                <div class="filter-group">
+                  <label><i class="fas fa-thermometer-half"></i> Temp Zone</label>
+                  <select id="filterTemp">
+                    <option value="">All Zones</option>
+                    <option value="A">Ambient | A</option>
+                    <option value="C">CRT | C</option>
+                    <option value="R">Refrigerated | R</option>
+                    <option value="F">Frozen | F</option>
+                  </select>
+                </div>
+
+                <div class="filter-group">
+                  <label><i class="fas fa-box-open"></i> Bulk UOM</label>
+                  <select id="filterUOM">
+                    <option value="">All Units</option>
+                    <option value="Pallet">Pallet</option>
+                    <option value="Crate">Crate</option>
+                    <option value="Carton">Carton</option>
+                    <option value="Box">Box</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="filter-group filter-btn-container">
+                <button class="reset-btn js-reset-btn" disabled>
+                  <i class="fas fa-undo"></i> Reset
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="shelf-master-table" id="shelfMasterTable">
+            <thead>
+              <tr>
+                <th>Shelf ID</th>
+                <th>Item Name</th>
+                <th>Temp Zone</th>
+                <th>Bulk UOM</th>
+                <th>Remaining Space</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="shelfTableBody" class="shelf-tbody"></tbody>
+          </table>
+
+          <div class="no-match-container hidden js-no-match-container"></div>
+        </div>
+
+        <div class="overlay" id="deleteItemOverlay">
+          <div class="notification-container">
+            <div class="modal-content">
+              <h3>Confirm Deletion</h3>
+
+              <p class="item-info">
+                Delete <strong>Shelf: <span class="js-shelf-id"></span> </strong>
+                with Item: <span class="js-item-name"></span>?
+              </p>
+
+              <div class="buttons">
+                <button class="btn-no js-btn-no" id="cancelDelete">No, Cancel</button>
+                <button class="btn-yes" id="confirmDelete">Yes, Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="overlay" id="assignmentModal">
+          <div class="assignment-card">
+            <div class="assignment-header">
+              <div class="shelf-context">
+                <span class="context-label">Assigning to Shelf:</span>
+                <span class="context-id" id="targetShelfId">AISLE-04-RACK-B</span>
+              </div>
+              <button class="close-overlay-btn js-close-overlay-btn">&times;</button>
+            </div>
+
+            <div class="assignment-body">
+
+              <div class="instructions-search-container">
+                <div class="instruction-text">
+                  <h3>Select Item to Allocate</h3>
+                  <p>Choose an item from the registry.</p>
+                </div>
+
+                <div class="item-search-box">
+                  <i class="fas fa-search"></i>
+                  <input type="text" id="registrySearch" placeholder="Search by SKU or Name...">
+                </div>
+              </div>
+
+              <div class="table-container">
+                <table class="assignment-table">
+                  <thead>
+                    <tr>
+                      <th>Select</th>
+                      <th>SKU</th>
+                      <th>Item Name</th>
+                      <th>No. of Items to Assign</th>
+                    </tr>
+                  </thead>
+                  <tbody id="registryItemsToAssign"></tbody>
+                </table>
+              </div>
+
+              <div class="no-match-container hidden js-no-match-container" id="assignShelfNoMatchContainer"></div>
+            </div>
+
+            <div class="assignment-footer">
+              <div class="capacity-warning" id="capWarning">
+                <i class="fas fa-exclamation-triangle"></i> Remaining Shelf Space: <span id="spaceLimit">50</span> Units
+              </div>
+              <div class="action-buttons">
+                <button class="btn-no js-btn-no">Cancel</button>
+                <button class="btn-yes">Confirm Assignment</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div> 
+    `
+
   renderSidebar()
   populateDropdowns()
   displayNoMatch()
