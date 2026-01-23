@@ -19,3 +19,16 @@ export function clickToRemoveOverlay(overlay) {
     }
   })
 }
+
+//Renders the no match message to the page
+export function displayNoMatch(){
+  const noMatchElem = document.querySelectorAll('.js-no-match-container')
+  noMatchElem.forEach(elem => {
+    elem.innerHTML = `
+    <div class="no-match-elements">
+      <i class="fa-solid fa-face-frown frowned-face"></i>
+      <p>No Match Found!!</p>
+    </div>
+  `
+  })
+}

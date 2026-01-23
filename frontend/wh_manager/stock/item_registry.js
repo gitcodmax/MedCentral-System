@@ -1,5 +1,5 @@
 import { renderSidebar } from "../sidebar.js";
-import { xRemoveOverlay, clickToRemoveOverlay } from "../overlay.js";
+import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
 import { populateDropdowns } from "../standards.js";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -149,6 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             <tbody class="js-items-tbody"></tbody>
                         </table>
                     </div>
+
+                    <div class="no-match-container hidden js-no-match-container"></div>
                 </section>
 
                 <div class="overlay" id="delete-item-overlay">
@@ -172,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `
 
     renderSidebar()
+    displayNoMatch()
 
     const catalogItems = [
         {
@@ -325,6 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     // Search logic
+    const noMatchContainerElem = document.querySelector('.no-match-container')
     const searchTerm = document.getElementById('search-input')
     searchTerm.addEventListener('keyup', handleSearch)
     function handleSearch() {
@@ -338,6 +342,9 @@ document.addEventListener('DOMContentLoaded', () => {
         itemsTbody.innerHTML = ``
         if (searchResult.length > 0) {
             itemsTbody.appendChild(displayItems(searchResult))
+            noMatchContainerElem.classList.add('hidden')
+        } else {
+            noMatchContainerElem.classList.remove('hidden')
         }
     }
 

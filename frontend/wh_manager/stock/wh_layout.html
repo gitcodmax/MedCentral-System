@@ -159,7 +159,7 @@
               </div>
 
               <div class="filter-group filter-btn-container">
-                <button class="reset-btn js-reset-btn">
+                <button class="reset-btn js-reset-btn" disabled>
                   <i class="fas fa-undo"></i> Reset
                 </button>
               </div>
@@ -181,25 +181,27 @@
             </thead>
             <tbody id="shelfTableBody" class="shelf-tbody"></tbody>
           </table>
+
+          <div class="no-match-container hidden js-no-match-container"></div>
         </div>
 
         <div class="overlay" id="deleteItemOverlay">
           <div class="notification-container">
-              <div class="modal-content">
+            <div class="modal-content">
               <h3>Confirm Deletion</h3>
-              
+
               <p class="item-info">
-                  Delete <strong>Shelf: <span class="js-shelf-id"></span> </strong>
-                  with Item: <span class="js-item-name"></span>?
+                Delete <strong>Shelf: <span class="js-shelf-id"></span> </strong>
+                with Item: <span class="js-item-name"></span>?
               </p>
-          
+
               <div class="buttons">
-                  <button class="btn-no js-btn-no" id="cancelDelete">No, Cancel</button>
-                  <button class="btn-yes" id="confirmDelete">Yes, Delete</button>
+                <button class="btn-no js-btn-no" id="cancelDelete">No, Cancel</button>
+                <button class="btn-yes" id="confirmDelete">Yes, Delete</button>
               </div>
-              </div>
+            </div>
           </div>
-      </div>
+        </div>
 
         <div class="overlay" id="assignmentModal">
           <div class="assignment-card">
@@ -218,7 +220,7 @@
                   <h3>Select Item to Allocate</h3>
                   <p>Choose an item from the registry.</p>
                 </div>
-  
+
                 <div class="item-search-box">
                   <i class="fas fa-search"></i>
                   <input type="text" id="registrySearch" placeholder="Search by SKU or Name...">
@@ -238,6 +240,8 @@
                   <tbody id="registryItemsToAssign"></tbody>
                 </table>
               </div>
+
+              <div class="no-match-container hidden js-no-match-container" id="assignShelfNoMatchContainer"></div>
             </div>
 
             <div class="assignment-footer">

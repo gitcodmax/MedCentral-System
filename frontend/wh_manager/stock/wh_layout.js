@@ -1,10 +1,11 @@
 import { renderSidebar } from "../sidebar.js";
-import { xRemoveOverlay, clickToRemoveOverlay } from "../overlay.js";
+import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
 import { populateDropdowns } from "../standards.js";
 
 document.addEventListener('DOMContentLoaded', () => {
   renderSidebar()
   populateDropdowns()
+  displayNoMatch()
 
   const shelfDetailsOverlay = document.getElementById('shelfConfirmOverlay')
   const form = document.getElementById('shelfCreationForm')
@@ -157,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const shelfTableBodyElem = document.getElementById('shelfTableBody')
 
+  //Show the shelves that exist
   function displayShelves(shelves) {
     const shelfTableFragment = document.createDocumentFragment()
     shelves.forEach(shelf => {
@@ -193,7 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   shelfTableBodyElem.appendChild(displayShelves(warehouseInventoryMap))
 
-
   // Set up the overlay
   const assignShelfOverlay = document.getElementById('assignmentModal')
   const deleteItemOverlay = document.getElementById('deleteItemOverlay')
@@ -215,35 +216,30 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       //Set up the assign shelf button and display items in the items to assign table
+      const assignShelfNoMatchElem = document.getElementById('assignShelfNoMatchContainer')
       if (e.target.classList.contains('assign-shelf')) {
-        const registryItemsTbody = document.getElementById('registryItemsToAssign')
         document.getElementById('targetShelfId').textContent = shelfDetails.shelfId
-
-        registryItemsTbody.innerHTML = ``
-        const assignItemTableFragment = document.createDocumentFragment()
-        shelfDetails.eligibleItems.forEach(item => {
-          const tblRow = document.createElement('tr')
-
-          tblRow.innerHTML = `
-            <td><input type="radio" name="selectedItem" value="${item.sku}"></td>
-            <td><strong class="grn-cell">${item.sku}</strong></td>
-            <td>${item.name}</td>
-            <td>
-              <div class="qty-input-wrapper">
-                <input type="number" class="qty-field" value="0" min="0" placeholder="0">
-                <small class="helper-text">Enter quantity if stock exists</small>
-              </div>
-            </td>
-          `
-
-          assignItemTableFragment.appendChild(tblRow)
-        })
-        registryItemsTbody.appendChild(assignItemTableFragment)
+        displayRegistryItems(shelfDetails.eligibleItems)
 
         assignShelfOverlay.classList.add('active')
 
         xRemoveOverlay(assignShelfOverlay)
         clickToRemoveOverlay(assignShelfOverlay)
+
+        //Search for the item name or sku that matches
+        const registrySearchElem = document.getElementById('registrySearch')
+        registrySearchElem.addEventListener('keyup', () => {
+          const searchValue = registrySearchElem.value.toLowerCase().trim()
+          const searchResults = shelfDetails.eligibleItems.filter((shelf) => {
+            const searchMatch = shelf.name.toLowerCase().includes(searchValue)
+              || shelf.sku.toLowerCase().includes(searchValue)
+
+            return searchMatch
+          })
+          displayRegistryItems(searchResults)
+
+          displayNoMatchMessage(searchResults, assignShelfNoMatchElem)
+        })
       }
     })
 
@@ -252,13 +248,44 @@ document.addEventListener('DOMContentLoaded', () => {
     return warehouseInventoryMap.find(shelf => shelf.shelfId === btnShelfId)
   }
 
+  //Show the registry items for assignment to a specific shelf
+  function displayRegistryItems(eligibleItems) {
+    const registryItemsTbody = document.getElementById('registryItemsToAssign')
+    registryItemsTbody.innerHTML = ``
+
+    const assignItemTableFragment = document.createDocumentFragment()
+    eligibleItems.forEach(item => {
+      const tblRow = document.createElement('tr')
+
+      tblRow.innerHTML = `
+      <td><input type="radio" name="selectedItem" value="${item.sku}"></td>
+      <td><strong class="grn-cell">${item.sku}</strong></td>
+      <td>${item.name}</td>
+      <td>
+        <div class="qty-input-wrapper">
+          <input type="number" class="qty-field" value="0" min="0" placeholder="0">
+          <small class="helper-text">Enter quantity if stock exists</small>
+        </div>
+      </td>
+    `
+
+      assignItemTableFragment.appendChild(tblRow)
+    })
+    registryItemsTbody.appendChild(assignItemTableFragment)
+  }
+
   //FIltering logic for the warehouse inventory map table
   const invSearchElem = document.getElementById('inventorySearch')
   const occupancyElem = document.getElementById('filterOccupancy')
   const tempElem = document.getElementById('filterTemp')
   const uomElem = document.getElementById('filterUOM')
 
+  const noMatchContainerElem = document.querySelector('.no-match-container')
+
+  const resetBtn = document.querySelector('.js-reset-btn')
+
   function filterShelves() {
+    resetBtn.disabled = false
     const result = warehouseInventoryMap.filter(shelf => {
       const shelfIdMatch = shelf.shelfId.toLowerCase().includes(invSearchElem.value.toLowerCase().trim())
       const itemNameMatch = shelf.itemName.toLowerCase().includes(invSearchElem.value.toLowerCase().trim())
@@ -278,6 +305,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     shelfTableBodyElem.innerHTML = ``
     shelfTableBodyElem.appendChild(displayShelves(result))
+
+    displayNoMatchMessage(result, noMatchContainerElem)
+  }
+
+  //Displays the no match found message when there is no result after searchin
+  function displayNoMatchMessage(searchResult, noMatchContainerElem) {
+    if (searchResult.length === 0) {
+      noMatchContainerElem.classList.remove('hidden')
+    } else {
+      noMatchContainerElem.classList.add('hidden')
+    }
   }
 
   invSearchElem.addEventListener('keyup', filterShelves)
@@ -285,10 +323,13 @@ document.addEventListener('DOMContentLoaded', () => {
   tempElem.addEventListener('change', filterShelves)
   uomElem.addEventListener('change', filterShelves)
 
-  document.querySelector('.js-reset-btn')
-    .addEventListener('click', () => {
-      invSearchElem.value = occupancyElem.value = tempElem.value = uomElem.value = ``
-      
-      shelfTableBodyElem.appendChild(displayShelves(warehouseInventoryMap))
-    })
+  resetBtn.addEventListener('click', () => {
+    invSearchElem.value = occupancyElem.value = tempElem.value = uomElem.value = ``
+    noMatchContainerElem.classList.add('hidden')
+
+    shelfTableBodyElem.innerHTML = ``
+    shelfTableBodyElem.appendChild(displayShelves(warehouseInventoryMap))
+
+    resetBtn.disabled = true
+  })
 })

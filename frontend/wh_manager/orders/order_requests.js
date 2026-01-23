@@ -1,5 +1,5 @@
 import { renderSidebar } from "../sidebar.js";
-import { xRemoveOverlay, clickToRemoveOverlay } from "../overlay.js";
+import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
 
 dayjs.extend(window.dayjs_plugin_isBetween);
 
@@ -96,12 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </table>
         </div>
 
-        <div class="no-match-container">
-          <div class="no-match-elements">
-            <i class="fa-solid fa-face-frown frowned-face"></i>
-            <p>No Match Found!!</p>
-          </div>
-        </div>
+        <div class="no-match-container hidden js-no-match-container"></div>
 
         <div class="overlay" id="packages-overlay">
           <div class="packages-details-container">
@@ -137,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `
 
   renderSidebar()
+  displayNoMatch()
 
   const orders = [
     {
@@ -381,8 +377,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const noMatchContainerElem = document.querySelector('.no-match-container')
-  noMatchContainerElem.classList.add('hidden')
-
   const noOfResultsElem = document.querySelector('.no-of-results')
   function filterOrdersCore() {
     const searchResult = filterOrders(searchbarElem.value,
@@ -391,15 +385,16 @@ document.addEventListener('DOMContentLoaded', () => {
       endDateElem.value
     )
 
-    noMatchContainerElem.classList.add('hidden')
-
     noOfResultsElem.textContent = searchResult.length
 
     ordersTableBody.innerHTML = ``
     ordersTableBody.appendChild(displayOrders(searchResult))
 
-    if(searchResult.length === 0) 
+    if(searchResult.length === 0) {
       noMatchContainerElem.classList.remove('hidden')
+    }else{
+      noMatchContainerElem.classList.add('hidden')
+    }
   }
 
   datePayRadioElem.addEventListener('click', () => {

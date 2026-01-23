@@ -312,6 +312,11 @@ input {
   background: #e2e8f0;
   color: #1e293b;
 }
+.reset-btn:disabled{
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
 
 /* Assignment table(overlay) styling */
 .assignment-card {
