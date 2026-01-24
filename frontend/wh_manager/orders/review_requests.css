@@ -44,6 +44,23 @@ h2{
     border-bottom: 1px solid #eee;
 }
 
+.hospital-meta{
+    display: flex;
+    align-items: center;
+}
+.org-name-location{
+    display: flex;
+    flex-direction: column;
+}
+.org-location{
+    margin-top: 3px;
+    color: var(--color-primary);
+    font-size: 0.9rem;
+}
+.org-location i{
+    margin-right: 5px;
+}
+
 .hospital-name { font-weight: bold; font-size: 1.1rem; }
 .request-id { color: var(--color-secondary); margin-left: 10px; font-family: monospace; }
 .total-amt { color: var(--color-primary); font-weight: bold;}

@@ -37,53 +37,257 @@ document.addEventListener('DOMContentLoaded', () => {
       <section class="request-container js-request-container"></section>
     
     `
-    console.log(window.location.href)
-  
+  console.log(window.location.href)
+
   renderSidebar('review_requests')
 
   //Mock data for the requests made
+  // const pendingReview = [
+  //   {
+  //     "requestId": "REQ-4402",
+  //     "hospitalName": "Aga Khan University Hospital",
+  //     "createdAt": "Jan 04, 08:15 AM",
+  //     "totalAmount": 4250.00,
+  //     "items": [
+  //       {
+  //         "name": "Paracetamol 500mg",
+  //         "unitPrice": 10.00,
+  //         "quantity": 50,
+  //         "uom": "Boxes",
+  //         "subtotal": 500.00,
+  //         "warehouseStock": 450
+  //       },
+  //       {
+  //         "name": "Surgical Gloves (M)",
+  //         "unitPrice": 18.75,
+  //         "quantity": 200,
+  //         "uom": "Pairs",
+  //         "subtotal": 3750.00,
+  //         "warehouseStock": 180
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     "requestId": "REQ-4405",
+  //     "hospitalName": "City General Clinic",
+  //     "createdAt": "Jan 04, 09:30 AM",
+  //     "totalAmount": 120.00,
+  //     "items": [
+  //       {
+  //         "name": "Amoxicillin 250mg",
+  //         "unitPrice": 12.00,
+  //         "quantity": 10,
+  //         "uom": "Vials",
+  //         "subtotal": 120.00,
+  //         "warehouseStock": 15
+  //       }
+  //     ]
+  //   }
+  // ]
   const pendingReview = [
     {
-      "requestId": "REQ-4402",
-      "hospitalName": "Aga Khan University Hospital",
-      "createdAt": "Jan 04, 08:15 AM",
-      "totalAmount": 4250.00,
+      "requestId": "REQ-4410",
+      "hospitalName": "Karen Hospital",
+      "location": "Karen, Nairobi",
+      "createdAt": "Jan 05, 10:20 AM",
+      "totalAmount": 15200.00,
       "items": [
         {
-          "name": "Paracetamol 500mg",
-          "unitPrice": 10.00,
-          "quantity": 50,
-          "uom": "Boxes",
-          "subtotal": 500.00,
-          "warehouseStock": 450
+          "name": "Insulin Glargine",
+          "unitPrice": 1200.00,
+          "quantity": 10,
+          "uom": "Cartridges",
+          "subtotal": 12000.00,
+          "warehouseStock": 45
         },
         {
-          "name": "Surgical Gloves (M)",
-          "unitPrice": 18.75,
-          "quantity": 200,
-          "uom": "Pairs",
-          "subtotal": 3750.00,
-          "warehouseStock": 180
+          "name": "Syringes 2ml",
+          "unitPrice": 8.00,
+          "quantity": 400,
+          "uom": "Units",
+          "subtotal": 3200.00,
+          "warehouseStock": 1200
         }
       ]
     },
     {
-      "requestId": "REQ-4405",
-      "hospitalName": "City General Clinic",
-      "createdAt": "Jan 04, 09:30 AM",
-      "totalAmount": 120.00,
+      "requestId": "REQ-4411",
+      "hospitalName": "Mater Misericordiae Hospital",
+      "location": "South B, Nairobi",
+      "createdAt": "Jan 05, 11:45 AM",
+      "totalAmount": 2150.00,
       "items": [
         {
-          "name": "Amoxicillin 250mg",
-          "unitPrice": 12.00,
+          "name": "Ibuprofen 400mg",
+          "unitPrice": 5.00,
+          "quantity": 300,
+          "uom": "Tablets",
+          "subtotal": 1500.00,
+          "warehouseStock": 5000
+        },
+        {
+          "name": "Medical Tape",
+          "unitPrice": 65.00,
           "quantity": 10,
+          "uom": "Rolls",
+          "subtotal": 650.00,
+          "warehouseStock": 85
+        }
+      ]
+    },
+    {
+      "requestId": "REQ-4412",
+      "hospitalName": "MP Shah Hospital",
+      "location": "Parklands, Nairobi",
+      "createdAt": "Jan 05, 01:15 PM",
+      "totalAmount": 8900.00,
+      "items": [
+        {
+          "name": "Saline Solution 500ml",
+          "unitPrice": 89.00,
+          "quantity": 100,
+          "uom": "Bags",
+          "subtotal": 8900.00,
+          "warehouseStock": 250
+        }
+      ]
+    },
+    {
+      "requestId": "REQ-4413",
+      "hospitalName": "Nairobi West Hospital",
+      "location": "South C, Nairobi",
+      "createdAt": "Jan 05, 02:30 PM",
+      "totalAmount": 3450.50,
+      "items": [
+        {
+          "name": "Azithromycin 500mg",
+          "unitPrice": 45.00,
+          "quantity": 50,
+          "uom": "Packs",
+          "subtotal": 2250.00,
+          "warehouseStock": 120
+        },
+        {
+          "name": "Face Masks (3-Ply)",
+          "unitPrice": 12.00,
+          "quantity": 100,
+          "uom": "Pieces",
+          "subtotal": 1200.50,
+          "warehouseStock": 4000
+        }
+      ]
+    },
+    {
+      "requestId": "REQ-4414",
+      "hospitalName": "Kenyatta National Hospital",
+      "location": "Hospital Rd, Nairobi",
+      "createdAt": "Jan 05, 04:00 PM",
+      "totalAmount": 12500.00,
+      "items": [
+        {
+          "name": "Oxytocin Injection",
+          "unitPrice": 250.00,
+          "quantity": 50,
+          "uom": "Ampoules",
+          "subtotal": 12500.00,
+          "warehouseStock": 300
+        }
+      ]
+    },
+    {
+      "requestId": "REQ-4415",
+      "hospitalName": "Avenue Hospital",
+      "location": "Parklands, Nairobi",
+      "createdAt": "Jan 06, 08:00 AM",
+      "totalAmount": 560.00,
+      "items": [
+        {
+          "name": "Hand Sanitizer 500ml",
+          "unitPrice": 280.00,
+          "quantity": 2,
+          "uom": "Bottles",
+          "subtotal": 560.00,
+          "warehouseStock": 140
+        }
+      ]
+    },
+    {
+      "requestId": "REQ-4416",
+      "hospitalName": "Gertrude's Children's Hospital",
+      "location": "Muthaiga, Nairobi",
+      "createdAt": "Jan 06, 09:15 AM",
+      "totalAmount": 4100.00,
+      "items": [
+        {
+          "name": "Pediatric Paracetamol Syrup",
+          "unitPrice": 150.00,
+          "quantity": 20,
+          "uom": "Bottles",
+          "subtotal": 3000.00,
+          "warehouseStock": 60
+        },
+        {
+          "name": "Oral Rehydration Salts",
+          "unitPrice": 22.00,
+          "quantity": 50,
+          "uom": "Sachets",
+          "subtotal": 1100.00,
+          "warehouseStock": 900
+        }
+      ]
+    },
+    {
+      "requestId": "REQ-4417",
+      "hospitalName": "Coptic Hospital",
+      "location": "Ngong Road, Nairobi",
+      "createdAt": "Jan 06, 10:45 AM",
+      "totalAmount": 7200.00,
+      "items": [
+        {
+          "name": "Metformin 500mg",
+          "unitPrice": 12.00,
+          "quantity": 600,
+          "uom": "Tablets",
+          "subtotal": 7200.00,
+          "warehouseStock": 2500
+        }
+      ]
+    },
+    {
+      "requestId": "REQ-4418",
+      "hospitalName": "Nairobi Hospital",
+      "location": "Argwings Kodhek, Nairobi",
+      "createdAt": "Jan 06, 11:30 AM",
+      "totalAmount": 18500.00,
+      "items": [
+        {
+          "name": "Surgical Gowns",
+          "unitPrice": 370.00,
+          "quantity": 50,
+          "uom": "Units",
+          "subtotal": 18500.00,
+          "warehouseStock": 75
+        }
+      ]
+    },
+    {
+      "requestId": "REQ-4419",
+      "hospitalName": "Metropolitan Hospital",
+      "location": "Buruburu, Nairobi",
+      "createdAt": "Jan 06, 02:20 PM",
+      "totalAmount": 2400.00,
+      "items": [
+        {
+          "name": "Ceftriaxone 1g",
+          "unitPrice": 120.00,
+          "quantity": 20,
           "uom": "Vials",
-          "subtotal": 120.00,
-          "warehouseStock": 15
+          "subtotal": 2400.00,
+          "warehouseStock": 10
         }
       ]
     }
-  ]
+  ];
 
   document.querySelector('.requests')
     .innerText = pendingReview.length
@@ -96,7 +300,10 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="request-card" data-request-id=${request.requestId}>
         <div class="request-header">
           <div class="hospital-meta">
-            <span class="hospital-name">${request.hospitalName}</span>
+            <div class="org-name-location">
+              <span class="hospital-name">${request.hospitalName}</span>
+              <span class="org-location"><i class="fas fa-map-marker-alt"></i>${request.location}</span>
+            </div>
             <span class="request-id">${request.requestId}</span>
           </div>
 
@@ -131,8 +338,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <input type="text" placeholder="Reason for denial..." id="note-4402">
           </div>
           <div class="action-buttons">
-            <button class="btn-deny" onclick="handleAction('deny', '4402')">Deny</button>
-            <button class="btn-approve" onclick="handleAction('approve', '4402')">Approve & Send Invoice</button>
+            <button class="btn-deny">Deny</button>
+            <button class="btn-approve">Approve & Send Invoice</button>
           </div>
         </div>
       </div>
@@ -151,7 +358,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <td>${item.name}</td>
               <td>$${item.unitPrice}</td>
               <td>${item.quantity} ${item.uom}</td>
-              <td><span class="text-success">${item.warehouseStock} ${item.uom}</span></td>
+              <td>
+                <span class="${item.warehouseStock >= item.quantity ? 'text-success' : 'text-danger'}">
+                  ${item.warehouseStock} ${item.uom}
+                </span>
+              </td>
               <td><strong>$${item.subtotal}</strong></td>
             </tr>
           `

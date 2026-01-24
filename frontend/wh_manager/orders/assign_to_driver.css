@@ -175,10 +175,6 @@ h2 {
   color: #34495e;
 }
 
-.detail-item i {
-  color: var(--accent-green);
-}
-
 .assignment-footer {
   margin-top: 15px;
 }
@@ -202,7 +198,7 @@ h2 {
 }
 
 .driver-select {
-  flex: 1;
+  min-width: 0;
   padding: 10px;
   border-radius: 6px;
   border: 1px solid #ddd;
