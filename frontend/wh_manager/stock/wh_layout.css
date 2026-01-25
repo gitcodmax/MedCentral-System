@@ -226,7 +226,7 @@ input {
 }
 
 /* Filtering styles */
-.filter-container {
+.shelf-display-card .filter-container {
   background: white;
   padding: 20px;
   border-radius: 12px;

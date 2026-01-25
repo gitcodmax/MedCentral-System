@@ -30,60 +30,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <div class="filter-stats">
           <span id="showingCount">Showing All Requests</span>
-          <button class="btn-reset js-btn-reset" onclick="resetFilters()">Reset</button>
+          <button class="btn-reset js-btn-reset">Reset</button>
         </div>
       </section>
 
       <section class="request-container js-request-container"></section>
     
     `
-  console.log(window.location.href)
 
   renderSidebar('review_requests')
 
   //Mock data for the requests made
-  // const pendingReview = [
-  //   {
-  //     "requestId": "REQ-4402",
-  //     "hospitalName": "Aga Khan University Hospital",
-  //     "createdAt": "Jan 04, 08:15 AM",
-  //     "totalAmount": 4250.00,
-  //     "items": [
-  //       {
-  //         "name": "Paracetamol 500mg",
-  //         "unitPrice": 10.00,
-  //         "quantity": 50,
-  //         "uom": "Boxes",
-  //         "subtotal": 500.00,
-  //         "warehouseStock": 450
-  //       },
-  //       {
-  //         "name": "Surgical Gloves (M)",
-  //         "unitPrice": 18.75,
-  //         "quantity": 200,
-  //         "uom": "Pairs",
-  //         "subtotal": 3750.00,
-  //         "warehouseStock": 180
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     "requestId": "REQ-4405",
-  //     "hospitalName": "City General Clinic",
-  //     "createdAt": "Jan 04, 09:30 AM",
-  //     "totalAmount": 120.00,
-  //     "items": [
-  //       {
-  //         "name": "Amoxicillin 250mg",
-  //         "unitPrice": 12.00,
-  //         "quantity": 10,
-  //         "uom": "Vials",
-  //         "subtotal": 120.00,
-  //         "warehouseStock": 15
-  //       }
-  //     ]
-  //   }
-  // ]
   const pendingReview = [
     {
       "requestId": "REQ-4410",

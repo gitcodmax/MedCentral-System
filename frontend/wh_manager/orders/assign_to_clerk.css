@@ -60,6 +60,15 @@ tbody .assignment-row {
     border-bottom: 1.5px solid var(--color-secondary);
     border-radius: 10px;
 }
+.order-id{
+    color: var(--color-primary);
+}
+.pkg-id{
+    color: var(--color-secondary);
+}
+.package-id{
+    color: var(--color-secondary);
+}
 
 .assignment-row td {
     background: white;
@@ -67,7 +76,7 @@ tbody .assignment-row {
 }
 
 .hospital-info strong { display: block; color: var(--sidebar-bg); }
-.hospital-info span { font-size: 0.8rem; color: var(--text-muted); }
+.hospital-info span { font-size: 0.8rem; }
 
 .workload-info i { color: #e67e22; margin-right: 5px; }
 .workload-info small { display: block; color: #95a5a6; }
