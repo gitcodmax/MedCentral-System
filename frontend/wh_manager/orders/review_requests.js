@@ -1,4 +1,5 @@
 import { renderSidebar } from "../sidebar.js";
+import { displayNoMatch, xRemoveOverlay, clickToRemoveOverlay } from "../overlay.js";
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -34,17 +35,76 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </section>
 
+      <div class="no-match-container hidden js-no-match-container"></div>
+
+      <div class="overlay" id="denyRequestOverlay">
+        <div class="confirmation-card deny-card">
+          <div class="deny-header">
+              <div class="icon-circle">
+                  <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <h3>Confirm Denial</h3>
+          </div>
+
+          <div class="deny-body">
+              <p class="main-prompt">
+                  Deny request: <span class="highlight-text js-req-id"></span> for 
+                  <strong class="js-org-name">Karen Hospital</strong> due to<span class="reason-tag js-reason-tag"></span>?
+              </p>
+          </div>
+
+          <div class="deny-footer">
+              <button class="btn-cancel js-btn-no">No, Keep Pending</button>
+              <button class="btn-confirm-deny">Yes, Deny Request</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="overlay" id="approveRequestOverlay">
+        <div class="confirmation-card approve-card">
+          <div class="approve-header">
+              <div class="icon-circle-success">
+                  <i class="fas fa-check-circle"></i>
+              </div>
+              <h3>Approve Request</h3>
+          </div>
+
+          <div class="approve-body">
+              <p class="main-prompt">
+                  Approve request: <span class="highlight-id js-app-req-id">REQ-4410</span> for 
+                  <strong class="js-app-org-name">Karen Hospital</strong>?
+              </p>
+              
+              <div class="details-summary">
+                <div class="summary-item">
+                  <span class="s-label">No. of items:</span>
+                  <span class="s-value js-no-items">3</span>
+                </div>
+                <div class="summary-item">
+                  <span class="s-label">Total Amount:</span>
+                  <span class="s-value total-amt js-total-amt">$1000</span>
+                </div>
+              </div>
+          </div>
+
+          <div class="approve-footer">
+              <button class="btn-cancel js-btn-no">Back to Review</button>
+              <button class="btn-confirm-approve">Confirm & Proceed</button>
+          </div>
+        </div>
+      </div>
+
       <section class="request-container js-request-container"></section>
     
     `
 
   renderSidebar('review_requests')
-
+  displayNoMatch()
   //Mock data for the requests made
   const pendingReview = [
     {
       "requestId": "REQ-4410",
-      "hospitalName": "Karen Hospital",
+      "orgName": "Karen Hospital",
       "location": "Karen, Nairobi",
       "createdAt": "Jan 05, 10:20 AM",
       "totalAmount": 15200.00,
@@ -69,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       "requestId": "REQ-4411",
-      "hospitalName": "Mater Misericordiae Hospital",
+      "orgName": "Mater Misericordiae Hospital",
       "location": "South B, Nairobi",
       "createdAt": "Jan 05, 11:45 AM",
       "totalAmount": 2150.00,
@@ -94,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       "requestId": "REQ-4412",
-      "hospitalName": "MP Shah Hospital",
+      "orgName": "MP Shah Hospital",
       "location": "Parklands, Nairobi",
       "createdAt": "Jan 05, 01:15 PM",
       "totalAmount": 8900.00,
@@ -111,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       "requestId": "REQ-4413",
-      "hospitalName": "Nairobi West Hospital",
+      "orgName": "Nairobi West Hospital",
       "location": "South C, Nairobi",
       "createdAt": "Jan 05, 02:30 PM",
       "totalAmount": 3450.50,
@@ -136,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       "requestId": "REQ-4414",
-      "hospitalName": "Kenyatta National Hospital",
+      "orgName": "Kenyatta National Hospital",
       "location": "Hospital Rd, Nairobi",
       "createdAt": "Jan 05, 04:00 PM",
       "totalAmount": 12500.00,
@@ -153,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       "requestId": "REQ-4415",
-      "hospitalName": "Avenue Hospital",
+      "orgName": "Avenue Hospital",
       "location": "Parklands, Nairobi",
       "createdAt": "Jan 06, 08:00 AM",
       "totalAmount": 560.00,
@@ -170,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       "requestId": "REQ-4416",
-      "hospitalName": "Gertrude's Children's Hospital",
+      "orgName": "Gertrude's Children's Hospital",
       "location": "Muthaiga, Nairobi",
       "createdAt": "Jan 06, 09:15 AM",
       "totalAmount": 4100.00,
@@ -195,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       "requestId": "REQ-4417",
-      "hospitalName": "Coptic Hospital",
+      "orgName": "Coptic Hospital",
       "location": "Ngong Road, Nairobi",
       "createdAt": "Jan 06, 10:45 AM",
       "totalAmount": 7200.00,
@@ -212,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       "requestId": "REQ-4418",
-      "hospitalName": "Nairobi Hospital",
+      "orgName": "Nairobi Hospital",
       "location": "Argwings Kodhek, Nairobi",
       "createdAt": "Jan 06, 11:30 AM",
       "totalAmount": 18500.00,
@@ -229,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       "requestId": "REQ-4419",
-      "hospitalName": "Metropolitan Hospital",
+      "orgName": "Metropolitan Hospital",
       "location": "Buruburu, Nairobi",
       "createdAt": "Jan 06, 02:20 PM",
       "totalAmount": 2400.00,
@@ -249,16 +309,67 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.requests')
     .innerText = pendingReview.length
 
+  //Get the organization name, items and total amount in a request
+  function getReqDetails(requestId){
+    const req = pendingReview.find(req => req.requestId === requestId)
+    return({'orgName': req.orgName, 'items': req.items, 'totalAmount': req.totalAmount})
+  }
+
+  //Set up opening the overlay when deny and approve buttons are clicked
+  const requestsContainerElem = document.querySelector('.js-request-container')
+  const denyRequestOverlayElem = document.getElementById('denyRequestOverlay')
+  const approveRequestOverlayElem = document.getElementById('approveRequestOverlay')
+
+  requestsContainerElem.addEventListener('click', (e) => {
+    const btn = e.target.closest('button')
+    if (!btn) return
+
+    const btnReqId = btn.dataset.reqId
+    const {orgName, items, totalAmount} = getReqDetails(btnReqId)
+
+    if (btn.classList.contains('js-btn-deny')) {
+      const denyRequestInputElem = document.getElementById(`denyReason-${btnReqId}`)
+
+      if (denyRequestInputElem.value === '') {
+        alert('Enter a reason to deny the request')
+      } else {
+        denyRequestOverlayElem.classList.add('active')
+        document.querySelector('.js-req-id')
+          .textContent = btnReqId
+        document.querySelector('.js-reason-tag')
+          .textContent = denyRequestInputElem.value
+        document.querySelector('.js-org-name')
+          .textContent = orgName
+
+        xRemoveOverlay(denyRequestOverlayElem)
+        clickToRemoveOverlay(denyRequestOverlayElem)
+      }
+    }
+
+    if(btn.classList.contains('js-btn-approve')){
+      approveRequestOverlayElem.classList.add('active')
+      document.querySelector('.js-app-req-id')
+        .textContent = btnReqId
+      document.querySelector('.js-app-org-name')
+        .textContent = orgName
+      document.querySelector('.js-no-items')
+        .textContent = items.length
+      document.querySelector('.js-total-amt')
+        .textContent = `KSH. ${totalAmount}`
+
+      xRemoveOverlay(approveRequestOverlayElem)
+      clickToRemoveOverlay(approveRequestOverlayElem)
+    }
+  })
+
   //Display the pending reviews
   pendingReview.forEach((request) => {
-
-    document.querySelector('.js-request-container')
-      .innerHTML += `
+    requestsContainerElem.innerHTML += `
       <div class="request-card" data-request-id=${request.requestId}>
         <div class="request-header">
           <div class="hospital-meta">
             <div class="org-name-location">
-              <span class="hospital-name">${request.hospitalName}</span>
+              <span class="hospital-name">${request.orgName}</span>
               <span class="org-location"><i class="fas fa-map-marker-alt"></i>${request.location}</span>
             </div>
             <span class="request-id">${request.requestId}</span>
@@ -271,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           <div class="order-total-badge">
             <small>Total Amount:</small>
-            <span class="total-amt">$${request.totalAmount}</span>
+            <span class="total-amt">KSH. ${request.totalAmount}</span>
           </div>
         </div>
 
@@ -292,11 +403,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <div class="request-footer">
           <div class="denial-reason">
-            <input type="text" placeholder="Reason for denial..." id="note-4402">
+            <input type="text" placeholder="Reason for denial..." id="denyReason-${request.requestId}">
           </div>
           <div class="action-buttons">
-            <button class="btn-deny">Deny</button>
-            <button class="btn-approve">Approve & Send Invoice</button>
+            <button class="btn-deny js-btn-deny" data-req-id=${request.requestId}>Deny</button>
+            <button class="btn-approve js-btn-approve" data-req-id=${request.requestId}>Approve & Send Invoice</button>
           </div>
         </div>
       </div>
@@ -320,7 +431,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   ${item.warehouseStock} ${item.uom}
                 </span>
               </td>
-              <td><strong>$${item.subtotal}</strong></td>
+              <td><strong>KSH. ${item.subtotal}</strong></td>
             </tr>
           `
     })
@@ -331,6 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('hospitalSearch').value.toLowerCase();
     const dateSelection = document.getElementById('dateFilter').value;
     const cards = document.getElementsByClassName('request-card');
+    const noMatchElem = document.querySelector('.js-no-match-container')
 
     const now = dayjs();
     const today = now.format('YYYY-MM-DD')
@@ -339,12 +451,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let visibleCount = 0;
 
     Array.from(cards).forEach(card => {
-      const hospitalName = card.querySelector('.hospital-name').innerText.toLowerCase();
+      const orgName = card.querySelector('.hospital-name').innerText.toLowerCase();
       const cardDate = dayjs(card.querySelector('.js-creation-date').innerText)
         .year(dayjs().year()).format('YYYY-MM-DD');
 
       //Check for hospital match
-      const matchesHospital = hospitalName.includes(input);
+      const matchesHospital = orgName.includes(input);
 
       //Check for date match
       let matchesDate = true;
@@ -355,10 +467,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (matchesHospital && matchesDate) {
+        noMatchElem.classList.add('hidden')
         card.style.display = "block";
         visibleCount++;
       } else {
         card.style.display = "none";
+        noMatchElem.classList.remove('hidden')
       }
     })
 

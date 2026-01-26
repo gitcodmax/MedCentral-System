@@ -131,3 +131,150 @@ h2{
 }
 
 .btn-deny:hover { background: var(--color-red-critical); color: white; }
+
+/* Overlay Styling */
+/* Denial Overlay Specific Styles */
+.deny-card {
+    max-width: 420px;
+    border-top: 5px solid var(--color-red-critical);
+    text-align: center;
+    padding: 30px;
+    background: white;
+    border-radius: 5px;
+}
+
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    background: #fef2f2;
+    color: var(--color-red-critical);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    font-size: 24px;
+}
+
+.main-prompt {
+    font-size: 16px;
+    color: #1e293b;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.highlight-text {
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.reason-tag {
+    background: #fff7ed;
+    color: #9a3412;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.btn-confirm-deny {
+    background: var(--color-red-critical);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-confirm-deny:hover {
+    background: #dc2626;
+}
+
+.btn-cancel {
+    background: white;
+    color: #64748b;
+    border: 1px solid #cbd5e1;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background 0.3s;
+}
+.btn-cancel:hover{
+    background-color: var(--color-primary);
+    color: white;
+}
+
+/* Approval Overlay Specific Styles */
+.approve-card {
+    max-width: 420px;
+    border-top: 5px solid var(--color-secondary);
+    text-align: center;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+}
+
+.icon-circle-success {
+    width: 60px;
+    height: 60px;
+    background: #ecfdf5;
+    color: var(--color-secondary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    font-size: 32px;
+}
+
+.highlight-id {
+    color: #2563eb;
+    font-weight: 700;
+}
+
+.approve-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.details-summary {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 15px;
+    width: 200px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.s-label { color: #64748b; }
+.s-value { font-weight: 600; color: #1e293b; }
+
+.total-amt { color: var(--color-secondary); }
+
+.btn-confirm-approve {
+    background: var(--color-secondary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-confirm-approve:hover {
+    background: transparent;
+    color: var(--color-secondary);
+    border: 1px solid var(--color-secondary);
+}
