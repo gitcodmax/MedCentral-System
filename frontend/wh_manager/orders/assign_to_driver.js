@@ -1,5 +1,5 @@
 import { renderSidebar } from "../sidebar.js";
-import { xRemoveOverlay, clickToRemoveOverlay } from "../overlay.js";
+import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -55,6 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <section class="dispatch-grid js-dispatch-grid"></section>
 
+        <div class="no-match-container hidden js-no-match-container"></div>
+
         <div class="overlay" id="items-overlay">
           <div class="items-preview-container">
             <div class="header-close-container">
@@ -100,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `
 
   renderSidebar('assign_to_driver')
+  displayNoMatch()
 
   const orderDriverData = {
     "dispatchQueue": [
@@ -497,6 +500,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInputElem = document.getElementById('idSearch')
   const countyDropdown = document.getElementById('countyFilter')
   const zoneDropdown = document.getElementById('zoneFilter')
+  const noMatchElem = document.querySelector('.js-no-match-container')
 
   let currentTempFilter = ``
   document.querySelectorAll('.t-btn')
@@ -522,11 +526,17 @@ document.addEventListener('DOMContentLoaded', () => {
     )
     dispatchGridElem.innerHTML = ``
 
-    filteredResults.forEach(order => {
-      order.packages.forEach(pkg => {
-        displayPackages(pkg, order)
-      })
-    })
+    console.log(filteredResults.length)
+    if(filteredResults.length === 0){
+      noMatchElem.classList.remove('hidden')
+    }else{
+      noMatchElem.classList.add('hidden')
+      filteredResults.forEach(order => {
+        order.packages.forEach(pkg => {
+          displayPackages(pkg, order)
+        })
+      }) 
+    }
 
     pkgToShipElem.textContent = filteredResults.length
 
@@ -540,10 +550,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelector('.js-reset-btn')
     .addEventListener('click', () => {
-      searchInputElem.value = ``
-      countyDropdown.value = ``
-      zoneDropdown.value = ``
+      searchInputElem.value = countyDropdown.value = zoneDropdown.value = ``
       document.querySelectorAll('.t-btn').forEach(b => b.classList.remove('active'));
+      noMatchElem.classList.add('hidden')
 
       displayAllPackages(orderDriverData)
       displayRightDrivers(orderDriverData)

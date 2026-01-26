@@ -1,5 +1,5 @@
 import { renderSidebar } from "../sidebar.js";
-import { xRemoveOverlay, clickToRemoveOverlay } from "../overlay.js";
+import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -236,12 +236,15 @@ document.addEventListener('DOMContentLoaded', () => {
           <tbody class="js-assignment-tbody"></tbody>
         </table>
 
+        <div class="no-match-container hidden js-no-match-container"></div>
+
         <div class="overlay"></div>
       </section>
     </main>
   
     `
   renderSidebar('assign_to_clerk')
+  displayNoMatch()
 
   //Display the rows with packages to assign to a clerk
   const assignToClerkTbodyElem = document.querySelector('.js-assignment-tbody')
@@ -395,6 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchTermElem = document.getElementById('searchTerm')
   const paymentDateElem = document.getElementById('dateFilter')
   const noOfPkgShowing = document.querySelector('.no-of-packages')
+  const noMatchElem = document.querySelector('.js-no-match-container')
 
   function handleSearch() {
     const searchText = searchTermElem.value.toLowerCase().trim()
@@ -411,8 +415,14 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     assignToClerkTbodyElem.innerHTML = ``
-    displayAllPackages(searchResult)    
-    noOfPkgShowing.textContent = getNoOfPackages(searchResult)
+
+    if(searchResult.length === 0){
+      noMatchElem.classList.remove('hidden')
+    }else{
+      noMatchElem.classList.add('hidden')
+      displayAllPackages(searchResult)    
+      noOfPkgShowing.textContent = getNoOfPackages(searchResult)
+    }
   }
 
   searchTermElem.addEventListener('keyup', handleSearch)
