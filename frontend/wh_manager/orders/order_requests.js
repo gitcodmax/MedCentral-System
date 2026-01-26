@@ -293,49 +293,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Controls when to display the overlay and close it 
   const overlay = document.getElementById('packages-overlay')
-  document.querySelectorAll('.js-view-btn')
-    .forEach(detailBtn => {
-      detailBtn.addEventListener('click', () => {
-        overlay.classList.add('active')
-        const btnOrdId = detailBtn.dataset.orderId
-        const packagesTableElem = document.querySelector('.js-packages-table')
+  ordersTableBody.addEventListener('click', (e) => {
+    const btn = e.target.closest('button')
+    if(!btn) return;
 
-        document.querySelector('.details-header .order-id')
-          .textContent = btnOrdId
+    if(btn.classList.contains('js-view-btn')){
+      overlay.classList.add('active')
+      const btnOrdId = btn.dataset.orderId
 
-        orders.forEach(ord => {
-          const orderId = ord.orderId
+      const packagesTableElem = document.querySelector('.js-packages-table')
 
-          if (btnOrdId === orderId) {
-            const orgName = ord.institutionName
-            document.querySelector('.js-destination')
-              .textContent = orgName
-            packagesTableElem.innerHTML = ``
+      document.querySelector('.details-header .order-id')
+        .textContent = btnOrdId
 
-            const packagesFragment = document.createDocumentFragment()
+      orders.forEach(ord => {
+        const orderId = ord.orderId
 
-            ord.packages.forEach(pkg => {
-              const row = document.createElement('tr')
+        if (btnOrdId === orderId) {
+          const orgName = ord.institutionName
+          document.querySelector('.js-destination')
+            .textContent = orgName
+          packagesTableElem.innerHTML = ``
 
-              row.innerHTML = `
-                <td><strong>${pkg.packageId}</strong></td>
-                <td>${pkg.itemCount}</td>
-                <td><span class="p-${pkg.processing.toLowerCase()}">${pkg.processing}</span></td>
-                <td><span class="p-${pkg.ready.toLowerCase()}">${pkg.ready}</span></td>
-                <td><span class="p-${pkg.inTransit.toLowerCase()}">${pkg.inTransit}</span></td>
-                <td><span class="p-${pkg.completed.toLowerCase()}">${pkg.completed}</span></td>
-              `
-              packagesFragment.appendChild(row)
-            })
+          const packagesFragment = document.createDocumentFragment()
 
-            packagesTableElem.appendChild(packagesFragment)
-          }
+          ord.packages.forEach(pkg => {
+            const row = document.createElement('tr')
 
-          xRemoveOverlay(overlay)
-          clickToRemoveOverlay(overlay)
-        })
+            row.innerHTML = `
+              <td><strong>${pkg.packageId}</strong></td>
+              <td>${pkg.itemCount}</td>
+              <td><span class="p-${pkg.processing.toLowerCase()}">${pkg.processing}</span></td>
+              <td><span class="p-${pkg.ready.toLowerCase()}">${pkg.ready}</span></td>
+              <td><span class="p-${pkg.inTransit.toLowerCase()}">${pkg.inTransit}</span></td>
+              <td><span class="p-${pkg.completed.toLowerCase()}">${pkg.completed}</span></td>
+            `
+            packagesFragment.appendChild(row)
+          })
+
+          packagesTableElem.appendChild(packagesFragment)
+        }
+
+        xRemoveOverlay(overlay)
+        clickToRemoveOverlay(overlay)
       })
-    })
+    }
+  })
 
   // ##Filtering logic
   const searchbarElem = document.getElementById('masterSearch')
@@ -386,14 +389,13 @@ document.addEventListener('DOMContentLoaded', () => {
     )
 
     noOfResultsElem.textContent = searchResult.length
-
     ordersTableBody.innerHTML = ``
-    ordersTableBody.appendChild(displayOrders(searchResult))
 
     if(searchResult.length === 0) {
       noMatchContainerElem.classList.remove('hidden')
     }else{
       noMatchContainerElem.classList.add('hidden')
+      ordersTableBody.appendChild(displayOrders(searchResult))
     }
   }
 
@@ -417,13 +419,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Button to clear the filters applied
   document.querySelector('.js-btn-apply')
     .addEventListener('click', () => {
-      searchbarElem.value = ''
-      deliveryStatusDropdown.value = 'all'
-      startDatetElem.value = ''
-      endDateElem.value = ''
+      searchbarElem.value = startDatetElem.value = endDateElem.value = ''
+      deliveryStatusDropdown.value = 'all'      
       noOfResultsElem.textContent = '0'
 
-      ordersTableBody.appendChild(displayOrders(orders))
+      filterOrdersCore()
     })
 
   //##End of filtering logic

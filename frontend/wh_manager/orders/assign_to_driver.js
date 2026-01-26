@@ -526,7 +526,6 @@ document.addEventListener('DOMContentLoaded', () => {
     )
     dispatchGridElem.innerHTML = ``
 
-    console.log(filteredResults.length)
     if(filteredResults.length === 0){
       noMatchElem.classList.remove('hidden')
     }else{
