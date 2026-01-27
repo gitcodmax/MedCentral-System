@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Portal | Karen Hospital</title>
+
+  <link rel="stylesheet" href="/org_portal/org_portal_global.css">
+  <link rel="stylesheet" href="/org_portal/dash..css">
+  <link rel="stylesheet" href="/global.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+  <div class="app-container">
+    <nav class="sidebar">
+      <div class="sidebar-logo">
+        <img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">
+      </div>
+
+      <ul class="nav-links">
+        <li class="active">
+          <a href="#"><i class="fas fa-th-large"></i> <span>Dashboard</span></a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-plus-circle"></i> <span>Create Order</span></a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-list-ul"></i> <span>Orders List</span></a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-file-invoice"></i> <span>Order Details</span></a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-chart-bar"></i> <span>Reports</span></a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <img src="https://ui-avatars.com/api/?name=Karen+Hospital&background=0D8ABC&color=fff" alt="User">
+          <div class="user-text">
+            <p class="u-name">Karen Hospital</p>
+            <p class="u-role">Procurement Dept.</p>
+          </div>
+        </div>
+        <button class="btn-logout"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
+    </nav>
+
+    <main class="main-content">
+
+      <div class="small-size-logo">
+        <img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">
+      </div>
+
+      <div class="dashboard-wrapper">
+        <div class="welcome-section">
+          <h2>Procurement Dashboard</h2>
+          <p>Overview of your medical supply requests and delivery statuses.</p>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-card total-ord">
+            <div class="metric-info">
+              <span class="label">Total Orders</span>
+              <span class="value">142</span>
+            </div>
+            <i class="fas fa-box-archive m-icon"></i>
+          </div>
+          <div class="metric-card pending">
+            <div class="metric-info">
+              <span class="label">Pending</span>
+              <span class="value">12</span>
+            </div>
+            <i class="fas fa-clock m-icon"></i>
+          </div>
+          <div class="metric-card dispatched">
+            <div class="metric-info">
+              <span class="label">In Transit</span>
+              <span class="value">08</span>
+            </div>
+            <i class="fas fa-truck-fast m-icon"></i>
+          </div>
+          <div class="metric-card delivered">
+            <div class="metric-info">
+              <span class="label">Delivered</span>
+              <span class="value">122</span>
+            </div>
+            <i class="fas fa-circle-check m-icon"></i>
+          </div>
+        </div>
+
+        <div class="dashboard-body">
+          <div class="card chart-card">
+            <div class="card-header">
+              <h3>Order Status Chart</h3>
+            </div>
+            <div class="status-grid">
+              <div class="status-item"><span class="bar pending" style="height: 40%"></span><label>Pend</label></div>
+              <div class="status-item"><span class="bar rejected" style="height: 10%"></span><label>Rej</label></div>
+              <div class="status-item"><span class="bar approved" style="height: 60%"></span><label>Appr</label></div>
+              <div class="status-item"><span class="bar packed" style="height: 30%"></span><label>Pack</label></div>
+              <div class="status-item"><span class="bar dispatched" style="height: 50%"></span><label>Disp</label></div>
+              <div class="status-item"><span class="bar in-transit" style="height: 25%"></span><label>Tran</label></div>
+              <div class="status-item"><span class="bar completed" style="height: 90%"></span><label>Comp</label></div>
+            </div>
+          </div>
+
+          <div class="card table-card">
+            <div class="card-header">
+              <h3>Recent Orders</h3>
+              <a href="#" class="btn-link">View All</a>
+            </div>
+            <table class="recent-orders-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Creation Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ORD-2026-140</td>
+                  <td>Jan 20, 10:00 AM</td>
+                  <td><span class="badge-pill b-pending">Pending</span></td>
+                </tr>
+                <tr>
+                  <td>ORD-2026-135</td>
+                  <td>Jan 21, 02:15 PM</td>
+                  <td><span class="badge-pill b-dispatched">Dispatched</span></td>
+                </tr>
+                <tr>
+                  <td>ORD-2026-130</td>
+                  <td>Jan 21, 04:30 PM</td>
+                  <td><span class="badge-pill b-delayed">Delayed</span></td>
+                </tr>
+                <tr>
+                  <td>ORD-2026-125</td>
+                  <td>Jan 22, 09:10 AM</td>
+                  <td><span class="badge-pill b-packed">Packed</span></td>
+                </tr>
+                <tr>
+                  <td>ORD-2026-115</td>
+                  <td>Jan 23, 01:20 PM</td>
+                  <td><span class="badge-pill b-completed">Completed</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+</body>
+
+</html>

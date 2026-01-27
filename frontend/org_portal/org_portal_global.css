@@ -1,0 +1,9 @@
+:root{
+  --pending: #FFC107;
+  --rejected: #DC3545;
+  --packed: #6F42C1;
+  --dispatched: #20C997;
+  --delayed: #FD7E14;
+  --deliveredIssue: #E5533D;
+  --completed: #157347;
+}
