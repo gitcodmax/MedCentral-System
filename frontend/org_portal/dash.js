@@ -1,6 +1,84 @@
 import { renderSidebar } from "./sidebar.js";
 
 document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('.app-container')
+    .innerHTML = `
+    <nav class="sidebar js-sidebar"></nav>
+
+    <main class="main-content">
+
+      <div class="small-size-logo">
+        <img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">
+      </div>
+
+      <div class="dashboard-wrapper">
+        <div class="welcome-section">
+          <h2>Procurement Dashboard</h2>
+          <p>Overview of your medical supply requests and delivery statuses.</p>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-card total-ord">
+            <div class="metric-info">
+              <span class="label">Total Orders</span>
+              <span class="value js-total-ord-value"></span>
+            </div>
+            <i class="fas fa-box-archive m-icon"></i>
+          </div>
+          <div class="metric-card pending">
+            <div class="metric-info">
+              <span class="label">Pending</span>
+              <span class="value js-pending-value"></span>
+            </div>
+            <i class="fas fa-clock m-icon"></i>
+          </div>
+          <div class="metric-card dispatched">
+            <div class="metric-info">
+              <span class="label">In Transit</span>
+              <span class="value js-dispatched-value"></span>
+            </div>
+            <i class="fas fa-truck-fast m-icon"></i>
+          </div>
+          <div class="metric-card delivered">
+            <div class="metric-info">
+              <span class="label">Completed</span>
+              <span class="value js-delivered-value"></span>
+            </div>
+            <i class="fas fa-circle-check m-icon"></i>
+          </div>
+        </div>
+
+        <div class="dashboard-body">
+          <div class="card chart-card">
+            <div class="card-header">
+              <h3>Order Status Chart</h3>
+            </div>
+            <canvas id="ordersChart"></canvas>
+          </div>
+
+          <div class="card table-card">
+            <div class="card-header">
+              <h3>Recent Orders</h3>
+              <a href="#" class="btn-link">
+                <button class="view-all-btn">View All</button>
+              </a>
+            </div>
+            <table class="recent-orders-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Creation Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody class="js-recent-orders-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  `
+
   renderSidebar()
 
   //Hospital dash mock data
