@@ -10,7 +10,7 @@ export function renderSidebar() {
         <a href="#"><i class="fas fa-th-large"></i> <span>Dashboard</span></a>
       </li>
       <li>
-        <a href="#"><i class="fas fa-plus-circle"></i> <span>Create Order</span></a>
+        <a href="#"><i class="fas fa-plus-circle"></i> <span>Request Items</span></a>
       </li>
       <li>
         <a href="#"><i class="fas fa-list-ul"></i> <span>Orders List</span></a>
