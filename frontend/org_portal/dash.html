@@ -66,28 +66,28 @@
           <div class="metric-card total-ord">
             <div class="metric-info">
               <span class="label">Total Orders</span>
-              <span class="value">142</span>
+              <span class="value js-total-ord-value"></span>
             </div>
             <i class="fas fa-box-archive m-icon"></i>
           </div>
           <div class="metric-card pending">
             <div class="metric-info">
               <span class="label">Pending</span>
-              <span class="value">12</span>
+              <span class="value js-pending-value"></span>
             </div>
             <i class="fas fa-clock m-icon"></i>
           </div>
           <div class="metric-card dispatched">
             <div class="metric-info">
               <span class="label">In Transit</span>
-              <span class="value">08</span>
+              <span class="value js-dispatched-value"></span>
             </div>
             <i class="fas fa-truck-fast m-icon"></i>
           </div>
           <div class="metric-card delivered">
             <div class="metric-info">
-              <span class="label">Delivered</span>
-              <span class="value">122</span>
+              <span class="label">Completed</span>
+              <span class="value js-delivered-value"></span>
             </div>
             <i class="fas fa-circle-check m-icon"></i>
           </div>
@@ -98,21 +98,15 @@
             <div class="card-header">
               <h3>Order Status Chart</h3>
             </div>
-            <div class="status-grid">
-              <div class="status-item"><span class="bar pending" style="height: 40%"></span><label>Pend</label></div>
-              <div class="status-item"><span class="bar rejected" style="height: 10%"></span><label>Rej</label></div>
-              <div class="status-item"><span class="bar approved" style="height: 60%"></span><label>Appr</label></div>
-              <div class="status-item"><span class="bar packed" style="height: 30%"></span><label>Pack</label></div>
-              <div class="status-item"><span class="bar dispatched" style="height: 50%"></span><label>Disp</label></div>
-              <div class="status-item"><span class="bar in-transit" style="height: 25%"></span><label>Tran</label></div>
-              <div class="status-item"><span class="bar completed" style="height: 90%"></span><label>Comp</label></div>
-            </div>
+            <canvas id="ordersChart"></canvas>
           </div>
 
           <div class="card table-card">
             <div class="card-header">
               <h3>Recent Orders</h3>
-              <a href="#" class="btn-link">View All</a>
+              <a href="#" class="btn-link">
+                <button class="view-all-btn">View All</button>
+              </a>
             </div>
             <table class="recent-orders-table">
               <thead>
@@ -122,33 +116,7 @@
                   <th>Status</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>ORD-2026-140</td>
-                  <td>Jan 20, 10:00 AM</td>
-                  <td><span class="badge-pill b-pending">Pending</span></td>
-                </tr>
-                <tr>
-                  <td>ORD-2026-135</td>
-                  <td>Jan 21, 02:15 PM</td>
-                  <td><span class="badge-pill b-dispatched">Dispatched</span></td>
-                </tr>
-                <tr>
-                  <td>ORD-2026-130</td>
-                  <td>Jan 21, 04:30 PM</td>
-                  <td><span class="badge-pill b-delayed">Delayed</span></td>
-                </tr>
-                <tr>
-                  <td>ORD-2026-125</td>
-                  <td>Jan 22, 09:10 AM</td>
-                  <td><span class="badge-pill b-packed">Packed</span></td>
-                </tr>
-                <tr>
-                  <td>ORD-2026-115</td>
-                  <td>Jan 23, 01:20 PM</td>
-                  <td><span class="badge-pill b-completed">Completed</span></td>
-                </tr>
-              </tbody>
+              <tbody class="js-recent-orders-tbody"></tbody>
             </table>
           </div>
         </div>
@@ -156,6 +124,8 @@
     </main>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="/org_portal/dash.js"></script>
 </body>
 
 </html>

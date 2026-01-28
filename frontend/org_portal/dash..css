@@ -152,7 +152,7 @@
   align-items: center;
   transition: 0.3s;
 }
-.metric-card:hover{
+.metric-card:hover, .card:hover{
   box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
   transform: translateY(-3px);
 }
@@ -212,7 +212,7 @@
 /* Dashboard Body */
 .dashboard-body {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 1fr;
   gap: 25px;
 }
 
@@ -221,6 +221,7 @@
   border-radius: 12px;
   border: 1px solid var(--border);
   padding: 20px;
+  transition: 0.3s;
 }
 
 .card-header {
@@ -228,69 +229,33 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  height: 15px;
 }
 
 /* Status Chart CSS */
-.status-grid {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-around;
-  height: 150px;
-  padding-top: 20px;
-}
-
-.status-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-}
-
-.bar {
-  width: 15px;
-  border-radius: 4px;
-}
-
-.bar.pending {
-  background: #f59e0b;
-  border: 1px solid;
-}
-
-.bar.rejected {
-  background: #ef4444;
-  border: 1px solid;
-}
-
-.bar.approved {
-  background: #3b82f6;
-}
-
-.bar.packed {
-  background: #8b5cf6;
-}
-
-.bar.dispatched {
-  background: #06b6d4;
-}
-
-.bar.in-transit {
-  background: #6366f1;
-}
-
-.bar.completed {
-  background: #10b981;
-}
-
-.status-item label {
-  font-size: 10px;
-  color: #64748b;
+.chart-card{
+  height: fit-content;
 }
 
 /* Table Badges */
 .recent-orders-table {
   width: 100%;
   border-collapse: collapse;
+}
+.view-all-btn{
+  padding: 5px;
+  background: var(--color-primary);
+  border-radius: 5px;
+  border: none;
+  color: white;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.view-all-btn:hover{
+  border: 1px solid var(--color-secondary);
+  background: transparent;
+  color: var(--color-secondary);
+  transform: translateY(-3px);
 }
 
 .recent-orders-table th {
@@ -316,16 +281,34 @@
 
 .b-pending {
   background: var(--pending);
-  color: black;
+}
+
+.b-approved{
+  background: var(--color-primary);
+  color: white;
+}
+
+.b-rejected{
+  background: var(--rejected);
+  color: white;
 }
 
 .b-dispatched {
   background: var(--dispatched);
-  color: black;
 }
 
 .b-delayed {
   background: var(--delayed);
+}
+
+.b-issue{
+  background: var(--deliveredIssue);
+  color: white;
+}
+
+.b-delivered{
+  background: var(--color-secondary);
+  color: white;
 }
 
 .b-packed {
@@ -381,10 +364,6 @@
 
   .chart-card {
       order: 2;
-  }
-
-  .status-grid {
-      height: 120px; 
   }
 }
 
