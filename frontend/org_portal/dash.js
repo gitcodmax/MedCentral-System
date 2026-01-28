@@ -1,4 +1,7 @@
+import { renderSidebar } from "./sidebar.js";
+
 document.addEventListener('DOMContentLoaded', () => {
+  renderSidebar()
 
   //Hospital dash mock data
   const hospitalDashboardData = {
@@ -56,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const recentOrdersTableFragment = document.createDocumentFragment()
   const {recentOrders} = hospitalDashboardData
   recentOrders.forEach(order => {
-    console.log(order)
     const tblRow = document.createElement('tr')
 
     tblRow.innerHTML = `
