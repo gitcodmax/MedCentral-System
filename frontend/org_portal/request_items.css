@@ -1,12 +1,6 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 .app-content {
   display: grid;
-  grid-template-columns: 1fr 400px;
+  grid-template-columns: 1fr 350px;
   height: 100vh;
   overflow: hidden;
 }
@@ -242,7 +236,7 @@ select {
   display: flex;
   justify-content: space-between;
   font-size: 20px;
-  font-weight: 900;
+  font-weight: 600;
   margin-bottom: 24px;
 }
 .total-price{
@@ -254,9 +248,9 @@ select {
   background: var(--color-primary);
   color: white;
   border: none;
-  padding: 18px;
+  padding: 15px;
   border-radius: 12px;
-  font-weight: 800;
+  font-weight: 500;
   font-size: 16px;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);

@@ -7,3 +7,13 @@
   --deliveredIssue: #E5533D;
   --completed: #157347;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
