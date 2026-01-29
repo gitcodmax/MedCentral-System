@@ -68,6 +68,12 @@
   transform: translateY(-2px);
 }
 
+.item-card:hover .temp-pill{
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  transition: 0.2s;
+}
+
 .card-meta {
   display: flex;
   justify-content: space-between;
@@ -82,21 +88,8 @@
 }
 
 .temp-pill {
-  font-size: 10px;
-  font-weight: 800;
-  padding: 3px 10px;
-  border-radius: 6px;
-  text-transform: uppercase;
-}
-
-.temp-pill.ambient {
-  background: #f1f5f9;
-  color: #475569;
-}
-
-.temp-pill.cold {
-  background: #e0f2fe;
-  color: #0369a1;
+  padding: 3px;
+  border-radius: 50%;
 }
 
 .item-name {
