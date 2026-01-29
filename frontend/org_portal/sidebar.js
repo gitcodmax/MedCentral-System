@@ -1,25 +1,35 @@
 export function renderSidebar() {
-  document.querySelector('.js-sidebar')
-    .innerHTML = `
-    <div class="sidebar-logo">
-      <img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">
-    </div>
+  const sidebar = document.querySelector('.js-sidebar')
+  const logoImg = `<img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">`
+  document.querySelector('.main-content-logo')
+  .innerHTML = logoImg
+
+  sidebar.innerHTML = `
+    <div class="sidebar-logo">${logoImg}</div>
+
+    <button class="close-sidebar-btn js-close-sidebar-btn">
+      <i class="fa-solid fa-less-than"></i>
+    </button>
+
+    <button class="open-sidebar-btn js-open-sidebar-btn">
+      <i class="fa-solid fa-greater-than"></i>
+    </button>
 
     <ul class="nav-links">
       <li class="active">
-        <a href="#"><i class="fas fa-th-large"></i> <span>Dashboard</span></a>
+        <a href="#"><i class="fas fa-th-large"></i> <span class="page-name">Dashboard</span></a>
       </li>
       <li>
-        <a href="#"><i class="fas fa-plus-circle"></i> <span>Request Items</span></a>
+        <a href="#"><i class="fas fa-plus-circle"></i> <span class="page-name">Request Items</span></a>
       </li>
       <li>
-        <a href="#"><i class="fas fa-list-ul"></i> <span>Orders List</span></a>
+        <a href="#"><i class="fas fa-list-ul"></i> <span class="page-name">Orders List</span></a>
       </li>
       <li>
-        <a href="#"><i class="fas fa-file-invoice"></i> <span>Order Details</span></a>
+        <a href="#"><i class="fas fa-file-invoice"></i> <span class="page-name">Order Details</span></a>
       </li>
       <li>
-        <a href="#"><i class="fas fa-chart-bar"></i> <span>Reports</span></a>
+        <a href="#"><i class="fas fa-chart-bar"></i> <span class="page-name">Reports</span></a>
       </li>
     </ul>
 
@@ -34,4 +44,17 @@ export function renderSidebar() {
       <button class="btn-logout"><i class="fas fa-sign-out-alt"></i></button>
     </div>
   `
+
+  document.querySelector('.js-close-sidebar-btn')
+    .addEventListener('click', () => {
+      sidebar.classList.add('collapsed')
+      document.querySelector('.main-content-logo')
+        .style.display = 'block'
+    })
+  document.querySelector('.js-open-sidebar-btn')
+    .addEventListener('click', () => {
+      sidebar.classList.remove('collapsed')
+      document.querySelector('.main-content-logo')
+        .style.display = 'none'
+    })
 }

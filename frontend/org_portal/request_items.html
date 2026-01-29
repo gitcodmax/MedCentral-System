@@ -20,78 +20,71 @@
     <nav class="sidebar js-sidebar"></nav>
 
     <main class="app-content">
-      <section class="catalog-container">
-        <div class="header-strip">
-          <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="Search item or SKU...">
-          </div>
+      <div class="main-content-logo"></div>
 
-          <div class="global-settings">
-            <label>DEFAULT DEPT:</label>
-            <select class="dept-select-main" id="globalDept">
-              <option value="General Ward">General Ward</option>
-              <option value="ICU">ICU</option>
-              <option value="Pharmacy">Pharmacy</option>
-              <option value="Emergency">Emergency Room</option>
-              <option value="Laboratory">Laboratory</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="product-grid js-product-grid"></div>
-      </section>
-
-      <section class="order-summary">
-        <div class="summary-header">
-          <h3>Order Summary <span class="item-count-badge">2 Items</span></h3>
-        </div>
-
-        <div class="cart-list">
-          <div class="cart-item">
-            <div class="cart-item-info">
-              <span class="cart-item-name">Saline Solution 500ml</span>
-              <span class="cart-item-price">KES 1,200.00</span>
-            </div>
-            <div class="line-assignment">
-              <label>Charge to Dept</label>
-              <select class="dept-select-item">
-                <option>General Ward</option>
-                <option selected>ICU</option>
-                <option>Pharmacy</option>
-                <option>Emergency Room</option>
-              </select>
+      <div class="app-grid-content">
+        <section class="catalog-container">
+          <div class="header-strip">
+            <div class="search-bar">
+              <i class="fas fa-search"></i>
+              <input type="text" placeholder="Search item or SKU...">
             </div>
           </div>
-
-          <div class="cart-item">
-            <div class="cart-item-info">
-              <div>
-                <span class="cart-item-name">Paracetamol 500mg</span>
-                <div class="cart-item-meta">100 Tablets × KES 4.50</div>
+  
+          <div class="product-grid js-product-grid"></div>
+        </section>
+  
+        <section class="order-summary">
+          <div class="summary-header">
+            <h3>Order Summary <span class="item-count-badge">2 Items</span></h3>
+          </div>
+  
+          <div class="cart-list">
+            <div class="cart-item">
+              <div class="cart-item-info">
+                <span class="cart-item-name">Saline Solution 500ml</span>
+                <span class="cart-item-price">KES 1,200.00</span>
               </div>
-              <span class="cart-item-price">KES 450.00</span>
+              <div class="line-assignment">
+                <label>Charge to Dept</label>
+                <select class="dept-select-item">
+                  <option>General Ward</option>
+                  <option selected>ICU</option>
+                  <option>Pharmacy</option>
+                  <option>Emergency Room</option>
+                </select>
+              </div>
             </div>
-
-            <div class="line-assignment">
-              <label>Assign to Dept</label>
-              <select class="dept-select-item">
-                <option selected>General Ward</option>
-                <option>ICU</option>
-                <option>Pharmacy</option>
-              </select>
+  
+            <div class="cart-item">
+              <div class="cart-item-info">
+                <div>
+                  <span class="cart-item-name">Paracetamol 500mg</span>
+                  <div class="cart-item-meta">100 Tablets × KES 4.50</div>
+                </div>
+                <span class="cart-item-price">KES 450.00</span>
+              </div>
+  
+              <div class="line-assignment">
+                <label>Assign to Dept</label>
+                <select class="dept-select-item">
+                  <option selected>General Ward</option>
+                  <option>ICU</option>
+                  <option>Pharmacy</option>
+                </select>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="summary-footer">
-          <div class="total-line">
-            <span>Estimated Total</span>
-            <span class="total-price">KES 2,100.00</span>
+  
+          <div class="summary-footer">
+            <div class="total-line">
+              <span>Estimated Total</span>
+              <span class="total-price">KES 2,100.00</span>
+            </div>
+            <button class="btn-submit">Submit Requisition</button>
           </div>
-          <button class="btn-submit">Submit Requisition</button>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
   </div>
 

@@ -1,14 +1,17 @@
-.app-content {
+.app-grid-content {
   display: grid;
-  grid-template-columns: 1fr 350px;
+  grid-template-columns: 1fr 300px;
   height: 100vh;
   overflow: hidden;
+  flex: 1;
 }
 
 /*Catalog Section*/
 .catalog-container {
   padding: 24px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .header-strip {
@@ -42,23 +45,10 @@
   color: var(--color-quarantine);
 }
 
-.global-settings {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.global-settings label {
-  font-size: 11px;
-  font-weight: 800;
-  color: var(--color-quarantine);
-  letter-spacing: 0.5px;
-}
-
 /* Product Grid & Cards */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
 }
 
@@ -69,6 +59,7 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
+  max-width: 250px;
   transition: transform 0.2s, border-color 0.2s;
 }
 
@@ -295,5 +286,11 @@ select {
 
   .order-summary {
     border-left: none;
+  }
+}
+
+@media (max-width: 768px){
+  .app-grid-content{
+    margin-top: 50px;
   }
 }
