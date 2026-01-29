@@ -14,35 +14,90 @@
   flex-direction: column;
 }
 
-.header-strip {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.filter-container {
   background: white;
   padding: 16px 24px;
   border-radius: 12px;
+  border: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
   margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-.search-bar {
+.search-group {
   position: relative;
-  width: 320px;
+  width: 350px;
 }
 
-.search-bar input {
+.search-icon {
+  position: absolute;
+  top: 55%;
+  left: 2%;
+  color: var(--color-quarantine);
+}
+
+.filter-container label {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--color-quarantine);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.search-group input {
   width: 100%;
-  padding: 10px 12px 10px 38px;
-  border: 1px solid var(--color-primary);
+  padding: 10px 10px 10px 30px;
+  border: none;
   border-radius: 8px;
   font-size: 14px;
+  transition: border-color 0.2s;
 }
 
-.search-bar i {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--color-quarantine);
+.search-group input:focus {
+  border-color: var(--color-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.filter-item select {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #f8fafc;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-reset {
+  background: transparent;
+  border: 1px solid red;
+  color: red;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 14px;
+  transition: 0.2s;
+}
+
+.btn-reset:hover {
+  background: red;
+  color: white;
 }
 
 /* Product Grid & Cards */
@@ -68,7 +123,7 @@
   transform: translateY(-2px);
 }
 
-.item-card:hover .temp-pill{
+.item-card:hover .temp-pill {
   border: 1px solid var(--color-primary);
   color: var(--color-primary);
   transition: 0.2s;
@@ -148,7 +203,7 @@
 }
 
 .uom-tag strong {
-  color: var(--color-primary); 
+  color: var(--color-primary);
   font-weight: 700;
 }
 
@@ -252,7 +307,8 @@ select {
   font-weight: 600;
   margin-bottom: 24px;
 }
-.total-price{
+
+.total-price {
   color: var(--color-secondary);
 }
 
@@ -282,8 +338,17 @@ select {
   }
 }
 
-@media (max-width: 768px){
-  .app-grid-content{
+@media (max-width: 768px) {
+  .app-grid-content {
     margin-top: 50px;
+  }
+
+  .filter-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-group {
+    width: 100%;
   }
 }

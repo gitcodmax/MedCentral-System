@@ -24,21 +24,39 @@
 
       <div class="app-grid-content">
         <section class="catalog-container">
-          <div class="header-strip">
-            <div class="search-bar">
-              <i class="fas fa-search"></i>
-              <input type="text" placeholder="Search item or SKU...">
+          <div class="filter-container">
+            <div class="search-group">
+              <label for="searchTerm">Search by Item Name/sku</label>
+              <i class="fas fa-search search-icon"></i>
+              <input type="text" id="catalogSearch" placeholder="Search by item name or SKU (e.g. MED-001)...">
+            </div>
+
+            <div class="filter-group">
+              <div class="filter-item">
+                <label for="tempFilter">Storage Temp</label>
+                <select id="tempFilter">
+                  <option value="all">All Temperatures</option>
+                  <option value="ambient">Ambient</option>
+                  <option value="crt">CRT</option>
+                  <option value="refrigerated">Refrigerated</option>
+                  <option value="frozen">Frozen</option>
+                </select>
+              </div>
+
+              <button class="btn-reset" title="Reset Filters">
+                <i class="fas fa-undo"></i>
+              </button>
             </div>
           </div>
-  
+
           <div class="product-grid js-product-grid"></div>
         </section>
-  
+
         <section class="order-summary">
           <div class="summary-header">
             <h3>Order Summary <span class="item-count-badge">2 Items</span></h3>
           </div>
-  
+
           <div class="cart-list">
             <div class="cart-item">
               <div class="cart-item-info">
@@ -55,7 +73,7 @@
                 </select>
               </div>
             </div>
-  
+
             <div class="cart-item">
               <div class="cart-item-info">
                 <div>
@@ -64,7 +82,7 @@
                 </div>
                 <span class="cart-item-price">KES 450.00</span>
               </div>
-  
+
               <div class="line-assignment">
                 <label>Assign to Dept</label>
                 <select class="dept-select-item">
@@ -75,7 +93,7 @@
               </div>
             </div>
           </div>
-  
+
           <div class="summary-footer">
             <div class="total-line">
               <span>Estimated Total</span>

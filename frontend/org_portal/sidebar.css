@@ -44,6 +44,7 @@
 .sidebar.collapsed .user-text, 
 .sidebar.collapsed .btn-logout, 
 .sidebar.collapsed .close-sidebar-btn, 
+.sidebar.collapsed .open-sidebar-btn,
 .sidebar.collapsed .sidebar-logo{
   display: none;
 }
