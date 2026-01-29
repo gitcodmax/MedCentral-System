@@ -151,6 +151,35 @@
   background: #1d4ed8;
 }
 
+/* Styling for the UOM in the Catalog Grid */
+.uom-tag {
+  font-size: 12px;
+  color: var(--color-quarantine);
+  margin-bottom: 12px;
+  padding: 4px 8px;
+  background: #f8fafc;
+  border-radius: 4px;
+  display: inline-block;
+  border: 1px solid #f1f5f9;
+}
+
+.uom-tag strong {
+  color: var(--color-primary); 
+  font-weight: 700;
+}
+
+.cart-item-total {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.cart-item-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
 /* Summary Sidebar */
 .order-summary {
   background: white;

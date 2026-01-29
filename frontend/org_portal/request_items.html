@@ -39,46 +39,7 @@
           </div>
         </div>
 
-        <div class="product-grid">
-          <article class="item-card">
-            <div class="card-meta">
-              <span class="item-sku">SKU: MED-001-P</span>
-              <span class="temp-pill ambient">Ambient</span>
-            </div>
-            <h4 class="item-name">Paracetamol 500mg</h4>
-            <div class="item-price">KES 450.00</div>
-            <div class="item-actions">
-              <input type="number" class="qty-input" value="1" min="1">
-              <button class="btn-add">Add to Order</button>
-            </div>
-          </article>
-
-          <article class="item-card">
-            <div class="card-meta">
-              <span class="item-sku">SKU: IV-FL-09</span>
-              <span class="temp-pill cold">Cold Chain</span>
-            </div>
-            <h4 class="item-name">Saline Solution 500ml</h4>
-            <div class="item-price">KES 1,200.00</div>
-            <div class="item-actions">
-              <input type="number" class="qty-input" value="1" min="1">
-              <button class="btn-add">Add to Order</button>
-            </div>
-          </article>
-
-          <article class="item-card">
-            <div class="card-meta">
-              <span class="item-sku">SKU: GS-992-M</span>
-              <span class="temp-pill ambient">Ambient</span>
-            </div>
-            <h4 class="item-name">Surgical Gloves (Medium)</h4>
-            <div class="item-price">KES 850.00</div>
-            <div class="item-actions">
-              <input type="number" class="qty-input" value="1" min="1">
-              <button class="btn-add">Add to Order</button>
-            </div>
-          </article>
-        </div>
+        <div class="product-grid js-product-grid"></div>
       </section>
 
       <section class="order-summary">
@@ -87,22 +48,6 @@
         </div>
 
         <div class="cart-list">
-          <div class="cart-item">
-            <div class="cart-item-info">
-              <span class="cart-item-name">Paracetamol 500mg</span>
-              <span class="cart-item-price">KES 900.00</span>
-            </div>
-            <div class="line-assignment">
-              <label>Charge to Dept</label>
-              <select class="dept-select-item">
-                <option selected>General Ward</option>
-                <option>ICU</option>
-                <option>Pharmacy</option>
-                <option>Emergency Room</option>
-              </select>
-            </div>
-          </div>
-
           <div class="cart-item">
             <div class="cart-item-info">
               <span class="cart-item-name">Saline Solution 500ml</span>
@@ -115,6 +60,25 @@
                 <option selected>ICU</option>
                 <option>Pharmacy</option>
                 <option>Emergency Room</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="cart-item">
+            <div class="cart-item-info">
+              <div>
+                <span class="cart-item-name">Paracetamol 500mg</span>
+                <div class="cart-item-meta">100 Tablets × KES 4.50</div>
+              </div>
+              <span class="cart-item-price">KES 450.00</span>
+            </div>
+
+            <div class="line-assignment">
+              <label>Assign to Dept</label>
+              <select class="dept-select-item">
+                <option selected>General Ward</option>
+                <option>ICU</option>
+                <option>Pharmacy</option>
               </select>
             </div>
           </div>
