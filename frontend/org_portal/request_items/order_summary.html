@@ -102,6 +102,58 @@
             </div>
           </div>
 
+          <div id="confirmationModal" class="modal-overlay">
+            <div class="modal-container">
+              <div class="modal-header">
+                <div class="header-content">
+                  <i class="fas fa-check-circle modal-icon"></i>
+                  <div>
+                    <h3>Confirm Final Requisition</h3>
+                    <p>Please perform a final check of the line items below.</p>
+                  </div>
+                </div>
+                <button class="close-modal-btn">&times;</button>
+              </div>
+
+              <div class="modal-body">
+                <div class="verification-grid">
+                  <div class="v-header">Item</div>
+                  <div class="v-header">Qty</div>
+                  <div class="v-header">Allocation</div>
+                  <div class="v-header text-right">Subtotal</div>
+
+                  <div class="v-row"><span class="v-name">Paracetamol 500mg</span></div>
+                  <div class="v-row">100 tablets</div>
+                  <div class="v-row"><span class="v-dept">Pharmacy</span></div>
+                  <div class="v-row text-right"><span class="v-sub-total">KES 550.00</span></div>
+
+                  <div class="v-row"><span class="v-name">Saline Solution 500ml</span></div>
+                  <div class="v-row">10 vials</div>
+                  <div class="v-row"><span class="v-dept">ICU</span></div>
+                  <div class="v-row text-right"><span class="v-sub-total">KES 12,500.00</span></div>
+                </div>
+
+                <div class="confirmation-summary">
+                  <div class="summary-line">
+                    <span>Total Unique Items:</span>
+                    <strong class="total-items">2</strong>
+                  </div>
+                  <div class="summary-line">
+                    <span>Grand Total:</span>
+                    <strong class="grand-total-text">KES 13,050.00</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button class="btn-cancel">Make Changes</button>
+                <button class="btn-final-submit">
+                  Yes, Submit to Warehouse
+                </button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
     </main>
