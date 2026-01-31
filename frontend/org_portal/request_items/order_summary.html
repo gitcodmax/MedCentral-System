@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Summary | MedCentral</title>
+
+  <link rel="stylesheet" href="/global.css">
+  <link rel="stylesheet" href="/org_portal/sidebar.css">
+  <link rel="stylesheet" href="/org_portal/org_portal_global.css">
+  <link rel="stylesheet" href="/org_portal/request_items/order_summary.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+
+<body>
+
+  <div class="app-container">
+    <nav class="sidebar js-sidebar"></nav>
+
+    <main class="app-content">
+      <div class="main-content-logo"></div>
+
+      <nav class="view-navigation js-view-navigation"></nav>
+
+      <section id="summaryView" class="view-section">
+        <div class="summary-layout">
+
+          <div class="items-review-container">
+            <div class="view-header">
+              <h2>Review Requisition</h2>
+              <p>Verify quantities and departmental allocations below.</p>
+            </div>
+
+            <table class="summary-table">
+              <thead>
+                <tr>
+                  <th>Item Details</th>
+                  <th>Storage</th>
+                  <th>Quantity</th>
+                  <th>Unit Price</th>
+                  <th>Department Assignment</th>
+                  <th>Subtotal</th>
+                  <th>Remove</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="summaryTableBody">
+                <tr class="summary-row">
+                  <td>
+                    <div class="item-info">
+                      <span class="row-sku">MED-001-P</span>
+                      <span class="row-name">Paracetamol 500mg</span>
+                      <span class="row-uom">per tablet</span>
+                    </div>
+                  </td>
+                  <td><span class="temp-pill ambient">Ambient</span></td>
+                  <td>
+                    <input type="number" class="table-qty" value="100">
+                  </td>
+                  <td class="price-col">KES 5.50</td>
+                  <td>
+                    <select class="table-dept">
+                      <option>General Ward</option>
+                      <option>ICU</option>
+                      <option selected>Pharmacy</option>
+                    </select>
+                  </td>
+                  <td class="subtotal-col">KES 550.00</td>
+                  <td>
+                    <button class="btn-remove-row" title="Remove Item">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="submission-container">
+            <div class="checkout-card">
+              <h3>Order Totals</h3>
+              <div class="totals-breakdown">
+                <div class="total-row">
+                  <span>Total Number of Items</span>
+                  <span class="total-items" id="totalItems">1</span>
+                </div>
+                <hr>
+                <div class="total-row final-price">
+                  <span>Estimated Total</span>
+                  <span class="grand-total" id="grandTotal">KES 550.00</span>
+                </div>
+              </div>
+
+              <button class="btn-confirm-order">
+                Confirm & Submit Requisition
+              </button>
+              <button class="btn-back-catalog">
+                <i class="fas fa-arrow-left"></i> Back to Catalog
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="/org_portal/request_items/order_summary.js"></script>
+</body>
+
+</html>

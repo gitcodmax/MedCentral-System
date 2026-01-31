@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="/org_portal/sidebar.css">
   <link rel="stylesheet" href="/org_portal/org_portal_global.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="/org_portal/request_items.css">
+  <link rel="stylesheet" href="/org_portal/request_items/product_catalog.css">
 </head>
 
 <body>
@@ -22,20 +22,7 @@
     <main class="app-content">
       <div class="main-content-logo"></div>
 
-      <nav class="view-navigation">
-        <div class="nav-tabs">
-          <button class="nav-tab active" data-view="catalog">
-            <i class="fas fa-th-large"></i>
-            <span>Product Catalog</span>
-          </button>
-
-          <button class="nav-tab" data-view="summary">
-            <i class="fas fa-clipboard-list"></i>
-            <span>Order Summary</span>
-            <span class="cart-badge" id="navCartCount">0</span>
-          </button>
-        </div>
-      </nav>
+      <nav class="view-navigation js-view-navigation"></nav>
 
       <div class="app-grid-content">
         <section class="catalog-container">
@@ -76,7 +63,7 @@
     </main>
   </div>
 
-  <script type="module" src="/org_portal/request_items.js"></script>
+  <script type="module" src="/org_portal/request_items/product_catalog.js"></script>
 </body>
 
 </html>

@@ -1,8 +1,9 @@
-import { renderSidebar, displayNoMatchFound } from "./sidebar.js";
+import { renderSidebar, displayNoMatchFound, renderRequestItemsNavbar } from "../sidebar.js";
 
 document.addEventListener('DOMContentLoaded', () => {
   renderSidebar()
   displayNoMatchFound()
+  renderRequestItemsNavbar()
 
   const hospitalOrderData = {
     departments: [

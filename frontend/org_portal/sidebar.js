@@ -70,3 +70,21 @@ export function displayNoMatchFound(){
     `
   }
 }
+
+export function renderRequestItemsNavbar(){
+  document.querySelector('.js-view-navigation')
+    .innerHTML = `
+      <div class="nav-tabs">
+        <button class="nav-tab active" data-view="catalog">
+          <i class="fas fa-th-large"></i>
+          <span>Product Catalog</span>
+        </button>
+
+        <button class="nav-tab" data-view="summary">
+          <i class="fas fa-clipboard-list"></i>
+          <span>Order Summary</span>
+          <span class="cart-badge" id="navCartCount">0</span>
+        </button>
+      </div>    
+    `
+}
