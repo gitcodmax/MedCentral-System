@@ -39,6 +39,7 @@
 .sidebar.collapsed{
   width: 40px;
   padding-top: 70px;
+  bottom: 0;
 }
 .sidebar.collapsed .page-name, 
 .sidebar.collapsed .user-text, 

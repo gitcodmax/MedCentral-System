@@ -22,6 +22,21 @@
     <main class="app-content">
       <div class="main-content-logo"></div>
 
+      <nav class="view-navigation">
+        <div class="nav-tabs">
+          <button class="nav-tab active" data-view="catalog">
+            <i class="fas fa-th-large"></i>
+            <span>Product Catalog</span>
+          </button>
+
+          <button class="nav-tab" data-view="summary">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Order Summary</span>
+            <span class="cart-badge" id="navCartCount">0</span>
+          </button>
+        </div>
+      </nav>
+
       <div class="app-grid-content">
         <section class="catalog-container">
           <div class="filter-container">
@@ -50,57 +65,6 @@
           </div>
 
           <div class="product-grid js-product-grid"></div>
-        </section>
-
-        <section class="order-summary">
-          <div class="summary-header">
-            <h3>Order Summary <span class="item-count-badge">2 Items</span></h3>
-          </div>
-
-          <div class="cart-list">
-            <div class="cart-item">
-              <div class="cart-item-info">
-                <span class="cart-item-name">Saline Solution 500ml</span>
-                <span class="cart-item-price">KES 1,200.00</span>
-              </div>
-              <div class="line-assignment">
-                <label>Charge to Dept</label>
-                <select class="dept-select-item">
-                  <option>General Ward</option>
-                  <option selected>ICU</option>
-                  <option>Pharmacy</option>
-                  <option>Emergency Room</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="cart-item">
-              <div class="cart-item-info">
-                <div>
-                  <span class="cart-item-name">Paracetamol 500mg</span>
-                  <div class="cart-item-meta">100 Tablets × KES 4.50</div>
-                </div>
-                <span class="cart-item-price">KES 450.00</span>
-              </div>
-
-              <div class="line-assignment">
-                <label>Assign to Dept</label>
-                <select class="dept-select-item">
-                  <option selected>General Ward</option>
-                  <option>ICU</option>
-                  <option>Pharmacy</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div class="summary-footer">
-            <div class="total-line">
-              <span>Estimated Total</span>
-              <span class="total-price">KES 2,100.00</span>
-            </div>
-            <button class="btn-submit">Submit Requisition</button>
-          </div>
         </section>
       </div>
     </main>
