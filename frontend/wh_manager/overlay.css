@@ -95,28 +95,3 @@
 .btn-no:hover {
   background-color: #dc2626;
 }
-
-/* Styling to display no match found */
-.no-match-container{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-  margin-top: 5px;
-}
-.hidden{
-  display: none;
-}
-.no-match-elements{
-  width: 300px;
-  border: 1px solid var(--color-primary);
-}
-.frowned-face{
-  margin-top: 5px;
-  font-size: xx-large;
-  color: var(--color-primary);
-}
-.no-match-container p{
-  font-weight: bold;
-}

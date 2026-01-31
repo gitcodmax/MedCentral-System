@@ -1,7 +1,8 @@
-import { renderSidebar } from "./sidebar.js";
+import { renderSidebar, displayNoMatchFound } from "./sidebar.js";
 
 document.addEventListener('DOMContentLoaded', () => {
   renderSidebar()
+  displayNoMatchFound()
 
   const hospitalOrderData = {
     departments: [
@@ -102,21 +103,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const productGridElem = document.querySelector('.js-product-grid')
 
   //Display the products ihe page
-  const productsCatalogFragment = document.createDocumentFragment()
-  hospitalOrderData.catalog.forEach(product => {
-    const itemCardDiv = document.createElement('div')
-    itemCardDiv.className = 'item-card'
+  function displayProducts(catalog) {
+    const productsCatalogFragment = document.createDocumentFragment()
+    catalog.forEach(product => {
+      const itemCardDiv = document.createElement('div')
+      itemCardDiv.className = 'item-card'
 
-    let storageTempIcon = 'fa-solid fa-house-medical-circle-check'
-    if (product.tempZone === 'crt') {
-      storageTempIcon = `fas fa-thermometer-half`
-    } else if (product.tempZone === 'refrigerated') {
-      storageTempIcon = `fas fa-snowflake`
-    } else if (product.tempZone === 'frozen') {
-      storageTempIcon = `fas fa-icicles`
-    }
+      let storageTempIcon = 'fa-solid fa-house-medical-circle-check'
+      if (product.tempZone === 'crt') {
+        storageTempIcon = `fas fa-thermometer-half`
+      } else if (product.tempZone === 'refrigerated') {
+        storageTempIcon = `fas fa-snowflake`
+      } else if (product.tempZone === 'frozen') {
+        storageTempIcon = `fas fa-icicles`
+      }
 
-    itemCardDiv.innerHTML = `  
+      itemCardDiv.innerHTML = `  
       <div class="card-meta">
         <span class="item-sku">SKU: ${product.sku}</span>
         <span class="temp-pill"><i class="${storageTempIcon}"></i></span>
@@ -136,10 +138,13 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>        
     `
 
-    productsCatalogFragment.appendChild(itemCardDiv)
-  })
+      productsCatalogFragment.appendChild(itemCardDiv)
+    })
 
-  productGridElem.appendChild(productsCatalogFragment)
+    productGridElem.appendChild(productsCatalogFragment)
+  }
+
+  displayProducts(hospitalOrderData.catalog)
 
   productGridElem.addEventListener('click', (e) => {
     const btn = e.target.closest('button')
@@ -149,7 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btn.classList.contains('btn-add')) {
       hospitalOrderData.catalog.forEach(prd => {
         if (prd.id === btnProductId) {
-          console.log(prd)
           document.querySelector('.js-cart-list')
             .innerHTML += `
               <div class="cart-item">
@@ -175,4 +179,43 @@ document.addEventListener('DOMContentLoaded', () => {
       })
     }
   })
+
+  //Filtering logic
+  const searchBarElem = document.getElementById('catalogSearch')
+  const tempFilterElem = document.getElementById('tempFilter')
+  const noMatchElem = document.querySelector('.js-no-match-found')
+
+  function handleSearchTempFilter() {
+    const searchValue = searchBarElem.value.toLowerCase().trim()
+
+    const searchResult = hospitalOrderData.catalog.filter(prd => {
+      const searchMatch = prd.name.toLowerCase().includes(searchValue)
+        || prd.sku.toLowerCase().includes(searchValue)
+
+      const tempMatch = tempFilterElem.value === 'all' || prd.tempZone === tempFilterElem.value
+
+      return searchMatch && tempMatch
+    })
+
+    document.querySelector('.no-products')
+      .textContent = searchResult.length
+    productGridElem.innerHTML = ``
+
+    if(searchResult.length === 0){
+      noMatchElem.classList.remove('hidden')
+    }else{
+      displayProducts(searchResult)
+      noMatchElem.classList.add('hidden')
+    }
+  }
+
+  document.querySelector('.js-btn-reset')
+  .addEventListener('click', () => {
+    searchBarElem.value = ''
+    tempFilterElem.value = 'all'
+    handleSearchTempFilter()
+  })
+
+  searchBarElem.addEventListener('keyup', () => handleSearchTempFilter())
+  tempFilterElem.addEventListener('change', () => handleSearchTempFilter())
 })

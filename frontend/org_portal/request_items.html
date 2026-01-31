@@ -58,13 +58,19 @@
                 </select>
               </div>
 
-              <button class="btn-reset" title="Reset Filters">
+              <div class="show-no-products">
+                <p>Showing <span class="no-products">All</span> products</p>
+              </div>
+
+              <button class="btn-reset js-btn-reset" title="Reset Filters">
                 <i class="fas fa-undo"></i>
               </button>
             </div>
           </div>
 
           <div class="product-grid js-product-grid"></div>
+
+          <div class="no-match-container hidden js-no-match-found"></div>
         </section>
       </div>
     </main>

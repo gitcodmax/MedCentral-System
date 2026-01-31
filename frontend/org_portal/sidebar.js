@@ -58,3 +58,15 @@ export function renderSidebar() {
         .style.display = 'none'
     })
 }
+
+export function displayNoMatchFound(){
+  const noMatchElem = document.querySelector('.js-no-match-found')
+  if(noMatchElem){
+    noMatchElem.innerHTML = `
+      <div class="no-match-elements">
+        <i class="fa-solid fa-face-frown frowned-face"></i>
+        <p>No Match Found!!</p>
+      </div>         
+    `
+  }
+}
