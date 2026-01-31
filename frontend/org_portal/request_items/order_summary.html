@@ -27,10 +27,44 @@
       <section id="summaryView" class="view-section">
         <div class="summary-layout">
 
+          <div class="view-header">
+            <h2>Review Requisition</h2>
+            <p>Verify quantities and departmental allocations below.</p>
+          </div>
+
           <div class="items-review-container">
-            <div class="view-header">
-              <h2>Review Requisition</h2>
-              <p>Verify quantities and departmental allocations below.</p>
+
+            <div class="request-header-card">
+              <div class="request-identity">
+                <div class="id-badge-group">
+                  <span class="label">Requisition ID</span>
+                  <h2 id="summaryRequestId">REQ-2026-05521</h2>
+                </div>
+                <div class="status-pill-wrapper">
+                  <span class="status-pill draft">
+                    <i class="fas fa-pencil-alt"></i> Draft Mode
+                  </span>
+                </div>
+              </div>
+
+              <div class="request-meta-grid">
+                <div class="meta-item">
+                  <i class="far fa-calendar-alt"></i>
+                  <div class="meta-content">
+                    <span class="meta-label">Date Initiated</span>
+                    <span class="meta-value" id="summaryDate">Jan 31, 2026</span>
+                  </div>
+                </div>
+
+                <div class="meta-item border-left">
+                  <i class="fas fa-hospital-alt"></i>
+                  <div class="meta-content">
+                    <span class="meta-label">Primary Department</span>
+                    <span class="meta-value" id="summaryDefaultDept">General Ward</span>
+                  </div>
+                </div>
+
+              </div>
             </div>
 
             <table class="summary-table">
@@ -46,36 +80,24 @@
                   <th></th>
                 </tr>
               </thead>
-              <tbody id="summaryTableBody">
-                <tr class="summary-row">
-                  <td>
-                    <div class="item-info">
-                      <span class="row-sku">MED-001-P</span>
-                      <span class="row-name">Paracetamol 500mg</span>
-                      <span class="row-uom">per tablet</span>
-                    </div>
-                  </td>
-                  <td><span class="temp-pill ambient">Ambient</span></td>
-                  <td>
-                    <input type="number" class="table-qty" value="100">
-                  </td>
-                  <td class="price-col">KES 5.50</td>
-                  <td>
-                    <select class="table-dept">
-                      <option>General Ward</option>
-                      <option>ICU</option>
-                      <option selected>Pharmacy</option>
-                    </select>
-                  </td>
-                  <td class="subtotal-col">KES 550.00</td>
-                  <td>
-                    <button class="btn-remove-row" title="Remove Item">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
+              <tbody id="summaryTableBody"></tbody>
             </table>
+
+            <div id="deleteConfirmOverlay" class="delete-overlay">
+              <div class="delete-card">
+                <div class="delete-icon-circle">
+                  <i class="fas fa-trash-alt"></i>
+                </div>
+                <div class="delete-content">
+                  <h3>Remove Item?</h3>
+                  <p>Remove <span id="deleteItemName" class="highlight">Paracetamol 500mg</span> from the order?</p>
+                </div>
+                <div class="delete-actions">
+                  <button class="btn-cancel-delete js-btn-close-overlay">No, Keep it</button>
+                  <button class="btn-confirm-delete" id="finalDeleteBtn">Yes, Remove</button>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="submission-container">
@@ -94,7 +116,7 @@
               </div>
 
               <button class="btn-confirm-order">
-                Confirm & Submit Requisition
+                Confirm Requisition Details
               </button>
               <button class="btn-back-catalog">
                 <i class="fas fa-arrow-left"></i> Back to Catalog

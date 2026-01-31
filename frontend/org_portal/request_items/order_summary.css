@@ -8,7 +8,6 @@
 .summary-layout {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px;
   align-items: start;
 }
 
@@ -27,12 +26,95 @@
   font-size: 14px;
 }
 
+/* Request metadata styling */
+.request-header-card {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ID and Status Grouping */
+.request-identity {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.id-badge-group .label {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--color-quarantine);
+  text-transform: uppercase;
+  display: block;
+}
+
+.id-badge-group h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-secondary);
+  letter-spacing: -0.5px;
+}
+
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+/* Metadata Grid */
+.request-meta-grid {
+  display: flex;
+  gap: 32px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.meta-item i {
+  font-size: 18px;
+  color: var(--color-primary);
+}
+
+.meta-item.border-left {
+  padding-left: 32px;
+  border-left: 1px solid var(--color-quarantine);
+}
+
+.meta-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.meta-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-quarantine);
+  text-transform: uppercase;
+}
+
+.meta-value {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+
 /* Table Styling */
 .items-review-container {
   background: white;
   border-radius: 12px;
   overflow: hidden;
   padding: 10px;
+  margin-bottom: 20px;
 }
 
 .summary-table {
@@ -79,8 +161,12 @@
   font-style: italic;
 }
 
-.table-qty {
-  width: 70px;
+.row-storage{
+  text-transform: capitalize;
+}
+
+.row-qty {
+  width: 50px;
   padding: 8px;
   border: 1px solid var(--color-primary);
   border-radius: 6px;
@@ -88,22 +174,21 @@
   text-align: center;
 }
 
-.table-dept {
+.row-dept {
   padding: 8px;
   border: 1px solid var(--color-primary);
   border-radius: 6px;
   font-size: 13px;
-  width: 100%;
   background: #fff;
 }
 
-.price-col,
-.subtotal-col {
+.row-price,
+.row-subtotal {
   font-weight: 600;
   font-size: 14px;
 }
 
-.subtotal-col {
+.row-subtotal {
   color: var(--color-secondary);
   font-weight: 800;
 }
@@ -122,6 +207,100 @@
 .btn-remove-row:hover {
   color: white;
   background-color: red;
+}
+
+/* Styling to confirm removing an item from the  order summary */
+.delete-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(2px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.delete-overlay.active{
+  display: flex;
+}
+
+.delete-card {
+  background: white;
+  padding: 32px;
+  border-radius: 16px;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.delete-icon-circle {
+  width: 60px;
+  height: 60px;
+  background: #fee2e2;
+  color: #dc2626;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 24px;
+}
+
+.delete-content h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.delete-content p {
+  font-size: 14px;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.highlight {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.delete-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-cancel-delete {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid var(--color-primary);
+  background: transparent;
+  color: var(--color-primary);
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn-cancel-delete:hover{
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-confirm-delete {
+  flex: 1;
+  padding: 12px;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-confirm-delete:hover {
+  background: #b91c1c;
 }
 
 /* Checkout Card Styling */
@@ -219,7 +398,7 @@
   z-index: 1000;
 }
 
-.modal-overlay.active{
+.modal-overlay.active {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -416,5 +595,21 @@
 
   .checkout-card {
     position: static;
+  }
+
+  .request-header-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .request-meta-grid {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0;
+  }
+
+  .meta-item.border-left {
+    padding-left: 16px;
   }
 }
