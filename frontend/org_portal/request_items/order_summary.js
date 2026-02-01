@@ -1,19 +1,33 @@
 import { renderSidebar, renderRequestItemsNavbar } from "../sidebar.js";
+import { handleOverlay } from "../overlay.js";
 
 document.addEventListener('DOMContentLoaded', () => {
   renderSidebar()
   renderRequestItemsNavbar()
 
+  const hospitalDepartmentData = {
+    departments: [
+      { id: "dept_01", name: "General Ward" },
+      { id: "dept_02", name: "ICU (Intensive Care)" },
+      { id: "dept_03", name: "Emergency Room" },
+      { id: "dept_04", name: "Pharmacy Storage" },
+      { id: "dept_05", name: "Maternity Wing" },
+      { id: "dept_06", name: "Surgery / Theatre" },
+      { id: "dept_07", name: "Laboratory" },
+      { id: "dept_08", name: "Outpatient Clinic" },
+      { id: "dept_09", name: "Pediatrics" },
+      { id: "dept_10", name: "Radiology" }
+    ]
+  };
+
   const hospitalRequestData = {
-    // Top-Level Identifiers & Metadata
     requestId: "REQ-2026-05521",
     status: "draft",
     dateInitiated: "2026-01-31",
-    defaultDepartment: "General Ward",
-    totalOfAllItems: 110450.00, // Total now at the top level
+    defaultDepartment: "dept_01", // Using ID for General Ward
+    totalOfAllItems: 110450.00,
     currency: "KES",
 
-    // Comprehensive Line Items
     items: [
       {
         sku: "MED-001-P",
@@ -22,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         storageTemp: "ambient",
         quantity: 500,
         unitPrice: 5.50,
-        department: "General Ward",
+        department: "dept_01", // ID for General Ward
         subtotal: 2750.00
       },
       {
@@ -32,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         storageTemp: "refrigerated",
         quantity: 12,
         unitPrice: 3400.00,
-        department: "ICU",
+        department: "dept_02", // ID for ICU
         subtotal: 40800.00
       },
       {
@@ -42,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         storageTemp: "crt",
         quantity: 50,
         unitPrice: 1250.00,
-        department: "General Ward",
+        department: "dept_01", // ID for General Ward
         subtotal: 62500.00
       },
       {
@@ -52,11 +66,20 @@ document.addEventListener('DOMContentLoaded', () => {
         storageTemp: "ambient",
         quantity: 200,
         unitPrice: 22.00,
-        department: "Surgery",
+        department: "dept_06", // ID for Surgery / Theatre
         subtotal: 4400.00
       }
     ]
   };
+
+  document.getElementById('summaryRequestId')
+    .textContent = hospitalRequestData.requestId
+  document.getElementById('summaryDate')
+    .textContent = hospitalRequestData.dateInitiated
+  document.getElementById('summaryDefaultDept')
+    .textContent = getDeptName(hospitalRequestData.defaultDepartment)
+  document.getElementById('grandTotal')
+    .textContent = hospitalRequestData.totalOfAllItems
 
   const summaryTbodyElem = document.getElementById('summaryTableBody')
 
@@ -80,11 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </td>
       <td class="row-price">KES ${item.unitPrice}</td>
       <td>
-        <select class="row-dept">
-          <option>General Ward</option>
-          <option>ICU</option>
-          <option selected>Pharmacy</option>
-        </select>
+        <select class="row-dept js-row-dept-${item.sku}"></select>
       </td>
       <td class="row-subtotal">KES ${item.subtotal}</td>
       <td>
@@ -99,30 +118,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
   summaryTbodyElem.appendChild(summaryTbodyFragment)
 
+  //Display all the departments for the user to select
+  hospitalRequestData.items.forEach(item => {
+    hospitalDepartmentData.departments.forEach(dpt => {
+      document.querySelector(`.js-row-dept-${item.sku}`)
+        .innerHTML += `<option value=${dpt.id} 
+        ${item.department === dpt.id ? 'selected' : ''} 
+        >${dpt.name}</option>`
+    })
+  })
+
+  //Returns the name of a department
+  function getDeptName(deptId) {
+    const dept = hospitalDepartmentData.departments.find(dept => dept.id === deptId)     
+    return dept.name
+  }
+
+  const confirmOrderOverlayElem = document.getElementById('confirmationModal')
+  document.querySelector('.js-btn-confirm-order')
+    .addEventListener('click', () => {
+
+      handleOverlay(confirmOrderOverlayElem)
+    })
+
   //Remove an item from the order summary
   const deleteConfirmOverlayElem = document.getElementById('deleteConfirmOverlay')
   summaryTbodyElem.addEventListener('click', (e) => {
     const btn = e.target.closest('button')
-    const btnSku = btn.dataset.sku
     if (!btn) return;
+    const btnSku = btn.dataset.sku
 
     if (btn.classList.contains('js-btn-remove')) {
       hospitalRequestData.items.forEach(item => {
         if (btnSku === item.sku) {
-          deleteConfirmOverlayElem.classList.add('active')
+          handleOverlay(deleteConfirmOverlayElem)
           document.getElementById('deleteItemName')
             .textContent = item.name
-
-          document.querySelector('.js-btn-close-overlay')
-            .addEventListener('click', () => {
-              deleteConfirmOverlayElem.classList.remove('active')
-            })
-
-          deleteConfirmOverlayElem.addEventListener('click', (e) => {
-            if(e.target === deleteConfirmOverlayElem){
-              deleteConfirmOverlayElem.classList.remove('active')
-            }
-          })
         }
       })
     }

@@ -38,7 +38,7 @@
               <div class="request-identity">
                 <div class="id-badge-group">
                   <span class="label">Requisition ID</span>
-                  <h2 id="summaryRequestId">REQ-2026-05521</h2>
+                  <h2 id="summaryRequestId"></h2>
                 </div>
                 <div class="status-pill-wrapper">
                   <span class="status-pill draft">
@@ -52,7 +52,7 @@
                   <i class="far fa-calendar-alt"></i>
                   <div class="meta-content">
                     <span class="meta-label">Date Initiated</span>
-                    <span class="meta-value" id="summaryDate">Jan 31, 2026</span>
+                    <span class="meta-value" id="summaryDate"></span>
                   </div>
                 </div>
 
@@ -60,7 +60,7 @@
                   <i class="fas fa-hospital-alt"></i>
                   <div class="meta-content">
                     <span class="meta-label">Primary Department</span>
-                    <span class="meta-value" id="summaryDefaultDept">General Ward</span>
+                    <span class="meta-value" id="summaryDefaultDept"></span>
                   </div>
                 </div>
 
@@ -83,7 +83,7 @@
               <tbody id="summaryTableBody"></tbody>
             </table>
 
-            <div id="deleteConfirmOverlay" class="delete-overlay">
+            <div id="deleteConfirmOverlay" class="modal-overlay">
               <div class="delete-card">
                 <div class="delete-icon-circle">
                   <i class="fas fa-trash-alt"></i>
@@ -111,11 +111,11 @@
                 <hr>
                 <div class="total-row final-price">
                   <span>Estimated Total</span>
-                  <span class="grand-total" id="grandTotal">KES 550.00</span>
+                  <span class="grand-total" id="grandTotal"></span>
                 </div>
               </div>
 
-              <button class="btn-confirm-order">
+              <button class="btn-confirm-order js-btn-confirm-order">
                 Confirm Requisition Details
               </button>
               <button class="btn-back-catalog">
@@ -134,7 +134,7 @@
                     <p>Please perform a final check of the line items below.</p>
                   </div>
                 </div>
-                <button class="close-modal-btn">&times;</button>
+                <button class="close-modal-btn js-btn-close-overlay">&times;</button>
               </div>
 
               <div class="modal-body">
@@ -168,7 +168,7 @@
               </div>
 
               <div class="modal-footer">
-                <button class="btn-cancel">Make Changes</button>
+                <button class="btn-cancel js-btn-close-overlay">Make Changes</button>
                 <button class="btn-final-submit">
                   Yes, Submit to Warehouse
                 </button>
