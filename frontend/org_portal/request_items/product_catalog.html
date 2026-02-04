@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Request Items | Medical Portal</title>
+  <title>Product Catalog | Medical Portal</title>
 
   <link rel="stylesheet" href="/global.css">
   <link rel="stylesheet" href="/org_portal/sidebar.css">
@@ -15,79 +15,7 @@
 
 <body>
 
-  <div class="app-container">
-
-    <nav class="sidebar js-sidebar"></nav>
-
-    <main class="app-content">
-      <div class="main-content-logo"></div>
-
-      <nav class="view-navigation js-view-navigation"></nav>
-
-      <div class="app-grid-content">
-        <section class="catalog-container">
-          <div class="dept-selector-container">
-            <div class="dept-main-controls">
-              <div class="dept-input-group">
-                <i class="fas fa-hospital-user dept-icon"></i>
-                <div class="dept-label-wrapper">
-                  <label for="globalDeptSelect">Default Destination Department</label>
-                  <select id="globalDeptSelect" class="global-dept-dropdown">
-                    <option value="">Select Department...</option>
-                    <option value="general_ward">General Ward</option>
-                    <option value="icu">ICU (Intensive Care)</option>
-                    <option value="pharmacy">Pharmacy Storage</option>
-                    <option value="emergency">Emergency Room</option>
-                    <option value="maternity">Maternity Wing</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="dept-info-message">
-                <i class="fas fa-info-circle"></i>
-                <span>All items added will be assigned to this department by default. <strong>Individual items can be
-                    re-assigned in the Order Summary.</strong></span>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="filter-container">
-            <div class="search-group">
-              <label for="searchTerm">Search by Item Name/sku</label>
-              <i class="fas fa-search search-icon"></i>
-              <input type="text" id="catalogSearch" placeholder="Search by item name or SKU (e.g. MED-001)...">
-            </div>
-
-            <div class="filter-group">
-              <div class="filter-item">
-                <label for="tempFilter">Storage Temp</label>
-                <select id="tempFilter">
-                  <option value="all">All Temperatures</option>
-                  <option value="ambient">Ambient</option>
-                  <option value="crt">CRT</option>
-                  <option value="refrigerated">Refrigerated</option>
-                  <option value="frozen">Frozen</option>
-                </select>
-              </div>
-
-              <div class="show-no-products">
-                <p>Showing <span class="no-products">All</span> products</p>
-              </div>
-
-              <button class="btn-reset js-btn-reset" title="Reset Filters">
-                <i class="fas fa-undo"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="product-grid js-product-grid"></div>
-
-          <div class="no-match-container hidden js-no-match-found"></div>
-        </section>
-      </div>
-    </main>
-  </div>
+  <div class="app-container"></div>
 
   <script type="module" src="/org_portal/request_items/product_catalog.js"></script>
 </body>
