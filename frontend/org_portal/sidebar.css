@@ -213,10 +213,9 @@
   }
 }
 
-/* Styling for the navigation tabs */
+/* Styling for the navigation tabs in Request items page */
 .view-navigation {
   background: white;
-  border-bottom: 1px solid var(--border);
   padding: 0 24px;
   display: flex;
   align-items: center;
@@ -259,11 +258,18 @@
   color: white;
 }
 
+.nav-tab.active i{
+  color: var(--color-secondary);
+}
+
 .nav-tab.active {
   background: #eff6ff;
 }
 .nav-tab.active:hover{
   background-color: var(--color-secondary);
+}
+.nav-tab.active:hover i{
+  color: white;
 }
 
 /* The green line indicator under the active tab */
@@ -288,6 +294,9 @@
   border-radius: 10px;
   min-width: 18px;
   text-align: center;
+}
+.nav-tab.active .cart-badge{
+  background: var(--color-secondary);
 }
 
 /* Mobile Responsiveness */

@@ -73,18 +73,38 @@ export function displayNoMatchFound(){
 
 export function renderRequestItemsNavbar(){
   document.querySelector('.js-view-navigation')
+    .addEventListener('click', (e) => {
+      const btn = e.target.closest('button')
+      if(!btn) return;
+      
+      if(btn.classList.contains('js-catalog-nav')){
+        window.location.href = `/org_portal/request_items/product_catalog.html`
+      }else{
+        window.location.href = `/org_portal/request_items/order_summary.html`
+      }
+    })
+
+  document.querySelector('.js-view-navigation')
     .innerHTML = `
       <div class="nav-tabs">
-        <button class="nav-tab active" data-view="catalog">
+        <button class="nav-tab js-catalog-nav" data-view="catalog">
           <i class="fas fa-th-large"></i>
           <span>Product Catalog</span>
         </button>
 
-        <button class="nav-tab" data-view="summary">
+        <button class="nav-tab js-ord-sum-nav" data-view="summary">
           <i class="fas fa-clipboard-list"></i>
           <span>Order Summary</span>
           <span class="cart-badge" id="navCartCount">0</span>
         </button>
       </div>    
     `
+
+  if(window.location.href.includes('product_catalog')){
+    document.querySelector('.js-catalog-nav')
+      .classList.add('active')
+  }else{
+    document.querySelector('.js-ord-sum-nav')
+      .classList.add('active')
+  }
 }
