@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   };
 
+  // Mock data for the order summary page
   const hospitalRequestData = {
     requestId: "REQ-2026-05521",
     status: "draft",
@@ -78,13 +79,15 @@ document.addEventListener('DOMContentLoaded', () => {
     .textContent = hospitalRequestData.dateInitiated
   document.getElementById('summaryDefaultDept')
     .textContent = getDeptName(hospitalRequestData.defaultDepartment)
-  document.getElementById('grandTotal')
-    .textContent = hospitalRequestData.totalOfAllItems
+  document.querySelectorAll('.js-total-items')
+    .forEach(elem => elem.textContent = hospitalRequestData.items.length)
+  document.querySelectorAll('.js-grand-total')
+    .forEach(elem => elem.textContent = hospitalRequestData.totalOfAllItems)   
 
   const summaryTbodyElem = document.getElementById('summaryTableBody')
 
+  // Display the items in the table
   const summaryTbodyFragment = document.createDocumentFragment()
-
   hospitalRequestData.items.forEach(item => {
     const tblRow = document.createElement('tr')
     tblRow.className = 'summary-row'
@@ -99,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </td>
       <td class="row-storage">${item.storageTemp}</td>
       <td>
-        <input type="number" class="row-qty" value="${item.quantity}">
+        <input type="number" class="row-qty js-row-qty-${item.sku}" value="${item.quantity}" oninput="updateItemQuantity('${item.sku}', this.value)">
       </td>
       <td class="row-price">KES ${item.unitPrice}</td>
       <td>
@@ -130,14 +133,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //Returns the name of a department
   function getDeptName(deptId) {
-    const dept = hospitalDepartmentData.departments.find(dept => dept.id === deptId)     
+    const dept = hospitalDepartmentData.departments.find(dept => dept.id === deptId)
     return dept.name
   }
 
+  // Confirm the items in the order
   const confirmOrderOverlayElem = document.getElementById('confirmationModal')
   document.querySelector('.js-btn-confirm-order')
     .addEventListener('click', () => {
-
       handleOverlay(confirmOrderOverlayElem)
     })
 
@@ -158,4 +161,21 @@ document.addEventListener('DOMContentLoaded', () => {
       })
     }
   })
+
+  // Display the final order details for confirmation
+  const verificationGridElem = document.querySelector('.js-verification-grid')
+  hospitalRequestData.items.forEach(item => {
+    displayItemsforConfirmation(item)
+  })
+
+  function displayItemsforConfirmation(item) {
+    verificationGridElem.innerHTML += `
+      <div class="v-row"><span class="v-name">${item.name}</span></div>
+      <div class="v-row">
+        ${item.quantity} ${item.uom}
+      </div>
+      <div class="v-row"><span class="v-dept">${getDeptName(item.department)}</span></div>
+      <div class="v-row text-right"><span class="v-sub-total">KES ${item.subtotal}</span></div>
+    `
+  }
 })
