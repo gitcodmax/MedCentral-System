@@ -21,7 +21,6 @@ body {
 }
 
 /* Stock Alerts Styling (Container and Title Key) */
-
 .card-title-container {
     display: flex;
     justify-content: space-between;
@@ -117,4 +116,34 @@ body {
   }
   .no-match-container p{
     font-weight: bold;
+  }
+
+  /* Storage temperature color codes */
+.A {
+    background: #f59e0b;
+  }
+  
+  .R {
+    background: var(--color-primary);
+  }
+  
+  .F {
+    background: #6366f1;
+  }
+  
+  .C {
+    background: var(--color-secondary);
+  }
+  
+  .badge {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    color: white;
+    margin-right: 4px;
   }

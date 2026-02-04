@@ -1,0 +1,209 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+/* Toolbar */
+.table-toolbar {
+  background: white;
+  padding: 16px;
+  border-radius: 12px 12px 0 0;
+  border-bottom: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-box {
+  position: relative;
+  width: 300px;
+}
+
+.search-box i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-quarantine);
+}
+
+.search-box input {
+  width: 100%;
+  padding: 10px 10px 10px 35px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+/* Table Design */
+.table-container {
+  background: white;
+  border-radius: 0 0 12px 12px;
+  overflow-x: auto;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders-table th {
+  background: var(--color-primary);
+  padding: 16px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 800;
+  color: white;
+  text-transform: uppercase;
+}
+
+.orders-table td {
+  padding: 16px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 14px;
+}
+
+/* Stacking the IDs */
+.id-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.id-stack .req-id {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.id-stack .ord-id {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  width: fit-content;
+}
+
+/* Package Styling */
+.package-count {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.package-count i {
+  color: #94a3b8;
+}
+
+/* Updated Action Button */
+.btn-view-packages {
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-view-packages:hover {
+  background: #f8fafc;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.price-cell {
+  font-family: 'Courier New';
+  font-weight: 700;
+  color: var(--color-secondary);
+}
+
+.not-completed{
+  background-color: var(--color-quarantine);
+}
+
+/* Tablet and Small Desktop Adjustments */
+@media screen and (max-width: 1024px) {
+
+  .page-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+  }
+
+  .stats-overview {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+  }
+
+  .stat-card {
+      text-align: left;
+  }
+
+  .table-toolbar {
+      flex-direction: column;
+      gap: 16px;
+      padding: 12px;
+  }
+
+  .search-box {
+      width: 100%;
+  }
+
+  .filter-group {
+      width: 100%;
+      justify-content: space-between;
+  }
+
+  .table-container {
+      overflow-x: auto; 
+      -webkit-overflow-scrolling: touch;
+      border-radius: 8px;
+  }
+
+  .orders-table {
+      min-width: 900px;
+  }
+
+  .orders-table th, 
+  .orders-table td {
+      padding: 12px 10px;
+      font-size: 13px;
+  }
+
+  .id-stack .req-id {
+      font-size: 12px;
+  }
+
+  .btn-view-packages {
+      padding: 10px 14px;
+      width: 100%;
+      text-align: center;
+  }
+}
+
+.table-container::after {
+  content: '← Swipe to see more →';
+  display: block;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  padding: 8px;
+  background: #f8fafc;
+}
+
+@media screen and (min-width: 1025px) {
+  .table-container::after {
+      display: none;
+  }
+}

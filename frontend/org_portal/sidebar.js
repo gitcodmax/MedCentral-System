@@ -26,7 +26,7 @@ export function renderSidebar() {
         <a href="#"><i class="fas fa-list-ul"></i> <span class="page-name">Orders List</span></a>
       </li>
       <li>
-        <a href="#"><i class="fas fa-file-invoice"></i> <span class="page-name">Order Details</span></a>
+        <a href="#"><i class="fas fa-file-invoice"></i> <span class="page-name">Order History</span></a>
       </li>
       <li>
         <a href="#"><i class="fas fa-chart-bar"></i> <span class="page-name">Reports</span></a>
