@@ -7,8 +7,8 @@
   <title>Order History | MedCentral</title>
 
   <link rel="stylesheet" href="/global.css">
-  <!-- <link rel="stylesheet" href="/org_portal/sidebar.css">
-  <link rel="stylesheet" href="/org_portal/org_portal_global.css"> -->
+  <link rel="stylesheet" href="/org_portal/sidebar.css">
+  <link rel="stylesheet" href="/org_portal/org_portal_global.css">
   <link rel="stylesheet" href="/org_portal/ord_history.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -17,107 +17,115 @@
 <body>
 
   <div class="app-container">
-    <section id="orderDetailsPage" class="view-section">
-      <div class="page-header">
-        <div>
-          <h1>Requisition & Order History</h1>
-          <p>Track the lifecycle of your medical supply requests.</p>
-        </div>
-      </div>
+    <nav class="sidebar js-sidebar"></nav>
 
-      <div class="table-toolbar">
-        <div class="search-box">
-          <i class="fas fa-search"></i>
-          <input type="text" placeholder="Search by ID or Department...">
-        </div>
-        <div class="filter-group">
-          <select class="filter-select">
-            <option>All Statuses</option>
-            <option>Draft</option>
-            <option>Approved / Unpaid</option>
-            <option>Paid</option>
-            <option>Delivered</option>
-          </select>
-          <button class="btn-export">
-            <i class="fas fa-file-download"></i> Export CSV
-          </button>
-        </div>
-      </div>
+    <main class="app-content">
+      <div class="main-content-logo"></div>
 
-      <div class="table-container">
-        <table class="orders-table">
+      <section id="orderDetailsPage" class="view-section">
+        <div class="page-header">
+          <div>
+            <h2>Requisition & Order History</h2>
+            <p>Track the lifecycle of your medical supply requests.</p>
+          </div>
+        </div>
+
+        <div class="table-toolbar">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search by ID or Department...">
+          </div>
+          <div class="filter-group">
+            <select class="filter-select">
+              <option>All Statuses</option>
+              <option>Draft</option>
+              <option>Approved / Unpaid</option>
+              <option>Paid</option>
+              <option>Delivered</option>
+            </select>
+            <button class="btn-export">
+              <i class="fas fa-file-download"></i> Export CSV
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="orders-table">
             <thead>
-                <tr>
-                    <th>Reference IDs</th>
-                    <th>Packages</th>
-                    <th>Date Initiated</th>
-                    <th>Payment Date</th>
-                    <th>Delivery Date</th>
-                    <th>Total Value</th>
-                    <th>Completed</th>
-                    <th>Actions</th>
-                </tr>
+              <tr>
+                <th>Reference IDs</th>
+                <th>Packages</th>
+                <th>Date Initiated</th>
+                <th>Payment Date</th>
+                <th>Delivery Date</th>
+                <th>Total Value</th>
+                <th>Completed</th>
+                <th>Actions</th>
+              </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>
-                        <div class="id-stack">
-                            <span class="req-id" title="Request ID">REQ-2026-05521</span>
-                            <span class="ord-id" title="Order ID">ORD-99820</span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="package-count">
-                            <span class="badge A">A</span>
-                            <span class="badge F">F</span>
-                            <span class="badge C">C</span>
-                        </div>
-                    </td>
-                    <td>Jan 31, 2026</td>
-                    <td>Feb 01, 2026</td>
-                    <td>Feb 03, 2026</td>
-                    <td class="price-cell">KES 110,450</td>
-                    <td>
-                      <span class="badge A">A</span>
-                      <span class="badge F">F</span>
-                      <span class="badge C">C</span>
-                    </td>
-                    <td>
-                        <button class="btn-view-packages" onclick="viewPackages('REQ-2026-05521')">
-                            View Packages
-                        </button>
-                    </td>
-                </tr>
-    
-                <tr>
-                    <td>
-                        <div class="id-stack">
-                            <span class="req-id">REQ-2026-05540</span>
-                            <span class="null-value">No Order ID Yet</span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="package-count">
-                            <span class="badge R">R</span>
-                        </div>
-                    </td>
-                    <td>Feb 02, 2026</td>
-                    <td><span class="null-value">Unpaid</span></td>
-                    <td><span class="null-value">Not Dispatched</span></td>
-                    <td class="price-cell">KES 45,200</td>
-                    <td>
-                      <span class="badge R not-completed">R</span>
-                    </td>
-                    <td>
-                        <button class="btn-view-packages">View Packages</button>
-                    </td>
-                </tr>
+              <tr>
+                <td>
+                  <div class="id-stack">
+                    <span class="req-id" title="Request ID">REQ-2026-05521</span>
+                    <span class="ord-id" title="Order ID">ORD-99820</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="package-count">
+                    <span class="badge A">A</span>
+                    <span class="badge F">F</span>
+                    <span class="badge C">C</span>
+                  </div>
+                </td>
+                <td>Jan 31, 2026</td>
+                <td>Feb 01, 2026</td>
+                <td>Feb 03, 2026</td>
+                <td class="price-cell">KES 110,450</td>
+                <td>
+                  <span class="badge A">A</span>
+                  <span class="badge F">F</span>
+                  <span class="badge C">C</span>
+                </td>
+                <td>
+                  <button class="btn-view-packages" onclick="viewPackages('REQ-2026-05521')">
+                    View Packages
+                  </button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="id-stack">
+                    <span class="req-id">REQ-2026-05540</span>
+                    <span class="null-value">No Order ID Yet</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="package-count">
+                    <span class="badge R">R</span>
+                  </div>
+                </td>
+                <td>Feb 02, 2026</td>
+                <td><span class="null-value">Unpaid</span></td>
+                <td><span class="null-value">Not Dispatched</span></td>
+                <td class="price-cell">KES 45,200</td>
+                <td>
+                  <span class="badge R not-completed">R</span>
+                </td>
+                <td>
+                  <button class="btn-view-packages">View Packages</button>
+                </td>
+              </tr>
             </tbody>
-        </table>
-    </div>
-    </section>
+          </table>
+        </div>
+      </section>
+    </main>
 
   </div>
+
+  <script type="module" src="/org_portal/ord_history.js"></script>
 </body>
 
 </html>
