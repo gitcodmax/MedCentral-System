@@ -1,5 +1,6 @@
 import { renderSidebar } from "../sidebar.js";
 import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
+import {getStorageTempIcon} from "../../global.js"
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -260,17 +261,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const orderCard = document.createElement('div')
     orderCard.className = 'dispatch-card js-dispatch-card'
 
-    let storageTempIcon = 'fa-solid fa-house-medical-circle-check'
-    if (pkg.storageTemp === 'crt') {
-      storageTempIcon = `fas fa-thermometer-half`
-    } else if (pkg.storageTemp === 'refrigerated') {
-      storageTempIcon = `fas fa-snowflake`
-    } else if (pkg.storageTemp === 'frozen') {
-      storageTempIcon = `fas fa-icicles`
-    }
-
     orderCard.innerHTML = `
-        <div class="card-badge"><i class="${storageTempIcon}"></i></div>
+        <div class="card-badge"><i class="${getStorageTempIcon(pkg.storageTemp)}"></i></div>
         <div class="card-main">
           <div class="order-meta">
             <span class="order-no">${order.orderId}</span><span class="package-id">${pkg['packageId']} (${pkg.storageTemp})</span>

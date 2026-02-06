@@ -1,4 +1,5 @@
 import { renderSidebar } from "./sidebar.js";
+import {getStorageTempIcon} from "../global.js"
 
 document.addEventListener('DOMContentLoaded', () => {
   renderSidebar()
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
       totalValue: 842000.00,
       packages: [
         {
-          packageId: "PKG-6100-A", storageTemp: "Frozen", status: "dispatched",
+          packageId: "PKG-6100-A", storageTemp: "frozen", status: "dispatched",
           items: [
             { name: "Fresh Frozen Plasma", quantity: 10, uom: "unit" },
             { name: "Cryoprecipitate", quantity: 5, uom: "unit" },
@@ -22,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         },
         {
-          packageId: "PKG-6100-B", storageTemp: "Refrigerated", status: "packed",
+          packageId: "PKG-6100-B", storageTemp: "refrigerated", status: "packed",
           items: [
             { name: "Insulin Aspart", quantity: 50, uom: "vial" },
             { name: "Tetanus Antitoxin", quantity: 20, uom: "ampoule" },
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         },
         {
-          packageId: "PKG-6100-C", storageTemp: "Ambient", status: "processing",
+          packageId: "PKG-6100-C", storageTemp: "ambient", status: "processing",
           items: [
             { name: "Surgical Gowns", quantity: 200, uom: "unit" },
             { name: "Sterile Drape Sheets", quantity: 150, uom: "unit" },
@@ -40,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         },
         {
-          packageId: "PKG-6100-D", storageTemp: "Crt", status: "approved",
+          packageId: "PKG-6100-D", storageTemp: "crt", status: "approved",
           items: [
             { name: "Saline 0.9% 1L", quantity: 100, uom: "bag" },
             { name: "Ringer's Lactate 500ml", quantity: 80, uom: "bag" },
@@ -59,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
       totalValue: 12500.00,
       packages: [
         {
-          packageId: "PKG-6105-A", storageTemp: "Ambient", status: "completed",
+          packageId: "PKG-6105-A", storageTemp: "ambient", status: "completed",
           items: [{ name: "Hand Sanitizer 5L", quantity: 5, uom: "jerrycan" }]
         }
       ]
@@ -73,14 +74,14 @@ document.addEventListener('DOMContentLoaded', () => {
       totalValue: 95400.00,
       packages: [
         {
-          packageId: "PKG-6110-A", storageTemp: "Refrigerated", status: "dispatched",
+          packageId: "PKG-6110-A", storageTemp: "refrigerated", status: "dispatched",
           items: [
             { name: "Atracurium Injection", quantity: 50, uom: "ampoule" },
             { name: "Propofol 1% 20ml", quantity: 100, uom: "vial" }
           ]
         },
         {
-          packageId: "PKG-6110-B", storageTemp: "Crt", status: "dispatched",
+          packageId: "PKG-6110-B", storageTemp: "crt", status: "dispatched",
           items: [
             { name: "Cannula 20G", quantity: 200, uom: "unit" },
             { name: "IV Giving Sets", quantity: 150, uom: "unit" }
@@ -97,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
       totalValue: 245000.00,
       packages: [
         {
-          packageId: "PKG-6120-A", storageTemp: "Ambient", status: "pending",
+          packageId: "PKG-6120-A", storageTemp: "ambient", status: "pending",
           items: [
             { name: "Examination Gloves (M)", quantity: 50, uom: "box" },
             { name: "Examination Gloves (L)", quantity: 50, uom: "box" },
@@ -106,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         },
         {
-          packageId: "PKG-6120-R", storageTemp: "Refrigerated", status: "pending",
+          packageId: "PKG-6120-R", storageTemp: "refrigerated", status: "pending",
           items: [
             { name: "Povidone Iodine 500ml", quantity: 20, uom: "bottle" },
             { name: "Hydrogen Peroxide", quantity: 10, uom: "bottle" },
@@ -115,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         },
         {
-          packageId: "PKG-6120-C", storageTemp: "Crt", status: "pending",
+          packageId: "PKG-6120-C", storageTemp: "crt", status: "pending",
           items: [
             { name: "Gauze Swabs 10x10", quantity: 100, uom: "pack" },
             { name: "Crepe Bandage 10cm", quantity: 50, uom: "roll" },
@@ -134,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
       totalValue: 56000.00,
       packages: [
         {
-          packageId: "PKG-6130-A", storageTemp: "Frozen", status: "delayed",
+          packageId: "PKG-6130-A", storageTemp: "frozen", status: "delayed",
           items: [
             { name: "Yellow Fever Vaccine", quantity: 100, uom: "vial" },
             { name: "Oral Polio Vaccine", quantity: 150, uom: "vial" },
@@ -153,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
       totalValue: 12000.00,
       packages: [
         {
-          packageId: "PKG-6140-A", storageTemp: "Ambient", status: "delivered with issues",
+          packageId: "PKG-6140-A", storageTemp: "ambient", status: "delivered with issues",
           items: [{ name: "Patient Files", quantity: 500, uom: "unit" }]
         }
       ]
@@ -167,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
       totalValue: 312000.00,
       packages: [
         {
-          packageId: "PKG-6150-A", storageTemp: "Refrigerated", status: "packed",
+          packageId: "PKG-6150-A", storageTemp: "refrigerated", status: "packed",
           items: [
             { name: "Lab Reagent Kit Alpha", quantity: 4, uom: "kit" },
             { name: "Lab Reagent Kit Beta", quantity: 2, uom: "kit" },
@@ -176,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         },
         {
-          packageId: "PKG-6150-B", storageTemp: "Ambient", status: "packed",
+          packageId: "PKG-6150-B", storageTemp: "ambient", status: "packed",
           items: [
             { name: "Microscope Slides", quantity: 10, uom: "box" },
             { name: "Glass Beakers 250ml", quantity: 20, uom: "unit" },
@@ -185,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         },
         {
-          packageId: "PKG-6150-C", storageTemp: "Crt", status: "packed",
+          packageId: "PKG-6150-C", storageTemp: "crt", status: "packed",
           items: [
             { name: "Distilled Water 5L", quantity: 10, uom: "jerrycan" },
             { name: "Formalin 10% Solution", quantity: 5, uom: "bottle" },
@@ -194,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         },
         {
-          packageId: "PKG-6150-F", storageTemp: "Frozen", status: "approved",
+          packageId: "PKG-6150-F", storageTemp: "frozen", status: "approved",
           items: [
             { name: "Lab Coats (L)", quantity: 10, uom: "unit" },
             { name: "Biohazard Bags (L)", quantity: 500, uom: "unit" },
@@ -213,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
       totalValue: 15000.00,
       packages: [
         {
-          packageId: "PKG-6160-A", storageTemp: "Ambient", status: "rejected",
+          packageId: "PKG-6160-A", storageTemp: "ambient", status: "rejected",
           items: [{ name: "Printer Toner (Black)", quantity: 3, uom: "cartridge" }]
         }
       ]
@@ -227,14 +228,14 @@ document.addEventListener('DOMContentLoaded', () => {
       totalValue: 48000.00,
       packages: [
         {
-          packageId: "PKG-6170-A", storageTemp: "Ambient", status: "processing",
+          packageId: "PKG-6170-A", storageTemp: "ambient", status: "processing",
           items: [
             { name: "Bed Sheets (Blue)", quantity: 100, uom: "unit" },
             { name: "Pillow Cases", quantity: 100, uom: "unit" }
           ]
         },
         {
-          packageId: "PKG-6170-F", storageTemp: "Frozen", status: "processing",
+          packageId: "PKG-6170-F", storageTemp: "frozen", status: "processing",
           items: [
             { name: "Patient Gowns", quantity: 50, uom: "unit" },
             { name: "Blankets (Wool)", quantity: 30, uom: "unit" }
@@ -251,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
       totalValue: 8800.00,
       packages: [
         {
-          packageId: "PKG-6180-A", storageTemp: "Crt", status: "completed",
+          packageId: "PKG-6180-A", storageTemp: "crt", status: "completed",
           items: [
             { name: "Dexamethasone 4mg", quantity: 100, uom: "ampoule" },
             { name: "Furosemide 20mg", quantity: 50, uom: "ampoule" }
@@ -268,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
       totalValue: 192000.00,
       packages: [
         {
-          packageId: "PKG-6190-A", storageTemp: "Refrigerated", status: "approved",
+          packageId: "PKG-6190-A", storageTemp: "refrigerated", status: "approved",
           items: [
             { name: "Human Albumin 20%", quantity: 10, uom: "vial" },
             { name: "Immunoglobulin G", quantity: 5, uom: "vial" },
@@ -277,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         },
         {
-          packageId: "PKG-6190-B", storageTemp: "Ambient", status: "approved",
+          packageId: "PKG-6190-B", storageTemp: "ambient", status: "approved",
           items: [
             { name: "Disposable Syringes 5ml", quantity: 1000, uom: "unit" },
             { name: "Disposable Syringes 10ml", quantity: 1000, uom: "unit" },
@@ -296,13 +297,14 @@ document.addEventListener('DOMContentLoaded', () => {
       totalValue: 2400.00,
       packages: [
         {
-          packageId: "PKG-6200-A", storageTemp: "Ambient", status: "packed",
+          packageId: "PKG-6200-A", storageTemp: "ambient", status: "packed",
           items: [{ name: "Hand Soap 500ml", quantity: 24, uom: "bottle" }]
         }
       ]
     }
   ];
 
+  //Display the requests/orders in the table
   const ordTbodyFragment = document.createDocumentFragment()
   orderHistoryData.forEach((reqOrd) => {
     const tblRow = document.createElement('tr')
@@ -329,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <span class="badge C">C</span>
       </td>
       <td>
-        <button class="btn-view-packages">
+        <button class="btn-view-packages" data-req-id=${reqOrd.requestId}>
           View Packages
         </button>
       </td>
@@ -341,6 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('orderTableBody')
     .appendChild(ordTbodyFragment)
 
+  //Display the packages badges
   document.querySelectorAll('.js-pkg-count')
     .forEach(pkgColElem => {
       const elemReqId = pkgColElem.dataset.reqId;
@@ -348,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
       orderHistoryData.forEach(reqOrd => {
         if (elemReqId === reqOrd.requestId) {
           reqOrd.packages.forEach(pkg => {
-            const storageChar = pkg.storageTemp[0]
+            const storageChar = pkg.storageTemp[0].toUpperCase()
             pkgColElem.innerHTML += `
               <span class="badge ${storageChar}">${storageChar}</span>
             `
@@ -364,13 +367,79 @@ document.addEventListener('DOMContentLoaded', () => {
       const btn = e.target.closest('button')
       if (!btn) return;
 
+      //Open the drawer to view the packages details
       if (btn.classList.contains('btn-view-packages')) {
+        const btnReqId = btn.dataset.reqId
+        const drawerBodyElem = document.querySelector('.js-drawer-body')
+        drawerBodyElem.innerHTML = ``
         drawerElem.classList.add('open')
 
+        //Display the packages cards
+        orderHistoryData.forEach(ordReq => {
+          if(btnReqId === ordReq.requestId){
+            document.querySelector('.js-no-pkg')
+              .textContent = ordReq.packages.length
+            document.getElementById('drawerRequestId')
+              .textContent = btnReqId
+
+            ordReq.packages.forEach(pkg => {
+              drawerBodyElem.innerHTML += `
+                  <div class="package-group ${pkg.storageTemp[0].toUpperCase()}">
+                    <div class="package-meta">
+                      <div class="pkg-badge">
+                        <i class="${getStorageTempIcon(pkg.storageTemp)}"></i> ${pkg.storageTemp}
+                      </div>
+                      <span class="pkg-status">${pkg.status}</span>
+                    </div>
+                    <div class="package-id-strip">ID: ${pkg.packageId}</div>
+
+                    <ul class="pkg-items-list" data-pkg-id=${pkg.packageId}></ul>
+                  </div>
+                `
+            })
+          }
+        })
+
+        //Closing the packages drawer
         document.querySelector('.js-btn-close-drawer')
           .addEventListener('click', () => {
             drawerElem.classList.remove('open')
           })
+
+        //Display the items in the packages
+        let totalItems = 0
+        document.querySelectorAll('.pkg-items-list')
+          .forEach(list => {
+            const listPkgId = list.dataset.pkgId
+
+            orderHistoryData.forEach(ordReq => {
+              ordReq.packages.forEach(pkg => {
+                if(listPkgId === pkg.packageId){
+                  totalItems += pkg.items.length
+                  pkg.items.forEach(item => {
+                    let uomMod = ``
+                    if(item.quantity > 1 && item.uom !== 'box'){
+                      uomMod = `${item.uom}s`
+                    }else if(item.quantity > 1 && item.uom === 'box'){
+                      uomMod = `${item.uom}es`
+                    }else{
+                      uomMod = item.uom
+                    }
+                    
+                    list.innerHTML += `
+                      <li>
+                        <span class="item-name">${item.name}</span>
+                        <span class="item-qty">${item.quantity} ${uomMod}</span>
+                      </li>
+                    `
+                  })
+                }
+              })
+            })
+          })
+
+        document.querySelector('.js-no-total-items')
+          .textContent = totalItems
       }
     })
 
