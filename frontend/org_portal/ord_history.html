@@ -50,7 +50,7 @@
         </div>
 
         <div class="table-container">
-          <table class="orders-table">
+          <table class="orders-table js-ord-tbl">
             <thead>
               <tr>
                 <th>Reference IDs</th>
@@ -63,61 +63,7 @@
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div class="id-stack">
-                    <span class="req-id" title="Request ID">REQ-2026-05521</span>
-                    <span class="ord-id" title="Order ID">ORD-99820</span>
-                  </div>
-                </td>
-                <td>
-                  <div class="package-count">
-                    <span class="badge A">A</span>
-                    <span class="badge F">F</span>
-                    <span class="badge C">C</span>
-                  </div>
-                </td>
-                <td>Jan 31, 2026</td>
-                <td>Feb 01, 2026</td>
-                <td>Feb 03, 2026</td>
-                <td class="price-cell">KES 110,450</td>
-                <td>
-                  <span class="badge A">A</span>
-                  <span class="badge F">F</span>
-                  <span class="badge C">C</span>
-                </td>
-                <td>
-                  <button class="btn-view-packages">
-                    View Packages
-                  </button>
-                </td>
-              </tr>
-
-              <tr>
-                <td>
-                  <div class="id-stack">
-                    <span class="req-id">REQ-2026-05540</span>
-                    <span class="null-value">No Order ID Yet</span>
-                  </div>
-                </td>
-                <td>
-                  <div class="package-count">
-                    <span class="badge R">R</span>
-                  </div>
-                </td>
-                <td>Feb 02, 2026</td>
-                <td><span class="null-value">Unpaid</span></td>
-                <td><span class="null-value">Not Dispatched</span></td>
-                <td class="price-cell">KES 45,200</td>
-                <td>
-                  <span class="badge R not-completed">R</span>
-                </td>
-                <td>
-                  <button class="btn-view-packages">View Packages</button>
-                </td>
-              </tr>
-            </tbody>
+            <tbody id="orderTableBody"></tbody>
           </table>
         </div>
 
@@ -130,7 +76,7 @@
               <p id="drawerRequestId">REQ-2026-05521</p>          
             </div>
             <div class="header-titles-right">
-              <button class="btn-close-drawer">&times;</button>
+              <button class="btn-close-drawer js-btn-close-drawer">&times;</button>
               <div class="total-items">Total Items: <span class="no-total-items">3</span></div>
             </div>
           </div>
