@@ -88,7 +88,7 @@
                   <span class="badge C">C</span>
                 </td>
                 <td>
-                  <button class="btn-view-packages" onclick="viewPackages('REQ-2026-05521')">
+                  <button class="btn-view-packages">
                     View Packages
                   </button>
                 </td>
@@ -119,6 +119,61 @@
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <div id="packageDrawerOverlay" class="drawer-overlay" onclick="closePackageDrawer()"></div>
+
+        <div id="packageDrawer" class="side-drawer">
+          <div class="drawer-header">
+            <div class="header-titles">
+              <h2> <span class="no-pkg">2</span> Order Packages</h2>
+              <p id="drawerRequestId">REQ-2026-05521</p>          
+            </div>
+            <div class="header-titles-right">
+              <button class="btn-close-drawer">&times;</button>
+              <div class="total-items">Total Items: <span class="no-total-items">3</span></div>
+            </div>
+          </div>
+
+          <div class="drawer-body">
+            <div class="package-group C">
+              <div class="package-meta">
+                <div class="pkg-badge">
+                  <i class="fas fa-thermometer-half"></i> Crt
+                </div>
+                <span class="pkg-status in-transit">In Transit</span>
+              </div>
+              <div class="package-id-strip">ID: PKG-001-COLD</div>
+
+              <ul class="pkg-items-list">
+                <li>
+                  <span class="item-name">Insulin Glargine</span>
+                  <span class="item-qty">12 vials</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="package-group A">
+              <div class="package-meta">
+                <div class="pkg-badge">
+                  <i class="fas fa-sun"></i> Ambient
+                </div>
+                <span class="pkg-status delivered">Delivered</span>
+              </div>
+              <div class="package-id-strip">ID: PKG-002-AMB</div>
+
+              <ul class="pkg-items-list">
+                <li>
+                  <span class="item-name">Paracetamol 500mg</span>
+                  <span class="item-qty">500 tablets</span>
+                </li>
+                <li>
+                  <span class="item-name">Surgical Gloves (M)</span>
+                  <span class="item-qty">200 pairs</span>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
     </main>
