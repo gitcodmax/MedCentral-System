@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         },
         {
-          packageId: "PKG-6120-R", storageTemp: "refrigerated", status: "pending",
+          packageId: "PKG-6120-R", storageTemp: "refrigerated", status: "completed",
           items: [
             { name: "Povidone Iodine 500ml", quantity: 20, uom: "bottle" },
             { name: "Hydrogen Peroxide", quantity: 10, uom: "bottle" },
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         },
         {
-          packageId: "PKG-6150-B", storageTemp: "ambient", status: "packed",
+          packageId: "PKG-6150-B", storageTemp: "ambient", status: "dispatched",
           items: [
             { name: "Microscope Slides", quantity: 10, uom: "box" },
             { name: "Glass Beakers 250ml", quantity: 20, uom: "unit" },
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         },
         {
-          packageId: "PKG-6150-C", storageTemp: "crt", status: "packed",
+          packageId: "PKG-6150-C", storageTemp: "crt", status: "completed",
           items: [
             { name: "Distilled Water 5L", quantity: 10, uom: "jerrycan" },
             { name: "Formalin 10% Solution", quantity: 5, uom: "bottle" },
@@ -326,9 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <td>${!reqOrd.deliveryDate ? '---' : reqOrd.deliveryDate}</td>
       <td class="price-cell">KES ${reqOrd.totalValue}</td>
       <td>
-        <span class="badge A">A</span>
-        <span class="badge F">F</span>
-        <span class="badge C">C</span>
+        <div class="package-count js-pkg-count js-pkg-count-complete" data-req-id=${reqOrd.requestId}></div>
       </td>
       <td>
         <button class="btn-view-packages" data-req-id=${reqOrd.requestId}>
@@ -353,12 +351,21 @@ document.addEventListener('DOMContentLoaded', () => {
           reqOrd.packages.forEach(pkg => {
             const storageChar = pkg.storageTemp[0].toUpperCase()
             pkgColElem.innerHTML += `
-              <span class="badge ${storageChar}">${storageChar}</span>
+              <span class="badge ${getGreyBadge(pkgColElem, pkg.status)} ${storageChar}">${storageChar}</span>
             `
           })
         }
       })
     })
+
+  //Display grey badge if package status is not yet completed
+  function getGreyBadge(elem, status){
+    if(elem.classList.contains('js-pkg-count-complete')){         
+      if(status !== 'completed'){
+        return 'grey-badge'
+      }
+    }
+  }
 
   //Opening and closing the drawer
   const drawerElem = document.getElementById('packageDrawer')

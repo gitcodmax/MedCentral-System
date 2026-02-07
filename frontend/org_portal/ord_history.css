@@ -233,6 +233,10 @@
   margin-bottom: 12px;
 }
 
+.grey-badge{
+  background: grey;
+}
+
 .pkg-badge {
   font-size: 11px;
   font-weight: 800;
