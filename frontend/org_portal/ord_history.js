@@ -1,5 +1,5 @@
 import { renderSidebar } from "./sidebar.js";
-import {getStorageTempIcon} from "../global.js"
+import { getStorageTempIcon } from "../global.js"
 
 document.addEventListener('DOMContentLoaded', () => {
   renderSidebar()
@@ -359,12 +359,24 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
   //Display grey badge if package status is not yet completed
-  function getGreyBadge(elem, status){
-    if(elem.classList.contains('js-pkg-count-complete')){         
-      if(status !== 'completed'){
+  function getGreyBadge(elem, status) {
+    if (elem.classList.contains('js-pkg-count-complete')) {
+      if (status !== 'completed') {
         return 'grey-badge'
       }
     }
+  }
+
+  function toggleAdvancedFilters() {
+    const filters = document.getElementById('advancedFilters');
+    const isVisible = filters.style.display === 'block';
+    filters.style.display = isVisible ? 'none' : 'block';
+  }
+
+  toggleAdvancedFilters()
+
+  function updatePkgLabel(val) {
+    document.getElementById('pkgLabel').innerText = `Up to ${val} Packages`;
   }
 
   //Opening and closing the drawer
@@ -383,7 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         //Display the packages cards
         orderHistoryData.forEach(ordReq => {
-          if(btnReqId === ordReq.requestId){
+          if (btnReqId === ordReq.requestId) {
             document.querySelector('.js-no-pkg')
               .textContent = ordReq.packages.length
             document.getElementById('drawerRequestId')
@@ -421,18 +433,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             orderHistoryData.forEach(ordReq => {
               ordReq.packages.forEach(pkg => {
-                if(listPkgId === pkg.packageId){
+                if (listPkgId === pkg.packageId) {
                   totalItems += pkg.items.length
                   pkg.items.forEach(item => {
                     let uomMod = ``
-                    if(item.quantity > 1 && item.uom !== 'box'){
+                    if (item.quantity > 1 && item.uom !== 'box') {
                       uomMod = `${item.uom}s`
-                    }else if(item.quantity > 1 && item.uom === 'box'){
+                    } else if (item.quantity > 1 && item.uom === 'box') {
                       uomMod = `${item.uom}es`
-                    }else{
+                    } else {
                       uomMod = item.uom
                     }
-                    
+
                     list.innerHTML += `
                       <li>
                         <span class="item-name">${item.name}</span>
