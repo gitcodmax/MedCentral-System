@@ -5,223 +5,237 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Incoming Packages | MedCentral</title>
+
   <link rel="stylesheet" href="/global.css">
+  <link rel="stylesheet" href="/org_portal/org_portal_global.css">
+  <link rel="stylesheet" href="/org_portal/sidebar.css">
   <link rel="stylesheet" href="/org_portal/receive_ord.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
 
-  <main class="dashboard-container">
-    <header class="page-header">
-      <div>
-        <h1>Incoming Packages – Pending Confirmation</h1>
-        <p>Verify and log medical supplies upon arrival at the loading dock.</p>
-      </div>
+  <div class="app-container">
+    <nav class="sidebar js-sidebar"></nav>
 
-      <div class="summary-counter">
-        <span class="count-value">12</span>
-        <span class="count-label">Packages Awaiting Confirmation</span>
-      </div>
-    </header>
+    <main class="app-content">
+      <div class="main-content-logo"></div>
 
-    <section class="table-card">
-      <table class="packages-table">
-        <thead>
-          <tr>
-            <th>Package ID</th>
-            <th>Order ID</th>
-            <th>Delivery Date & Time</th>
-            <th class="text-right">Details</th>
-            <th class="text-right">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="id-tag">PKG-99201</span></td>
-            <td><span class="id-tag secondary">ORD-5542</span></td>
-            <td>Feb 09, 2026 | 10:30 AM</td>
-            <td class="text-right">
-              <button class="view-pkg-btn"><i class="fas fa-eye"></i> View Package Details</button>
-            </td>
-            <td class="text-right">
-              <button class="btn-primary">Receive Package</button>
-            </td>
-          </tr>
-          <tr>
-            <td><span class="id-tag">PKG-99205</span></td>
-            <td><span class="id-tag secondary">ORD-5542</span></td>
-            <td>Feb 09, 2026 | 10:32 AM</td>
-            <td class="text-right">
-              <button class="view-pkg-btn"><i class="fas fa-eye"></i> View Package Details</button>
-            </td>
-            <td class="text-right">
-              <button class="btn-primary">Receive Package</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-  </main>
+      <div class="page-content">
 
-  <div class="modal-backdrop" id="contextModal">
-    <div class="modal-content context-modal">
-      <div class="modal-header">
-        <h2>Package & Order Context</h2>
-        <button class="btn-close">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="grid-section">
-          <div class="details-box">
-            <h3><i class="fas fa-box"></i> Package Details</h3>
-            <div class="data-row"><span>Package ID:</span> <strong>PKG-99201</strong></div>
-            <div class="data-row"><span>Order ID:</span> <strong>ORD-5542</strong></div>
-            <div class="data-row"><span>Supplier:</span> <strong>Global Med-Supply Co.</strong></div>
-            <div class="data-row"><span>Courier:</span> <strong>HealthLogistics Express (Driver: Sarah K.)</strong>
-            </div>
+        <header class="page-header">
+          <div>
+            <h1>Incoming Packages – Pending Confirmation</h1>
+            <p>Verify and log medical supplies upon arrival at the loading dock.</p>
           </div>
 
-          <div class="progress-box">
-            <h3><i class="fas fa-tasks"></i> Order Overview</h3>
-            <p>This order contains <strong>5 packages</strong></p>
-            <div class="package-progress">
-              <div class="pkg-block confirmed" title="Confirmed">1</div>
-              <div class="pkg-block current" title="Current">2</div>
-              <div class="pkg-block pending" title="Pending">3</div>
-              <div class="pkg-block pending" title="Pending">4</div>
-              <div class="pkg-block pending" title="Pending">5</div>
-            </div>
-            <div class="progress-legend">
-              <span class="dot confirmed"></span> Confirmed
-              <span class="dot current"></span> Current
-              <span class="dot pending"></span> In-Transit
-            </div>
+          <div class="summary-counter">
+            <span class="count-value">12</span>
+            <span class="count-label">Packages Awaiting Confirmation</span>
           </div>
-        </div>
+        </header>
 
-        <div class="items-summary">
-          <h3>Package Item Summary</h3>
-          <table class="simple-table">
+        <section class="table-card">
+          <table class="packages-table">
             <thead>
               <tr>
-                <th>Item Name</th>
-                <th>Qty in Package</th>
+                <th>Package ID</th>
+                <th>Order ID</th>
+                <th>Delivery Date & Time</th>
+                <th class="text-right">Details</th>
+                <th class="text-right">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Saline Solution 500ml</td>
-                <td>50 units</td>
+                <td><span class="id-tag">PKG-99201</span></td>
+                <td><span class="id-tag secondary">ORD-5542</span></td>
+                <td>Feb 09, 2026 | 10:30 AM</td>
+                <td class="text-right">
+                  <button class="view-pkg-btn"><i class="fas fa-eye"></i> View Package Details</button>
+                </td>
+                <td class="text-right">
+                  <button class="btn-primary">Receive Package</button>
+                </td>
               </tr>
               <tr>
-                <td>Surgical Gloves (M)</td>
-                <td>10 boxes</td>
+                <td><span class="id-tag">PKG-99205</span></td>
+                <td><span class="id-tag secondary">ORD-5542</span></td>
+                <td>Feb 09, 2026 | 10:32 AM</td>
+                <td class="text-right">
+                  <button class="view-pkg-btn"><i class="fas fa-eye"></i> View Package Details</button>
+                </td>
+                <td class="text-right">
+                  <button class="btn-primary">Receive Package</button>
+                </td>
               </tr>
             </tbody>
           </table>
-        </div>
+        </section>
       </div>
-      <div class="modal-footer">
-        <button class="btn-secondary">Close</button>
-        <button class="btn-primary">Proceed to Receive Package</button>
-      </div>
-    </div>
-  </div>
 
-  <div class="modal-backdrop" id="inspectionModal">
-    <div class="modal-content inspection-modal">
-      <header class="sticky-header">
-        <div class="header-main">
-          <h2>Inspection & Verification</h2>
-          <span class="package-pos">Package 2 of 5</span>
-        </div>
-        <div class="header-meta">
-          <span>ID: PKG-99201</span> | <span>Order: ORD-5542</span>
-        </div>
-      </header>
-
-      <div class="modal-body">
-        <table class="inspection-table">
-          <thead>
-            <tr>
-              <th>Item Name & SKU</th>
-              <th>Batch/Expiry</th>
-              <th>Qty</th>
-              <th>Item Status</th>
-              <th>Issue Details</th>
-              <th>Photo</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <strong>Saline Solution 500ml</strong><br>
-                <small>SKU: SAL-0092</small>
-              </td>
-              <td>
-                <small>B: #9901A</small><br>
-                <small>E: 12/2027</small>
-              </td>
-              <td>50</td>
-              <td>
-                <select class="form-select">
-                  <option>Good</option>
-                  <option class="txt-red">Damaged</option>
-                  <option class="txt-red">Expired</option>
-                  <option class="txt-red">Wrong Item</option>
-                </select>
-              </td>
-              <td>
-                <div class="issue-inputs">
-                  <input type="number" placeholder="Issue Qty" class="form-input qty-input">
-                  <select class="form-select">
-                    <option>Reason...</option>
-                    <option>Packaging damaged</option>
-                    <option>Temperature issue</option>
-                    <option>Other</option>
-                  </select>
-                  <textarea placeholder="Specify other..." class="form-input"></textarea>
+      <div class="modal-backdrop" id="contextModal">
+        <div class="modal-content context-modal">
+          <div class="modal-header">
+            <h2>Package & Order Context</h2>
+            <button class="btn-close">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="grid-section">
+              <div class="details-box">
+                <h3><i class="fas fa-box"></i> Package Details</h3>
+                <div class="data-row"><span>Package ID:</span> <strong>PKG-99201</strong></div>
+                <div class="data-row"><span>Order ID:</span> <strong>ORD-5542</strong></div>
+                <div class="data-row"><span>Supplier:</span> <strong>Global Med-Supply Co.</strong></div>
+                <div class="data-row"><span>Courier:</span> <strong>HealthLogistics Express (Driver: Sarah K.)</strong>
                 </div>
-              </td>
-              <td>
-                <label class="file-upload">
-                  <input type="file">
-                  <i class="fas fa-camera"></i>
-                </label>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              </div>
 
-        <div class="summary-area">
-          <div class="summary-card">
-            <h4>Inspection Summary</h4>
-            <div class="sum-row"><span>Total Items:</span> <span>50</span></div>
-            <div class="sum-row txt-red"><span>Items with Issues:</span> <span>0</span></div>
-          </div>
-
-          <div class="confirmation-check">
-            <div class="officer-meta">
-              <span>Officer: <strong>J. Doe</strong></span>
-              <span>Time: <strong>09 Feb 2026, 13:24</strong></span>
+              <div class="progress-box">
+                <h3><i class="fas fa-tasks"></i> Order Overview</h3>
+                <p>This order contains <strong>5 packages</strong></p>
+                <div class="package-progress">
+                  <div class="pkg-block confirmed" title="Confirmed">1</div>
+                  <div class="pkg-block current" title="Current">2</div>
+                  <div class="pkg-block pending" title="Pending">3</div>
+                  <div class="pkg-block pending" title="Pending">4</div>
+                  <div class="pkg-block pending" title="Pending">5</div>
+                </div>
+                <div class="progress-legend">
+                  <span class="dot confirmed"></span> Confirmed
+                  <span class="dot current"></span> Current
+                  <span class="dot pending"></span> In-Transit
+                </div>
+              </div>
             </div>
-            <label class="checkbox-label">
-              <input type="checkbox">
-              I confirm that the above items were inspected and recorded accurately.
-            </label>
+
+            <div class="items-summary">
+              <h3>Package Item Summary</h3>
+              <table class="simple-table">
+                <thead>
+                  <tr>
+                    <th>Item Name</th>
+                    <th>Qty in Package</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Saline Solution 500ml</td>
+                    <td>50 units</td>
+                  </tr>
+                  <tr>
+                    <td>Surgical Gloves (M)</td>
+                    <td>10 boxes</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-secondary">Close</button>
+            <button class="btn-primary">Proceed to Receive Package</button>
           </div>
         </div>
       </div>
 
-      <footer class="modal-footer">
-        <button class="btn-text">Cancel</button>
-        <button class="btn-secondary">Save Draft</button>
-        <button class="btn-danger">Confirm with Issues</button>
-        <button class="btn-primary">Confirm Package Received</button>
-      </footer>
-    </div>
+      <div class="modal-backdrop" id="inspectionModal">
+        <div class="modal-content inspection-modal">
+          <header class="sticky-header">
+            <div class="header-main">
+              <h2>Inspection & Verification</h2>
+              <span class="package-pos">Package 2 of 5</span>
+            </div>
+            <div class="header-meta">
+              <span>ID: PKG-99201</span> | <span>Order: ORD-5542</span>
+            </div>
+          </header>
+
+          <div class="modal-body">
+            <table class="inspection-table">
+              <thead>
+                <tr>
+                  <th>Item Name & SKU</th>
+                  <th>Batch/Expiry</th>
+                  <th>Qty</th>
+                  <th>Item Status</th>
+                  <th>Issue Details</th>
+                  <th>Photo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <strong>Saline Solution 500ml</strong><br>
+                    <small>SKU: SAL-0092</small>
+                  </td>
+                  <td>
+                    <small>B: #9901A</small><br>
+                    <small>E: 12/2027</small>
+                  </td>
+                  <td>50</td>
+                  <td>
+                    <select class="form-select">
+                      <option>Good</option>
+                      <option class="txt-red">Damaged</option>
+                      <option class="txt-red">Expired</option>
+                      <option class="txt-red">Wrong Item</option>
+                    </select>
+                  </td>
+                  <td>
+                    <div class="issue-inputs">
+                      <input type="number" placeholder="Issue Qty" class="form-input qty-input">
+                      <select class="form-select">
+                        <option>Reason...</option>
+                        <option>Packaging damaged</option>
+                        <option>Temperature issue</option>
+                        <option>Other</option>
+                      </select>
+                      <textarea placeholder="Specify other..." class="form-input"></textarea>
+                    </div>
+                  </td>
+                  <td>
+                    <label class="file-upload">
+                      <input type="file">
+                      <i class="fas fa-camera"></i>
+                    </label>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="summary-area">
+              <div class="summary-card">
+                <h4>Inspection Summary</h4>
+                <div class="sum-row"><span>Total Items:</span> <span>50</span></div>
+                <div class="sum-row txt-red"><span>Items with Issues:</span> <span>0</span></div>
+              </div>
+
+              <div class="confirmation-check">
+                <div class="officer-meta">
+                  <span>Officer: <strong>J. Doe</strong></span>
+                  <span>Time: <strong>09 Feb 2026, 13:24</strong></span>
+                </div>
+                <label class="checkbox-label">
+                  <input type="checkbox">
+                  I confirm that the above items were inspected and recorded accurately.
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <footer class="modal-footer">
+            <button class="btn-text">Cancel</button>
+            <button class="btn-secondary">Save Draft</button>
+            <button class="btn-danger">Confirm with Issues</button>
+            <button class="btn-primary">Confirm Package Received</button>
+          </footer>
+        </div>
+      </div>
+    </main>
+
   </div>
 
+  <script type="module" src="/org_portal/receive_ord.js"></script>
 </body>
 
 </html>

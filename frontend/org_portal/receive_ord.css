@@ -1,8 +1,6 @@
 /* Layout */
-.dashboard-container {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 0 20px;
+.page-content{
+  margin: 20px;
 }
 
 .page-header {
