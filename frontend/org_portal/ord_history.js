@@ -1,5 +1,5 @@
 import { renderSidebar } from "./sidebar.js";
-import { getStorageTempIcon } from "../global.js"
+import { getStorageTempIcon, displayNoMatchFound } from "../global.js"
 
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.app-container')
@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </thead>
             <tbody id="orderTableBody"></tbody>
           </table>
+          <div class="no-match-container hidden js-no-match-found"></div>
         </div>
 
         <div id="packageDrawer" class="side-drawer">
@@ -109,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `
 
   renderSidebar()
+  displayNoMatchFound()
 
   const orderHistoryData = [
     {
@@ -505,7 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pkgFilterHandler()
   })
 
-  function pkgFilterHandler(){
+  function pkgFilterHandler() {
     if (rangeWrapperElem.classList.contains('disabled')) {
       pkgLabelElem.innerText = `Showing all Packages`
       noPkgElem.disabled = true
@@ -542,7 +544,7 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   // Returns either true or false for an order/request that matches the condition
-  function getSearchMatch(ordReq, searchText){
+  function getSearchMatch(ordReq, searchText) {
     const orderId = ordReq.orderId
     const searchMatch = orderId ?
       ordReq.requestId.toLowerCase().includes(searchText) || orderId.toLowerCase().includes(searchText) :
@@ -616,10 +618,18 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
   //Displays the data when 
-  function renderNewOrdReq(ordReqData){
+  function renderNewOrdReq(ordReqData) {
+    const noMatchElem = document.querySelector('.js-no-match-found')
+
     ordTblBodyElem.innerHTML = ``
-    displayAllOrdReq(ordReqData)
-    displayPackagesBadges()
+    console.log(ordReqData)
+    if (ordReqData.length === 0) {
+      noMatchElem.classList.remove('hidden')
+    } else {
+      noMatchElem.classList.add('hidden')
+      displayAllOrdReq(ordReqData)
+      displayPackagesBadges()
+    }
   }
 
   //Opening and closing the drawer

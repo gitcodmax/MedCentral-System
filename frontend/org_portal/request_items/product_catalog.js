@@ -1,4 +1,5 @@
-import { renderSidebar, displayNoMatchFound, renderRequestItemsNavbar } from "../sidebar.js";
+import { renderSidebar,  renderRequestItemsNavbar } from "../sidebar.js";
+import { displayNoMatchFound } from "../../global.js";
 
 document.addEventListener('DOMContentLoaded', () => {
 
