@@ -50,7 +50,8 @@
 
 .btn-toggle-filters {
   padding: 10px 20px;
-  background: #f8fafc;
+  background: var(--color-primary);
+  color: white;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   font-weight: 600;
@@ -58,6 +59,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: 0.3s;
+}
+.btn-toggle-filters:hover{
+  transform: scale(98%);
 }
 
 /* Advanced Filters Collapsible */
@@ -73,6 +78,7 @@
   grid-template-columns: 2fr 1fr 1fr;
   gap: 24px;
   padding: 16px 0;
+  align-items: self-start;
 }
 
 .filter-group label {
@@ -107,10 +113,37 @@
 .range-wrapper input {
   accent-color: var(--color-primary);
 }
+.range-wrapper.disabled input{
+  accent-color: var(--color-quarantine);
+}
+.range-wrapper.disabled .pkg-label{
+  color: var(--color-primary);
+}
 
 .range-wrapper span {
   font-size: 12px;
   color: #64748b;
+}
+
+.pkg-label-btn{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.enable-btn{
+  background: var(--color-quarantine);
+  color: white;
+  border: 0;
+  padding:3px;
+  border-radius: 3px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.enable-btn:hover{
+  transform: scale(96%);
+}
+.disabled .enable-btn{
+  background: var(--color-primary);
 }
 
 .value-input-wrapper input {
@@ -125,24 +158,37 @@
   justify-content: flex-end;
   gap: 12px;
   margin-top: 12px;
+  height: 38px;
 }
 
 .btn-reset {
   background: transparent;
   border: none;
-  color: #ef4444;
+  color: red;
   font-weight: 600;
   cursor: pointer;
+  transition: 0.3s;
+}
+.btn-reset:hover{
+  border: 1px solid red;
+  padding: 0 6px;
+  border-radius: 5px;
 }
 
 .btn-apply {
-  background: #0f172a;
+  background: var(--color-secondary);
   color: #fff;
   border: none;
   padding: 8px 24px;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
+  transition: 0.3s;
+}
+.btn-apply:hover{
+  background: transparent;
+  border: 1px solid var(--color-secondary);
+  color: var(--color-secondary);
 }
 
 /* Tablet Responsiveness */
@@ -512,7 +558,7 @@
   display: block;
   text-align: center;
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--color-quarantine);
   padding: 8px;
   background: #f8fafc;
 }

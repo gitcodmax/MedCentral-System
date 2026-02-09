@@ -305,58 +305,65 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   //Display the requests/orders in the table
-  const ordTbodyFragment = document.createDocumentFragment()
-  orderHistoryData.forEach((reqOrd) => {
-    const tblRow = document.createElement('tr')
+  const ordTblBodyElem = document.getElementById('orderTableBody')
+  function displayAllOrdReq(orderData) {
+    const ordTbodyFragment = document.createDocumentFragment()
+    orderData.forEach((reqOrd) => {
+      const tblRow = document.createElement('tr')
 
-    tblRow.innerHTML = `
-      <td>
-        <div class="id-stack">
-          <span class="req-id" title="Request ID">${reqOrd.requestId}</span>
-          <span class="ord-id" title="Order ID">
-            ${!reqOrd.orderId ? '<small><i>Pending Approval</i></small>' : reqOrd.orderId}
-          </span>
-        </div>
-      </td>
-      <td>
-        <div class="package-count js-pkg-count" data-req-id=${reqOrd.requestId}></div>
-      </td>
-      <td>${reqOrd.dateInitiated}</td>
-      <td>${!reqOrd.paymentDate ? '---' : reqOrd.paymentDate}</td>
-      <td>${!reqOrd.deliveryDate ? '---' : reqOrd.deliveryDate}</td>
-      <td class="price-cell">KES ${reqOrd.totalValue}</td>
-      <td>
-        <div class="package-count js-pkg-count js-pkg-count-complete" data-req-id=${reqOrd.requestId}></div>
-      </td>
-      <td>
-        <button class="btn-view-packages" data-req-id=${reqOrd.requestId}>
-          View Packages
-        </button>
-      </td>
-    `
+      tblRow.innerHTML = `
+        <td>
+          <div class="id-stack">
+            <span class="req-id" title="Request ID">${reqOrd.requestId}</span>
+            <span class="ord-id" title="Order ID">
+              ${!reqOrd.orderId ? '<small><i>Pending Approval</i></small>' : reqOrd.orderId}
+            </span>
+          </div>
+        </td>
+        <td>
+          <div class="package-count js-pkg-count" data-req-id=${reqOrd.requestId}></div>
+        </td>
+        <td>${reqOrd.dateInitiated}</td>
+        <td>${!reqOrd.paymentDate ? '---' : reqOrd.paymentDate}</td>
+        <td>${!reqOrd.deliveryDate ? '---' : reqOrd.deliveryDate}</td>
+        <td class="price-cell">KES ${reqOrd.totalValue}</td>
+        <td>
+          <div class="package-count js-pkg-count js-pkg-count-complete" data-req-id=${reqOrd.requestId}></div>
+        </td>
+        <td>
+          <button class="btn-view-packages" data-req-id=${reqOrd.requestId}>
+            View Packages
+          </button>
+        </td>
+      `
 
-    ordTbodyFragment.appendChild(tblRow)
-  })
+      ordTbodyFragment.appendChild(tblRow)
+    })
 
-  document.getElementById('orderTableBody')
-    .appendChild(ordTbodyFragment)
+    ordTblBodyElem.appendChild(ordTbodyFragment)
+  }
+
+  displayAllOrdReq(orderHistoryData)
 
   //Display the packages badges
-  document.querySelectorAll('.js-pkg-count')
-    .forEach(pkgColElem => {
-      const elemReqId = pkgColElem.dataset.reqId;
+  function displayPackagesBadges() {
+    document.querySelectorAll('.js-pkg-count')
+      .forEach(pkgColElem => {
+        const elemReqId = pkgColElem.dataset.reqId;
 
-      orderHistoryData.forEach(reqOrd => {
-        if (elemReqId === reqOrd.requestId) {
-          reqOrd.packages.forEach(pkg => {
-            const storageChar = pkg.storageTemp[0].toUpperCase()
-            pkgColElem.innerHTML += `
+        orderHistoryData.forEach(reqOrd => {
+          if (elemReqId === reqOrd.requestId) {
+            reqOrd.packages.forEach(pkg => {
+              const storageChar = pkg.storageTemp[0].toUpperCase()
+              pkgColElem.innerHTML += `
               <span class="badge ${getGreyBadge(pkgColElem, pkg.status)} ${storageChar}">${storageChar}</span>
             `
-          })
-        }
+            })
+          }
+        })
       })
-    })
+  }
+  displayPackagesBadges()
 
   //Display grey badge if package status is not yet completed
   function getGreyBadge(elem, status) {
@@ -367,16 +374,147 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function toggleAdvancedFilters() {
-    const filters = document.getElementById('advancedFilters');
-    const isVisible = filters.style.display === 'block';
-    filters.style.display = isVisible ? 'none' : 'block';
+  //Set up opening and closing the filter container
+  document.querySelector('.js-btn-toggle-filters')
+    .addEventListener('click', () => {
+      const filters = document.getElementById('advancedFilters');
+      const isVisible = filters.style.display === 'block';
+      filters.style.display = isVisible ? 'none' : 'block';
+    })
+
+
+  const noPkgElem = document.getElementById('pkgRange')
+  const pkgLabelElem = document.getElementById('pkgLabel')
+  const disableBtnElem = document.querySelector('.js-disable-btn')
+  const rangeWrapperElem = document.querySelector('.js-range-wrapper')
+
+  //Listens for a change in the range
+  noPkgElem.addEventListener('input', () => {
+    displayNoPackagesLabel()
+  })
+
+  //Design the number of packages filter
+  disableBtnElem.addEventListener('click', () => {
+    rangeWrapperElem.classList.toggle('disabled')
+    pkgFilterHandler()
+  })
+
+  function pkgFilterHandler(){
+    if (rangeWrapperElem.classList.contains('disabled')) {
+      pkgLabelElem.innerText = `Showing all Packages`
+      noPkgElem.disabled = true
+      disableBtnElem.textContent = `Enable Filter`
+    } else {
+      displayNoPackagesLabel()
+      noPkgElem.disabled = false
+      disableBtnElem.textContent = `Disable Filter`
+    }
+  }
+  pkgFilterHandler()
+
+  //Displays the text in the packages label
+  function displayNoPackagesLabel() {
+    pkgLabelElem.innerText = `Up to ${noPkgElem.value} Packages`;
   }
 
-  toggleAdvancedFilters()
 
-  function updatePkgLabel(val) {
-    document.getElementById('pkgLabel').innerText = `Up to ${val} Packages`;
+  const searchBarElem = document.getElementById('idSearchInput')
+  const selectDateElem = document.getElementById('dateType')
+  const maxValueElem = document.getElementById('maxValue')
+
+  const startDateElem = document.getElementById('startDate')
+  const endDateElem = document.getElementById('endDate')
+
+  // Display the search result from the search bar
+  searchBarElem.addEventListener('keyup', () => {
+    const searchText = searchBarElem.value.toLowerCase().trim()
+
+    const searchResult = orderHistoryData.filter(ordReq => {
+      return getSearchMatch(ordReq, searchText)
+    })
+
+    renderNewOrdReq(searchResult)
+  })
+
+  // Returns either true or false for an order/request that matches the condition
+  function getSearchMatch(ordReq, searchText){
+    const orderId = ordReq.orderId
+    const searchMatch = orderId ?
+      ordReq.requestId.toLowerCase().includes(searchText) || orderId.toLowerCase().includes(searchText) :
+      ordReq.requestId.toLowerCase().includes(searchText)
+
+    return searchMatch
+  }
+
+  document.querySelector('.js-btn-apply')
+    .addEventListener('click', () => {
+      // Display the result based on the selected date filter
+      const dateType = selectDateElem.value
+      const startDate = startDateElem.value
+      const endDate = endDateElem.value
+      if (startDate && !endDate) {
+        alert(`Enter the end date!`)
+      } else if (!startDate && endDate) {
+        alert(`Enter the start date!`)
+      } else {
+        searchFunction(dateType, startDate, endDate)
+      }
+
+    })
+
+  function searchFunction(dateTypeValue, startDateStr, endDateStr) {
+    const startDate = new Date(startDateStr)
+    const endDate = new Date(endDateStr)
+    const searchText = searchBarElem.value.toLowerCase().trim()
+
+    const searchResult = orderHistoryData.filter(ordReq => {
+      const searchMatch = getSearchMatch(ordReq, searchText)
+
+      // Search for the date match
+      let dateType = ordReq.dateInitiated
+      if (dateTypeValue === 'payment') {
+        dateType = ordReq.paymentDate
+      } else if (dateTypeValue === 'delivery') {
+        dateType = ordReq.deliveryDate
+      }
+
+      const checkingDate = new Date(dateType)
+      // Normalize all to midnight local time
+      checkingDate.setHours(0, 0, 0, 0);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
+      const dateMatch = startDateStr === ''
+        || endDateStr === '' || checkingDate >= startDate && checkingDate <= endDate
+
+      // Search for the number of packages match
+      const noPkgMatch = noPkgElem.disabled === true
+        || noPkgElem.disabled === false && ordReq.packages.length === Number(noPkgElem.value)
+
+      // Search for the range of the max total value
+      const maxValueMatch = maxValueElem.value === '' || ordReq.totalValue <= maxValueElem.value
+
+      return searchMatch && dateMatch && noPkgMatch && maxValueMatch
+    })
+
+    renderNewOrdReq(searchResult)
+  }
+
+  //Reset the advanced filters inputs
+  document.querySelector('.js-btn-reset')
+    .addEventListener('click', () => {
+      selectDateElem.value = 'initiated'
+      searchBarElem.value = startDateElem.value = endDateElem.value = maxValueElem.value = ''
+      rangeWrapperElem.classList.add('disabled')
+      pkgFilterHandler()
+
+      renderNewOrdReq(orderHistoryData)
+    })
+
+  //Displays the data when 
+  function renderNewOrdReq(ordReqData){
+    ordTblBodyElem.innerHTML = ``
+    displayAllOrdReq(ordReqData)
+    displayPackagesBadges()
   }
 
   //Opening and closing the drawer

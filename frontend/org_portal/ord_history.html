@@ -36,7 +36,7 @@
               <i class="fas fa-search"></i>
               <input type="text" id="idSearchInput" placeholder="Search by Request ID or Order ID (e.g., REQ-2026...)">
             </div>
-            <button class="btn-toggle-filters" onclick="toggleAdvancedFilters()">
+            <button class="btn-toggle-filters js-btn-toggle-filters">
               <i class="fas fa-filter"></i> Filters
             </button>
           </div>
@@ -59,23 +59,26 @@
 
               <div class="filter-group">
                 <label>Number of Packages (1 - 4)</label>
-                <div class="range-wrapper">
-                  <input type="range" id="pkgRange" min="1" max="4" value="4" oninput="updatePkgLabel(this.value)">
-                  <span id="pkgLabel">Up to 4 Packages</span>
+                <div class="range-wrapper js-range-wrapper disabled">
+                  <input type="range" id="pkgRange" min="1" max="4" value="4" disabled>
+                  <div class="pkg-label-btn">
+                    <span class="pkg-label" id="pkgLabel">Showing all Packages</span>
+                    <button class="enable-btn js-disable-btn">Enable Filter</button>
+                  </div>
                 </div>
               </div>
 
               <div class="filter-group">
                 <label>Max Total Value (KES)</label>
                 <div class="value-input-wrapper">
-                  <input type="number" id="maxValue" placeholder="e.g. 100000">
+                  <input type="number" id="maxValue" min="0" placeholder="e.g. 100000">
                 </div>
               </div>
             </div>
 
             <div class="filter-actions">
-              <button class="btn-reset" onclick="resetFilters()">Reset All</button>
-              <button class="btn-apply" onclick="applyFilters()">Apply Filters</button>
+              <button class="btn-reset js-btn-reset">Reset All</button>
+              <button class="btn-apply js-btn-apply">Apply Filters</button>
             </div>
           </div>
         </div>
