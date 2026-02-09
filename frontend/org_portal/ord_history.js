@@ -2,6 +2,112 @@ import { renderSidebar } from "./sidebar.js";
 import { getStorageTempIcon } from "../global.js"
 
 document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('.app-container')
+    .innerHTML = `
+      
+    <nav class="sidebar js-sidebar"></nav>
+
+    <main class="app-content">
+      <div class="main-content-logo"></div>
+
+      <section id="orderDetailsPage" class="view-section">
+        <div class="page-header">
+          <div>
+            <h2>Requisition & Order History</h2>
+            <p>Track the lifecycle of your medical supply requests.</p>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <div class="search-container">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search"></i>
+              <input type="text" id="idSearchInput" placeholder="Search by Request ID or Order ID (e.g., REQ-2026...)">
+            </div>
+            <button class="btn-toggle-filters js-btn-toggle-filters">
+              <i class="fas fa-filter"></i> Filters
+            </button>
+          </div>
+
+          <div id="advancedFilters" class="advanced-filters">
+            <div class="filter-grid">
+              <div class="filter-group">
+                <label>Date Range</label>
+                <div class="date-inputs">
+                  <select id="dateType">
+                    <option value="initiated">Date Initiated</option>
+                    <option value="payment">Payment Date</option>
+                    <option value="delivery">Delivery Date</option>
+                  </select>
+                  <input type="date" id="startDate">
+                  <span>to</span>
+                  <input type="date" id="endDate">
+                </div>
+              </div>
+
+              <div class="filter-group">
+                <label>Number of Packages (1 - 4)</label>
+                <div class="range-wrapper js-range-wrapper disabled">
+                  <input type="range" id="pkgRange" min="1" max="4" value="4" disabled>
+                  <div class="pkg-label-btn">
+                    <span class="pkg-label" id="pkgLabel">Showing all Packages</span>
+                    <button class="enable-btn js-disable-btn">Enable Filter</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="filter-group">
+                <label>Max Total Value (KES)</label>
+                <div class="value-input-wrapper">
+                  <input type="number" id="maxValue" min="0" placeholder="e.g. 100000">
+                </div>
+              </div>
+            </div>
+
+            <div class="filter-actions">
+              <button class="btn-reset js-btn-reset">Reset All</button>
+              <button class="btn-apply js-btn-apply">Apply Filters</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="orders-table js-ord-tbl">
+            <thead>
+              <tr>
+                <th>Reference IDs</th>
+                <th>Packages</th>
+                <th>Date Initiated</th>
+                <th>Payment Date</th>
+                <th>Delivery Date</th>
+                <th>Total Value</th>
+                <th>Completed</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="orderTableBody"></tbody>
+          </table>
+        </div>
+
+        <div id="packageDrawer" class="side-drawer">
+          <div class="drawer-header">
+            <div class="header-titles">
+              <h2> <span class="no-pkg js-no-pkg"></span> Order Packages</h2>
+              <p id="drawerRequestId"></p>
+            </div>
+            <div class="header-titles-right">
+              <button class="btn-close-drawer js-btn-close-drawer">&times;</button>
+              <div class="total-items">Total Items: <span class="no-total-items js-no-total-items">3</span></div>
+            </div>
+          </div>
+
+          <div class="drawer-body js-drawer-body"></div>
+        </div>
+      </section>
+    </main>
+  
+    `
+
   renderSidebar()
 
   const orderHistoryData = [
@@ -539,7 +645,6 @@ document.addEventListener('DOMContentLoaded', () => {
               .textContent = btnReqId
 
             ordReq.packages.forEach(pkg => {
-              console.log(pkg.status)
               drawerBodyElem.innerHTML += `
                   <div class="package-group ${pkg.storageTemp[0].toUpperCase()}">
                     <div class="package-meta">
