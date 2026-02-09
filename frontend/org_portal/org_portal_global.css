@@ -1,9 +1,12 @@
 :root{
   --pending: #FFC107;
   --rejected: #DC3545;
+  /*Aprroved follows*/
+  --processing: #06b6d4;
   --packed: #6F42C1;
   --dispatched: #20C997;
   --delayed: #FD7E14;
+  /* Delivered exists */
   --deliveredIssue: #E5533D;
   --completed: #157347;
 }

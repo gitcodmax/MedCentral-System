@@ -436,30 +436,48 @@
   padding: 4px 8px;
   border-radius: 6px;
   text-transform: capitalize;
-}
-
-.A .pkg-status{
-  background: #f59e0b;
-}
-
-.C .pkg-status{
-  background: var(--color-secondary);
   color: white;
 }
 
-.R .pkg-status{
+.pending{
+  background: var(--pending);
+  color: black;
+}
+
+.rejected{
+  background: var(--rejected);
+}
+
+.approved{
   background: var(--color-primary);
-  color: white;
 }
 
-.F .pkg-status{
-  background: #6366f1;
-  color: white;
+.processing{
+  background: var(--processing);
 }
 
-.pkg-status.delivered {
-  background: #dcfce7;
-  color: #15803d;
+.packed{
+  background: var(--packed);
+}
+
+.dispatched{
+  background: var(--dispatched);
+}
+
+.delayed{
+  background: var(--delayed);
+}
+
+.delivered{
+  background: var(--color-secondary);
+}
+
+.delivered-with-issue{
+  background: var(--deliveredIssue);
+}
+
+.completed{
+  background: var(--completed);
 }
 
 .package-id-strip {

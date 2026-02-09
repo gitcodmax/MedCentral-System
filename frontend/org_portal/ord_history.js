@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
       totalValue: 312000.00,
       packages: [
         {
-          packageId: "PKG-6150-A", storageTemp: "refrigerated", status: "packed",
+          packageId: "PKG-6150-A", storageTemp: "refrigerated", status: "delivered",
           items: [
             { name: "Lab Reagent Kit Alpha", quantity: 4, uom: "kit" },
             { name: "Lab Reagent Kit Beta", quantity: 2, uom: "kit" },
@@ -417,7 +417,6 @@ document.addEventListener('DOMContentLoaded', () => {
     pkgLabelElem.innerText = `Up to ${noPkgElem.value} Packages`;
   }
 
-
   const searchBarElem = document.getElementById('idSearchInput')
   const selectDateElem = document.getElementById('dateType')
   const maxValueElem = document.getElementById('maxValue')
@@ -540,13 +539,14 @@ document.addEventListener('DOMContentLoaded', () => {
               .textContent = btnReqId
 
             ordReq.packages.forEach(pkg => {
+              console.log(pkg.status)
               drawerBodyElem.innerHTML += `
                   <div class="package-group ${pkg.storageTemp[0].toUpperCase()}">
                     <div class="package-meta">
                       <div class="pkg-badge">
                         <i class="${getStorageTempIcon(pkg.storageTemp)}"></i> ${pkg.storageTemp}
                       </div>
-                      <span class="pkg-status">${pkg.status}</span>
+                      <span class="pkg-status ${pkg.status.includes('issue') ? 'delivered-with-issue' : pkg.status}">${pkg.status}</span>
                     </div>
                     <div class="package-id-strip">ID: ${pkg.packageId}</div>
 
