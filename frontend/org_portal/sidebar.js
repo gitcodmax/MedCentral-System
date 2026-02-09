@@ -23,6 +23,9 @@ export function renderSidebar() {
         <a href="#"><i class="fas fa-plus-circle"></i> <span class="page-name">Request Items</span></a>
       </li>
       <li>
+        <a href="#"><i class="fas fa-inbox"></i> <span class="page-name">Recieve Items</span></a>
+      </li>
+      <li>
         <a href="#"><i class="fas fa-file-invoice"></i> <span class="page-name">Order History</span></a>
       </li>
       <li>

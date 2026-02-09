@@ -622,7 +622,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const noMatchElem = document.querySelector('.js-no-match-found')
 
     ordTblBodyElem.innerHTML = ``
-    console.log(ordReqData)
     if (ordReqData.length === 0) {
       noMatchElem.classList.remove('hidden')
     } else {
