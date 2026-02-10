@@ -13,5 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const overlayElem = document.getElementById('packageDetailsOverlay')
         handleOverlay(overlayElem)
       }
+
+      if(btn.classList.contains('receive-pkg')){
+        const overlayElem = document.getElementById('inspectionOverlay')
+        handleOverlay(overlayElem)
+      }
     })
 })

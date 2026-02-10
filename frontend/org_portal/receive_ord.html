@@ -55,7 +55,7 @@
                   <button class="view-pkg-btn"><i class="fas fa-eye"></i> View Package Details</button>
                 </td>
                 <td class="text-right">
-                  <button class="btn-primary">Receive Package</button>
+                  <button class="btn-primary receive-pkg">Receive Package</button>
                 </td>
               </tr>
               <tr>
@@ -66,7 +66,7 @@
                   <button class="view-pkg-btn"><i class="fas fa-eye"></i> View Package Details</button>
                 </td>
                 <td class="text-right">
-                  <button class="btn-primary">Receive Package</button>
+                  <button class="btn-primary receive-pkg">Receive Package</button>
                 </td>
               </tr>
             </tbody>
@@ -160,96 +160,83 @@
         </div>
       </div>
 
-      <div class="modal-overlay" id="inspectionModal">
-        <div class="modal-content inspection-modal">
-          <header class="sticky-header">
-            <div class="header-main">
+      <div class="modal-overlay" id="inspectionOverlay">
+        <div class="inspection-modal">
+          <header class="inspection-header">
+            <div class="header-title">
               <h2>Inspection & Verification</h2>
-              <span class="package-pos">Package 2 of 5</span>
+              <span>ID: <strong class="pkg-id">ORD-5542-R</strong></span> | <span>Order: <strong class="ord-id">ORD-5542</strong></span>
             </div>
-            <div class="header-meta">
-              <span>ID: PKG-99201</span> | <span>Order: ORD-5542</span>
-            </div>
+            <button class="close-modal-btn js-btn-close-overlay">&times;</button>
           </header>
 
           <div class="modal-body">
-            <table class="inspection-table">
-              <thead>
-                <tr>
-                  <th>Item Name & SKU</th>
-                  <th>Batch/Expiry</th>
-                  <th>Qty</th>
-                  <th>Item Status</th>
-                  <th>Issue Details</th>
-                  <th>Photo</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <strong>Saline Solution 500ml</strong><br>
-                    <small>SKU: SAL-0092</small>
-                  </td>
-                  <td>
-                    <small>B: #9901A</small><br>
-                    <small>E: 12/2027</small>
-                  </td>
-                  <td>50</td>
-                  <td>
-                    <select class="form-select">
-                      <option>Good</option>
-                      <option class="txt-red">Damaged</option>
-                      <option class="txt-red">Expired</option>
-                      <option class="txt-red">Wrong Item</option>
-                    </select>
-                  </td>
-                  <td>
-                    <div class="issue-inputs">
-                      <input type="number" placeholder="Issue Qty" class="form-input qty-input">
-                      <select class="form-select">
-                        <option>Reason...</option>
-                        <option>Packaging damaged</option>
-                        <option>Temperature issue</option>
-                        <option>Other</option>
-                      </select>
-                      <textarea placeholder="Specify other..." class="form-input"></textarea>
-                    </div>
-                  </td>
-                  <td>
-                    <label class="file-upload">
-                      <input type="file">
-                      <i class="fas fa-camera"></i>
-                    </label>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div class="summary-area">
-              <div class="summary-card">
-                <h4>Inspection Summary</h4>
-                <div class="sum-row"><span>Total Items:</span> <span>50</span></div>
-                <div class="sum-row txt-red"><span>Items with Issues:</span> <span>0</span></div>
+            <div class="inspection-card">
+              <div class="card-header">
+                <div class="item-identity">
+                  <span class="sku">SKU: SAL-0092</span>
+                  <h3 class="item-name">Saline Solution 500ml</h3>
+                </div>
+                <div class="item-logistics">
+                  <span>Batch: <strong class="badge grn">#9901A</strong></span>
+                  <span>Exp: <strong class="blue badge">12/2027</strong></span>
+                </div>
               </div>
 
-              <div class="confirmation-check">
-                <div class="officer-meta">
-                  <span>Officer: <strong>J. Doe</strong></span>
-                  <span>Time: <strong>09 Feb 2026, 13:24</strong></span>
+              <div class="card-grid">
+                <div class="input-group">
+                  <label>Expected Qty</label>
+                  <div class="readonly-value">50 Units</div>
                 </div>
-                <label class="checkbox-label">
-                  <input type="checkbox">
-                  I confirm that the above items were inspected and recorded accurately.
-                </label>
+
+                <div class="input-group">
+                  <label>Item Status</label>
+                  <select class="status-select">
+                    <option value="good">Good Condition</option>
+                    <option value="damaged">Damaged</option>
+                    <option value="expired">Expired</option>
+                    <option value="wrong">Wrong Item</option>
+                  </select>
+                </div>
+
+                <div class="input-group issue-box">
+                  <label>Issue Details (If any)</label>
+                  <div class="issue-flex">
+                    <input type="number" placeholder="Qty Affected" class="qty-input">
+                    <select class="reason-select">
+                      <option>Reason for issue...</option>
+                      <option>Packaging Damaged</option>
+                      <option>Broken Seal</option>
+                      <option>Temp Deviation</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="input-group">
+                  <label>Evidence</label>
+                  <div class="photo-upload-zone">
+                    <i class="fas fa-camera"></i>
+                    <span>Upload Photo</span>
+                    <input type="file" hidden>
+                  </div>
+                </div>
+              </div>
+
+              <div class="item-footer">
+                <textarea placeholder="Additional notes or 'Other' reason..." class="notes-input"></textarea>
               </div>
             </div>
+
           </div>
 
           <footer class="modal-footer">
-            <button class="btn-text">Cancel</button>
-            <button class="btn-secondary">Save Draft</button>
-            <button class="btn-danger">Confirm with Issues</button>
-            <button class="btn-primary">Confirm Package Received</button>
+            <div class="footer-summary">
+              <span>Issues: <strong class="txt-red">1 Detected</strong></span>
+            </div>
+            <div class="footer-btns">
+              <button class="btn-secondary js-btn-close-overlay">Close</button>
+              <button class="btn-primary">Confirm Verification</button>
+            </div>
           </footer>
         </div>
       </div>
