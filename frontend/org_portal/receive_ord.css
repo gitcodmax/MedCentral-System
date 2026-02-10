@@ -1,5 +1,5 @@
 /* Layout */
-.page-content{
+.page-content {
   margin: 20px;
 }
 
@@ -29,7 +29,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .count-value {
@@ -147,10 +147,16 @@ button {
 }
 
 .btn-secondary {
-  background: white;
+  background: transparent;
   padding: 10px 20px;
   border-radius: 6px;
   font-weight: 600;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+}
+.btn-secondary:hover{
+  background: var(--color-primary);
+  color: white;
 }
 
 .view-pkg-btn {
@@ -174,22 +180,6 @@ button {
   font-weight: 600;
 }
 
-/* Modal Styling */
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(4px);
-  display: none;
-  /* Toggle to flex for testing */
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
 /* Set one to flex to see it in preview */
 #contextModal {
   display: 0;
@@ -199,74 +189,153 @@ button {
   display: 0;
 }
 
-.modal-content {
-  background: white;
-  border-radius: 16px;
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-}
 
+/* Package Details Styling */
 .context-modal {
-  width: 600px;
+  width: 650px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px;
 }
 
-.inspection-modal {
-  width: 1000px;
-}
-
-.modal-header,
-.sticky-header {
-  padding: 24px;
-  border-bottom: 1px solid var(--color-quarantine);
-}
-
-.modal-body {
-  padding: 24px;
-  overflow-y: auto;
-}
-
-.modal-footer {
-  padding: 20px 24px;
-  border-top: 1px solid var(--color-quarantine);
+.modal-header{
   display: flex;
-  justify-content: flex-end;
-  gap: 12px;
+  justify-content: space-between;
 }
 
-/* Progress Blocks */
-.package-progress {
-  display: flex;
-  gap: 8px;
-  margin: 15px 0;
+.header-titles{
+  margin: auto;
+  margin-bottom: 20px;
 }
 
-.pkg-block {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.8rem;
+.header-titles p {
+  margin: 2px 0 0;
+  font-size: 1.25rem;
+  color: var(--color-quarantine);
 }
 
-.pkg-block.confirmed {
-  background: #d1fae5;
+.ord-id{
   color: var(--color-secondary);
 }
 
-.pkg-block.current {
-  background: var(--color-primary);
-  color: white;
-  border: 3px solid #bfdbfe;
+/* Current Package Highlight */
+.info-card {
+  background: #f1f5f9;
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.pkg-block.pending {
-  background: #f1f5f9;
-  color: var(--color-quarantine);
+.info-tag-main .label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.info-tag-main .value {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  font-family: monospace;
+}
+
+.info-meta {
+  text-align: right;
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Sibling Grid Logic */
+.order-sibling-section{
+  margin-bottom: 15px;
+}
+.section-divider {
+  border: 0;
+  border-top: 1px solid var(--color-primary);
+  margin: 24px 0;
+}
+
+.sibling-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.sibling-card {
+  border: 1px solid var(--color-quarantine);
+  padding: 12px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.sibling-card.active {
+  border-color: var(--color-secondary);
+  background: #eff6ff;
+  box-shadow: 0 0 0 1px var(--color-secondary);
+}
+
+.sibling-id {
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+  color: var(--color-primary);
+}
+
+.sibling-status {
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Status Dot Indicators */
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-indicator.current {
+  background: var(--color-secondary);
+  box-shadow: 0 0 5px var(--color-secondary);
+}
+
+.status-indicator.completed {
+  background: var(--green);
+}
+
+.status-indicator.pending {
+  background: var(--amber);
+}
+
+/* Table Cleanup */
+.pkg-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 5px;
+}
+
+.pkg-items-table th {
+  text-align: left;
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  background: white;
+  border: 1px solid;
+  padding: 8px 10px;
+}
+
+.pkg-items-table td {
+  padding: 10px;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #f8fafc;
 }
 
 /* Inspection Table */

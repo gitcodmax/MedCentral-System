@@ -422,23 +422,6 @@
   color: var(--color-quarantine);
 }
 
-.close-modal-btn {
-  background: red;
-  border: none;
-  width: 30px;
-  height: 30px;
-  font-size: 25px;
-  border-radius: 50%;
-  color: white;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.close-modal-btn:hover {
-  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.822);
-  transform: translateY(-3px);
-}
-
 /* Verification Table Grid */
 .modal-body {
   padding: 24px;
