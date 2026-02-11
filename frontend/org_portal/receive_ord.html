@@ -55,7 +55,7 @@
         <div class="context-modal">
           <div class="modal-header">
             <div class="header-titles">
-              <p>Order Group: <strong class="ord-id">ORD-5542</strong></p>
+              <p>Order Group: <strong class="ord-id overlay-ord-id"></strong></p>
             </div>
             <button class="close-modal-btn js-btn-close-overlay">&times;</button>
           </div>
@@ -65,11 +65,12 @@
               <div class="info-card">
                 <div class="info-tag-main">
                   <span class="label">Viewing Package</span>
-                  <span class="value">ORD-5542-R</span>
+                  <span class="value overlay-pkg-id"></span>
                 </div>
                 <div class="info-meta">
-                  <span><i class="fas fa-thermometer-half"></i> Storage: <strong>Refrigerated</strong></span>
-                  <span><i class="fas fa-calendar"></i> Delivery: <strong>Feb 10, 2026</strong></span>
+                  <span><i class="fas fa-thermometer-half"></i> Storage: <strong
+                      class="js-storage-temp"></strong></span>
+                  <span><i class="fas fa-calendar"></i> Delivery: <strong class="js-delivery-date"></strong></span>
                 </div>
               </div>
 
@@ -82,16 +83,7 @@
                       <th>Quantity</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>Insulin Glargine 100U/mL</td>
-                      <td>12 Vials</td>
-                    </tr>
-                    <tr>
-                      <td>Hepatitis B Vaccine (Adult)</td>
-                      <td>5 Vials</td>
-                    </tr>
-                  </tbody>
+                  <tbody id="packageItems"></tbody>
                 </table>
               </div>
             </section>
@@ -99,34 +91,10 @@
             <hr class="section-divider">
 
             <section class="order-sibling-section">
-              <h3>Associated Packages (<span class="ord-id">ORD-5542</span>)</h3>
-              <p class="section-desc">This order is split into 3 total physical packages.</p>
+              <h3>Associated Packages (<span class="ord-id overlay-ord-id"></span>)</h3>
+              <p class="section-desc js-section-desc"></p>
 
-              <div class="sibling-grid">
-                <div class="sibling-card active">
-                  <div class="sibling-id">ORD-5542-R</div>
-                  <div class="sibling-status">
-                    <span class="status-indicator current"></span>
-                    Current
-                  </div>
-                </div>
-
-                <div class="sibling-card">
-                  <div class="sibling-id">ORD-5542-A</div>
-                  <div class="sibling-status">
-                    <span class="status-indicator completed"></span>
-                    Delivered
-                  </div>
-                </div>
-
-                <div class="sibling-card">
-                  <div class="sibling-id">ORD-5542-C</div>
-                  <div class="sibling-status">
-                    <span class="status-indicator pending"></span>
-                    In Transit
-                  </div>
-                </div>
-              </div>
+              <div class="sibling-grid" id="siblingsContainer"></div>
             </section>
           </div>
 
@@ -142,7 +110,8 @@
           <header class="inspection-header">
             <div class="header-title">
               <h2>Inspection & Verification</h2>
-              <span>ID: <strong class="pkg-id">ORD-5542-R</strong></span> | <span>Order: <strong class="ord-id">ORD-5542</strong></span>
+              <span>ID: <strong class="pkg-id overlay-pkg-id">ORD-5542-R</strong></span> | <span>Order: <strong
+                  class="ord-id overlay-ord-id">ORD-5542</strong></span>
             </div>
             <button class="close-modal-btn js-btn-close-overlay">&times;</button>
           </header>

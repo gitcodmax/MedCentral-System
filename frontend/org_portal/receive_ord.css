@@ -296,6 +296,7 @@ button {
   display: flex;
   align-items: center;
   gap: 6px;
+  text-transform: capitalize;
 }
 
 /* Status Dot Indicators */
@@ -311,11 +312,31 @@ button {
 }
 
 .status-indicator.completed {
-  background: var(--green);
+  background: var(--completed);
 }
 
-.status-indicator.pending {
-  background: var(--amber);
+.status-indicator.processing {
+  background: var(--processing);
+}
+
+.status-indicator.packed{
+  background: var(--packed);
+}
+
+.status-indicator.dispatched{
+  background: var(--dispatched);
+}
+
+.status-indicator.delayed{
+  background: var(--delayed);
+}
+
+.status-indicator.delivered{
+  background: var(--color-secondary);
+}
+
+.status-indicator.delivered-issue{
+  background: var(--deliveredIssue);
 }
 
 /* Table Cleanup */

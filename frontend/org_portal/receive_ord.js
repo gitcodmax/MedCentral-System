@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ],
       siblingPackages: [
         { packageId: "ORD-5542-A", status: "completed" },
-        { packageId: "ORD-5542-C", status: "pending" }
+        { packageId: "ORD-5542-C", status: "processing" }
       ]
     },
     {
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: "Cryoprecipitate", quantity: 4, uom: "Unit", sku: "BLD-CP-005", batchNo: "BK-8822", expiryDate: "May 2026" }
       ],
       siblingPackages: [
-        { packageId: "ORD-5612-C", status: "processing" }
+        { packageId: "ORD-5612-C", status: "delivered" }
       ]
     },
     {
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: "Dextrose 5% 500ml", quantity: 20, uom: "Bag", sku: "IVF-DX-500", batchNo: "IV-55621", expiryDate: "Jul 2028" }
       ],
       siblingPackages: [
-        { packageId: "ORD-5650-A", status: "completed" },
+        { packageId: "ORD-5650-A", status: "delivered with issue" },
         { packageId: "ORD-5650-B", status: "completed" },
         { packageId: "ORD-5650-D", status: "dispatched" }
       ]
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: "Atracurium 25mg/2.5ml", quantity: 50, uom: "Ampoule", sku: "PHM-AT-25", batchNo: "AT-441", expiryDate: "Mar 2027" }
       ],
       siblingPackages: [
-        { packageId: "ORD-5722-A", status: "pending" }
+        { packageId: "ORD-5722-A", status: "delayed" }
       ]
     },
     {
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ],
       siblingPackages: [
         { packageId: "ORD-5900-A", status: "packed" },
-        { packageId: "ORD-5900-C", status: "pending" }
+        { packageId: "ORD-5900-C", status: "dispatched" }
       ]
     },
     {
@@ -154,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const receiveItemsTbodyElem = document.getElementById('packagesTbody')
 
+  // Display the packages in the page
   const incomingPackagesTblFrag = document.createDocumentFragment()
   receivingData.forEach(pkg => {
     const tblRow = document.createElement('tr')
@@ -176,17 +177,87 @@ document.addEventListener('DOMContentLoaded', () => {
   receiveItemsTbodyElem.appendChild(incomingPackagesTblFrag)
 
   receiveItemsTbodyElem.addEventListener('click', (e) => {
-      const btn = e.target.closest('button')
-      if(!btn) return;
+    const btn = e.target.closest('button')
+    if (!btn) return;
 
-      if(btn.classList.contains('view-pkg-btn')){
-        const overlayElem = document.getElementById('packageDetailsOverlay')
-        handleOverlay(overlayElem)
-      }
+    if (btn.classList.contains('view-pkg-btn')) {
+      const overlayElem = document.getElementById('packageDetailsOverlay')
+      handleOverlay(overlayElem)
 
-      if(btn.classList.contains('receive-pkg')){
-        const overlayElem = document.getElementById('inspectionOverlay')
-        handleOverlay(overlayElem)
-      }
-    })
+      const btnPkgId = btn.dataset.pkgId
+      const packageItemsTbody = document.getElementById('packageItems')
+      receivingData.forEach(pkg => {
+        if (pkg.packageId === btnPkgId) {
+          document.querySelectorAll('.overlay-ord-id')
+            .forEach(orderIdElem => {
+              orderIdElem.textContent = `${pkg.orderId}`
+            })
+
+          document.querySelector('.overlay-pkg-id')
+            .textContent = `${pkg.packageId}`
+
+          document.querySelector('.js-storage-temp')
+            .textContent = `${pkg.storageTemp}`
+
+          document.querySelector('.js-delivery-date')
+            .textContent = `${pkg.deliveryDateTime.split('|')[0].trim()}`
+
+          //Display the items in the package in the overlay
+          packageItemsTbody.innerHTML = ``
+          const packageItems = pkg.items
+          const packageItemsFrag = document.createDocumentFragment()
+
+          packageItems.forEach(item => {
+            const tblRow = document.createElement('tr')
+
+            tblRow.innerHTML = `
+                <td>${item.name}</td>
+                <td>${item.quantity} ${item.uom}</td>
+              `
+            packageItemsFrag.appendChild(tblRow)
+          })
+
+          packageItemsTbody.appendChild(packageItemsFrag)
+
+          // Populate details in the siblings container
+          const allPackagesSectionDescElem = document.querySelector('.js-section-desc')
+          const totalSiblingPkgs = pkg.siblingPackages.length
+          const siblingsContainerElem = document.getElementById('siblingsContainer')
+          siblingsContainerElem.innerHTML = ``
+          siblingsContainerElem.innerHTML = `
+            <div class="sibling-card active">
+              <div class="sibling-id">${pkg.packageId}</div>
+              <div class="sibling-status">
+                <span class="status-indicator current"></span>
+                current
+              </div>
+            </div>
+          `
+          if (totalSiblingPkgs === 0) {
+            allPackagesSectionDescElem.textContent = `This order contains only 1 package.`
+          } else {
+            allPackagesSectionDescElem.textContent =
+              `This order is split into ${totalSiblingPkgs + 1} physical packages.`
+
+            pkg.siblingPackages.forEach(pkg => {
+              siblingsContainerElem.innerHTML += `
+                    <div class="sibling-card">
+                      <div class="sibling-id">${pkg.packageId}</div>
+                      <div class="sibling-status">
+                        <span class="status-indicator ${pkg.status === 'delivered with issue' ? 'delivered-issue' : pkg.status}"></span>
+                        ${pkg.status}
+                      </div>
+                    </div>
+                  `
+            })
+          }
+        }
+      })
+    }
+
+    if (btn.classList.contains('receive-pkg')) {
+      const overlayElem = document.getElementById('inspectionOverlay')
+      handleOverlay(overlayElem)
+    }
+  })
 })
