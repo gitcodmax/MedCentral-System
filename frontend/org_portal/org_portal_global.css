@@ -32,12 +32,14 @@
   backdrop-filter: blur(4px);
   display: none;
   z-index: 1000;
+  overflow-y: auto;
 }
 
 .modal-overlay.active {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  flex-direction: column;
 }
 
 .close-modal-btn {

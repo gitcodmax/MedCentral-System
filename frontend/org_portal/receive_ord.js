@@ -4,6 +4,26 @@ import { handleOverlay } from "./overlay.js"
 document.addEventListener('DOMContentLoaded', () => {
   renderSidebar()
 
+  //Primary Item Status
+  const itemStatusOptions = [
+    { id: "STAT-GOOD", label: "Good Condition" },
+    { id: "STAT-DMG", label: "Damaged" },
+    { id: "STAT-EXP", label: "Expired" },
+    { id: "STAT-WRNG", label: "Wrong Item" }
+  ];
+
+  // Specific Damage Types
+  const commonDamageTypes = [
+    { id: "DMG-SEAL", label: "Broken/Tampered Seal" },
+    { id: "DMG-LEAK", label: "Leaking/Spillage" },
+    { id: "DMG-CRUSH", label: "Crushed/Compressed Packaging" },
+    { id: "DMG-TEMP", label: "Temperature Indicator Triggered" },
+    { id: "DMG-MOIST", label: "Water/Moisture Damage" },
+    { id: "DMG-VIAL", label: "Cracked Glass/Vial" },
+    { id: "DMG-CONTAM", label: "Visible Contamination" },
+    { id: "DMG-OTHR", label: "Other" }
+  ];
+
   const receivingData = [
     {
       orderId: "ORD-5542",
@@ -167,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <button class="view-pkg-btn" data-pkg-id=${pkg.packageId}><i class="fas fa-eye"></i> View Package Details</button>
       </td>
       <td class="text-right">
-        <button class="btn-primary receive-pkg">Receive Package</button>
+        <button class="btn-primary receive-pkg" data-pkg-id=${pkg.packageId}>Receive Package</button>
       </td>
     `
 
@@ -176,25 +196,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
   receiveItemsTbodyElem.appendChild(incomingPackagesTblFrag)
 
+  const inspectionOverlayElem = document.getElementById('inspectionOverlay')
   receiveItemsTbodyElem.addEventListener('click', (e) => {
     const btn = e.target.closest('button')
     if (!btn) return;
 
+    const btnPkgId = btn.dataset.pkgId
+
+    // Renders the order and package id in the page
+    function displayOrdPkgId(pkg) {
+      document.querySelectorAll('.overlay-ord-id')
+        .forEach(orderIdElem => {
+          orderIdElem.textContent = `${pkg.orderId}`
+        })
+
+      document.querySelectorAll('.overlay-pkg-id')
+        .forEach(pkgIdElem => {
+          pkgIdElem.textContent = `${pkg.packageId}`
+        })
+    }
+
+    // Button to view package details
     if (btn.classList.contains('view-pkg-btn')) {
       const overlayElem = document.getElementById('packageDetailsOverlay')
       handleOverlay(overlayElem)
 
-      const btnPkgId = btn.dataset.pkgId
       const packageItemsTbody = document.getElementById('packageItems')
       receivingData.forEach(pkg => {
         if (pkg.packageId === btnPkgId) {
-          document.querySelectorAll('.overlay-ord-id')
-            .forEach(orderIdElem => {
-              orderIdElem.textContent = `${pkg.orderId}`
-            })
-
-          document.querySelector('.overlay-pkg-id')
-            .textContent = `${pkg.packageId}`
+          displayOrdPkgId(pkg)
 
           document.querySelector('.js-storage-temp')
             .textContent = `${pkg.storageTemp}`
@@ -255,9 +285,169 @@ document.addEventListener('DOMContentLoaded', () => {
       })
     }
 
+    // Button to perform inspection
     if (btn.classList.contains('receive-pkg')) {
-      const overlayElem = document.getElementById('inspectionOverlay')
-      handleOverlay(overlayElem)
+      handleOverlay(inspectionOverlayElem)
+
+      document.querySelector('.js-btn-confirm-inspection')
+        .dataset.packageId = btnPkgId
+
+      receivingData.forEach(pkg => {
+        if (btnPkgId === pkg.packageId) {
+          displayOrdPkgId(pkg)
+
+          const inspectionModalBodyElem = document.getElementById('inspectionModalBody')
+          inspectionModalBodyElem.innerHTML = ``
+
+          const modalBodyFrag = document.createDocumentFragment()
+          pkg.items.forEach(item => {
+            const inspectionCardDiv = document.createElement('div')
+            inspectionCardDiv.className = `inspection-card`
+
+            inspectionCardDiv.innerHTML = `
+            
+              <div class="card-header">
+                <div class="item-identity">
+                  <span class="sku">SKU: ${item.sku}</span>
+                  <h3 class="item-name">${item.name}</h3>
+                </div>
+                <div class="item-logistics">
+                  <span>Batch: <strong class="badge grn">${item.batchNo}</strong></span>
+                  <span>Exp: <strong class="blue badge">${item.expiryDate}</strong></span>
+                </div>
+              </div>
+
+              <div class="card-grid">
+                <div class="input-group">
+                  <label>Expected Qty</label>
+                  <div class="readonly-value">${item.quantity} ${item.uom}</div>
+                </div>
+
+                <div class="input-group">
+                  <label>Item Status</label>
+                  <select class="status-select js-status-select" id="statusSelect-${item.sku}"></select>
+                </div>
+
+                <div class="input-group issue-box">
+                  <label>Issue Details (If any)</label>
+                  <div class="issue-flex">
+                    <input type="number" placeholder="Qty Affected" id="qtyInput-${item.sku}" class="qty-input" min=1 max=${item.quantity}>
+                    <select class="damage-type js-damage-type" id="damageType-${item.sku}">
+                      <option value=''>Type of damage...</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="input-group">
+                  <label>Evidence</label>
+                  <div class="photo-upload-zone">
+                    <i class="fas fa-camera"></i>
+                    <span class="photo-label">Upload Photo</span>
+                    <input type="file" accept="image/*" hidden class="evidence-image" id='evidenceImage-${item.sku}' data-item-sku=${item.sku}>
+                  </div>
+                </div>
+              </div>
+
+              <div class="photo-uploaded-details" id="photoUploaded-${item.sku}"></div>
+
+              <div class="item-footer">
+                <textarea placeholder="Additional notes or 'Other' damage type..." class="notes-input" id='otherDamageType-${item.sku}'></textarea>
+              </div>
+            
+            `
+
+            modalBodyFrag.appendChild(inspectionCardDiv)
+          })
+
+          inspectionModalBodyElem.appendChild(modalBodyFrag)
+        }
+      })
+
+      // Set up the item status options in the drop down
+      document.querySelectorAll('.js-status-select')
+        .forEach(itemStatusElem => {
+          itemStatusOptions.forEach(itemStatus => {
+            itemStatusElem.innerHTML += `
+              <option value=${itemStatus.id}>${itemStatus.label}</option>
+            `
+          })
+        })
+
+      // Display the damage types in the type of damage input
+      document.querySelectorAll('.js-damage-type')
+        .forEach(damageTypeInputElem => {
+          commonDamageTypes.forEach(damageType => {
+            damageTypeInputElem.innerHTML += `
+              <option value=${damageType.id}>${damageType.label}</option>
+            `
+          })
+        })
+
+      // Trigger a click in the hidden input tag to upload an image
+      document.querySelectorAll('.photo-upload-zone')
+        .forEach(uploadZoneElem => {
+          uploadZoneElem.addEventListener('click', () => {
+            uploadZoneElem.querySelector('.evidence-image').click()
+          })
+        })
+
+      // Notify the user image has been uploaded
+      document.querySelectorAll('.evidence-image')
+        .forEach(imageInputElem => {
+          imageInputElem.addEventListener('change', (e) => {
+            const imageInputItemSku = imageInputElem.dataset.itemSku
+            const file = e.target.files[0];
+            if (!file) return;
+
+            alert(`Photo ${file.name} uploaded.`)
+            document.getElementById(`photoUploaded-${imageInputItemSku}`)
+              .textContent = `Photo Uploaded: ${file.name}`
+          })
+        })
     }
   })
+
+  // Set up button to confirm the items inspection
+  inspectionOverlayElem.addEventListener('click', (e) => {
+    const btn = e.target.closest('button')
+    if (!btn) return;
+
+    if (btn.classList.contains('js-btn-confirm-inspection')) {
+      const confirmBtnPkgId = btn.dataset.packageId
+
+      // Validate the inputs for item inspection
+      for (const pkg of receivingData) {
+        if (pkg.packageId === confirmBtnPkgId) {
+          for (const item of pkg.items) {
+            const statusSelectElem = document.getElementById(`statusSelect-${item.sku}`);
+            const quantityInputElem = document.getElementById(`qtyInput-${item.sku}`)
+            const evidenceImageElem = document.getElementById(`evidenceImage-${item.sku}`)
+            const damageTypeElem = document.getElementById(`damageType-${item.sku}`)
+            const otherDamageTypeElem = document.getElementById(`otherDamageType-${item.sku}`)
+
+            if (statusSelectElem.value === 'STAT-GOOD') continue;
+
+            let errorMessage = "";
+            if (!quantityInputElem.value) {
+              errorMessage = `Enter qty affected in ${item.name}`;
+            } else if (!evidenceImageElem.value) {
+              errorMessage = `Enter the evidence image for ${item.name}`;
+            } else if (statusSelectElem.value === 'STAT-DMG') {
+              if (!damageTypeElem.value) {
+                errorMessage = `Enter the damage type for ${item.name}`;
+              } else if (damageTypeElem.value === 'DMG-OTHR' && !otherDamageTypeElem.value.trim()) {
+                errorMessage = `Enter the type of damage in ${item.name} text area`;
+              }
+            }
+
+            if (errorMessage) {
+              alert(errorMessage);
+              return;
+            }
+          }
+        }
+      }
+    }
+  })
+
 })
