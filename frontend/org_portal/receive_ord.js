@@ -2,6 +2,120 @@ import { renderSidebar } from "./sidebar.js"
 import { handleOverlay } from "./overlay.js"
 
 document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('.app-container')
+    .innerHTML = `
+    <nav class="sidebar js-sidebar"></nav>
+
+    <main class="app-content">
+      <div class="main-content-logo"></div>
+
+      <div class="page-content">
+
+        <header class="page-header">
+          <div>
+            <h1>Incoming Packages – Pending Confirmation</h1>
+            <p>Verify and log medical supplies upon arrival at the loading dock.</p>
+          </div>
+
+          <div class="summary-counter">
+            <span class="count-value">12</span>
+            <span class="count-label">Packages Awaiting Confirmation</span>
+          </div>
+        </header>
+
+        <section class="table-card">
+          <table class="packages-table">
+            <thead>
+              <tr>
+                <th>Package ID</th>
+                <th>Order ID</th>
+                <th>Delivery Date & Time</th>
+                <th class="text-right">Details</th>
+                <th class="text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="packagesTbody"></tbody>
+          </table>
+        </section>
+      </div>
+
+      <div class="modal-overlay" id="packageDetailsOverlay">
+        <div class="context-modal">
+          <div class="modal-header">
+            <div class="header-titles">
+              <p>Order Group: <strong class="ord-id overlay-ord-id"></strong></p>
+            </div>
+            <button class="close-modal-btn js-btn-close-overlay">&times;</button>
+          </div>
+
+          <div class="modal-body">
+            <section class="current-package-info">
+              <div class="info-card">
+                <div class="info-tag-main">
+                  <span class="label">Viewing Package</span>
+                  <span class="value overlay-pkg-id"></span>
+                </div>
+                <div class="info-meta">
+                  <span><i class="fas fa-thermometer-half"></i> Storage: <strong
+                      class="js-storage-temp"></strong></span>
+                  <span><i class="fas fa-calendar"></i> Delivery: <strong class="js-delivery-date"></strong></span>
+                </div>
+              </div>
+
+              <div class="items-list-container">
+                <h3>Items in this Package</h3>
+                <table class="pkg-items-table">
+                  <thead>
+                    <tr>
+                      <th>Item Name</th>
+                      <th>Quantity</th>
+                    </tr>
+                  </thead>
+                  <tbody id="packageItems"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <hr class="section-divider">
+
+            <section class="order-sibling-section">
+              <h3>Associated Packages (<span class="ord-id overlay-ord-id"></span>)</h3>
+              <p class="section-desc js-section-desc"></p>
+
+              <div class="sibling-grid" id="siblingsContainer"></div>
+            </section>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn-secondary js-btn-close-overlay">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-overlay" id="inspectionOverlay">
+        <div class="inspection-modal">
+          <header class="inspection-header">
+            <div class="header-title">
+              <h2>Inspection & Verification</h2>
+              <span>ID: <strong class="pkg-id overlay-pkg-id"></strong></span> | <span>Order: <strong
+                  class="ord-id overlay-ord-id"></strong></span>
+            </div>
+            <button class="close-modal-btn js-btn-close-overlay">&times;</button>
+          </header>
+
+          <div class="modal-body" id="inspectionModalBody"></div>
+
+          <footer class="modal-footer">
+            <div class="footer-btns">
+              <button class="btn-secondary js-btn-close-overlay">Close</button>
+              <button class="btn-primary js-btn-confirm-inspection">Confirm Verification</button>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </main>
+    `
+
   renderSidebar()
 
   //Primary Item Status
