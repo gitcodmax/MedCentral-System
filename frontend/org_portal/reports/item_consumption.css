@@ -1,6 +1,5 @@
-.container {
-  max-width: 1280px;
-  margin: 0 auto;
+.page-content {
+  padding: 20px;
 }
 
 /* --- Typography --- */
@@ -95,32 +94,80 @@
 }
 
 .kpi-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background: white;
-  padding: 1.25rem;
+  padding: 1.5rem;
   border-radius: var(--radius);
+  border: 1px solid var(--color-primary);
+  transition: all 0.2s ease;
+}
+
+.kpi-card:hover{
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-3px);
   border: 1px solid var(--color-secondary);
-  transition: transform 0.3s;
 }
 
-.kpi-card:hover {
-  transform: translateY(-2px);
+.total-items-kpi{
+  background: linear-gradient(30deg,white 40%, var(--color-primary) 100%);
+}
+.tot-cat-kpi{
+  background: linear-gradient(30deg,white 40%, var(--color-secondary) 100%);
+}
+.most-cons-kpi{
+  background: linear-gradient(30deg,white 40%, #7c3aed 100%);
+}
+.avg-cons-kpi{
+  background: linear-gradient(30deg,white 40%, #ea580c 100%);
 }
 
-.kpi-label {
-  font-size: 0.85rem;
+.kpi-content {
+  flex: 1;
+}
+
+.kpi-label{
   color: var(--color-quarantine);
-  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
-.kpi-value {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-top: 0.5rem;
+.kpi-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1rem;
+}
+
+/* Medical Palette Icon Accents */
+.kpi-icon-wrapper.blue {
+  background: #e0f2fe;
   color: var(--color-primary);
 }
 
-.kpi-value.small-val {
-  font-size: 1.15rem;
+.kpi-icon-wrapper.green {
+  background: #f0fdf4;
+  color: var(--color-secondary);
+}
+
+.kpi-icon-wrapper.purple {
+  background: #f5f3ff;
+  color: #7c3aed;
+}
+
+.kpi-icon-wrapper.orange {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.kpi-icon-wrapper i {
+  width: 24px;
+  height: 24px;
 }
 
 /* --- Charts Area --- */

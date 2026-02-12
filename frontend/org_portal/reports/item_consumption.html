@@ -5,142 +5,174 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Item Consumption Report | MedCentral</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
   <link rel="stylesheet" href="/global.css">
+  <link rel="stylesheet" href="/org_portal/sidebar.css">
   <link rel="stylesheet" href="/org_portal/org_portal_global.css">
   <link rel="stylesheet" href="/org_portal/reports/item_consumption.css">
 </head>
 
 <body>
 
-  <div class="container">
-    <header class="header">
-      <div class="header-content">
-        <h1>Item Consumption Report</h1>
-        <p>Analyze usage trends and plan inventory efficiently</p>
-      </div>
-    </header>
+  <div class="app-container">
+    <nav class="sidebar js-sidebar"></nav>
 
-    <section class="card filter-card">
-      <div class="filters-grid">
-        <div class="form-group">
-          <label for="fromDate">From Date</label>
-          <input type="date" id="fromDate">
-        </div>
-        <div class="form-group">
-          <label for="toDate">To Date</label>
-          <input type="date" id="toDate">
-        </div>
-        <div class="form-group">
-          <label for="category">Category</label>
-          <select id="category">
-            <option value="">All Categories</option>
-            <option value="surgical">Surgical Supplies</option>
-            <option value="pharmaceutical">Pharmaceuticals</option>
-            <option value="lab">Lab Equipment</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="item">Item Name</label>
-          <input type="text" id="item" placeholder="Search item...">
-        </div>
-        <div class="button-group">
-          <button class="btn btn-primary">Apply Filters</button>
-          <button class="btn btn-secondary">Reset</button>
-        </div>
-      </div>
-    </section>
+    <main class="app-content">
+      <div class="main-content-logo"></div>
 
-    <section class="kpi-grid">
-      <div class="kpi-card">
-        <span class="kpi-label">Total Items Consumed</span>
-        <div class="kpi-value">12,482</div>
-      </div>
-      <div class="kpi-card">
-        <span class="kpi-label">Total Categories</span>
-        <div class="kpi-value">18</div>
-      </div>
-      <div class="kpi-card">
-        <span class="kpi-label">Most Consumed Item</span>
-        <div class="kpi-value small-val">Latex Gloves (L)</div>
-      </div>
-      <div class="kpi-card">
-        <span class="kpi-label">Avg. Monthly Consumption</span>
-        <div class="kpi-value">2,080</div>
-      </div>
-    </section>
+      <div class="page-content">
+        <header class="header">
+          <div class="header-content">
+            <h1>Item Consumption Report</h1>
+            <p>Analyze usage trends and plan inventory efficiently</p>
+          </div>
+        </header>
 
-    <div class="charts-container">
-      <section class="card chart-card">
-        <h2 class="section-title">Consumption Trend Over Time</h2>
-        <div id="consumptionTrendChart" class="chart-placeholder">
-          <span>Line Chart Visualization Area</span>
-        </div>
-      </section>
-      <section class="card chart-card">
-        <h2 class="section-title">Top 10 Most Consumed Items</h2>
-        <div id="topItemsChart" class="chart-placeholder">
-          <span>Bar Chart Visualization Area</span>
-        </div>
-      </section>
-    </div>
+        <section class="card filter-card">
+          <div class="filters-grid">
+            <div class="form-group">
+              <label for="fromDate">From Date</label>
+              <input type="date" id="fromDate">
+            </div>
+            <div class="form-group">
+              <label for="toDate">To Date</label>
+              <input type="date" id="toDate">
+            </div>
+            <div class="form-group">
+              <label for="category">Category</label>
+              <select id="category">
+                <option value="">All Categories</option>
+                <option value="surgical">Surgical Supplies</option>
+                <option value="pharmaceutical">Pharmaceuticals</option>
+                <option value="lab">Lab Equipment</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="item">Item Name</label>
+              <input type="text" id="item" placeholder="Search item...">
+            </div>
+            <div class="button-group">
+              <button class="btn btn-primary">Apply Filters</button>
+              <button class="btn btn-secondary">Reset</button>
+            </div>
+          </div>
+        </section>
 
-    <section class="card table-card">
-      <h2 class="section-title">Detailed Item Consumption</h2>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Item Name</th>
-              <th>Category</th>
-              <th>Total Qty</th>
-              <th>Unit</th>
-              <th>Orders</th>
-              <th>Last Ordered</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Latex Gloves (Large)</strong></td>
-              <td><span class="badge">PPE</span></td>
-              <td>4,500</td>
-              <td>Box (100pcs)</td>
-              <td>42</td>
-              <td>Feb 10, 2026</td>
-            </tr>
-            <tr>
-              <td><strong>Saline Solution 500ml</strong></td>
-              <td><span class="badge badge-med">Surgical</span></td>
-              <td>1,200</td>
-              <td>Unit</td>
-              <td>15</td>
-              <td>Feb 08, 2026</td>
-            </tr>
-            <tr>
-              <td><strong>Disposable Syringes 5ml</strong></td>
-              <td><span class="badge badge-med">Surgical</span></td>
-              <td>2,800</td>
-              <td>Pack (50pcs)</td>
-              <td>28</td>
-              <td>Feb 01, 2026</td>
-            </tr>
-            <tr>
-              <td><strong>Paracetamol 500mg</strong></td>
-              <td><span class="badge badge-pharma">Pharma</span></td>
-              <td>5,000</td>
-              <td>Strip</td>
-              <td>12</td>
-              <td>Jan 28, 2026</td>
-            </tr>
-          </tbody>
-        </table>
+        <section class="kpi-grid">
+          <div class="kpi-card total-items-kpi">
+            <div class="kpi-content">
+              <span class="kpi-label">Total Items Consumed</span>
+              <div class="kpi-value">12,482</div>
+            </div>
+            <div class="kpi-icon-wrapper blue">
+              <i data-lucide="package-check"></i>
+            </div>
+          </div>
+
+          <div class="kpi-card tot-cat-kpi">
+            <div class="kpi-content">
+              <span class="kpi-label">Total Categories</span>
+              <div class="kpi-value">18</div>
+            </div>
+            <div class="kpi-icon-wrapper green">
+              <i data-lucide="layers"></i>
+            </div>
+          </div>
+
+          <div class="kpi-card most-cons-kpi">
+            <div class="kpi-content">
+              <span class="kpi-label">Most Consumed Item</span>
+              <div class="kpi-value small-val">Latex Gloves (L)</div>
+            </div>
+            <div class="kpi-icon-wrapper purple">
+              <i data-lucide="trending-up"></i>
+            </div>
+          </div>
+
+          <div class="kpi-card avg-cons-kpi">
+            <div class="kpi-content">
+              <span class="kpi-label">Avg. Monthly Consumption</span>
+              <div class="kpi-value">2,080</div>
+            </div>
+            <div class="kpi-icon-wrapper orange">
+              <i data-lucide="calendar"></i>
+            </div>
+          </div>
+        </section>
+
+        <div class="charts-container">
+          <section class="card chart-card">
+            <h2 class="section-title">Consumption Trend Over Time</h2>
+            <div id="consumptionTrendChart" class="chart-placeholder">
+              <span>Line Chart Visualization Area</span>
+            </div>
+          </section>
+          <section class="card chart-card">
+            <h2 class="section-title">Top 10 Most Consumed Items</h2>
+            <div id="topItemsChart" class="chart-placeholder">
+              <span>Bar Chart Visualization Area</span>
+            </div>
+          </section>
+        </div>
+
+        <section class="card table-card">
+          <h2 class="section-title">Detailed Item Consumption</h2>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item Name</th>
+                  <th>Category</th>
+                  <th>Total Qty</th>
+                  <th>Unit</th>
+                  <th>Orders</th>
+                  <th>Last Ordered</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Latex Gloves (Large)</strong></td>
+                  <td><span class="badge">PPE</span></td>
+                  <td>4,500</td>
+                  <td>Box (100pcs)</td>
+                  <td>42</td>
+                  <td>Feb 10, 2026</td>
+                </tr>
+                <tr>
+                  <td><strong>Saline Solution 500ml</strong></td>
+                  <td><span class="badge badge-med">Surgical</span></td>
+                  <td>1,200</td>
+                  <td>Unit</td>
+                  <td>15</td>
+                  <td>Feb 08, 2026</td>
+                </tr>
+                <tr>
+                  <td><strong>Disposable Syringes 5ml</strong></td>
+                  <td><span class="badge badge-med">Surgical</span></td>
+                  <td>2,800</td>
+                  <td>Pack (50pcs)</td>
+                  <td>28</td>
+                  <td>Feb 01, 2026</td>
+                </tr>
+                <tr>
+                  <td><strong>Paracetamol 500mg</strong></td>
+                  <td><span class="badge badge-pharma">Pharma</span></td>
+                  <td>5,000</td>
+                  <td>Strip</td>
+                  <td>12</td>
+                  <td>Jan 28, 2026</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
       </div>
-    </section>
+    </main>
   </div>
 
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script type="module" src="/org_portal/reports/item_consumption.js"></script>
 </body>
 
 </html>
