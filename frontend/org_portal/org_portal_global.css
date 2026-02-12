@@ -9,6 +9,8 @@
   /* Delivered exists */
   --deliveredIssue: #E5533D;
   --completed: #157347;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --radius: 8px;
 }
 
 * {
