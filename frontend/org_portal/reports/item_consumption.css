@@ -194,6 +194,17 @@
   color: #94a3b8;
 }
 
+.chart-card{
+  min-width: 0;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.chart-card:hover{
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+}
+
 /* --- Table Styles --- */
 .table-container {
   overflow-x: auto;
@@ -226,21 +237,11 @@ tbody tr:hover {
 
 .badge {
   background: #e0f2fe;
-  color: #0369a1;
+  color: var(--color-secondary);
   padding: 0.2rem 0.6rem;
   border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 600;
-}
-
-.badge-med {
-  background: #f0fdf4;
-  color: #166534;
-}
-
-.badge-pharma {
-  background: #fef2f2;
-  color: #991b1b;
 }
 
 /* --- Tablet/Mobile Optimization --- */
