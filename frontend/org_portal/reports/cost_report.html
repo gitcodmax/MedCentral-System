@@ -9,176 +9,188 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
   <link rel="stylesheet" href="/global.css">
+  <link rel="stylesheet" href="/org_portal/sidebar.css">
   <link rel="stylesheet" href="/org_portal/org_portal_global.css">
   <link rel="stylesheet" href="/org_portal/reports/cost_report.css">
 </head>
 
 <body>
 
-  <header class="page-header">
-    <h1>Financial Report</h1>
-    <p>Monitor expenditure, costs, and budget trends</p>
-  </header>
+  <div class="app-container">
+    <nav class="sidebar js-sidebar"></nav>
 
-  <section class="card">
-    <div class="filters-grid">
-      <div class="filter-group">
-        <label for="from-date">From Date</label>
-        <input type="date" id="from-date">
-      </div>
-      <div class="filter-group">
-        <label for="to-date">To Date</label>
-        <input type="date" id="to-date">
-      </div>
-      <div class="filter-group">
-        <label for="category">Category</label>
-        <select id="category">
-          <option>All Categories</option>
-          <option>Pharmaceuticals</option>
-          <option>Surgical Supplies</option>
-          <option>Laboratory</option>
-          <option>Radiology</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label for="warehouse">Warehouse</label>
-        <select id="warehouse">
-          <option>Central Storage</option>
-          <option>North Wing Annex</option>
-          <option>Emergency Stock</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label for="status">Status</label>
-        <select id="status">
-          <option>Completed</option>
-          <option>Delivered with Issues</option>
-          <option>Rejected</option>
-        </select>
-      </div>
-      <div class="filter-actions">
-        <button class="btn btn-apply">Apply Filters</button>
-        <button class="btn btn-reset">Reset</button>
-      </div>
-    </div>
-  </section>
+    <main class="app-content">
+      <div class="main-content-logo"></div>
 
-  <section class="kpi-container">
-    <div class="kpi-card blue-card">
-      <div class="kpi-header">
-        <span class="kpi-label">Total Expenditure</span>
-        <div class="kpi-icon icon-blue">
-          <i class="fas fa-wallet"></i>
+      <div class="page-content">
+        <header class="page-header">
+          <h1>Financial Report</h1>
+          <p>Monitor expenditure, costs, and budget trends</p>
+        </header>
+
+        <section class="card">
+          <div class="filters-grid">
+            <div class="filter-group">
+              <label for="from-date">From Date</label>
+              <input type="date" id="from-date">
+            </div>
+            <div class="filter-group">
+              <label for="to-date">To Date</label>
+              <input type="date" id="to-date">
+            </div>
+            <div class="filter-group">
+              <label for="category">Category</label>
+              <select id="category">
+                <option>All Categories</option>
+                <option>Pharmaceuticals</option>
+                <option>Surgical Supplies</option>
+                <option>Laboratory</option>
+                <option>Radiology</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="warehouse">Warehouse</label>
+              <select id="warehouse">
+                <option>Central Storage</option>
+                <option>North Wing Annex</option>
+                <option>Emergency Stock</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="status">Status</label>
+              <select id="status">
+                <option>Completed</option>
+                <option>Delivered with Issues</option>
+                <option>Rejected</option>
+              </select>
+            </div>
+            <div class="filter-actions">
+              <button class="btn btn-apply">Apply Filters</button>
+              <button class="btn btn-reset">Reset</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="kpi-container">
+          <div class="kpi-card blue-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Total Expenditure</span>
+              <div class="kpi-icon icon-blue">
+                <i class="fas fa-wallet"></i>
+              </div>
+            </div>
+            <div class="kpi-value">$2,840,500.00</div>
+          </div>
+
+          <div class="kpi-card green-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Avg. Monthly Spend</span>
+              <div class="kpi-icon icon-green">
+                <i class="fas fa-chart-line"></i>
+              </div>
+            </div>
+            <div class="kpi-value">$236,708.33</div>
+          </div>
+
+          <div class="kpi-card blue-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Highest Category</span>
+              <div class="kpi-icon icon-blue">
+                <i class="fas fa-pills"></i>
+              </div>
+            </div>
+            <div class="kpi-value">Critical Care</div>
+          </div>
+
+          <div class="kpi-card green-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Highest Cost Item</span>
+              <div class="kpi-icon icon-green">
+                <i class="fas fa-microscope"></i>
+              </div>
+            </div>
+            <div class="kpi-value">Pacemaker Gen-X</div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h3 class="card-title">Monthly Expenditure Trend</h3>
+          <div id="monthlyExpenditureChart" class="chart-main">
+            Line Chart Integration Placeholder
+          </div>
+        </section>
+
+        <div class="charts-row">
+          <section class="card">
+            <h3 class="card-title">Cost by Category</h3>
+            <div id="costByCategoryChart" class="chart-main chart-small">
+              Donut Chart Placeholder
+            </div>
+          </section>
+          <section class="card">
+            <h3 class="card-title">Top Cost Drivers</h3>
+            <div id="topCostItemsChart" class="chart-main chart-small">
+              Bar Chart Placeholder
+            </div>
+          </section>
+        </div>
+
+        <h3 class="table-section-title">Detailed Financial Breakdown</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Total Qty Ordered</th>
+                <th>Total Cost</th>
+                <th>Orders</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Dexamethasone 4mg</td>
+                <td>Pharmaceuticals</td>
+                <td>1,200</td>
+                <td class="amount">$54,000.00</td>
+                <td>15</td>
+              </tr>
+              <tr>
+                <td>Titanium Hip Implant</td>
+                <td>Orthopedic</td>
+                <td>12</td>
+                <td class="amount">$148,800.00</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td>N95 Respirators (Box 50)</td>
+                <td>PPE</td>
+                <td>500</td>
+                <td class="amount">$42,500.00</td>
+                <td>22</td>
+              </tr>
+              <tr>
+                <td>Vena-Cava Filter</td>
+                <td>Surgical</td>
+                <td>8</td>
+                <td class="amount">$16,800.00</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td>Saline 0.9% 500ml</td>
+                <td>Fluids</td>
+                <td>5,000</td>
+                <td class="amount">$12,500.00</td>
+                <td>45</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      <div class="kpi-value">$2,840,500.00</div>
-    </div>
-
-    <div class="kpi-card green-card">
-      <div class="kpi-header">
-        <span class="kpi-label">Avg. Monthly Spend</span>
-        <div class="kpi-icon icon-green">
-          <i class="fas fa-chart-line"></i>
-        </div>
-      </div>
-      <div class="kpi-value">$236,708.33</div>
-    </div>
-
-    <div class="kpi-card blue-card">
-      <div class="kpi-header">
-        <span class="kpi-label">Highest Category</span>
-        <div class="kpi-icon icon-blue">
-          <i class="fas fa-pills"></i>
-        </div>
-      </div>
-      <div class="kpi-value">Critical Care</div>
-    </div>
-
-    <div class="kpi-card green-card">
-      <div class="kpi-header">
-        <span class="kpi-label">Highest Cost Item</span>
-        <div class="kpi-icon icon-green">
-          <i class="fas fa-microscope"></i>
-        </div>
-      </div>
-      <div class="kpi-value">Pacemaker Gen-X</div>
-    </div>
-  </section>
-
-  <section class="card">
-    <h3 class="card-title">Monthly Expenditure Trend</h3>
-    <div id="monthlyExpenditureChart" class="chart-main">
-      Line Chart Integration Placeholder
-    </div>
-  </section>
-
-  <div class="charts-row">
-    <section class="card">
-      <h3 class="card-title">Cost by Category</h3>
-      <div id="costByCategoryChart" class="chart-main chart-small">
-        Donut Chart Placeholder
-      </div>
-    </section>
-    <section class="card">
-      <h3 class="card-title">Top Cost Drivers</h3>
-      <div id="topCostItemsChart" class="chart-main chart-small">
-        Bar Chart Placeholder
-      </div>
-    </section>
+    </main>
   </div>
 
-  <h3 class="table-section-title">Detailed Financial Breakdown</h3>
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>Item Name</th>
-          <th>Category</th>
-          <th>Total Qty Ordered</th>
-          <th>Total Cost</th>
-          <th>Orders</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Dexamethasone 4mg</td>
-          <td>Pharmaceuticals</td>
-          <td>1,200</td>
-          <td class="amount">$54,000.00</td>
-          <td>15</td>
-        </tr>
-        <tr>
-          <td>Titanium Hip Implant</td>
-          <td>Orthopedic</td>
-          <td>12</td>
-          <td class="amount">$148,800.00</td>
-          <td>3</td>
-        </tr>
-        <tr>
-          <td>N95 Respirators (Box 50)</td>
-          <td>PPE</td>
-          <td>500</td>
-          <td class="amount">$42,500.00</td>
-          <td>22</td>
-        </tr>
-        <tr>
-          <td>Vena-Cava Filter</td>
-          <td>Surgical</td>
-          <td>8</td>
-          <td class="amount">$16,800.00</td>
-          <td>4</td>
-        </tr>
-        <tr>
-          <td>Saline 0.9% 500ml</td>
-          <td>Fluids</td>
-          <td>5,000</td>
-          <td class="amount">$12,500.00</td>
-          <td>45</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
+  <script type="module" src="/org_portal/reports/cost_report.js"></script>
 </body>
 
 </html>

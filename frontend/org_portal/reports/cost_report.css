@@ -1,16 +1,5 @@
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: 'Inter', sans-serif;
-  background-color: var(--bg-neutral);
-  color: var(--text-dark);
-  line-height: 1.6;
-  padding: 2rem;
+.page-content{
+  padding: 20px;
 }
 
 /*  Page Header  */
