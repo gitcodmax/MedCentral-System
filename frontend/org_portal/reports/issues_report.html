@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issues & Returns Report | MedCentral</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <link rel="stylesheet" href="/global.css">
+    <link rel="stylesheet" href="/org_portal/reports/issues_report.css">
+    <link rel="stylesheet" href="/org_portal/org_portal_global.css">
+</head>
+<body>
+
+    <header class="page-header">
+        <h1>Issues & Returns Report</h1>
+        <p>Monitor reported issues, returns, and resolution status</p>
+    </header>
+
+    <section class="card">
+        <div class="filters-grid">
+            <div class="filter-group">
+                <label for="from-date">From Date</label>
+                <input type="date" id="from-date">
+            </div>
+            <div class="filter-group">
+                <label for="to-date">To Date</label>
+                <input type="date" id="to-date">
+            </div>
+            <div class="filter-group">
+                <label for="issue-type">Issue Type</label>
+                <select id="issue-type">
+                    <option>All Types</option>
+                    <option>Damaged</option>
+                    <option>Missing</option>
+                    <option>Expired</option>
+                    <option>Rejected</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="item-select">Item</label>
+                <select id="item-select">
+                    <option>All Items</option>
+                    <option>Insulin Vials</option>
+                    <option>Surgical Masks</option>
+                    <option>MRI Contrast</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="status-select">Resolution Status</label>
+                <select id="status-select">
+                    <option>All Statuses</option>
+                    <option>Pending</option>
+                    <option>Resolved</option>
+                    <option>In Review</option>
+                </select>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary">Apply Filters</button>
+                <button class="btn btn-outline">Reset</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="kpi-grid">
+        <div class="kpi-card">
+            <span class="kpi-label">Total Issues Reported</span>
+            <div class="kpi-value">128</div>
+        </div>
+        <div class="kpi-card green-accent">
+            <span class="kpi-label">Total Items Returned</span>
+            <div class="kpi-value">452</div>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-label">Most Common Issue</span>
+            <div class="kpi-value">Damaged</div>
+        </div>
+        <div class="kpi-card green-accent">
+            <span class="kpi-label">Pending Resolutions</span>
+            <div class="kpi-value">14</div>
+        </div>
+    </section>
+
+    <div class="charts-row">
+        <section class="card">
+            <h3 class="card-title">Issues by Type (Monthly Breakdown)</h3>
+            <div id="issuesByTypeChart" class="chart-placeholder">
+                <i class="fas fa-chart-bar"></i>
+                Stacked Bar Chart Placeholder
+            </div>
+        </section>
+        <section class="card">
+            <h3 class="card-title">Top Issue Items</h3>
+            <div id="topIssueItemsChart" class="chart-placeholder">
+                <i class="fas fa-list-ol"></i>
+                Bar Chart Placeholder
+            </div>
+        </section>
+    </div>
+
+    <section class="table-section">
+        <h3 class="table-title">Detailed Issues Log</h3>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Issue Type</th>
+                        <th>Qty Affected</th>
+                        <th>Date Reported</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>ORD-5542</strong></td>
+                        <td>Insulin Glargine</td>
+                        <td>Pharmaceuticals</td>
+                        <td>Damaged</td>
+                        <td>12</td>
+                        <td>Feb 12, 2026</td>
+                        <td><span class="badge badge-review">In Review</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>ORD-5612</strong></td>
+                        <td>Fresh Frozen Plasma</td>
+                        <td>Laboratory</td>
+                        <td>Expired</td>
+                        <td>4</td>
+                        <td>Feb 11, 2026</td>
+                        <td><span class="badge badge-pending">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>ORD-5580</strong></td>
+                        <td>Surgical Face Masks</td>
+                        <td>PPE</td>
+                        <td>Rejected</td>
+                        <td>50</td>
+                        <td>Feb 10, 2026</td>
+                        <td><span class="badge badge-resolved">Resolved</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</body>
+</html>
