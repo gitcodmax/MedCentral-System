@@ -79,7 +79,7 @@
                 <i class="fas fa-wallet"></i>
               </div>
             </div>
-            <div class="kpi-value">$2,840,500.00</div>
+            <div class="kpi-value total-ex"></div>
           </div>
 
           <div class="kpi-card green-card">
@@ -89,7 +89,7 @@
                 <i class="fas fa-chart-line"></i>
               </div>
             </div>
-            <div class="kpi-value">$236,708.33</div>
+            <div class="kpi-value avg-mon-spend">$236,708.33</div>
           </div>
 
           <div class="kpi-card blue-card">
@@ -99,7 +99,7 @@
                 <i class="fas fa-pills"></i>
               </div>
             </div>
-            <div class="kpi-value">Critical Care</div>
+            <div class="kpi-value highest-cat">Critical Care</div>
           </div>
 
           <div class="kpi-card green-card">
@@ -109,28 +109,28 @@
                 <i class="fas fa-microscope"></i>
               </div>
             </div>
-            <div class="kpi-value">Pacemaker Gen-X</div>
+            <div class="kpi-value highest-cost-item">Pacemaker Gen-X</div>
           </div>
         </section>
 
-        <section class="card">
+        <section class="card chart-card">
           <h3 class="card-title">Monthly Expenditure Trend</h3>
-          <div id="monthlyExpenditureChart" class="chart-main">
-            Line Chart Integration Placeholder
+          <div class="chart-main">
+            <canvas id="monthlyExpenditureChart"></canvas>
           </div>
         </section>
 
         <div class="charts-row">
-          <section class="card">
+          <section class="card chart-card">
             <h3 class="card-title">Cost by Category</h3>
-            <div id="costByCategoryChart" class="chart-main chart-small">
-              Donut Chart Placeholder
+            <div class="chart-main chart-small">
+              <canvas id="costByCategoryChart"></canvas>
             </div>
           </section>
-          <section class="card">
+          <section class="card chart-card">
             <h3 class="card-title">Top Cost Drivers</h3>
-            <div id="topCostItemsChart" class="chart-main chart-small">
-              Bar Chart Placeholder
+            <div class="chart-main chart-small">
+              <canvas id="topCostItemsChart"></canvas>
             </div>
           </section>
         </div>
@@ -147,49 +147,14 @@
                 <th>Orders</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Dexamethasone 4mg</td>
-                <td>Pharmaceuticals</td>
-                <td>1,200</td>
-                <td class="amount">$54,000.00</td>
-                <td>15</td>
-              </tr>
-              <tr>
-                <td>Titanium Hip Implant</td>
-                <td>Orthopedic</td>
-                <td>12</td>
-                <td class="amount">$148,800.00</td>
-                <td>3</td>
-              </tr>
-              <tr>
-                <td>N95 Respirators (Box 50)</td>
-                <td>PPE</td>
-                <td>500</td>
-                <td class="amount">$42,500.00</td>
-                <td>22</td>
-              </tr>
-              <tr>
-                <td>Vena-Cava Filter</td>
-                <td>Surgical</td>
-                <td>8</td>
-                <td class="amount">$16,800.00</td>
-                <td>4</td>
-              </tr>
-              <tr>
-                <td>Saline 0.9% 500ml</td>
-                <td>Fluids</td>
-                <td>5,000</td>
-                <td class="amount">$12,500.00</td>
-                <td>45</td>
-              </tr>
-            </tbody>
+            <tbody id="detailedCostsTbody"></tbody>
           </table>
         </div>
       </div>
     </main>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module" src="/org_portal/reports/cost_report.js"></script>
 </body>
 
