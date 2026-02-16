@@ -148,13 +148,6 @@
   margin-bottom: 0;
 }
 
-.blue-card{
-  background: linear-gradient(160deg, white 40%, var(--color-primary));
-}
-.green-card{
-  background: linear-gradient(160deg, white 40%, var(--color-secondary));
-}
-
 .kpi-icon {
   width: 40px;
   height: 40px;

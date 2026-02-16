@@ -61,3 +61,11 @@
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.822);
   transform: translateY(-3px);
 }
+
+/* Kpi cards styling */
+.blue-card{
+  background: linear-gradient(160deg, white 40%, var(--color-primary));
+}
+.green-card{
+  background: linear-gradient(160deg, white 40%, var(--color-secondary));
+}
