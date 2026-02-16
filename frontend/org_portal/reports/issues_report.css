@@ -1,4 +1,4 @@
-.page-content{
+.page-content {
   padding: 20px;
 }
 
@@ -54,7 +54,8 @@
   color: var(--color-quarantine);
 }
 
-.filter-group input, .filter-group select {
+.filter-group input,
+.filter-group select {
   padding: 0.6rem;
   border: 1px solid var(--color-quarantine);
   border-radius: 6px;
@@ -134,7 +135,7 @@
 .kpi-icon {
   width: 38px;
   height: 38px;
-  border-radius: 8px; 
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -145,6 +146,7 @@
   background-color: #EBF5FF;
   color: var(--color-primary);
 }
+
 .icon-red {
   background-color: #EBF5FF;
   color: red;
@@ -188,11 +190,12 @@
 }
 
 /*  Table Styles  */
-.table-section{
+.table-section {
   background: white;
   padding: 20px;
   border-radius: var(--radius);
 }
+
 .table-title {
   margin-bottom: 1rem;
   font-size: 1.25rem;
@@ -236,9 +239,10 @@ tbody tr:hover {
   background: #F8FAFC;
 }
 
-.ord-id{
+.ord-id {
   color: var(--color-secondary);
 }
+
 /*  Status Badges  */
 .badge {
   padding: 0.25rem 0.75rem;
@@ -248,7 +252,7 @@ tbody tr:hover {
   width: 90%;
 }
 
-.issue{
+.issue {
   color: red;
   text-transform: uppercase;
   font-weight: 700;
@@ -275,16 +279,26 @@ tbody tr:hover {
 /*  Responsive  */
 @media (max-width: 1024px) {
   .charts-row {
-      grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 768px) {
-  body { padding: 1rem; }
-  .filters-grid { grid-template-columns: 1fr; }
-  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  body {
+    padding: 1rem;
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 480px) {
-  .kpi-grid { grid-template-columns: 1fr; }
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
 }

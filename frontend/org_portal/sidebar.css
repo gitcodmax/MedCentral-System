@@ -271,7 +271,6 @@
   color: white;
 }
 
-/* The green line indicator under the active tab */
 .nav-tab.active::after {
   content: '';
   position: absolute;
@@ -298,7 +297,99 @@
   background: var(--color-secondary);
 }
 
-/* Mobile Responsiveness */
+
 @media (max-width: 600px) {
-  .nav-tab span { display: none; } /* Show only icons on small screens */
+  .nav-tab span { display: none; } 
+}
+
+/* Navigation Tabs Styling in Reports pages */
+.report-tabs {
+  background: white;
+  margin-bottom: 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  margin-bottom: 0;
+}
+
+.tabs-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  justify-content: center;
+  display: flex;
+  gap: 2rem;
+}
+
+.tab-link {
+  text-decoration: none;
+  color: var(--color-quarantine);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 1.25rem 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.tab-link i {
+  font-size: 1.1rem;
+}
+
+.tab-link:hover {
+  color: var(--color-primary);
+}
+
+.tab-link.active {
+  color: var(--color-primary);
+}
+
+.tab-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.red.active::after{
+  background-color: red;
+}
+.red.active i{
+  color: red;
+}
+.green.active::after{
+  background-color: var(--color-secondary);
+}
+.green.active i{
+  color: var(--color-secondary);
+}
+.blue.active::after{
+  background-color: var(--color-primary);
+}
+.blue.active i{
+  color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+  .tabs-container {
+    gap: 1rem;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .report-tabs{
+    margin-top: 50px;
+  }
+
+  .tab-link {
+    font-size: 0.85rem;
+    padding: 1rem 0.25rem;
+  }
 }

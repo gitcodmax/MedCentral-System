@@ -1,8 +1,8 @@
-import { renderSidebar } from "../sidebar.js";
+import { renderSidebar, renderReportsNavbar } from "../sidebar.js";
 
 document.addEventListener('DOMContentLoaded', () => {
   renderSidebar()
-
+  renderReportsNavbar()
 
   const MedCentralIssuesData = {
     summary: {

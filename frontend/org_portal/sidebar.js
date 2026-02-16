@@ -59,6 +59,7 @@ export function renderSidebar() {
     })
 }
 
+// Display the navigation bar in the request items page
 export function renderRequestItemsNavbar(){
   document.querySelector('.js-view-navigation')
     .addEventListener('click', (e) => {
@@ -95,4 +96,47 @@ export function renderRequestItemsNavbar(){
     document.querySelector('.js-ord-sum-nav')
       .classList.add('active')
   }
+}
+
+// Display the navigation bar in the reports pages
+export function renderReportsNavbar(){
+  const navbarElem = document.querySelector('.js-report-tabs')
+
+  navbarElem.innerHTML = `
+    <div class="tabs-container">
+      <a href="#" class="tab-link item-consumption blue">
+        <i class="fas fa-boxes"></i> Item Consumption
+      </a>
+      <a href="#" class="tab-link finance green">
+        <i class="fas fa-file-invoice-dollar"></i> Financial Report
+      </a>
+      <a href="#" class="tab-link issues red">
+        <i class="fas fa-exclamation-triangle"></i> Issues & Returns
+      </a>
+    </div>
+  `
+
+  if(window.location.href.includes('item_consumption')){
+    document.querySelector('.item-consumption')
+      .classList.add('active')
+  }else if(window.location.href.includes('cost_report')){
+    document.querySelector('.finance')
+      .classList.add('active')
+  }else{
+    document.querySelector('.issues')
+      .classList.add('active')
+  }
+
+  navbarElem.addEventListener('click', (e) => {
+    const pageLink = e.target.closest('a')
+    if(!pageLink) return;
+
+    if(pageLink.classList.contains('item-consumption')){
+      window.location.href = '/org_portal/reports/item_consumption.html'
+    } else if(pageLink.classList.contains('finance')){
+      window.location.href = `/org_portal/reports/cost_report.html`
+    }else{
+      window.location.href = `/org_portal/reports/issues_report.html`
+    }
+  })
 }

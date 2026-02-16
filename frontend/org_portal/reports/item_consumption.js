@@ -1,8 +1,8 @@
-import { renderSidebar } from "../sidebar.js"
+import { renderSidebar, renderReportsNavbar } from "../sidebar.js"
 
 document.addEventListener('DOMContentLoaded', () => {
   renderSidebar()
-  // Initialize Lucide icons
+  renderReportsNavbar()
   lucide.createIcons();
 
   const reportData = {
