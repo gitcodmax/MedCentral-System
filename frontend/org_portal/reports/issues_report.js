@@ -1,6 +1,151 @@
 import { renderSidebar, renderReportsNavbar } from "../sidebar.js";
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  document.querySelector('.app-container')
+    .innerHTML = `
+      
+    <nav class="sidebar js-sidebar"></nav>
+
+    <main class="app-content">
+      <div class="main-content-logo"></div>
+
+      <nav class="report-tabs js-report-tabs"></nav>
+
+      <div class="page-content">
+
+        <header class="page-header">
+          <h1>Issues & Returns Report</h1>
+          <p>Monitor reported issues, returns, and resolution status</p>
+        </header>
+
+        <section class="card">
+          <div class="filters-grid">
+            <div class="filter-group">
+              <label for="from-date">From Date</label>
+              <input type="date" id="from-date">
+            </div>
+            <div class="filter-group">
+              <label for="to-date">To Date</label>
+              <input type="date" id="to-date">
+            </div>
+            <div class="filter-group">
+              <label for="issue-type">Issue Type</label>
+              <select id="issue-type">
+                <option>All Types</option>
+                <option>Damaged</option>
+                <option>Missing</option>
+                <option>Expired</option>
+                <option>Rejected</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="item-select">Item Category</label>
+              <select id="item-select">
+                <option>All Categories</option>
+                <option>Pharmaceuticals</option>
+                <option>Surgical Supplies</option>
+                <option>Laboratory</option>
+                <option>Radiology</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="status-select">Resolution Status</label>
+              <select id="status-select">
+                <option>All Statuses</option>
+                <option>Pending</option>
+                <option>Resolved</option>
+                <option>In Review</option>
+              </select>
+            </div>
+            <div class="btn-group">
+              <button class="btn btn-primary">Apply Filters</button>
+              <button class="btn btn-outline">Reset</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="kpi-grid">
+          <div class="kpi-card blue-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Total Issues Reported</span>
+              <div class="kpi-icon icon-blue">
+                <i class="fas fa-exclamation-circle"></i>
+              </div>
+            </div>
+            <div class="kpi-value total-issues"></div>
+          </div>
+
+          <div class="kpi-card green-accent green-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Total Items Returned</span>
+              <div class="kpi-icon icon-green">
+                <i class="fas fa-box-open"></i>
+              </div>
+            </div>
+            <div class="kpi-value total-items-returned"></div>
+          </div>
+
+          <div class="kpi-card blue-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Most Common Issue</span>
+              <div class="kpi-icon icon-red">
+                <i class="fas fa-heart-broken"></i>
+              </div>
+            </div>
+            <div class="kpi-value most-common-issue"></div>
+          </div>
+
+          <div class="kpi-card green-accent green-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Pending Resolutions</span>
+              <div class="kpi-icon icon-green">
+                <i class="fas fa-clock"></i>
+              </div>
+            </div>
+            <div class="kpi-value pend-resolutions"></div>
+          </div>
+        </section>
+
+        <div class="charts-row">
+          <section class="card">
+            <h3 class="card-title">Issues by Type (Monthly Breakdown)</h3>
+            <div class="chart-placeholder">
+              <canvas id="issuesByTypeChart"></canvas>
+            </div>
+          </section>
+          <section class="card">
+            <h3 class="card-title">Top Issue Items</h3>
+            <div class="chart-placeholder">
+              <canvas id="topIssueItemsChart"></canvas>
+            </div>
+          </section>
+        </div>
+
+        <section class="table-section">
+          <h3 class="table-title">Detailed Issues Log</h3>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Item Name</th>
+                  <th>Category</th>
+                  <th>Issue Type</th>
+                  <th>Qty Affected</th>
+                  <th>Date Reported</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="detailedIssuesTbody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+  
+    `
+
   renderSidebar()
   renderReportsNavbar()
 
