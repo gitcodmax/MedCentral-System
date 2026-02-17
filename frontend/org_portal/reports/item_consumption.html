@@ -33,34 +33,53 @@
         </header>
 
         <section class="card filter-card">
-          <div class="filters-grid">
-            <div class="form-group">
-              <label for="fromDate">From Date</label>
-              <input type="date" id="fromDate">
-            </div>
-            <div class="form-group">
-              <label for="toDate">To Date</label>
-              <input type="date" id="toDate">
-            </div>
-            <div class="form-group">
-              <label for="category">Category</label>
-              <select id="category">
-                <option value="">All Categories</option>
-                <option value="surgical">Surgical Supplies</option>
-                <option value="pharmaceutical">Pharmaceuticals</option>
-                <option value="lab">Lab Equipment</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="item">Item Name</label>
-              <input type="text" id="item" placeholder="Search item...">
-            </div>
-            <div class="button-group">
-              <button class="btn btn-primary">Apply Filters</button>
-              <button class="btn btn-secondary">Reset</button>
-            </div>
+          <div class="filter-header">
+              <h2 class="filter-title"><i class="fas fa-sliders-h"></i> Report Filters</h2>
+              <span class="filter-subtitle">Analyze consumption by custom date range and department category</span>
           </div>
-        </section>
+          
+          <div class="filters-grid">
+              <div class="filter-group">
+                  <label for="start-date">From Date</label>
+                  <div class="input-with-icon">
+                      <i class="far fa-calendar-alt"></i>
+                      <input type="date" id="start-date" class="filter-input">
+                  </div>
+              </div>
+      
+              <div class="filter-group">
+                  <label for="end-date">To Date</label>
+                  <div class="input-with-icon">
+                      <i class="far fa-calendar-alt"></i>
+                      <input type="date" id="end-date" class="filter-input">
+                  </div>
+              </div>
+      
+              <div class="filter-group">
+                  <label for="category-filter">Category</label>
+                  <div class="input-with-icon">
+                      <i class="fas fa-tags"></i>
+                      <select id="category-filter" class="filter-input">
+                          <option value="all">All Categories</option>
+                          <option value="PPE">PPE</option>
+                          <option value="Surgical">Surgical</option>
+                          <option value="Pharma">Pharmaceuticals</option>
+                          <option value="Fluids">Medical Fluids</option>
+                          <option value="Wound Care">Wound Care</option>
+                      </select>
+                  </div>
+              </div>
+      
+              <div class="filter-actions">
+                  <button class="btn btn-apply-filters" id="btn-apply">
+                      Apply Filters
+                  </button>
+                  <button class="btn btn-reset" id="btn-reset">
+                      Reset
+                  </button>
+              </div>
+          </div>
+      </section>
 
         <section class="kpi-grid">
           <div class="kpi-card total-items-kpi">

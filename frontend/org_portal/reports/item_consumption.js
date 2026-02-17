@@ -39,27 +39,27 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.js-most-consum-kpi')
     .textContent = reportData.summary.mostConsumed
   document.querySelector('.js-avg-consum-kpi')
-    .textContent =reportData.summary.avgMonthly
+    .textContent = reportData.summary.avgMonthly
 
   // Consumption trend chart
   const trendCtx = document.getElementById('consumptionTrendChart').getContext('2d')
   new Chart(trendCtx, {
-    type: 'line', 
+    type: 'line',
     data: {
       labels: reportData.trends.labels,
       datasets: [{
-        label: 'Consumption', 
+        label: 'Consumption',
         data: reportData.trends.values,
         borderColor: '#007BFF',
         backgroundColor: 'rgba(14, 165, 233, 0.1)',
-        fill: true, 
+        fill: true,
         tension: 0.4
       }]
-    }, 
+    },
     options: {
-      responsive: true, 
+      responsive: true,
       maintainAspectRatio: false,
-      plugins: {legend: {display: false}}
+      plugins: { legend: { display: false } }
     }
   })
 
@@ -70,17 +70,17 @@ document.addEventListener('DOMContentLoaded', () => {
     data: {
       labels: reportData.categories.labels,
       datasets: [{
-        label: 'Quantity', 
+        label: 'Quantity',
         data: reportData.categories.values,
-        backgroundColor: '#008B00', 
+        backgroundColor: '#008B00',
         borderRadius: 4
       }]
-    }, 
+    },
     options: {
-      indexAxis: 'y', 
-      responsive: true, 
-      maintainAspectRatio: false, 
-      plugins: {legend: {display: false}}
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } }
     }
   })
 
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <td><span class="badge">${item.cat}</span></td>
       <td>${item.qty}</td>
       <td>${item.unit}</td>
-      <td>${item.qty}</td>
+      <td>${item.orders}</td>
       <td>${item.last}</td>
     `
 
