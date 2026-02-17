@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </main>
     `
 
-  renderSidebar()
+  renderSidebar('request_items')
   displayNoMatchFound()
   renderRequestItemsNavbar()
 

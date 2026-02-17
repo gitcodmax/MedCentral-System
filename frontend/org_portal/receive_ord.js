@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </main>
     `
 
-  renderSidebar()
+  renderSidebar('receive_ord')
 
   //Primary Item Status
   const itemStatusOptions = [

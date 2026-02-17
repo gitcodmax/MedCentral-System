@@ -1,4 +1,4 @@
-export function renderSidebar() {
+export function renderSidebar(pageName) {
   const sidebar = document.querySelector('.js-sidebar')
   const logoImg = `<img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">`
   document.querySelector('.main-content-logo')
@@ -16,20 +16,20 @@ export function renderSidebar() {
     </button>
 
     <ul class="nav-links">
-      <li class="active">
-        <a href="#"><i class="fas fa-th-large"></i> <span class="page-name">Dashboard</span></a>
+      <li class="dash-li">
+        <a href="/org_portal/dash.html"><i class="fas fa-th-large"></i> <span class="page-name">Dashboard</span></a>
       </li>
-      <li>
-        <a href="#"><i class="fas fa-plus-circle"></i> <span class="page-name">Request Items</span></a>
+      <li class="request_items-li">
+        <a href="/org_portal/request_items/product_catalog.html"><i class="fas fa-plus-circle"></i> <span class="page-name">Request Items</span></a>
       </li>
-      <li>
-        <a href="#"><i class="fas fa-inbox"></i> <span class="page-name">Recieve Items</span></a>
+      <li class="receive_ord-li">
+        <a href="/org_portal/receive_ord.html"><i class="fas fa-inbox"></i> <span class="page-name">Recieve Items</span></a>
       </li>
-      <li>
-        <a href="#"><i class="fas fa-file-invoice"></i> <span class="page-name">Order History</span></a>
+      <li class="ord_history-li">
+        <a href="/org_portal/ord_history.html"><i class="fas fa-file-invoice"></i> <span class="page-name">Order History</span></a>
       </li>
-      <li>
-        <a href="#"><i class="fas fa-chart-bar"></i> <span class="page-name">Reports</span></a>
+      <li class="reports-li">
+        <a href="/org_portal/reports/item_consumption.html"><i class="fas fa-chart-bar"></i> <span class="page-name">Reports</span></a>
       </li>
     </ul>
 
@@ -44,6 +44,11 @@ export function renderSidebar() {
       <button class="btn-logout"><i class="fas fa-sign-out-alt"></i></button>
     </div>
   `
+
+  if(window.location.href.includes(`${pageName}`)){
+    document.querySelector(`.${pageName}-li`)
+      .classList.add('active')
+  }
 
   document.querySelector('.js-close-sidebar-btn')
     .addEventListener('click', () => {

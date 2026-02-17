@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
     `
 
-  renderSidebar()
+  renderSidebar('ord_history')
   displayNoMatchFound()
 
   const orderHistoryData = [

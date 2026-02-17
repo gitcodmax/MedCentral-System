@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
     `
 
-  renderSidebar()
+  renderSidebar('reports')
   renderReportsNavbar()
 
   const MedCentralIssuesData = {

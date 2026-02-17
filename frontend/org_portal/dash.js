@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="card table-card">
             <div class="card-header">
               <h3>Recent Orders</h3>
-              <a href="#" class="btn-link">
+              <a href="/org_portal/ord_history.html" class="btn-link">
                 <button class="view-all-btn">View All</button>
               </a>
             </div>
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </main>
   `
 
-  renderSidebar()
+  renderSidebar('dash')
 
   //Hospital dash mock data
   const hospitalDashboardData = {

@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
     `
 
-  renderSidebar()
+  renderSidebar('reports')
   renderReportsNavbar()
   lucide.createIcons();
 
