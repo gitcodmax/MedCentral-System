@@ -1,6 +1,94 @@
 import { renderSidebar } from "./sidebar.js";
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  document.querySelector('.app-container')
+    .innerHTML = `   
+    <div class="sidebar" id="sidebar"></div>
+
+    <div class="main-wrapper">
+      <header class="top-header" id="topHeader"></header>
+
+      <main class="content">
+        <div class="cards-grid">
+          <div class="stat-card total-hosp-card">
+            <div class="card-header">
+              <div class="card-icon icon-blue"><i class="fas fa-hospital"></i></div>
+              <h3 id="totalHospitals"></h3>
+            </div>
+            <p>Total Hospitals</p>
+          </div>
+
+          <div class="stat-card card-inventory">
+            <div class="card-header">
+              <div class="card-icon icon-green"><i class="fas fa-boxes"></i></div>
+              <h3 id="inventoryItems"></h3>
+            </div>
+            <p>Inventory Items</p>
+          </div>
+
+          <div class="stat-card low-stock-card">
+            <div class="card-header">
+              <div class="card-icon icon-red"><i class="fas fa-exclamation-triangle"></i></div>
+              <h3 id="lowStockItems"></h3>
+            </div>
+            <p>Low Stock Items</p>
+          </div>
+
+          <div class="stat-card pending-card">
+            <div class="card-header">
+              <div class="card-icon icon-pending"><i class="fas fa-clock"></i></div>
+              <h3 id="pendingOrders"></h3>
+            </div>
+            <p>Pending Orders</p>
+          </div>
+
+          <div class="stat-card in-transit-card">
+            <div class="card-header">
+              <div class="card-icon icon-in-transit"><i class="fas fa-truck-loading"></i></div>
+              <h3 id="ordInTransit"></h3>
+            </div>
+            <p>Orders in Transit</p>
+          </div>
+
+          <div class="stat-card completed-ord-card">
+            <div class="card-header">
+              <div class="card-icon icon-green-alt"><i class="fas fa-check-circle"></i></div>
+              <h3 id="completedOrders"></h3>
+            </div>
+            <p>Completed Orders</p>
+          </div>
+        </div>
+
+        <div class="dashboard-row">
+          <section class="section-card">
+            <div class="section-title">
+              Recent Orders
+              <button class="view-all-orders-btn">
+                View All
+              </button>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Hospital Name</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="recentOrdersTbody"></tbody>
+            </table>
+          </section>
+
+          <section class="section-card" id="lowStockCard">
+            <div class="section-title">Low Stock Alerts</div>
+          </section>
+        </div>
+      </main>
+    </div>
+    `
+
   renderSidebar()
   document.querySelector('.js-header-left')
     .innerHTML = `
@@ -9,13 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </div> 
     `
 
-  /**
- * MedCentral Admin Dashboard - Mock Data (Feb 2026)
- * This object can be used to hydrate the dashboard UI.
- */
-
   const AdminDashboardData = {
-    // 1. TOP-LEVEL STATS (Summary Cards)
     stats: {
       totalHospitals: 24,
       totalInventoryItems: 1842,
@@ -25,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
       completedOrders: 142
     },
 
-    // 2. RECENT ORDERS (Table Data)
     recentOrders: [
       {
         id: "ORD-8821",
