@@ -4,11 +4,12 @@
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--color-secondary);
-  position: fixed;
-  height: 100vh;
+  position: sticky;
+  max-height: 100vh;
   transition: all 0.3s ease;
-  z-index: 100;
   left: 0;
+  bottom: 0;
+  top: 0;
 }
 
 .logo-area {
@@ -73,19 +74,116 @@
   transition: 0.3s;
 }
 
-.close-sidebar-btn:hover {
+.close-sidebar-btn:hover, .open-sidebar-btn:hover {
   background: var(--color-primary);
   color: white;
 }
 
 .close-sidebar-btn {
-  top: 50%;
+  top: 250px;
   left: 253px;
 }
 
 .open-sidebar-btn {
   margin: 10px;
   display: none;
+  top: 0;
+  left: 5px;
+  padding: 0 10px;
+}
+
+.collapsed{
+  width: 70px;
+  padding-top: 66px;
+}
+
+.sidebar.collapsed .logo-area,
+.sidebar.collapsed .logo-area span,
+.sidebar.collapsed .nav-link span {
+  display: none;
+}
+
+.sidebar.collapsed .nav-link{
+  justify-content: center;
+}
+
+.sidebar.collapsed .close-sidebar-btn{
+  display: none;
+}
+
+.sidebar.collapsed .open-sidebar-btn{
+  display: block;
+}
+
+/*TOP HEADER*/
+.top-header {
+  min-height: 70px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+}
+
+.top-header.collapsed{
+  flex-direction: column;
+  width: 100%;
+}
+
+.top-header.collapsed .logo-container{
+  display: block;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.notif-btn {
+  position: relative;
+  cursor: pointer;
+  color: var(--color-quarantine);
+  font-size: 1.2rem;
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #E53935;
+  color: white;
+  font-size: 0.65rem;
+  padding: 2px 5px;
+  border-radius: 50%;
+}
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-left: 1px solid var(--color-quarantine);
+  padding-left: 1.5rem;
+}
+
+.avatar {
+  width: 35px;
+  height: 35px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+}
+
+.admin-info span {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 @media (max-width: 768px){

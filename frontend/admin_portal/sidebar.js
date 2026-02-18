@@ -1,9 +1,9 @@
 export function renderSidebar(){
   const logoImage = `<img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">`
+  const sidebarElem = document.getElementById('sidebar')
 
-  document.getElementById('sidebar')
-    .innerHTML = `
-      
+  // Display the sidebar
+  sidebarElem.innerHTML = `      
     <div class="logo-area">
       ${logoImage}
     </div>
@@ -51,6 +51,25 @@ export function renderSidebar(){
   
   `
 
+  // Set up the buttons to open and close the sidebar
+  sidebarElem.addEventListener('click', (e) => {
+    const btn = e.target.closest('button')
+    if(!btn) return;
+
+    if(btn.classList.contains('close-sidebar-btn')){
+      sidebarElem.classList.add('collapsed')
+      document.querySelector('.top-header')
+        .classList.add('collapsed')
+    }
+
+    if(btn.classList.contains('open-sidebar-btn')){
+      sidebarElem.classList.remove('collapsed')
+      document.querySelector('.top-header')
+        .classList.remove('collapsed')
+    }
+  })
+
+  // Display the page header
   document.getElementById('topHeader')
     .innerHTML = `     
       <div class="logo-container">
