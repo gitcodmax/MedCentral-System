@@ -1,0 +1,141 @@
+/*SIDEBAR*/
+.sidebar {
+  background: linear-gradient(white 10%, rgb(0, 123, 255, 5%) 50%, var(--color-secondary) 100%);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--color-secondary);
+  position: fixed;
+  height: 100vh;
+  transition: all 0.3s ease;
+  z-index: 100;
+  left: 0;
+}
+
+.logo-area {
+  padding: 10px;
+  margin-bottom: 0;
+}
+
+.logo-area img {
+  width: 250px;
+}
+
+.logo-container{
+  display: none;
+}
+
+.page-header{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.nav-links {
+  list-style: none;
+  flex-grow: 1;
+}
+
+.nav-item {
+  padding: 0.25rem 1rem;
+  padding-right: 1.5rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.8rem 1rem;
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.nav-link:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+.nav-link.active {
+  background: var(--color-secondary);
+  color: white;
+}
+
+.close-sidebar-btn,
+.open-sidebar-btn {
+  position: absolute;
+  height: 50px;
+  padding: 3px;
+  border: 1px solid var(--color-secondary);
+  background: transparent;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.close-sidebar-btn:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+.close-sidebar-btn {
+  top: 50%;
+  left: 253px;
+}
+
+.open-sidebar-btn {
+  margin: 10px;
+  display: none;
+}
+
+@media (max-width: 768px){
+  .sidebar {
+    width: 70px;
+  }
+
+  .close-sidebar-btn{
+    display: none;
+  }
+
+  .logo-container{
+    display: block;
+  }
+
+  .logo-area,
+  .logo-area span,
+  .nav-link span {
+    display: none;
+  }
+
+  .nav-link {
+    justify-content: center;
+  }
+
+  .top-header{
+    flex-direction: column;
+  }
+  .page-header{
+    background: white;
+    padding: 10px;
+    top: 0;
+  }
+
+  .content{
+    margin-top: 40px;
+  }
+}
+
+@media (max-width: 480px){
+  .top-header {
+    padding: 0 1rem;
+  }
+
+  .profile-section {
+    padding-left: 0.75rem;
+    gap: 8px;
+  }
+
+  .admin-info {
+    display: none;
+  }
+}
