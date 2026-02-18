@@ -201,7 +201,7 @@ tr:last-child td {
   font-weight: 600;
 }
 
-.status-transit {
+.status-dispatched {
   background: var(--dispatched);
   color: white;
 }
@@ -209,8 +209,20 @@ tr:last-child td {
 .status-pending {
   background: var(--pending);
 }
+.status-processing {
+  background: var(--processing);
+}
 
-.status-success {
+.status-packed{
+  background: var(--packed);
+  color: white;
+}
+.status-delivered{
+  background: var(--delivered);
+  color: white;
+}
+
+.status-completed {
   background: var(--completed);
   color: white;
 }
