@@ -545,6 +545,51 @@ tr:hover {
   border: 1px solid red;
 }
 
+/*Edit Modal Specifics*/
+.header-edit {
+  border-left: 5px solid var(--color-primary);
+}
+
+.edit-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #F1F5F9;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.status-info label, .id-info label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--color-quarantine);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.status-select {
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--color-quarantine);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.id-info code {
+  font-family: monospace;
+  background: #E2E8F0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #475569;
+}
+
+.btn-update {
+  background: var(--color-primary);
+}
+
 /*RESPONSIVE*/
 @media (max-width: 1024px) {
 

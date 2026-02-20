@@ -79,5 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const viewHosOverlayElem = document.getElementById('viewHospitalOverlay')
         handleOverlay(viewHosOverlayElem)
       }
+
+      // Display container to edit hospital details
+      if(btn.classList.contains('edit-hos-btn')){
+        const editHosOverlayElem = document.getElementById('editHospitalOverlay')
+        handleOverlay(editHosOverlayElem)
+      }
     })
 })
