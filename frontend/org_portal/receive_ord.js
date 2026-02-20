@@ -1,5 +1,5 @@
 import { renderSidebar } from "./sidebar.js"
-import { handleOverlay } from "./overlay.js"
+import { handleOverlay } from "/global.js"
 
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.app-container')

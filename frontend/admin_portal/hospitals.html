@@ -59,11 +59,11 @@
                   <p>Enter the details to add a new facility to the network.</p>
                 </div>
               </div>
-              <button class="modal-close-btn close-overlay">&times;</button>
+              <button class="modal-close-btn js-btn-close-overlay">&times;</button>
             </div>
 
             <form id="hospital-form">
-              <div class="modal-body">
+              <div class="modal-body" id="modalBody">
                 <div class="form-grid">
                   <div class="form-group full-width">
                     <label>Hospital Name</label>
@@ -127,15 +127,15 @@
 
                   <div class="form-group full-width">
                     <label>Facility Departments</label>
-                    <div id="dept-list-container" class="dept-list">
-                      <div class="dept-row">
+                    <div id="deptListContainer" class="dept-list">
+                      <div class="dept-row" data-row-id=0>
                         <input type="text" class="dept-name-input" name="depts[]" placeholder="e.g. Emergency Room" required>
-                        <button type="button" class="btn-remove">
+                        <button type="button" class="btn-remove" data-row-id=0>
                           <i class="fas fa-trash-alt"></i>
                         </button>
                       </div>
                     </div>
-                    <button type="button" class="btn-add-dept" id="add-dept-btn">
+                    <button type="button" class="btn-add-dept" id="addDeptBtn">
                       <i class="fas fa-plus"></i> Add Another Department
                     </button>
                   </div>
@@ -143,7 +143,7 @@
               </div>
 
               <div class="modal-footer">
-                <button type="button" class="btn-cancel close-overlay">Cancel</button>
+                <button type="button" class="btn-cancel js-btn-close-overlay">Cancel</button>
                 <button type="submit" class="btn-submit">Register Facility</button>
               </div>
             </form>
