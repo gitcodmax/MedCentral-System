@@ -129,7 +129,8 @@
                     <label>Facility Departments</label>
                     <div id="deptListContainer" class="dept-list">
                       <div class="dept-row" data-row-id=0>
-                        <input type="text" class="dept-name-input" name="depts[]" placeholder="e.g. Emergency Room" required>
+                        <input type="text" class="dept-name-input" name="depts[]" placeholder="e.g. Emergency Room"
+                          required>
                         <button type="button" class="btn-remove" data-row-id=0>
                           <i class="fas fa-trash-alt"></i>
                         </button>
@@ -163,7 +164,7 @@
                 <th style="text-align: right;">Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="hosDetailsTbody">
               <tr>
                 <td><strong>General Medical Center</strong></td>
                 <td>Dr. Sarah Jenkins</td>
@@ -172,7 +173,7 @@
                 <td><span class="status-badge active">Active</span></td>
                 <td>Jan 12, 2026</td>
                 <td class="action-btns">
-                  <button title="View"><i class="fas fa-eye"></i></button>
+                  <button title="View" class="view-hos-btn"><i class="fas fa-eye"></i></button>
                   <button title="Edit"><i class="fas fa-edit"></i></button>
                   <button title="Deactivate" class="text-danger"><i class="fas fa-power-off"></i></button>
                 </td>
@@ -185,7 +186,7 @@
                 <td><span class="status-badge archived">Archived</span></td>
                 <td>Feb 05, 2026</td>
                 <td class="action-btns">
-                  <button title="View"><i class="fas fa-eye"></i></button>
+                  <button title="View" class="view-hos-btn"><i class="fas fa-eye"></i></button>
                 </td>
               </tr>
               <tr>
@@ -196,7 +197,7 @@
                 <td><span class="status-badge inactive">Inactive</span></td>
                 <td>Dec 20, 2025</td>
                 <td class="action-btns">
-                  <button title="View"><i class="fas fa-eye"></i></button>
+                  <button title="View" class="view-hos-btn"><i class="fas fa-eye"></i></button>
                   <button title="Edit"><i class="fas fa-edit"></i></button>
                   <button title="Activate" class="text-success"><i class="fas fa-check"></i></button>
                 </td>
@@ -204,6 +205,76 @@
             </tbody>
           </table>
         </section>
+
+        <div class="modal-overlay" id="viewHospitalOverlay">
+          <div class="modal-card view-card">
+            <div class="modal-header">
+              <div class="modal-title">
+                <i class="fas fa-file-medical"></i>
+                <div>
+                  <h3 id="view-hosp-name">General Medical Center</h3>
+                  <p>Registration ID: <span class="view-hosp-id">HOSP-2026-004</span></p>
+                </div>
+              </div>
+              <div class="header-right">
+                <span class="status-badge active">Active</span>
+                <button class="modal-close-btn js-btn-close-overlay">&times;</button>
+              </div>
+            </div>
+
+            <div class="view-hos-modal-body">
+              <div class="info-section">
+                <h4 class="section-label"><i class="fas fa-info-circle"></i> Administrative Details</h4>
+                <div class="detail-grid">
+                  <div class="detail-item">
+                    <label>Contact Person</label>
+                    <p id="view-contact">Dr. Sarah Jenkins</p>
+                  </div>
+                  <div class="detail-item">
+                    <label>Email Address</label>
+                    <p id="view-email">contact@gmc.org</p>
+                  </div>
+                  <div class="detail-item">
+                    <label>Phone Number</label>
+                    <p id="view-phone">+1 234 567 890</p>
+                  </div>
+                  <div class="detail-item">
+                    <label>Date Registered</label>
+                    <p id="view-date">January 12, 2026</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="info-section">
+                <h4 class="section-label"><i class="fas fa-map-marked-alt"></i> Location & Logistics</h4>
+                <div class="detail-grid">
+                  <div class="detail-item">
+                    <label>County</label>
+                    <p id="view-county">Nairobi</p>
+                  </div>
+                  <div class="detail-item">
+                    <label>Zone / Sub-County</label>
+                    <p id="view-zone">Westlands</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="info-section">
+                <h4 class="section-label"><i class="fas fa-th-list"></i> Active Departments</h4>
+                <div class="view-dept-tags" id="view-depts">
+                  <span class="view-tag">Emergency Room</span>
+                  <span class="view-tag">ICU</span>
+                  <span class="view-tag">Radiology</span>
+                  <span class="view-tag">Pharmacy</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="close-btn-container">
+              <button class="close-view-hos js-btn-close-overlay">Close</button>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   </div>

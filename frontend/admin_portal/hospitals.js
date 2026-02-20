@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </div> 
   `
 
-  // Set up the overlay
+  // Set up the overlay to add a new hospital
   const overlayElem = document.getElementById('addHospitalOverlay')
   const deptListContainerElem = document.getElementById('deptListContainer')
   document.getElementById('btnAddHospital')
@@ -66,5 +66,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           }
         })
+    })
+
+  // Set up the overlay to view and hospital details and activate/deactivate an account
+   document.getElementById('hosDetailsTbody')
+    .addEventListener('click', (e) => {
+      const btn = e.target.closest('button')
+      if(!btn) return;
+
+      // Display hospital details
+      if(btn.classList.contains('view-hos-btn')){
+        const viewHosOverlayElem = document.getElementById('viewHospitalOverlay')
+        handleOverlay(viewHosOverlayElem)
+      }
     })
 })
