@@ -273,7 +273,7 @@ tr:hover {
   transition: 0.3s;
 }
 
-.modal-close-btn{
+.modal-close-btn:hover{
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.822);
   transform: translateY(-3px);
 }
