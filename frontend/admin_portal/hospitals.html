@@ -49,6 +49,107 @@
           </div>
         </section>
 
+        <div class="modal-overlay" id="add-hospital-modal">
+          <div class="modal-card">
+            <div class="modal-header">
+              <div class="modal-title">
+                <i class="fas fa-plus-circle"></i>
+                <div>
+                  <h3>Register New Hospital</h3>
+                  <p>Enter the details to add a new facility to the network.</p>
+                </div>
+              </div>
+              <button class="modal-close-btn" id="close-modal-x">&times;</button>
+            </div>
+
+            <form id="hospital-form">
+              <div class="modal-body">
+                <div class="form-grid">
+                  <div class="form-group full-width">
+                    <label>Hospital Name</label>
+                    <div class="input-wrapper">
+                      <i class="fas fa-h-square"></i>
+                      <input type="text" name="hosp_name" placeholder="e.g. Metro General Hospital" required>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Contact Person</label>
+                    <div class="input-wrapper">
+                      <i class="fas fa-user-md"></i>
+                      <input type="text" name="hosp_contact" placeholder="Dr. Jane Smith" required>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Phone Number</label>
+                    <div class="input-wrapper">
+                      <i class="fas fa-phone"></i>
+                      <input type="tel" name="hosp_phone" placeholder="+1 (555) 000-0000" required>
+                    </div>
+                  </div>
+
+                  <div class="form-group full-width">
+                    <label>Email Address</label>
+                    <div class="input-wrapper">
+                      <i class="fas fa-envelope"></i>
+                      <input type="email" name="hosp_email" placeholder="admin@hospital-domain.org" required>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="hosp-county">Hospital County</label>
+                    <div class="input-wrapper">
+                      <i class="fas fa-map-marker-alt"></i>
+                      <select name="hosp_county" id="hosp-county" required>
+                        <option value="" disabled selected>Select County</option>
+                        <option value="nairobi">Nairobi</option>
+                        <option value="mombasa">Mombasa</option>
+                        <option value="kisumu">Kisumu</option>
+                        <option value="nakuru">Nakuru</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="hosp-zone">Zone / Sub-County</label>
+                    <div class="input-wrapper">
+                      <i class="fas fa-map-signs"></i>
+                      <select name="hosp_zone" id="hosp-zone" required>
+                        <option value="" disabled selected>Select Zone</option>
+                        <option value="central">Central Zone</option>
+                        <option value="east">East Zone</option>
+                        <option value="west">West Zone</option>
+                        <option value="north">North Zone</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group full-width">
+                    <label>Facility Departments</label>
+                    <div id="dept-list-container" class="dept-list">
+                      <div class="dept-row">
+                        <input type="text" class="dept-name-input" name="depts[]" placeholder="e.g. Emergency Room" required>
+                        <button type="button" class="btn-remove">
+                          <i class="fas fa-trash-alt"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <button type="button" class="btn-add-dept" id="add-dept-btn">
+                      <i class="fas fa-plus"></i> Add Another Department
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn-cancel" id="cancel-modal">Cancel</button>
+                <button type="submit" class="btn-submit">Register Facility</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
         <section class="table-container">
           <table>
             <thead>
