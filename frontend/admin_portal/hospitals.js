@@ -85,5 +85,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const editHosOverlayElem = document.getElementById('editHospitalOverlay')
         handleOverlay(editHosOverlayElem)
       }
+
+      // Notify user they are about to activate an account
+      if(btn.classList.contains('activate-hos-btn')){
+        const activateHosOverlayElem = document.getElementById('activateHospitalOverlay')
+        handleOverlay(activateHosOverlayElem)
+      }
+
+      // Account Deactivation Notification
+      if(btn.classList.contains('deactivate-hos-btn')){
+        const deactivateHosOverlayElem = document.getElementById('deactivateHospitalOverlay')
+        handleOverlay(deactivateHosOverlayElem)
+      }
     })
 })

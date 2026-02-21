@@ -273,7 +273,7 @@ tr:hover {
   transition: 0.3s;
 }
 
-.modal-close-btn:hover{
+.modal-close-btn:hover {
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.822);
   transform: translateY(-3px);
 }
@@ -375,7 +375,7 @@ tr:hover {
   background: #F8FAFC;
 }
 
-.dept-name-input:focus{
+.dept-name-input:focus {
   outline: none;
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
@@ -421,7 +421,7 @@ tr:hover {
   gap: 1rem;
 }
 
-.btn-cancel{
+.btn-cancel {
   background: transparent;
   border: 1px solid var(--color-primary);
   padding: 0 10px;
@@ -432,7 +432,7 @@ tr:hover {
   cursor: pointer;
 }
 
-.btn-cancel:hover{
+.btn-cancel:hover {
   border: none;
   color: white;
   background: red;
@@ -464,15 +464,15 @@ tr:hover {
   margin-bottom: 2rem;
 }
 
-.view-hosp-id{
+.view-hosp-id {
   color: var(--color-secondary);
 }
 
-.view-card .view-hos-modal-body i{
+.view-card .view-hos-modal-body i {
   color: var(--color-secondary);
 }
 
-.view-hos-modal-body{
+.view-hos-modal-body {
   padding: 0 20px;
 }
 
@@ -524,11 +524,11 @@ tr:hover {
   border: 1px solid #E2E8F0;
 }
 
-.close-btn-container{
+.close-btn-container {
   display: flex;
 }
 
-.close-view-hos{
+.close-view-hos {
   margin: 10px;
   margin-left: auto;
   padding: 10px;
@@ -539,7 +539,7 @@ tr:hover {
   transition: 0.3s;
 }
 
-.close-view-hos:hover{
+.close-view-hos:hover {
   background: transparent;
   color: red;
   border: 1px solid red;
@@ -560,7 +560,8 @@ tr:hover {
   margin-bottom: 1.5rem;
 }
 
-.status-info label, .id-info label {
+.status-info label,
+.id-info label {
   display: block;
   font-size: 0.7rem;
   text-transform: uppercase;
@@ -588,6 +589,94 @@ tr:hover {
 
 .btn-update {
   background: var(--color-primary);
+}
+
+/*Activation Confirmation Specifics*/
+.mini-modal {
+  max-width: 400px;
+  text-align: center;
+}
+
+.modal-status-header {
+  padding: 2rem;
+  font-size: 3rem;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bg-success {
+  background-color: var(--color-secondary) !important;
+}
+
+.text-center {
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.text-center h3 {
+  margin-bottom: 0.5rem;
+}
+
+.text-center p {
+  color: var(--color-quarantine);
+  font-size: 0.95rem;
+}
+
+.activate-hosp-name, .deactivate-hosp-name {
+  color: var(--color-primary);
+}
+
+.flex-center {
+  justify-content: center !important;
+  gap: 20px;
+}
+
+.modal-overlay.active .modal-card {
+  animation: modalBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalBounce {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/*Deactivation Specific Styles*/
+.bg-danger {
+  background-color: red !important;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
+textarea.deactivate-reason {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: none;
+}
+
+textarea.deactivate-reason:focus {
+  outline: none;
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1);
+}
+
+.deactivate-btn:hover{
+  background: red;
 }
 
 /*RESPONSIVE*/

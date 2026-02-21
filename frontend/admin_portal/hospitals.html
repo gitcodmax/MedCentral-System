@@ -175,7 +175,7 @@
                 <td class="action-btns">
                   <button title="View" class="view-hos-btn"><i class="fas fa-eye"></i></button>
                   <button title="Edit" class="edit-hos-btn"><i class="fas fa-edit"></i></button>
-                  <button title="Deactivate" class="text-danger"><i class="fas fa-power-off"></i></button>
+                  <button title="Deactivate" class="text-danger deactivate-hos-btn"><i class="fas fa-power-off"></i></button>
                 </td>
               </tr>
               <tr>
@@ -199,7 +199,7 @@
                 <td class="action-btns">
                   <button title="View" class="view-hos-btn"><i class="fas fa-eye"></i></button>
                   <button title="Edit" class="edit-hos-btn"><i class="fas fa-edit"></i></button>
-                  <button title="Activate" class="text-success"><i class="fas fa-check"></i></button>
+                  <button title="Activate" class="text-success activate-hos-btn"><i class="fas fa-check"></i></button>
                 </td>
               </tr>
             </tbody>
@@ -371,12 +371,63 @@
               </div>
 
               <div class="modal-footer">
-                <button type="button" class="btn-cancel js-btn-close-overlay" onclick="closeEditModal()">Cancel Changes</button>
+                <button type="button" class="btn-cancel js-btn-close-overlay" onclick="closeEditModal()">Cancel
+                  Changes</button>
                 <button type="submit" class="btn-submit btn-update">Save Updates</button>
               </div>
             </form>
           </div>
         </div>
+
+        <div class="modal-overlay" id="activateHospitalOverlay">
+          <div class="modal-card mini-modal">
+            <div class="modal-status-header bg-success">
+              <i class="fas fa-user-check"></i>
+            </div>
+
+            <div class="modal-body text-center">
+              <h3>Activate Hospital Account?</h3>
+              <p>You are about to activate <strong><span class="activate-hosp-name">City Trauma Center</span></strong>.
+              </p </div>
+
+              <div class="modal-footer flex-center">
+                <button class="btn-cancel js-btn-close-overlay">No, Cancel</button>
+                <button class="btn-submit bg-success" id="confirm-activate-btn">Yes, Activate Account</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-overlay" id="deactivateHospitalOverlay">
+          <div class="modal-card mini-modal">
+            <div class="modal-status-header bg-danger">
+              <i class="fas fa-user-slash"></i>
+            </div>
+
+            <form id="deactivation-form">
+              <div class="modal-body">
+                <div class="text-center">
+                  <h3>Deactivate Hospital?</h3>
+                  <p>You are about to suspend <strong><span class="deactivate-hosp-name">General Medical
+                        Center</span></strong>.</p>
+                </div>
+
+                <div class="form-group full-width mt-1">
+                  <label for="deactivate-reason">Reason for Deactivation <span class="text-danger">*</span></label>
+                  <textarea class="deactivate-reason"
+                    placeholder="e.g. Contract expired, facility maintenance, or security breach..."
+                    required></textarea>
+                </div>
+              </div>
+
+              <div class="modal-footer flex-center">
+                <button type="button" class="btn-cancel js-btn-close-overlay">Cancel</button>
+                <button type="submit" class="btn-submit deactivate-btn">Confirm Deactivation</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
       </main>
     </div>
   </div>
