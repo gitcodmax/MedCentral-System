@@ -139,13 +139,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const tblRow = document.createElement('tr')
 
     let activeDeactiveBtnElem = ``
-    if(hos.status === 'active'){
+    if (hos.status === 'active') {
       activeDeactiveBtnElem = `
-        <button title="Deactivate" class="text-danger deactivate-hos-btn"><i class="fas fa-power-off"></i></button>
+        <button title="Deactivate" class="text-danger deactivate-hos-btn" data-hos-id=${hos.id}><i class="fas fa-power-off"></i></button>
       `
-    }else if(hos.status === 'inactive'){
+    } else if (hos.status === 'inactive') {
       activeDeactiveBtnElem = `
-        <button title="Activate" class="text-success activate-hos-btn"><i class="fas fa-check"></i></button>
+        <button title="Activate" class="text-success activate-hos-btn" data-hos-id=${hos.id}><i class="fas fa-check"></i></button>
       `
     }
 
@@ -157,10 +157,10 @@ document.addEventListener('DOMContentLoaded', () => {
       <td><span class="status-badge ${hos.status}">${hos.status}</span></td>
       <td>${hos.registeredDate}</td>
       <td class="action-btns">
-        <button title="View" class="view-hos-btn"><i class="fas fa-eye"></i></button>
-        ${hos.status === 'archived' ? '' : 
-          `<button title="Edit" class="edit-hos-btn"><i class="fas fa-edit"></i></button>`
-        }
+        <button title="View" class="view-hos-btn" data-hos-id=${hos.id}><i class="fas fa-eye"></i></button>
+        ${hos.status === 'archived' ? '' :
+        `<button title="Edit" class="edit-hos-btn" data-hos-id=${hos.id}><i class="fas fa-edit"></i></button>`
+      }
         ${activeDeactiveBtnElem}
       </td>
     `
@@ -228,16 +228,67 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     })
 
+  //Get specific hospital details
+  function getHospitalDetails(btnId) {
+    return HospitalMockData.find(hos => hos.id === btnId)
+  }
+
   // Set up the overlay to view and hospital details and activate/deactivate an account
   document.getElementById('hosDetailsTbody')
     .addEventListener('click', (e) => {
       const btn = e.target.closest('button')
       if (!btn) return;
 
+      const btnHosId = btn.dataset.hosId
+      const hospital = getHospitalDetails(btnHosId)
+
       // Display hospital details
       if (btn.classList.contains('view-hos-btn')) {
         const viewHosOverlayElem = document.getElementById('viewHospitalOverlay')
         handleOverlay(viewHosOverlayElem)
+
+        const hospStatus = hospital.status
+        if(hospStatus === 'active'){
+          document.querySelector('.js-status-badge')
+            .classList.remove('inactive', 'archived')
+        }else if(hospStatus === 'inactive'){
+          document.querySelector('.js-status-badge')
+            .classList.remove('active', 'archived')
+        }else{
+          document.querySelector('.js-status-badge')
+            .classList.remove('active', 'inactive')
+        }
+
+        document.getElementById('viewHospName')
+          .textContent = hospital.name
+        document.querySelector('.js-view-hosp-id')
+          .textContent = hospital.id
+        document.querySelector('.js-status-badge')
+          .textContent = hospital.status
+        document.querySelector('.js-status-badge')
+          .classList.add(hospital.status)
+        document.getElementById('viewContact')
+          .textContent = hospital.contactPerson
+        document.getElementById('viewEmail')
+          .textContent = hospital.email
+        document.getElementById('viewPhone')
+          .textContent = hospital.phone
+        document.getElementById('viewDate')
+          .textContent = hospital.registeredDate
+        document.getElementById('viewCounty')
+          .textContent = hospital.county
+        document.getElementById('viewZone')
+          .textContent = hospital.zone
+
+        const deptFrag = document.createDocumentFragment()
+        const deptContainerElem = document.getElementById('viewDepts')
+        deptContainerElem.innerHTML = ``
+        hospital.departments.forEach(dept => {
+          const deptTag = document.createElement('span')
+          deptTag.innerHTML = `<span class="view-tag">${dept}</span>`
+          deptFrag.appendChild(deptTag)
+        })
+        deptContainerElem.appendChild(deptFrag)
       }
 
       // Display container to edit hospital details
