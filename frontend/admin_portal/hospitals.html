@@ -34,16 +34,16 @@
           <div class="action-right">
             <div class="search-box">
               <i class="fas fa-search"></i>
-              <input type="text" id="hospital-search" placeholder="Search by name or contact...">
+              <input type="text" id="hospitalSearch" placeholder="Search by hospital name...">
             </div>
 
             <div class="filter-box">
               <i class="fas fa-filter"></i>
-              <select id="status-filter">
+              <select id="statusFilter">
                 <option value="all">All Statuses</option>
                 <option value="active">Active Only</option>
                 <option value="inactive">Inactive</option>
-                <option value="pending">New/Pending</option>
+                <option value="archived">Archived</option>
               </select>
             </div>
           </div>
@@ -146,6 +146,7 @@
             </thead>
             <tbody id="hosDetailsTbody"></tbody>
           </table>
+          <div class="no-match-container js-no-match-found hidden"></div>
         </section>
 
         <div class="modal-overlay" id="viewHospitalOverlay">
@@ -234,7 +235,7 @@
                     <select name="edit_status" id="editStatus" class="status-select">
                       <option value="active">Active</option>
                       <option value="inactive">Inactive</option>
-                      <option value="archived">Pending Approval</option>
+                      <option value="archived">Archived</option>
                     </select>
                   </div>
                   <div class="id-info">
@@ -314,7 +315,8 @@
 
             <div class="modal-body text-center">
               <h3>Activate Hospital Account?</h3>
-              <p>You are about to activate <strong><span class="activate-hosp-name js-activate-hosp-name"></span></strong>.
+              <p>You are about to activate <strong><span
+                    class="activate-hosp-name js-activate-hosp-name"></span></strong>.
               </p </div>
 
               <div class="modal-footer flex-center">
@@ -335,7 +337,8 @@
               <div class="modal-body">
                 <div class="text-center">
                   <h3>Deactivate Hospital?</h3>
-                  <p>You are about to suspend <strong><span class="deactivate-hosp-name js-deactivate-hosp-name">General Medical
+                  <p>You are about to suspend <strong><span class="deactivate-hosp-name js-deactivate-hosp-name">General
+                        Medical
                         Center</span></strong>.</p>
                 </div>
 

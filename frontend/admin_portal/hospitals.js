@@ -1,5 +1,5 @@
 import { renderSidebar } from "./sidebar.js"
-import { handleOverlay } from "../global.js"
+import { handleOverlay, displayNoMatchFound } from "../global.js"
 
 document.addEventListener('DOMContentLoaded', () => {
   renderSidebar()
@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <h2>Hospital Management</h2>
     </div> 
   `
+  displayNoMatchFound()
 
   const HospitalMockData = [
     {
@@ -210,23 +211,25 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 25, name: "Laboratory" }
   ];
 
+  const hosDetailsTbodyElem = document.getElementById('hosDetailsTbody')
   // Display the hospital details in the table
-  const hospitalDetailsTblFrag = document.createDocumentFragment()
-  HospitalMockData.forEach(hos => {
-    const tblRow = document.createElement('tr')
+  function displayAllHospitals(hosData) {
+    const hospitalDetailsTblFrag = document.createDocumentFragment()
+    hosData.forEach(hos => {
+      const tblRow = document.createElement('tr')
 
-    let activeDeactiveBtnElem = ``
-    if (hos.status === 'active') {
-      activeDeactiveBtnElem = `
+      let activeDeactiveBtnElem = ``
+      if (hos.status === 'active') {
+        activeDeactiveBtnElem = `
         <button title="Deactivate" class="text-danger deactivate-hos-btn" data-hos-id=${hos.id}><i class="fas fa-power-off"></i></button>
       `
-    } else if (hos.status === 'inactive') {
-      activeDeactiveBtnElem = `
+      } else if (hos.status === 'inactive') {
+        activeDeactiveBtnElem = `
         <button title="Activate" class="text-success activate-hos-btn" data-hos-id=${hos.id}><i class="fas fa-check"></i></button>
       `
-    }
+      }
 
-    tblRow.innerHTML = `
+      tblRow.innerHTML = `
       <td><strong>${hos.name}</strong></td>
       <td>${hos.contactPerson}</td>
       <td>${hos.phone}</td>
@@ -236,16 +239,19 @@ document.addEventListener('DOMContentLoaded', () => {
       <td class="action-btns">
         <button title="View" class="view-hos-btn" data-hos-id=${hos.id}><i class="fas fa-eye"></i></button>
         ${hos.status === 'archived' ? '' :
-        `<button title="Edit" class="edit-hos-btn" data-hos-id=${hos.id}><i class="fas fa-edit"></i></button>`
-      }
+          `<button title="Edit" class="edit-hos-btn" data-hos-id=${hos.id}><i class="fas fa-edit"></i></button>`
+        }
         ${activeDeactiveBtnElem}
       </td>
     `
 
-    hospitalDetailsTblFrag.appendChild(tblRow)
-  })
-  document.getElementById('hosDetailsTbody')
-    .appendChild(hospitalDetailsTblFrag)
+      hospitalDetailsTblFrag.appendChild(tblRow)
+    })
+
+    hosDetailsTbodyElem.appendChild(hospitalDetailsTblFrag)
+  }
+
+  displayAllHospitals(HospitalMockData)
 
   // Displays the chips in the container
   function displayDeptChips(deptContainerElem) {
@@ -329,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
-  // Set up the overlay to view and hospital details and activate/deactivate an account
+  // Set up the overlay to view and edit hospital details and activate/deactivate an account
   document.getElementById('hosDetailsTbody')
     .addEventListener('click', (e) => {
       const btn = e.target.closest('button')
@@ -455,4 +461,33 @@ document.addEventListener('DOMContentLoaded', () => {
           .textContent = hospital.name
       }
     })
+
+  // Filtering/Search logic
+  const hospitalSearchElem = document.getElementById('hospitalSearch')
+  const statusFilterElem = document.getElementById('statusFilter')
+
+  function searchFilterHandler() {
+    const searchValue = hospitalSearchElem.value
+    const statusValue = statusFilterElem.value
+
+    const searchResult = HospitalMockData.filter((hos) => {
+      const hospNameMatch = hos.name.toLowerCase().includes(searchValue.toLowerCase())
+      const statusMatch = statusValue === 'all' || hos.status === statusValue
+
+      return hospNameMatch && statusMatch
+    })
+
+    hosDetailsTbodyElem.innerHTML = ``
+    if(searchResult.length === 0){
+      document.querySelector('.js-no-match-found')
+        .classList.remove('hidden')
+    }else{
+      displayAllHospitals(searchResult)
+      document.querySelector('.js-no-match-found')
+        .classList.add('hidden')
+    }
+  }
+
+  hospitalSearchElem.addEventListener('keyup', searchFilterHandler)
+  statusFilterElem.addEventListener('change', searchFilterHandler)
 })
