@@ -356,61 +356,52 @@ tr:hover {
   box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
 }
 
-.dept-list {
+.dept-selector-grid {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
 }
 
-.dept-row {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.dept-row input {
-  flex-grow: 1;
-  padding: 0.7rem;
-  border: 1px solid #CBD5E1;
-  border-radius: 8px;
-  background: #F8FAFC;
-}
-
-.dept-name-input:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
-}
-
-.btn-remove {
-  background: #FFF1F2;
-  color: var(--danger);
-  border: 1px solid #FECDD3;
-  border-radius: 8px;
-  width: 42px;
+.dept-chip {
+  padding: 8px 16px;
+  background: white;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 20px;
   cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn-remove:hover {
-  background: red;
-  color: #fff;
-}
-
-.btn-add-dept {
-  width: 100%;
-  padding: 0.6rem;
-  background: transparent;
-  border: 1.5px dashed var(--color-primary);
-  color: var(--color-primary);
-  border-radius: 8px;
+  font-size: 0.85rem;
   font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
+  color: #64748b;
+  transition: all 0.2s ease;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.btn-add-dept:hover {
-  background: rgba(30, 136, 229, 0.05);
+.dept-chip i {
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+.dept-chip:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: #f0f7ff;
+}
+
+.dept-chip.selected {
+  background: var(--color-secondary);
+  border-color: var(--color-secondary);
+  color: white;
+  box-shadow: 0 4px 10px rgba(30, 136, 229, 0.2);
+}
+
+.dept-chip.selected i {
+  opacity: 1;
 }
 
 .modal-footer {
@@ -569,6 +560,21 @@ tr:hover {
   color: var(--color-quarantine);
   font-weight: 700;
   margin-bottom: 4px;
+}
+
+.edit-header-hosp-name{
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.edit-uuid{
+  color: var(--color-secondary);
+  font-family: monospace;
+  border: 1px solid;
+  font-size: 0.8rem;
+  border-radius: 5px;
+  background: white;
+  padding: 5px;
 }
 
 .status-select {

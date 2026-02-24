@@ -18,10 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
       phone: "+254 711 222 333",
       email: "admin@nairobiwest.co.ke",
       status: "active",
-      county: "Nairobi",
-      zone: "Westlands",
       registeredDate: "2025-11-10",
-      departments: ["Emergency Room", "ICU", "Pharmacy"]
+      location: { county_id: 47, county_name: "Nairobi", zone_id: 4701, zone_name: "Westlands" },
+      departments: [
+        { id: 10, name: "Emergency Room" },
+        { id: 15, name: "ICU" },
+        { id: 22, name: "Pharmacy" }
+      ]
     },
     {
       id: "HOSP-2026-002",
@@ -30,10 +33,13 @@ document.addEventListener('DOMContentLoaded', () => {
       phone: "+254 722 444 555",
       email: "info@coastgeneral.org",
       status: "active",
-      county: "Mombasa",
-      zone: "Mvita",
       registeredDate: "2025-12-15",
-      departments: ["Surgery", "Pediatrics", "Laboratory"]
+      location: { county_id: 1, county_name: "Mombasa", zone_id: 101, zone_name: "Mvita" },
+      departments: [
+        { id: 11, name: "Pediatrics" },
+        { id: 22, name: "Pharmacy" },
+        { id: 25, name: "Laboratory" }
+      ]
     },
     {
       id: "HOSP-2026-003",
@@ -42,10 +48,12 @@ document.addEventListener('DOMContentLoaded', () => {
       phone: "+254 733 666 777",
       email: "records@lakeview.com",
       status: "inactive",
-      county: "Kisumu",
-      zone: "Kisumu Central",
       registeredDate: "2026-02-01",
-      departments: ["Outpatient", "Laboratory"]
+      location: { county_id: 41, county_name: "Kisumu", zone_id: 4101, zone_name: "Kisumu Central" },
+      departments: [
+        { id: 10, name: "Emergency Room" },
+        { id: 25, name: "Laboratory" }
+      ]
     },
     {
       id: "HOSP-2026-004",
@@ -54,10 +62,12 @@ document.addEventListener('DOMContentLoaded', () => {
       phone: "+254 744 888 999",
       email: "snjeri@rift-trauma.go.ke",
       status: "archived",
-      county: "Nakuru",
-      zone: "Nakuru West",
       registeredDate: "2024-05-20",
-      departments: ["Orthopedics", "ER", "Blood Bank"]
+      location: { county_id: 32, county_name: "Nakuru", zone_id: 3202, zone_name: "Nakuru West" },
+      departments: [
+        { id: 10, name: "Emergency Room" },
+        { id: 14, name: "Radiology" }
+      ]
     },
     {
       id: "HOSP-2026-005",
@@ -66,10 +76,12 @@ document.addEventListener('DOMContentLoaded', () => {
       phone: "+254 755 000 111",
       email: "admin@stannes.org",
       status: "active",
-      county: "Nairobi",
-      zone: "Kasarani",
       registeredDate: "2026-02-12",
-      departments: ["Oncology", "Dialysis"]
+      location: { county_id: 47, county_name: "Nairobi", zone_id: 4703, zone_name: "Kasarani" },
+      departments: [
+        { id: 12, name: "Oncology" },
+        { id: 22, name: "Pharmacy" }
+      ]
     },
     {
       id: "HOSP-2026-006",
@@ -78,10 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
       phone: "+254 766 111 222",
       email: "annex@mombasa.go.ke",
       status: "active",
-      county: "Mombasa",
-      zone: "Nyali",
       registeredDate: "2026-01-30",
-      departments: ["Maternity", "Pharmacy"]
+      location: { county_id: 1, county_name: "Mombasa", zone_id: 102, zone_name: "Nyali" },
+      departments: [
+        { id: 13, name: "Maternity" },
+        { id: 22, name: "Pharmacy" }
+      ]
     },
     {
       id: "HOSP-2026-007",
@@ -90,10 +104,12 @@ document.addEventListener('DOMContentLoaded', () => {
       phone: "+254 777 333 444",
       email: "care@kisumukids.co.ke",
       status: "active",
-      county: "Kisumu",
-      zone: "Kisumu West",
       registeredDate: "2025-09-10",
-      departments: ["Pediatrics", "Neonatal ICU"]
+      location: { county_id: 41, county_name: "Kisumu", zone_id: 4103, zone_name: "Kisumu West" },
+      departments: [
+        { id: 11, name: "Pediatrics" },
+        { id: 15, name: "ICU" }
+      ]
     },
     {
       id: "HOSP-2026-008",
@@ -102,10 +118,11 @@ document.addEventListener('DOMContentLoaded', () => {
       phone: "+254 788 444 555",
       email: "hassan@oldcity.com",
       status: "archived",
-      county: "Mombasa",
-      zone: "Likoni",
       registeredDate: "2023-01-15",
-      departments: ["General Medicine"]
+      location: { county_id: 1, county_name: "Mombasa", zone_id: 103, zone_name: "Likoni" },
+      departments: [
+        { id: 22, name: "Pharmacy" }
+      ]
     },
     {
       id: "HOSP-2026-009",
@@ -114,10 +131,12 @@ document.addEventListener('DOMContentLoaded', () => {
       phone: "+254 799 555 666",
       email: "jk@nakuruplaza.com",
       status: "inactive",
-      county: "Nakuru",
-      zone: "Lanet",
       registeredDate: "2025-10-05",
-      departments: ["Dental", "ENT", "Optometry"]
+      location: { county_id: 32, county_name: "Nakuru", zone_id: 3204, zone_name: "Lanet" },
+      departments: [
+        { id: 14, name: "Radiology" },
+        { id: 25, name: "Laboratory" }
+      ]
     },
     {
       id: "HOSP-2026-010",
@@ -126,11 +145,69 @@ document.addEventListener('DOMContentLoaded', () => {
       phone: "+254 700 999 000",
       email: "mtsoi@westlandshealth.com",
       status: "active",
-      county: "Nairobi",
-      zone: "Westlands",
       registeredDate: "2026-02-18",
-      departments: ["ER", "Radiology", "Physiotherapy"]
+      location: { county_id: 47, county_name: "Nairobi", zone_id: 4701, zone_name: "Westlands" },
+      departments: [
+        { id: 10, name: "Emergency Room" },
+        { id: 14, name: "Radiology" }
+      ]
     }
+  ];
+
+  const GeoReferenceData = [
+    {
+      county_id: 47,
+      county_name: "Nairobi",
+      zones: [
+        { id: 4701, name: "Westlands" },
+        { id: 4702, name: "Dagoretti" },
+        { id: 4703, name: "Kasarani" },
+        { id: 4704, name: "Embakasi" },
+        { id: 4705, name: "Kibra" }
+      ]
+    },
+    {
+      county_id: 1,
+      county_name: "Mombasa",
+      zones: [
+        { id: 101, name: "Mvita" },
+        { id: 102, name: "Nyali" },
+        { id: 103, name: "Likoni" },
+        { id: 104, name: "Kisauni" },
+        { id: 105, name: "Changamwe" }
+      ]
+    },
+    {
+      county_id: 41,
+      county_name: "Kisumu",
+      zones: [
+        { id: 4101, name: "Kisumu Central" },
+        { id: 4102, name: "Kisumu East" },
+        { id: 4103, name: "Kisumu West" },
+        { id: 4104, name: "Seme" }
+      ]
+    },
+    {
+      county_id: 32,
+      county_name: "Nakuru",
+      zones: [
+        { id: 3201, name: "Nakuru East" },
+        { id: 3202, name: "Nakuru West" },
+        { id: 3203, name: "Naivasha" },
+        { id: 3204, name: "Lanet" }
+      ]
+    }
+  ];
+
+  const MasterDepartments = [
+    { id: 10, name: "Emergency Room" },
+    { id: 11, name: "Pediatrics" },
+    { id: 12, name: "Oncology" },
+    { id: 13, name: "Maternity" },
+    { id: 14, name: "Radiology" },
+    { id: 15, name: "ICU" },
+    { id: 22, name: "Pharmacy" },
+    { id: 25, name: "Laboratory" }
   ];
 
   // Display the hospital details in the table
@@ -170,67 +247,86 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('hosDetailsTbody')
     .appendChild(hospitalDetailsTblFrag)
 
+  // Displays the chips in the container
+  function displayDeptChips(deptContainerElem) {
+    deptContainerElem.innerHTML = MasterDepartments.map(dept => `
+      <div class="dept-chip" data-dept-id=${dept.id}>
+        ${dept.name}
+      </div>
+    `).join('')
+  }
+
   // Set up the overlay to add a new hospital
-  const overlayElem = document.getElementById('addHospitalOverlay')
-  const deptListContainerElem = document.getElementById('deptListContainer')
+  const addHosOverlayElem = document.getElementById('addHospitalOverlay')
   document.getElementById('btnAddHospital')
     .addEventListener('click', () => {
-      handleOverlay(overlayElem)
+      handleOverlay(addHosOverlayElem)
 
-      // What happens when the add department button is 
-      let rowIdCount = 1 //Counter id to assign to each of the departments rows created
-      document.getElementById('addDeptBtn')
-        .addEventListener('click', () => {
-          let allFieldsEntered = false
-          document.querySelectorAll('.dept-name-input')
-            .forEach(deptInputElem => {
-              if (deptInputElem.value === '') {
-                allFieldsEntered = false
-              } else {
-                allFieldsEntered = true
-              }
-            })
+      const addHosCountyElem = document.getElementById('hospCounty')
+      const addHosZoneElem = document.getElementById('hospZone')
+      addHosZoneElem.value = ``
+      displayCountyOptions(addHosCountyElem)
 
-          if (allFieldsEntered) {
-            const elemRowId = rowIdCount++
-            const div = document.createElement('div');
-            div.className = 'dept-row'
-            div.dataset.rowId = elemRowId
-            div.innerHTML = `
-              <input type="text" class="dept-name-input" name="depts[]" placeholder="e.g. Emergency Room" required>
-              <button type="button" class="btn-remove" data-row-id=${elemRowId}>
-                <i class="fas fa-trash-alt"></i>
-              </button>
-            `
+      addHosCountyElem.addEventListener('change', (e) => {
+        const selectedId = parseInt(e.target.value)
+        displayCountyZonesOptions(selectedId, addHosZoneElem)
+      })
 
-            deptListContainerElem.appendChild(div);
-          } else {
-            alert('Enter department name in the field to add another one.')
-          }
-        })
 
-      // What happens when a user deletes a department row when entering their names
-      document.getElementById('modalBody')
-        .addEventListener('click', (e) => {
-          const btn = e.target.closest('button')
-          if (!btn) return;
+      let selectedDeptIds = new Set()
+      const deptContainerElem = document.getElementById('deptContainer')
+      displayDeptChips(deptContainerElem)
+      // Handles the toggling when the chips are clicked
+      handleDeptChipsToggle(addHosOverlayElem, selectedDeptIds)
 
-          if (btn.classList.contains('btn-remove')) {
-            const removeBtnRowId = btn.dataset.rowId
-            const deptRowRowId = btn.parentElement.dataset.rowId
-
-            if (removeBtnRowId === deptRowRowId && deptListContainerElem.children.length > 1) {
-              btn.parentElement.remove()
-            } else {
-              btn.parentElement.querySelector('input').value = ``
-            }
-          }
-        })
     })
 
   //Get specific hospital details
   function getHospitalDetails(btnId) {
     return HospitalMockData.find(hos => hos.id === btnId)
+  }
+
+  // Hnadle the toggling of the department chips
+  function handleDeptChipsToggle(overlay, selectedDeptIds) {
+    overlay.addEventListener('click', (e) => {
+      if (e.target.classList.contains('dept-chip')) {
+        const deptChipElem = e.target
+        const chipId = parseInt(deptChipElem.dataset.deptId)
+
+        if (selectedDeptIds.has(chipId)) {
+          selectedDeptIds.delete(chipId)
+          deptChipElem.classList.remove('selected')
+        } else {
+          selectedDeptIds.add(chipId)
+          deptChipElem.classList.add('selected')
+        }
+      }
+    })
+  }
+
+  // Display the zones as options in the zone dropdown
+  function displayCountyZonesOptions(countyId, selectTag) {
+    const county = GeoReferenceData.find(c => c.county_id === countyId)
+    selectTag.innerHTML = '<option value="" disabled selected>Select Zone</option>'
+    if (county) {
+      county.zones.forEach(zone => {
+        const opt = document.createElement('option')
+        opt.value = zone.id
+        opt.textContent = zone.name
+        selectTag.appendChild(opt)
+      })
+    }
+  }
+
+  // Display the counties as options in the county dropdown
+  function displayCountyOptions(selectTag) {
+    selectTag.innerHTML = '<option value="" disabled selected>Select County</option>'
+    GeoReferenceData.forEach(county => {
+      const opt = document.createElement('option')
+      opt.value = county.county_id
+      opt.textContent = county.county_name
+      selectTag.appendChild(opt)
+    })
   }
 
   // Set up the overlay to view and hospital details and activate/deactivate an account
@@ -248,13 +344,13 @@ document.addEventListener('DOMContentLoaded', () => {
         handleOverlay(viewHosOverlayElem)
 
         const hospStatus = hospital.status
-        if(hospStatus === 'active'){
+        if (hospStatus === 'active') {
           document.querySelector('.js-status-badge')
             .classList.remove('inactive', 'archived')
-        }else if(hospStatus === 'inactive'){
+        } else if (hospStatus === 'inactive') {
           document.querySelector('.js-status-badge')
             .classList.remove('active', 'archived')
-        }else{
+        } else {
           document.querySelector('.js-status-badge')
             .classList.remove('active', 'inactive')
         }
@@ -276,16 +372,16 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('viewDate')
           .textContent = hospital.registeredDate
         document.getElementById('viewCounty')
-          .textContent = hospital.county
+          .textContent = hospital.location.county_name
         document.getElementById('viewZone')
-          .textContent = hospital.zone
+          .textContent = hospital.location.zone_name
 
         const deptFrag = document.createDocumentFragment()
         const deptContainerElem = document.getElementById('viewDepts')
         deptContainerElem.innerHTML = ``
         hospital.departments.forEach(dept => {
           const deptTag = document.createElement('span')
-          deptTag.innerHTML = `<span class="view-tag">${dept}</span>`
+          deptTag.innerHTML = `<span class="view-tag">${dept.name}</span>`
           deptFrag.appendChild(deptTag)
         })
         deptContainerElem.appendChild(deptFrag)
@@ -295,18 +391,68 @@ document.addEventListener('DOMContentLoaded', () => {
       if (btn.classList.contains('edit-hos-btn')) {
         const editHosOverlayElem = document.getElementById('editHospitalOverlay')
         handleOverlay(editHosOverlayElem)
+
+        const editHospCountyElem = document.getElementById('editHospCounty')
+        const editHospZoneElem = document.getElementById('editHospZone')
+
+        displayCountyOptions(editHospCountyElem)
+        displayCountyZonesOptions(hospital.location.county_id, editHospZoneElem)
+
+        editHospCountyElem.addEventListener('change', (e) => {
+          const selectedId = parseInt(e.target.value)
+          displayCountyZonesOptions(selectedId, editHospZoneElem)
+        })
+
+        document.getElementById('editHeaderHospName')
+          .textContent = hospital.name
+        document.getElementById('editStatus')
+          .value = hospital.status
+        document.getElementById('editUuid')
+          .textContent = hospital.id
+        document.getElementById('editHospName')
+          .value = hospital.name
+        document.getElementById('editHospContact')
+          .value = hospital.contactPerson
+        document.getElementById('editHospPhone')
+          .value = hospital.phone
+        document.getElementById('editHospEmail')
+          .value = hospital.email
+        editHospCountyElem.value = hospital.location.county_id
+        editHospZoneElem.value = hospital.location.zone_id
+
+        const editDeptContainerElem = document.getElementById('editDeptContainer')
+        displayDeptChips(editDeptContainerElem)
+
+        // Display chips already selected
+        const hospDeptIds = hospital.departments.map(dept => dept.id)
+        let selectedDeptIds = new Set()
+        hospDeptIds.forEach(id => {
+          selectedDeptIds.add(id)
+          const targetChip = document.querySelector(`.dept-chip[data-dept-id="${id}"]`)
+          if (targetChip) {
+            targetChip.classList.add('selected')
+          }
+        })
+
+        handleDeptChipsToggle(editHosOverlayElem, selectedDeptIds)
       }
 
       // Notify user they are about to activate an account
       if (btn.classList.contains('activate-hos-btn')) {
         const activateHosOverlayElem = document.getElementById('activateHospitalOverlay')
         handleOverlay(activateHosOverlayElem)
+
+        document.querySelector('.js-activate-hosp-name')
+          .textContent = hospital.name
       }
 
       // Account Deactivation Notification
       if (btn.classList.contains('deactivate-hos-btn')) {
         const deactivateHosOverlayElem = document.getElementById('deactivateHospitalOverlay')
         handleOverlay(deactivateHosOverlayElem)
+
+        document.querySelector('.js-deactivate-hosp-name')
+          .textContent = hospital.name
       }
     })
 })
