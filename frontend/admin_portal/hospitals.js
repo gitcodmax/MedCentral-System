@@ -2,6 +2,353 @@ import { renderSidebar } from "./sidebar.js"
 import { handleOverlay, displayNoMatchFound } from "../global.js"
 
 document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('.app-container')
+    .innerHTML = `    
+      <div class="sidebar" id="sidebar"></div>
+
+      <div class="main-wrapper">
+        <header class="top-header" id="topHeader"></header>
+
+        <main class="content">
+
+          <section class="management-actions-container">
+            <div class="action-left">
+              <button class="btn btn-primary" id="btnAddHospital">
+                <i class="fas fa-plus-circle"></i> Add New Hospital
+              </button>
+            </div>
+
+            <div class="action-right">
+              <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="hospitalSearch" placeholder="Search by hospital name...">
+              </div>
+
+              <div class="filter-box">
+                <i class="fas fa-filter"></i>
+                <select id="statusFilter">
+                  <option value="all">All Statuses</option>
+                  <option value="active">Active Only</option>
+                  <option value="inactive">Inactive</option>
+                  <option value="archived">Archived</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <div class="modal-overlay" id="addHospitalOverlay">
+            <div class="modal-card">
+              <div class="modal-header">
+                <div class="modal-title">
+                  <i class="fas fa-plus-circle"></i>
+                  <div>
+                    <h3>Register New Hospital</h3>
+                    <p>Enter the details to add a new facility to the network.</p>
+                  </div>
+                </div>
+                <button class="modal-close-btn js-btn-close-overlay">&times;</button>
+              </div>
+
+              <form id="hospital-form">
+                <div class="modal-body" id="modalBody">
+                  <div class="form-grid">
+                    <div class="form-group full-width">
+                      <label>Hospital Name</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-h-square"></i>
+                        <input type="text" name="hosp_name" placeholder="e.g. Metro General Hospital" required>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Contact Person</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-user-md"></i>
+                        <input type="text" name="hosp_contact" placeholder="Dr. Jane Smith" required>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Phone Number</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" name="hosp_phone" placeholder="+1 (555) 000-0000" required>
+                      </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                      <label>Email Address</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" name="hosp_email" placeholder="admin@hospital-domain.org" required>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="hosp-county">Hospital County</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <select name="hosp_county" id="hospCounty" required>
+                          <option value="" disabled selected>Select County</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="hosp-zone">Zone / Sub-County</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-map-signs"></i>
+                        <select name="hosp_zone" id="hospZone" required></select>
+                      </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                      <label>Select Active Departments</label>
+                      <div id="deptContainer" class="dept-selector-grid">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn-cancel js-btn-close-overlay">Cancel</button>
+                  <button type="submit" class="btn-submit">Register Facility</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <section class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Hospital Name</th>
+                  <th>Contact Person</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th>Date Registered</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="hosDetailsTbody"></tbody>
+            </table>
+            <div class="no-match-container js-no-match-found hidden"></div>
+          </section>
+
+          <div class="modal-overlay" id="viewHospitalOverlay">
+            <div class="modal-card view-card">
+              <div class="modal-header">
+                <div class="modal-title">
+                  <i class="fas fa-file-medical"></i>
+                  <div>
+                    <h3 id="viewHospName"></h3>
+                    <p>Registration ID: <span class="view-hosp-id js-view-hosp-id"></span></p>
+                  </div>
+                </div>
+                <div class="header-right">
+                  <span class="status-badge js-status-badge"></span>
+                  <button class="modal-close-btn js-btn-close-overlay">&times;</button>
+                </div>
+              </div>
+
+              <div class="view-hos-modal-body">
+                <div class="info-section">
+                  <h4 class="section-label"><i class="fas fa-info-circle"></i> Administrative Details</h4>
+                  <div class="detail-grid">
+                    <div class="detail-item">
+                      <label>Contact Person</label>
+                      <p id="viewContact"></p>
+                    </div>
+                    <div class="detail-item">
+                      <label>Email Address</label>
+                      <p id="viewEmail"></p>
+                    </div>
+                    <div class="detail-item">
+                      <label>Phone Number</label>
+                      <p id="viewPhone"></p>
+                    </div>
+                    <div class="detail-item">
+                      <label>Date Registered</label>
+                      <p id="viewDate"></p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="info-section">
+                  <h4 class="section-label"><i class="fas fa-map-marked-alt"></i> Location & Logistics</h4>
+                  <div class="detail-grid">
+                    <div class="detail-item">
+                      <label>County</label>
+                      <p id="viewCounty"></p>
+                    </div>
+                    <div class="detail-item">
+                      <label>Zone / Sub-County</label>
+                      <p id="viewZone"></p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="info-section">
+                  <h4 class="section-label"><i class="fas fa-th-list"></i> Active Departments</h4>
+                  <div class="view-dept-tags" id="viewDepts"></div>
+                </div>
+              </div>
+
+              <div class="close-btn-container">
+                <button class="close-view-hos js-btn-close-overlay">Close</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-overlay" id="editHospitalOverlay">
+            <div class="modal-card">
+              <div class="modal-header header-edit">
+                <div class="modal-title">
+                  <i class="fas fa-edit"></i>
+                  <div>
+                    <h3>Edit Facility Details</h3>
+                    <p>Updating: <span class="edit-header-hosp-name" id="editHeaderHospName"></span></p>
+                  </div>
+                </div>
+                <button class="modal-close-btn js-btn-close-overlay">&times;</button>
+              </div>
+
+              <form id="edit-hospital-form">
+                <div class="modal-body">
+                  <div class="edit-status-bar">
+                    <div class="status-info">
+                      <label>Current Status</label>
+                      <select name="edit_status" id="editStatus" class="status-select">
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="archived">Archived</option>
+                      </select>
+                    </div>
+                    <div class="id-info">
+                      <label>System UUID</label>
+                      <div class="edit-uuid" id="editUuid"></div>
+                    </div>
+                  </div>
+
+                  <div class="form-grid">
+                    <div class="form-group full-width">
+                      <label>Hospital Name</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-h-square"></i>
+                        <input type="text" id="editHospName" name="edit_hosp_name" required>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Contact Person</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-user-md"></i>
+                        <input type="text" id="editHospContact" name="edit_hosp_contact" required>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Phone Number</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="editHospPhone" name="edit_hosp_phone" required>
+                      </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                      <label>Official Email Address</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="editHospEmail" name="edit_hosp_email" required>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>County</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <select id="editHospCounty" name="edit_hosp_county" required></select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Zone</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-map-signs"></i>
+                        <select id="editHospZone" name="edit_hosp_zone" required></select>
+                      </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                      <label>Select Active Departments</label>
+                      <div id="editDeptContainer" class="dept-selector-grid"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn-cancel js-btn-close-overlay">Cancel
+                    Changes</button>
+                  <button type="submit" class="btn-submit btn-update" id="updateHospBtn">Save Updates</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="modal-overlay" id="activateHospitalOverlay">
+            <div class="modal-card mini-modal">
+              <div class="modal-status-header bg-success">
+                <i class="fas fa-user-check"></i>
+              </div>
+
+              <div class="modal-body text-center">
+                <h3>Activate Hospital Account?</h3>
+                <p>You are about to activate <strong><span
+                      class="activate-hosp-name js-activate-hosp-name"></span></strong>.
+                </p </div>
+
+                <div class="modal-footer flex-center">
+                  <button class="btn-cancel js-btn-close-overlay">No, Cancel</button>
+                  <button class="btn-submit bg-success" id="confirm-activate-btn">Yes, Activate Account</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-overlay" id="deactivateHospitalOverlay">
+            <div class="modal-card mini-modal">
+              <div class="modal-status-header bg-danger">
+                <i class="fas fa-user-slash"></i>
+              </div>
+
+              <form id="deactivation-form">
+                <div class="modal-body">
+                  <div class="text-center">
+                    <h3>Deactivate Hospital?</h3>
+                    <p>You are about to suspend <strong><span class="deactivate-hosp-name js-deactivate-hosp-name">General
+                          Medical
+                          Center</span></strong>.</p>
+                  </div>
+
+                  <div class="form-group full-width mt-1">
+                    <label for="deactivate-reason">Reason for Deactivation <span class="text-danger">*</span></label>
+                    <textarea class="deactivate-reason"
+                      placeholder="e.g. Contract expired, facility maintenance, or security breach..."
+                      required></textarea>
+                  </div>
+                </div>
+
+                <div class="modal-footer flex-center">
+                  <button type="button" class="btn-cancel js-btn-close-overlay">Cancel</button>
+                  <button type="submit" class="btn-submit deactivate-btn">Confirm Deactivation</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </main>
+      </div>
+    `
+
   renderSidebar()
   document.querySelector('.js-header-left')
     .innerHTML = `
@@ -433,7 +780,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const hospDeptIds = hospital.departments.map(dept => dept.id)
         let selectedDeptIds = new Set()
         hospDeptIds.forEach(id => {
-          selectedDeptIds.add(id)
+          selectedDeptIds.add(parseInt(id))
           const targetChip = document.querySelector(`.dept-chip[data-dept-id="${id}"]`)
           if (targetChip) {
             targetChip.classList.add('selected')
@@ -478,10 +825,10 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     hosDetailsTbodyElem.innerHTML = ``
-    if(searchResult.length === 0){
+    if (searchResult.length === 0) {
       document.querySelector('.js-no-match-found')
         .classList.remove('hidden')
-    }else{
+    } else {
       displayAllHospitals(searchResult)
       document.querySelector('.js-no-match-found')
         .classList.add('hidden')
