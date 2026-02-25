@@ -1,163 +1,167 @@
 /* Color Palette */
 :root {
-    --color-primary: #007BFF;
-    --color-secondary: #008B00;
-    --color-quarantine: #6C757D;
-    --color-background: #F8F9FA;
-    --color-green-bg: #008B001A;
-    --color-white: #FFFFFF;
-    --color-text: #212529;
-    --color-yellow-warning: #FFC107;
-    --color-orange-low: #FF8C00;
-    --color-red-critical: #DC3545;
+  --color-primary: #007BFF;
+  --color-secondary: #008B00;
+  --color-quarantine: #6C757D;
+  --color-background: #F8F9FA;
+  --color-green-bg: #008B001A;
+  --color-white: #FFFFFF;
+  --color-text: #212529;
+  --color-yellow-warning: #FFC107;
+  --color-orange-low: #FF8C00;
+  --color-red-critical: #DC3545;
 
-    --pending: #FFC107;
-    --rejected: #DC3545;
-    /*Aprroved follows*/
-    --processing: #06b6d4;
-    --packed: #6F42C1;
-    --dispatched: #20C997;
-    --delayed: #FD7E14;
-    /* Delivered exists */
-    --deliveredIssue: #E5533D;
-    --completed: #157347;
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-    --radius: 8px;
-    --shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --pending: #FFC107;
+  --rejected: #DC3545;
+  /*Aprroved follows*/
+  --processing: #06b6d4;
+  --packed: #6F42C1;
+  --dispatched: #20C997;
+  --delayed: #FD7E14;
+  /* Delivered exists */
+  --deliveredIssue: #E5533D;
+  --completed: #157347;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --radius: 8px;
+  --shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--color-background);
-    color: var(--color-text);
-    min-height: 100vh;
-    margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  min-height: 100vh;
+  margin: 0;
 }
 
 /* Stock Alerts Styling (Container and Title Key) */
 .card-title-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .stock-alerts h2 {
-    margin-bottom: 0;
-    font-weight: 700;
+  margin-bottom: 0;
+  font-weight: 700;
 }
 
 .alert-key {
-    display: flex;
-    gap: 15px;
-    font-size: 0.85rem;
-    color: var(--color-quarantine);
+  display: flex;
+  gap: 15px;
+  font-size: 0.85rem;
+  color: var(--color-quarantine);
 }
 
 .key-item {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .key-color {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-right: 5px;
-    display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 5px;
+  display: inline-block;
 }
 
 .key-color.yellow {
-    background-color: var(--color-yellow-warning);
+  background-color: var(--color-yellow-warning);
 }
 
 .key-color.orange {
-    background-color: var(--color-orange-low);
+  background-color: var(--color-orange-low);
 }
 
 .key-color.red {
-    background-color: var(--color-red-critical);
+  background-color: var(--color-red-critical);
 }
 
 /* Stock Alerts Styling (Alert Pills) */
 .alerts-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .alert-pill {
-    padding: 10px 18px;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--color-text);
+  padding: 10px 18px;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
 }
 
 .alert-pill.low-stock {
-    background-color: var(--color-orange-low);
+  background-color: var(--color-orange-low);
 }
 
 .alert-pill.warning-stock {
-    background-color: var(--color-yellow-warning);
+  background-color: var(--color-yellow-warning);
 }
 
 .alert-pill.critical-stock {
-    background-color: var(--color-red-critical);
-    color: var(--color-white);
+  background-color: var(--color-red-critical);
+  color: var(--color-white);
 }
 
 /* Styling to display no match found */
-.no-match-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-    margin-top: 5px;
-  }
-  .hidden{
-    display: none;
-  }
-  .no-match-elements{
-    width: 300px;
-    border: 1px solid var(--color-primary);
-  }
-  .frowned-face{
-    margin-top: 5px;
-    font-size: xx-large;
-    color: var(--color-primary);
-  }
-  .no-match-container p{
-    font-weight: bold;
-  }
+.no-match-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 5px;
+}
 
-  /* Storage temperature color codes */
+.hidden {
+  display: none;
+}
+
+.no-match-elements {
+  width: 300px;
+  border: 1px solid var(--color-primary);
+}
+
+.frowned-face {
+  margin-top: 5px;
+  font-size: xx-large;
+  color: var(--color-primary);
+}
+
+.no-match-container p {
+  font-weight: bold;
+}
+
+/* Storage temperature color codes */
 .A {
-    background: #f59e0b;
-  }
-  
-  .R {
-    background: var(--color-primary);
-  }
-  
-  .F {
-    background: #6366f1;
-  }
-  
-  .C {
-    background: var(--color-secondary);
-  }
-  
-  .badge {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    line-height: 20px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: bold;
-    color: white;
-    margin-right: 4px;
-  }
+  background: #f59e0b;
+}
+
+.R {
+  background: var(--color-primary);
+}
+
+.F {
+  background: #6366f1;
+}
+
+.C {
+  background: var(--color-secondary);
+}
+
+.badge {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: bold;
+  color: white;
+  margin-right: 4px;
+}

@@ -165,34 +165,52 @@
           </div>
         </div>
 
-        <div class="modal-overlay" id="configModal">
+        <div class="modal-overlay" id="configOverlay">
           <div class="modal-card">
             <div class="modal-header">
               <h3>System Configuration</h3>
-              <button class="close-modal">&times;</button>
+              <button class="modal-close-btn js-btn-close-overlay">&times;</button>
             </div>
             <div class="tab-nav">
-              <button class="tab-btn active">Categories</button>
-              <button class="tab-btn">Storage Options</button>
+              <button class="tab-btn js-categories-tab-btn active">Categories</button>
+              <button class="tab-btn js-storage-tab-btn">Storage Options</button>
             </div>
             <div class="modal-body">
               <div class="config-action-row">
-                <input type="text" class="input-field" placeholder="Add new definition...">
-                <button class="btn btn-primary">Add</button>
+                <input type="text" class="input-field" id="newValueInput" placeholder="Add new definition...">
+                <button class="btn btn-primary js-add-new-value">Add</button>
               </div>
-              <div class="config-list">
+              <div class="config-list" id="categoriesList">
                 <div class="config-item">
                   <span>Antibiotics</span>
                   <div class="item-tools">
-                    <i class="fas fa-pen"></i>
-                    <i class="fas fa-toggle-on active-status"></i>
+                    <i class="fas fa-trash" title="Delete"></i>
                   </div>
                 </div>
                 <div class="config-item">
-                  <span>Cold Chain (2-8°C)</span>
+                  <span>Consumables</span>
                   <div class="item-tools">
-                    <i class="fas fa-pen"></i>
-                    <i class="fas fa-toggle-on active-status"></i>
+                    <i class="fas fa-trash" title="Delete"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="config-list" id="storageTempList">
+                <div class="config-item">
+                  <span>Ambient(15-25°C)</span>
+                  <div class="item-tools">
+                    <i class="fas fa-trash" title="Delete"></i>
+                  </div>
+                </div>
+                <div class="config-item">
+                  <span>Controlled Room Temperature</span>
+                  <div class="item-tools">
+                    <i class="fas fa-trash" title="Delete"></i>
+                  </div>
+                </div>
+                <div class="config-item">
+                  <span>Refrigerated(2-8°C)</span>
+                  <div class="item-tools">
+                    <i class="fas fa-trash" title="Delete"></i>
                   </div>
                 </div>
               </div>
