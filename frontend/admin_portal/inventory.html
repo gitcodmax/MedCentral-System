@@ -325,25 +325,25 @@
                 <div class="form-group">
                   <label>Bulk Unit (Packaging)</label>
                   <select id="edit-bulk" class="input-field">
-                      <option value="" disabled>Select Bulk Unit</option>
-                      <option value="box">Box</option>
-                      <option value="carton">Carton</option>
-                      <option value="pallet">Pallet</option>
-                      <option value="crate">Crate</option>
+                    <option value="" disabled>Select Bulk Unit</option>
+                    <option value="box">Box</option>
+                    <option value="carton">Carton</option>
+                    <option value="pallet">Pallet</option>
+                    <option value="crate">Crate</option>
                   </select>
-              </div>
-              
-              <div class="form-group">
+                </div>
+
+                <div class="form-group">
                   <label>Selling Unit (Smallest Unit)</label>
                   <select id="edit-selling" class="input-field">
-                      <option value="" disabled>Select Selling Unit</option>
-                      <option value="vial">Vial</option>
-                      <option value="strip">Strip</option>
-                      <option value="tablet">Tablet</option>
-                      <option value="pair">Pair</option>
-                      <option value="piece">Piece</option>
+                    <option value="" disabled>Select Selling Unit</option>
+                    <option value="vial">Vial</option>
+                    <option value="strip">Strip</option>
+                    <option value="tablet">Tablet</option>
+                    <option value="pair">Pair</option>
+                    <option value="piece">Piece</option>
                   </select>
-              </div>
+                </div>
 
                 <div class="form-group">
                   <label>Units per Bulk</label>
@@ -362,6 +362,81 @@
               <button class="btn btn-primary">
                 <i class="fas fa-check"></i> Update Item
               </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-overlay" id="adjustStockOverlay">
+          <div class="modal-card adjust-modal">
+            <div class="modal-header adjust-header">
+              <div>
+                <span class="adjust-badge"><i class="fas fa-balance-scale"></i> Inventory Reconciliation</span>
+                <h3 id="adjust-item-name">Amoxicillin 500mg</h3>
+                <p class="sku-ref">SKU: <span id="adjust-sku">AMX-00124</span></p>
+              </div>
+              <button class="modal-close-btn js-btn-close-overlay">&times;</button>
+            </div>
+
+            <div class="modal-body">
+              <div class="current-stock-display">
+                <label>System Count (Before)</label>
+                <div class="count-value"><span id="current-count">450</span> <small
+                    id="adjust-unit-label">Strips</small></div>
+              </div>
+
+              <form id="adjustmentForm">
+                <div class="adjustment-action-grid">
+
+                  <div class="form-group">
+                    <label>New Quantity</label>
+                    <input type="number" id="adjust-qty" class="input-field qty-input" placeholder="0" min="1">
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 1.2rem;">
+                  <label>Reason for Adjustment</label>
+                  <textarea id="adjust-notes" class="input-field" rows="3"
+                    placeholder="Describe why this adjustment is being made..." required></textarea>
+                </div>
+              </form>
+            </div>
+
+            <div class="modal-footer">
+              <button class="btn discard-btn js-btn-close-overlay">Cancel Changes</button>
+              <button class="btn btn-primary">
+                <i class="fas fa-check"></i> Update Stock Count
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-overlay" id="deleteItemOverlay">
+          <div class="modal-card delete-modal">
+            <div class="modal-body text-center">
+              <div class="danger-icon-container">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+
+              <h2>Delete Inventory Item?</h2>
+              <p class="delete-warning">
+                You are about to permanently remove <strong class="delete-item-name">Amoxicillin 500mg</strong> from the
+                system.
+                This action will archive all associated records and cannot be undone.
+              </p>
+
+              <div class="item-preview-card">
+                <span class="delete-sku-label">SKU: AMX-00124</span>
+                <span id="delete-stock-label">Current Stock: 450 Units</span>
+              </div>
+
+              <div class="delete-actions">
+                <button class="btn delete-close-overlay-btn js-btn-close-overlay">
+                  No, Keep Item
+                </button>
+                <button class="btn btn-danger-action" id="confirmDeleteBtn">
+                  Yes, Delete Permanently
+                </button>
+              </div>
             </div>
           </div>
         </div>

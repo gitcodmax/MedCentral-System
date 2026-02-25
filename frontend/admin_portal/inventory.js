@@ -92,6 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const viewItemOverlayElem = document.getElementById('viewItemOverlay')
   const editItemOverlayElem = document.getElementById('editItemOverlay')
+  const adjustStockOverlayElem = document.getElementById('adjustStockOverlay')
+  const deleteItemOverlayElem = document.getElementById('deleteItemOverlay')
   document.getElementById('itemsTbody')
     .addEventListener('click', (e) => {
 
@@ -103,6 +105,16 @@ document.addEventListener('DOMContentLoaded', () => {
       // Edit item details
       if(e.target.classList.contains('fa-edit')){
         handleOverlay(editItemOverlayElem)
+      }
+
+      // Adjust the stock amount
+      if(e.target.classList.contains('fa-balance-scale')){
+        handleOverlay(adjustStockOverlayElem)
+      }
+
+      // Delete an item
+      if(e.target.classList.contains('fa-trash')){
+        handleOverlay(deleteItemOverlayElem)
       }
     })
 })
