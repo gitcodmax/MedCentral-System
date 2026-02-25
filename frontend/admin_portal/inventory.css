@@ -300,6 +300,15 @@ tr:hover {
   }
 }
 
+.discard-btn{
+  border: 1px solid red;
+  color: red;
+}
+.discard-btn:hover{
+  background: red;
+  color: white;
+}
+
 /*RESPONSIVE*/
 @media (max-width: 1024px) {
   .filters-card {

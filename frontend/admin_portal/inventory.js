@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </div> 
   `
 
+  // Open the overlay to define the item categories and storage temperature
   const configOverlayElem = document.getElementById('configOverlay')
   document.getElementById('openConfigBtn')
     .addEventListener('click', () => {
@@ -80,5 +81,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       })
 
+    })
+
+  // Open overlay to add a new item
+  const addItemOverlayElem = document.getElementById('itemOverlay')
+  document.getElementById('openAddItemBtn')
+    .addEventListener('click', () => {
+      handleOverlay(addItemOverlayElem)
     })
 })
