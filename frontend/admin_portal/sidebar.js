@@ -81,7 +81,7 @@ export function renderSidebar(){
         <div class="header-actions">
           <div class="notif-btn">
             <i class="far fa-bell"></i>
-            <span class="badge">4</span>
+            <span class="sidebar-badge">4</span>
           </div>
           <div class="profile-section">
             <div class="avatar">JS</div>
