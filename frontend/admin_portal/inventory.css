@@ -253,7 +253,6 @@ tr:hover {
 }
 
 .config-list {
-  /* border: 1px solid var(--color-quarantine); */
   border-radius: 8px;
   display: flex;
 }
@@ -307,6 +306,111 @@ tr:hover {
 .discard-btn:hover{
   background: red;
   color: white;
+}
+
+/*DETAIL MODAL SPECIFIC STYLES*/
+.detail-modal {
+  max-width: 550px;
+}
+
+.detail-header {
+  background: linear-gradient(to bottom, #f8fafc, #ffffff);
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  display: flex;
+  position: relative;
+}
+
+.detail-header .header-main h3 {
+  font-size: 1.5rem;
+  margin-top: 0.75rem;
+  color: var(--color-primary);
+}
+
+.sku-display {
+  color: var(--color-secondary);
+  font-size: 0.85rem;
+  margin-top: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.detail-header .close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.detail-item label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--color-quarantine);
+  margin-bottom: 4px;
+  letter-spacing: 0.025em;
+}
+
+.detail-item p {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.detail-item.highlight p {
+  font-size: 1.25rem;
+  color: var(--color-primary);
+}
+
+@media (max-width: 480px) {
+  .detail-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+  }
+}
+
+/*EDIT MODAL ACCENTS*/
+.edit-mode-header {
+  border-left: 5px solid var(--color-primary);
+  background: linear-gradient(to right, #fcfcff, #ffffff);
+}
+
+.edit-badge {
+  background: #e0e7ff;
+  color: var(--color-primary);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.sku-ref {
+  font-size: 0.8rem;
+  color: var(--color-quarantine);
+  margin-top: 4px;
+}
+
+.helper-text {
+  font-size: 0.7rem;
+  color: var(--color-quarantine);
+  font-style: italic;
+  margin-top: 4px;
+  display: block;
+}
+
+input[readonly] {
+  background-color: #f1f5f9;
+  cursor: not-allowed;
+  color: var(--text-light);
+  border-style: dashed;
 }
 
 /*RESPONSIVE*/

@@ -74,7 +74,7 @@
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="itemsTbody">
                 <tr>
                   <td>
                     <strong>Insulin Glargine</strong><br>
@@ -89,7 +89,7 @@
                   <td class="actions-cell">
                     <i class="fas fa-eye" title="View"></i>
                     <i class="fas fa-edit" title="Edit"></i>
-                    <i class="fas fa-balance-scale" title="Adjust"></i>
+                    <i class="fas fa-balance-scale" title="Adjust Stock Amount"></i>
                     <i class="fas fa-trash" title="Delete"></i>
                   </td>
                 </tr>
@@ -107,7 +107,7 @@
                   <td class="actions-cell">
                     <i class="fas fa-eye" title="View"></i>
                     <i class="fas fa-edit" title="Edit"></i>
-                    <i class="fas fa-balance-scale" title="Adjust"></i>
+                    <i class="fas fa-balance-scale" title="Adjust Stock Amount"></i>
                     <i class="fas fa-trash" title="Delete"></i>
                   </td>
                 </tr>
@@ -218,6 +218,150 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-overlay" id="viewItemOverlay">
+          <div class="modal-card detail-modal">
+            <div class="modal-header detail-header">
+              <div class="header-main">
+                <span class="status-badge healthy" id="view-status">Healthy</span>
+                <h3 id="view-item-name">Insulin Glargine Pen</h3>
+                <p class="sku-display">SKU: <span id="view-sku">VAX-INS-402</span></p>
+              </div>
+              <button class="modal-close-btn js-btn-close-overlay">&times;</button>
+            </div>
+
+            <div class="modal-body">
+              <div class="detail-grid">
+                <div class="detail-item">
+                  <label>Category</label>
+                  <p id="view-category">Endocrinology / Vaccines</p>
+                </div>
+                <div class="detail-item">
+                  <label>Storage Temperature</label>
+                  <p id="view-temp"><i class="fas fa-snowflake"></i> Cold Chain (2-8°C)</p>
+                </div>
+
+                <div class="detail-item">
+                  <label>Bulk Unit</label>
+                  <p id="view-bulk-unit">Carton</p>
+                </div>
+                <div class="detail-item">
+                  <label>Selling Unit</label>
+                  <p id="view-selling-unit">Vial</p>
+                </div>
+
+                <div class="detail-item highlight">
+                  <label>Current Stock</label>
+                  <p id="view-current-stock">120 Vials</p>
+                </div>
+                <div class="detail-item">
+                  <label>Minimum Level</label>
+                  <p id="view-min-level">30 Vials</p>
+                </div>
+
+                <div class="detail-item">
+                  <label>Price per Unit</label>
+                  <p id="view-price">$45.00</p>
+                </div>
+                <div class="detail-item">
+                  <label>Last Updated</label>
+                  <p id="view-last-updated">2026-02-24 14:30 PM</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-overlay" id="editItemOverlay">
+          <div class="modal-card">
+            <div class="modal-header edit-mode-header">
+              <div>
+                <span class="edit-badge"><i class="fas fa-pen"></i> Edit Mode</span>
+                <h3 id="edit-modal-title">Edit Inventory Item</h3>
+                <p class="sku-ref">Modifying SKU: <span id="edit-sku-label">AMX-00124</span></p>
+              </div>
+              <button class="modal-close-btn js-btn-close-overlay">&times;</button>
+            </div>
+
+            <div class="modal-body">
+              <form id="editItemForm" class="form-grid">
+                <input type="hidden" id="edit-item-id">
+
+                <div class="form-group full-width">
+                  <label>Item Name</label>
+                  <input type="text" id="edit-name" class="input-field" value="Amoxicillin 500mg">
+                </div>
+
+                <div class="form-group">
+                  <label>SKU (Internal Tracking)</label>
+                  <input type="text" id="edit-sku" class="input-field" value="AMX-00124" readonly>
+                  <small class="helper-text">SKU cannot be changed after creation.</small>
+                </div>
+
+                <div class="form-group">
+                  <label>Category</label>
+                  <select id="edit-category" class="input-field">
+                    <option value="1">Antibiotics</option>
+                    <option value="2">Vaccines</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Storage Temperature</label>
+                  <select id="edit-temp" class="input-field">
+                    <option value="room">Room Temp (20-25°C)</option>
+                    <option value="cold">Cold Chain (2-8°C)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Price per Selling Unit ($)</label>
+                  <input type="number" id="edit-price" class="input-field" step="0.01" value="12.50">
+                </div>
+
+                <div class="form-group">
+                  <label>Bulk Unit (Packaging)</label>
+                  <select id="edit-bulk" class="input-field">
+                      <option value="" disabled>Select Bulk Unit</option>
+                      <option value="box">Box</option>
+                      <option value="carton">Carton</option>
+                      <option value="pallet">Pallet</option>
+                      <option value="crate">Crate</option>
+                  </select>
+              </div>
+              
+              <div class="form-group">
+                  <label>Selling Unit (Smallest Unit)</label>
+                  <select id="edit-selling" class="input-field">
+                      <option value="" disabled>Select Selling Unit</option>
+                      <option value="vial">Vial</option>
+                      <option value="strip">Strip</option>
+                      <option value="tablet">Tablet</option>
+                      <option value="pair">Pair</option>
+                      <option value="piece">Piece</option>
+                  </select>
+              </div>
+
+                <div class="form-group">
+                  <label>Units per Bulk</label>
+                  <input type="number" id="edit-conversion" class="input-field" value="10">
+                </div>
+
+                <div class="form-group">
+                  <label>Min. Stock Level (Alert Trigger)</label>
+                  <input type="number" id="edit-min-level" class="input-field" value="50">
+                </div>
+              </form>
+            </div>
+
+            <div class="modal-footer">
+              <button class="btn discard-btn js-btn-close-overlay">Cancel Changes</button>
+              <button class="btn btn-primary">
+                <i class="fas fa-check"></i> Update Item
+              </button>
             </div>
           </div>
         </div>

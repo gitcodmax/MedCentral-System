@@ -89,4 +89,20 @@ document.addEventListener('DOMContentLoaded', () => {
     .addEventListener('click', () => {
       handleOverlay(addItemOverlayElem)
     })
+
+  const viewItemOverlayElem = document.getElementById('viewItemOverlay')
+  const editItemOverlayElem = document.getElementById('editItemOverlay')
+  document.getElementById('itemsTbody')
+    .addEventListener('click', (e) => {
+
+      // View item details
+      if(e.target.classList.contains('fa-eye')){
+        handleOverlay(viewItemOverlayElem)
+      }
+
+      // Edit item details
+      if(e.target.classList.contains('fa-edit')){
+        handleOverlay(editItemOverlayElem)
+      }
+    })
 })
