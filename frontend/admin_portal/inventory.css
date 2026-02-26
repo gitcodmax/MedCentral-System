@@ -151,6 +151,8 @@ tr:hover {
 
 .actions-cell {
   color: var(--color-quarantine);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .actions-cell i {
@@ -179,6 +181,7 @@ tr:hover {
   border-radius: 50px;
   font-size: 0.75rem;
   font-weight: 700;
+  text-transform: capitalize;
 }
 
 .healthy {
@@ -258,6 +261,13 @@ tr:hover {
 .config-list {
   border-radius: 8px;
   display: flex;
+  flex-wrap: wrap;
+  border: 1px solid  var(--color-primary);
+  overflow-y: auto;
+  max-height: 60vh;
+}
+.config-list:hover{
+  border: 1px solid var(--color-secondary);
 }
 
 .config-item {

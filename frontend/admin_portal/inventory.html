@@ -74,44 +74,7 @@
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody id="itemsTbody">
-                <tr>
-                  <td>
-                    <strong>Insulin Glargine</strong><br>
-                    <span class="sku">SKU: VAX-INS-402</span>
-                  </td>
-                  <td>Endocrinology</td>
-                  <td><span class="badge R">R</span></td>
-                  <td>Carton / Vial (5 units)</td>
-                  <td>120 Vials</td>
-                  <td><span class="status-badge healthy">Healthy</span></td>
-                  <td>2026-02-24</td>
-                  <td class="actions-cell">
-                    <i class="fas fa-eye" title="View"></i>
-                    <i class="fas fa-edit" title="Edit"></i>
-                    <i class="fas fa-balance-scale" title="Adjust Stock Amount"></i>
-                    <i class="fas fa-trash" title="Delete"></i>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>Surgical Gloves (Size 7)</strong><br>
-                    <span class="sku">SKU: SUR-GLV-07</span>
-                  </td>
-                  <td>Surgical</td>
-                  <td><span class="badge C">C</span></td>
-                  <td>Box / Pair (50 units)</td>
-                  <td>8 Pairs</td>
-                  <td><span class="status-badge low">Low Stock</span></td>
-                  <td>2026-02-22</td>
-                  <td class="actions-cell">
-                    <i class="fas fa-eye" title="View"></i>
-                    <i class="fas fa-edit" title="Edit"></i>
-                    <i class="fas fa-balance-scale" title="Adjust Stock Amount"></i>
-                    <i class="fas fa-trash" title="Delete"></i>
-                  </td>
-                </tr>
-              </tbody>
+              <tbody id="itemsTbody"></tbody>
             </table>
           </section>
         </div>
@@ -178,91 +141,18 @@
             <div class="tab-nav">
               <button class="tab-btn js-categories-tab-btn active">Categories</button>
               <button class="tab-btn js-storage-tab-btn">Storage Options</button>
-              <button class="tab-btn js-bulk-unit-tab-btn">Bulk Units</button>
-              <button class="tab-btn js-sell-unit-tab-btn">Selling Units</button>
+              <button class="tab-btn js-uom-tab-btn">UOM</button>
             </div>
             <div class="modal-body">
               <div class="config-action-row">
                 <input type="text" class="input-field" id="newValueInput" placeholder="Add new definition...">
                 <button class="btn btn-primary js-add-new-value">Add</button>
               </div>
-              <div class="config-list" id="categoriesList">
-                <div class="config-item">
-                  <span>Antibiotics</span>
-                  <div class="item-tools">
-                    <i class="fas fa-trash" title="Delete"></i>
-                  </div>
-                </div>
-                <div class="config-item">
-                  <span>Consumables</span>
-                  <div class="item-tools">
-                    <i class="fas fa-trash" title="Delete"></i>
-                  </div>
-                </div>
-              </div>
 
-              <div class="config-list" id="storageTempList">
-                <div class="config-item">
-                  <span>Ambient(15-25°C)</span>
-                  <div class="item-tools">
-                    <i class="fas fa-trash" title="Delete"></i>
-                  </div>
-                </div>
-                <div class="config-item">
-                  <span>Controlled Room Temperature</span>
-                  <div class="item-tools">
-                    <i class="fas fa-trash" title="Delete"></i>
-                  </div>
-                </div>
-                <div class="config-item">
-                  <span>Refrigerated(2-8°C)</span>
-                  <div class="item-tools">
-                    <i class="fas fa-trash" title="Delete"></i>
-                  </div>
-                </div>
-              </div>
+              <div class="config-list" id="categoriesList"></div>
+              <div class="config-list" id="storageTempList"></div>
+              <div class="config-list" id="uomList"></div>
 
-              <div class="config-list" id="bulkUnitsList">
-                <div class="config-item">
-                  <span>Box</span>
-                  <div class="item-tools">
-                    <i class="fas fa-trash" title="Delete"></i>
-                  </div>
-                </div>
-                <div class="config-item">
-                  <span>Carton</span>
-                  <div class="item-tools">
-                    <i class="fas fa-trash" title="Delete"></i>
-                  </div>
-                </div>
-                <div class="config-item">
-                  <span>Crate</span>
-                  <div class="item-tools">
-                    <i class="fas fa-trash" title="Delete"></i>
-                  </div>
-                </div>
-              </div>
-
-              <div class="config-list" id="sellUnitsList">
-                <div class="config-item">
-                  <span>Vial</span>
-                  <div class="item-tools">
-                    <i class="fas fa-trash" title="Delete"></i>
-                  </div>
-                </div>
-                <div class="config-item">
-                  <span>Strip</span>
-                  <div class="item-tools">
-                    <i class="fas fa-trash" title="Delete"></i>
-                  </div>
-                </div>
-                <div class="config-item">
-                  <span>Bottle</span>
-                  <div class="item-tools">
-                    <i class="fas fa-trash" title="Delete"></i>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -272,8 +162,8 @@
             <div class="modal-header detail-header">
               <div class="header-main">
                 <span class="status-badge healthy" id="view-status">Healthy</span>
-                <h3 id="view-item-name">Insulin Glargine Pen</h3>
-                <p class="sku-display">SKU: <span id="view-sku">VAX-INS-402</span></p>
+                <h3 class="global-item-name"></h3>
+                <p class="sku-display">SKU: <span class="global-sku"></span></p>
               </div>
               <button class="modal-close-btn js-btn-close-overlay">&times;</button>
             </div>
@@ -282,38 +172,38 @@
               <div class="detail-grid">
                 <div class="detail-item">
                   <label>Category</label>
-                  <p id="view-category">Endocrinology / Vaccines</p>
+                  <p id="viewCategory">Endocrinology / Vaccines</p>
                 </div>
                 <div class="detail-item">
                   <label>Storage Temperature</label>
-                  <p id="view-temp"><i class="fas fa-snowflake"></i> Cold Chain (2-8°C)</p>
+                  <p id="viewTemp"><i class="fas fa-snowflake"></i> Cold Chain (2-8°C)</p>
                 </div>
 
                 <div class="detail-item">
                   <label>Bulk Unit</label>
-                  <p id="view-bulk-unit">Carton</p>
+                  <p id="viewBulkUnit">Carton</p>
                 </div>
                 <div class="detail-item">
                   <label>Selling Unit</label>
-                  <p id="view-selling-unit">Vial</p>
+                  <p id="viewSellingUnit">Vial</p>
                 </div>
 
                 <div class="detail-item highlight">
                   <label>Current Stock</label>
-                  <p id="view-current-stock">120 Vials</p>
+                  <p id="viewCurrentStock">120 Vials</p>
                 </div>
                 <div class="detail-item">
                   <label>Minimum Level</label>
-                  <p id="view-min-level">30 Vials</p>
+                  <p id="viewMinLevel">30 Vials</p>
                 </div>
 
                 <div class="detail-item">
                   <label>Price per Unit</label>
-                  <p id="view-price">$45.00</p>
+                  <p id="viewPrice">$45.00</p>
                 </div>
                 <div class="detail-item">
                   <label>Last Updated</label>
-                  <p id="view-last-updated">2026-02-24 14:30 PM</p>
+                  <p id="viewLastUpdated">2026-02-24 14:30 PM</p>
                 </div>
               </div>
             </div>
@@ -326,7 +216,7 @@
               <div>
                 <span class="edit-badge"><i class="fas fa-pen"></i> Edit Mode</span>
                 <h3 id="edit-modal-title">Edit Inventory Item</h3>
-                <p class="sku-ref">Modifying SKU: <span id="edit-sku-label">AMX-00124</span></p>
+                <p class="sku-ref">Modifying SKU: <span class="global-sku"></span></p>
               </div>
               <button class="modal-close-btn js-btn-close-overlay">&times;</button>
             </div>
@@ -337,67 +227,56 @@
 
                 <div class="form-group full-width">
                   <label>Item Name</label>
-                  <input type="text" id="edit-name" class="input-field" value="Amoxicillin 500mg">
+                  <input type="text" id="edit-name" class="input-field">
                 </div>
 
                 <div class="form-group">
                   <label>SKU (Internal Tracking)</label>
-                  <input type="text" id="edit-sku" class="input-field" value="AMX-00124" readonly>
+                  <input type="text" id="edit-sku" class="input-field" readonly>
                   <small class="helper-text">SKU cannot be changed after creation.</small>
                 </div>
 
                 <div class="form-group">
                   <label>Category</label>
                   <select id="edit-category" class="input-field">
-                    <option value="1">Antibiotics</option>
-                    <option value="2">Vaccines</option>
+                    <option value="" disabled selected>Select category</option>
                   </select>
                 </div>
 
                 <div class="form-group">
                   <label>Storage Temperature</label>
                   <select id="edit-temp" class="input-field">
-                    <option value="room">Room Temp (20-25°C)</option>
-                    <option value="cold">Cold Chain (2-8°C)</option>
+                    <option value="" disabled selected>Select storage temperature</option>
                   </select>
                 </div>
 
                 <div class="form-group">
                   <label>Price per Selling Unit ($)</label>
-                  <input type="number" id="edit-price" class="input-field" step="0.01" value="12.50">
+                  <input type="number" id="edit-price" class="input-field" step="0.01">
                 </div>
 
                 <div class="form-group">
                   <label>Bulk Unit (Packaging)</label>
                   <select id="edit-bulk" class="input-field">
-                    <option value="" disabled>Select Bulk Unit</option>
-                    <option value="box">Box</option>
-                    <option value="carton">Carton</option>
-                    <option value="pallet">Pallet</option>
-                    <option value="crate">Crate</option>
+                    <option value="" disabled selected>Select bulk unit</option>
                   </select>
                 </div>
 
                 <div class="form-group">
                   <label>Selling Unit (Smallest Unit)</label>
                   <select id="edit-selling" class="input-field">
-                    <option value="" disabled>Select Selling Unit</option>
-                    <option value="vial">Vial</option>
-                    <option value="strip">Strip</option>
-                    <option value="tablet">Tablet</option>
-                    <option value="pair">Pair</option>
-                    <option value="piece">Piece</option>
+                    <option value="" disabled selected>Select selling unit</option>
                   </select>
                 </div>
 
                 <div class="form-group">
                   <label>Units per Bulk</label>
-                  <input type="number" id="edit-conversion" class="input-field" value="10">
+                  <input type="number" id="edit-conversion" class="input-field">
                 </div>
 
                 <div class="form-group">
                   <label>Min. Stock Level (Alert Trigger)</label>
-                  <input type="number" id="edit-min-level" class="input-field" value="50">
+                  <input type="number" id="edit-min-level" class="input-field">
                 </div>
               </form>
             </div>
@@ -416,8 +295,8 @@
             <div class="modal-header adjust-header">
               <div>
                 <span class="adjust-badge"><i class="fas fa-balance-scale"></i> Inventory Reconciliation</span>
-                <h3 id="adjust-item-name">Amoxicillin 500mg</h3>
-                <p class="sku-ref">SKU: <span id="adjust-sku">AMX-00124</span></p>
+                <h3 class="global-item-name"></h3>
+                <p class="sku-ref">SKU: <span class="global-sku"></span></p>
               </div>
               <button class="modal-close-btn js-btn-close-overlay">&times;</button>
             </div>
@@ -464,13 +343,13 @@
 
               <h2>Delete Inventory Item?</h2>
               <p class="delete-warning">
-                You are about to permanently remove <strong class="delete-item-name">Amoxicillin 500mg</strong> from the
+                You are about to permanently remove <strong class="delete-item-name global-item-name"></strong> from the
                 system.
                 This action will archive all associated records and cannot be undone.
               </p>
 
               <div class="item-preview-card">
-                <span class="delete-sku-label">SKU: AMX-00124</span>
+                <span class="delete-sku-label">SKU: <span class="global-sku"></span></span>
                 <span id="delete-stock-label">Current Stock: 450 Units</span>
               </div>
 
