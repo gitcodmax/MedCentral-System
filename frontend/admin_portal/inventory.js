@@ -1,5 +1,5 @@
 import { renderSidebar } from "./sidebar.js";
-import { handleOverlay } from "../global.js";
+import { handleOverlay, displayNoMatchFound } from "../global.js";
 
 document.addEventListener('DOMContentLoaded', () => {
   renderSidebar()
@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     </div> 
   `
+  displayNoMatchFound()
 
   const InventoryMockData = [
     {
@@ -212,12 +213,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const getUnitName = (id) => SystemConfig.units.find(u => u.id === id)?.name || "N/A";
 
   const itemsTbodyElem = document.getElementById('itemsTbody')
+  function displayTableItems(itemsData) {
+    itemsTbodyElem.innerHTML = ''
 
-  const itemsTableFrag = document.createDocumentFragment()
-  InventoryMockData.forEach(item => {
-    const tblRow = document.createElement('tr')
+    const itemsTableFrag = document.createDocumentFragment()
+    itemsData.forEach(item => {
+      const tblRow = document.createElement('tr')
 
-    tblRow.innerHTML = `
+      tblRow.innerHTML = `
       <td>
         <strong>${item.name}</strong><br>
         <span class="sku">SKU: ${item.sku}</span>
@@ -239,10 +242,12 @@ document.addEventListener('DOMContentLoaded', () => {
       </td>
     `
 
-    itemsTableFrag.appendChild(tblRow)
-  })
+      itemsTableFrag.appendChild(tblRow)
+    })
 
-  itemsTbodyElem.appendChild(itemsTableFrag)
+    itemsTbodyElem.appendChild(itemsTableFrag)
+  }
+  displayTableItems(InventoryMockData)
 
   // Create an array that matches other system config arrays for storage options
   // Used to display system config data
@@ -262,6 +267,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const uomItems = (SystemConfig.units || [])
     .map(u => ({ value: u.id, label: u.name }))
+
+  setSelectOptions(document.getElementById('catFilter'), categoryItems)
+  setSelectOptions(document.getElementById('tempFilter'), storageItems)
 
   // Display the system config data on the overlay
   function displaySystemConfigData(SystemConfigArr, SystemConfigListElem) {
@@ -402,8 +410,26 @@ document.addEventListener('DOMContentLoaded', () => {
   function setSelectOptions(selectElem, items) {
     if (!selectElem) return
 
+    // How the default option appears in the select tags
+    let defaultPlaceholder = ``
+    if (items === categoryItems) {
+      if (selectElem.id === 'catFilter') {
+        defaultPlaceholder = `<option value="" selected>All Categories</option>`
+      } else {
+        defaultPlaceholder = `<option value="" disabled selected>Select Category</option>`
+      }
+    } else if (items === storageItems) {
+      if (selectElem.id === 'tempFilter') {
+        defaultPlaceholder = `<option value="" selected>All Temp.</option>`
+      } else {
+        defaultPlaceholder = `<option value="" disabled selected>Select Storage Temp...</option>`
+      }
+    } else if (items === uomItems) {
+      defaultPlaceholder = `<option value="" disabled selected>Select UOM</option>`
+    }
+
     const prevValue = selectElem.value
-    selectElem.innerHTML = ''
+    selectElem.innerHTML = `${defaultPlaceholder}`
 
     const frag = document.createDocumentFragment()
     items.forEach(({ value, label }) => {
@@ -539,4 +565,67 @@ document.addEventListener('DOMContentLoaded', () => {
         .textContent = `${item.currentStock} ${item.sellingUnit}`
     }
   })
+
+  // Search & filter inventory Logic
+  const searchInputElem = document.getElementById('search')
+  const categoryFilterElem = document.getElementById('catFilter')
+  const statusFilterElem = document.getElementById('status-filter')
+  const tempFilterElem = document.getElementById('tempFilter')
+
+  function applyFilters() {
+    const searchTerm = normalizeText(searchInputElem?.value || '')
+    const selectedCategory = categoryFilterElem?.value || ''
+    const selectedStatus = statusFilterElem?.value || 'all'
+    const selectedTemp = tempFilterElem?.value || ''
+
+    const filtered = InventoryMockData.filter(item => {
+      if (searchTerm) {
+        const name = normalizeText(item.name)
+        const sku = normalizeText(item.sku)
+        if (!name.includes(searchTerm) && !sku.includes(searchTerm)) {
+          return false
+        }
+      }
+
+      // Category filter (matches category id)
+      if (selectedCategory && item.category !== selectedCategory) {
+        return false
+      }
+
+      // Storage temperature filter (matches storage code C/R/A/F)
+      if (selectedTemp && item.storage !== selectedTemp) {
+        return false
+      }
+
+      // Stock status filter
+      if (selectedStatus && selectedStatus !== 'all') {
+        const statusNorm = normalizeText(item.status)
+        if (selectedStatus === 'out') {
+          // Match "Out of Stock" and similar
+          if (!statusNorm.startsWith('out')) return false
+        } else if (statusNorm !== selectedStatus) {
+          return false
+        }
+      }
+
+      return true
+    })
+
+    if (filtered.length === 0) {
+      itemsTbodyElem.innerHTML = ``
+      document.querySelector('.js-no-match-found')
+        .classList.remove('hidden')
+    } else {
+      displayTableItems(filtered)
+      document.querySelector('.js-no-match-found')
+        .classList.add('hidden')
+    }
+  }
+
+  if (searchInputElem) searchInputElem.addEventListener('input', applyFilters)
+  if (categoryFilterElem) categoryFilterElem.addEventListener('change', applyFilters)
+  if (statusFilterElem) statusFilterElem.addEventListener('change', applyFilters)
+  if (tempFilterElem) tempFilterElem.addEventListener('change', applyFilters)
+
+  applyFilters()
 })

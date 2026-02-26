@@ -31,9 +31,7 @@
             </div>
             <div class="filter-group">
               <label for="cat-filter">Category</label>
-              <select id="cat-filter" class="input-field">
-                <option value="all">All Categories</option>
-              </select>
+              <select id="catFilter" class="input-field"></select>
             </div>
             <div class="filter-group">
               <label for="status-filter">Stock Status</label>
@@ -46,17 +44,7 @@
             </div>
             <div class="filter-group">
               <label for="temp-filter">Storage Temp</label>
-              <select id="temp-filter" class="input-field">
-                <option value="all">All Options</option>
-              </select>
-            </div>
-            <div class="filter-group">
-              <label for="sort">Sort By</label>
-              <select id="sort" class="input-field">
-                <option>Latest Updated</option>
-                <option>Stock: Low to High</option>
-                <option>Price: High to Low</option>
-              </select>
+              <select id="tempFilter" class="input-field"></select>
             </div>
           </section>
 
@@ -76,6 +64,8 @@
               </thead>
               <tbody id="itemsTbody"></tbody>
             </table>
+
+            <div class="no-match-container js-no-match-found hidden"></div>
           </section>
         </div>
 
