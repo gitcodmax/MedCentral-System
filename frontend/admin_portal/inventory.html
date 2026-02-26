@@ -304,8 +304,8 @@
             <div class="modal-body">
               <div class="current-stock-display">
                 <label>System Count (Before)</label>
-                <div class="count-value"><span id="current-count">450</span> <small
-                    id="adjust-unit-label">Strips</small></div>
+                <div class="count-value"><span id="currentStockCount">450</span> <small
+                    id="adjustUnitLabel">Strips</small></div>
               </div>
 
               <form id="adjustmentForm">
@@ -350,7 +350,9 @@
 
               <div class="item-preview-card">
                 <span class="delete-sku-label">SKU: <span class="global-sku"></span></span>
-                <span id="delete-stock-label">Current Stock: 450 Units</span>
+                <span>Current Stock: 
+                  <span id="currentStockSellUom"></span> 
+                </span>
               </div>
 
               <div class="delete-actions">

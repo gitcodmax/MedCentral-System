@@ -507,11 +507,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Adjust the stock amount
     if (e.target.classList.contains('fa-balance-scale')) {
       handleOverlay(adjustStockOverlayElem)
+
+      document.getElementById('currentStockCount')
+        .textContent = item.currentStock
+      document.getElementById('adjustUnitLabel')
+        .textContent = item.sellingUnit
     }
 
     // Delete an item
     if (e.target.classList.contains('fa-trash')) {
       handleOverlay(deleteItemOverlayElem)
+
+      document.getElementById('currentStockSellUom')
+        .textContent = `${item.currentStock} ${item.sellingUnit}`
     }
   })
 })
