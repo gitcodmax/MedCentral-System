@@ -90,7 +90,6 @@
                 <td>
                   <div class="action-btns">
                     <button class="btn-icon btn-view js-view-ord-details-btn" title="View Details">View</button>
-                    <button class="btn-icon btn-update js-update-status-btn" title="Update Status">Update</button>
                   </div>
                 </td>
               </tr>
@@ -118,7 +117,6 @@
                 <td>
                   <div class="action-btns">
                     <button class="btn-icon btn-view js-view-ord-details-btn">View</button>
-                    <button class="btn-icon btn-update js-update-status-btn">Update</button>
                   </div>
                 </td>
               </tr>
@@ -144,7 +142,6 @@
                 <td>
                   <div class="action-btns">
                     <button class="btn-icon btn-view js-view-ord-details-btn">View</button>
-                    <button class="btn-icon btn-update js-update-status-btn">Update</button>
                   </div>
                 </td>
               </tr>
@@ -170,7 +167,6 @@
                 <td>
                   <div class="action-btns">
                     <button class="btn-icon btn-view js-view-ord-details-btn">View</button>
-                    <button class="btn-icon btn-update js-update-status-btn">Update</button>
                   </div>
                 </td>
               </tr>
@@ -196,7 +192,6 @@
                 <td>
                   <div class="action-btns">
                     <button class="btn-icon btn-view js-view-ord-details-btn">View</button>
-                    <button class="btn-icon btn-update js-update-status-btn">Update</button>
                   </div>
                 </td>
               </tr>
@@ -227,9 +222,17 @@
 
                   <div class="package-card">
                     <div class="package-card-header">
-                      <div class="pkg-id">
+                      <div>
                         <span class="label">Package ID</span>
                         <strong class="view-pkg-id">PKG-4402-A</strong>
+                      </div>
+                      <div>
+                        <span class="label">Packed By:</span>
+                        <strong class="clerk-name">Sam</strong>
+                      </div>
+                      <div>
+                        <span class="label">Delivered By:</span>
+                        <strong class="clerk-name">Sam</strong>
                       </div>
                       <div class="pkg-type">
                         <span class="tag tag-ref"><i class="fas fa-snowflake"></i> Refrigerated (2-8°C)</span>
@@ -266,9 +269,17 @@
 
                   <div class="package-card">
                     <div class="package-card-header">
-                      <div class="pkg-id">
+                      <div>
                         <span class="label">Package ID</span>
                         <strong class="view-pkg-id">PKG-4402-B</strong>
+                      </div>
+                      <div>
+                        <span class="label">Packed By:</span>
+                        <strong class="clerk-name">Sam</strong>
+                      </div>
+                      <div>
+                        <span class="label">Delivered By:</span>
+                        <strong class="clerk-name">Sam</strong>
                       </div>
                       <div class="pkg-type">
                         <span class="tag tag-room"><i class="fas fa-warehouse"></i> Common Room Temp</span>
@@ -307,134 +318,6 @@
               </div>
             </div>
           </div>
-
-          <div class="modal-overlay" id="updateStatusOverlay">
-            <div class="modal-card update-modal-wide">
-              <div class="modal-header update-status-modal-header">
-                <div class="header-info">
-                  <span class="req-id-view-overlay">REQ-8821</span> | <span class="ord-id-view-overlay">ORD-4402</span>
-                  <h3>St. Mary's General Hospital</h3>
-                  <p>Update Package Lifecycle</p>
-                </div>
-                <button class="modal-close-btn js-btn-close-overlay">&times;</button>
-              </div>
-
-              <div class="update-status-modal-body">
-                <div class="package-container">
-                  <div class="update-package-card-header">
-                    <strong class="pkg-card-id">PKG-4402-A</strong> <span class="status-pill status-dispatched">Dispatched</span>
-                  </div>
-                  <div class="form-section">
-                    <label class="section-label">Target Status</label>
-                    <select id="statusSelector" class="input-field main-status-select">
-                      <option value="" disabled selected>Select new status...</option>
-                      <option value="processing">Processing (Assign Clerk)</option>
-                      <option value="packed">Packed (Assign Driver)</option>
-                      <option value="dispatched">Dispatched (Outbound)</option>
-                      <option value="delivered">Delivered (Arrival)</option>
-                    </select>
-                  </div>
-
-                  <div id="processingContainer" class="assignment-container hidden">
-                    <div class="assignment-header">
-                      <i class="fas fa-user-tag"></i>
-                      <span>Assign Inventory Clerk</span>
-                    </div>
-                    <div class="clerk-grid">
-                      <select class="input-field full-width">
-                        <option value="">Select Available Clerk...</option>
-                        <option value="c1">Sarah Connor (Zone A - Cold Chain)</option>
-                        <option value="c2">Mike Ross (Zone B - General)</option>
-                        <option value="c3">Elena Fisher (Zone C - Bulk)</option>
-                      </select>
-                      <p class="helper-text">This clerk will receive a notification to begin picking items.</p>
-                    </div>
-                  </div>
-
-                  <div id="packedContainer" class="assignment-container hidden">
-                    <div class="assignment-header">
-                      <i class="fas fa-truck"></i>
-                      <span>Assign Transport Driver</span>
-                    </div>
-                    <div class="driver-grid">
-                      <select class="input-field full-width">
-                        <option value="">Select Available Driver...</option>
-                        <option value="d1">David Miller - Refrigerated Van 02</option>
-                        <option value="d2">Amos Burton - Heavy Truck 09</option>
-                        <option value="d3">James Holden - Rapid Delivery 01</option>
-                      </select>
-                      <p class="helper-text">The driver will be notified that the package is ready for pickup.</p>
-                    </div>
-                  </div>
-
-                  <div class="form-section">
-                    <label class="section-label">Reason for Status Change</label>
-                    <textarea class="input-field textarea-reason" rows="3"
-                      placeholder="Enter administrative notes or reasons for this update..."></textarea>
-                  </div>
-                </div>
-                <div class="package-container">
-                  <div class="update-package-card-header">
-                    <strong class="pkg-card-id">PKG-4402-A</strong> <span class="status-pill status-dispatched">Dispatched</span>
-                  </div>
-                  <div class="form-section">
-                    <label class="section-label">Target Status</label>
-                    <select id="statusSelector" class="input-field main-status-select">
-                      <option value="" disabled selected>Select new status...</option>
-                      <option value="processing">Processing (Assign Clerk)</option>
-                      <option value="packed">Packed (Assign Driver)</option>
-                      <option value="dispatched">Dispatched (Outbound)</option>
-                      <option value="delivered">Delivered (Arrival)</option>
-                    </select>
-                  </div>
-
-                  <div id="processingContainer" class="assignment-container hidden">
-                    <div class="assignment-header">
-                      <i class="fas fa-user-tag"></i>
-                      <span>Assign Inventory Clerk</span>
-                    </div>
-                    <div class="clerk-grid">
-                      <select class="input-field full-width">
-                        <option value="">Select Available Clerk...</option>
-                        <option value="c1">Sarah Connor (Zone A - Cold Chain)</option>
-                        <option value="c2">Mike Ross (Zone B - General)</option>
-                        <option value="c3">Elena Fisher (Zone C - Bulk)</option>
-                      </select>
-                      <p class="helper-text">This clerk will receive a notification to begin picking items.</p>
-                    </div>
-                  </div>
-
-                  <div id="packedContainer" class="assignment-container hidden">
-                    <div class="assignment-header">
-                      <i class="fas fa-truck"></i>
-                      <span>Assign Transport Driver</span>
-                    </div>
-                    <div class="driver-grid">
-                      <select class="input-field full-width">
-                        <option value="">Select Available Driver...</option>
-                        <option value="d1">David Miller - Refrigerated Van 02</option>
-                        <option value="d2">Amos Burton - Heavy Truck 09</option>
-                        <option value="d3">James Holden - Rapid Delivery 01</option>
-                      </select>
-                      <p class="helper-text">The driver will be notified that the package is ready for pickup.</p>
-                    </div>
-                  </div>
-
-                  <div class="form-section">
-                    <label class="section-label">Reason for Status Change</label>
-                    <textarea class="input-field textarea-reason" rows="3"
-                      placeholder="Enter administrative notes or reasons for this update..."></textarea>
-                  </div>
-                </div>
-              </div>
-
-              <div class="update-modal-footer">
-                <button class="btn close-overlay">Cancel</button>
-                <button class="btn confirm-btn">Confirm Update</button>
-              </div>
-            </div>
-          </div>
-
         </main>
       </main>
     </div>
