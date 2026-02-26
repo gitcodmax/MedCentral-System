@@ -1,205 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order & Request Management | Central Warehouse</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order & Request Management | Central Warehouse</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <link rel="stylesheet" href="/global.css">
-    <link rel="stylesheet" href="/admin_portal/orders.css">
+  <link rel="stylesheet" href="/global.css">
+  <link rel="stylesheet" href="/admin_portal/sidebar.css">
+  <link rel="stylesheet" href="/admin_portal/admin_portal_global.css">
+  <link rel="stylesheet" href="/admin_portal/orders.css">
 </head>
+
 <body>
 
-<div class="dashboard-container">
-    <header class="page-header">
-        <div class="header-content">
-            <h1>Order & Request Management</h1>
-        </div>
-    </header>
+  <div class="app-container">
+    <div class="sidebar" id="sidebar"></div>
 
-    <section class="filter-section">
-        <div class="filter-grid">
+    <div class="main-wrapper">
+      <header class="top-header" id="topHeader"></header>
+
+      <main class="content">
+        <section class="filter-section">
+          <div class="filter-grid">
             <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search by Reference ID or Hospital Name">
+              <i class="fas fa-search"></i>
+              <input type="text" placeholder="Search by Reference ID or Hospital Name">
             </div>
-            
+
             <div class="filter-group">
-                <input type="date" class="input-field" title="Request Date">
-                
-                <select class="input-field">
-                    <option value="">Completion: All</option>
-                    <option value="full">Completed</option>
-                    <option value="partial">Partially Completed</option>
-                    <option value="none">Not Completed</option>
-                </select>
+              <input type="date" class="input-field" title="Request Date">
 
-                <select class="input-field">
-                    <option value="newest">Newest First</option>
-                    <option value="oldest">Oldest First</option>
-                </select>
-                
-                <label class="toggle-container">
-                    <input type="checkbox">
-                    <span class="toggle-label">Show Rejected</span>
-                </label>
+              <select class="input-field">
+                <option value="">Completion: All</option>
+                <option value="full">Completed</option>
+                <option value="partial">Partially Completed</option>
+                <option value="none">Not Completed</option>
+              </select>
+
+              <select class="input-field">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+              </select>
+
+              <label class="toggle-container">
+                <input type="checkbox">
+                <span class="toggle-label">Show Rejected</span>
+              </label>
             </div>
-        </div>
-    </section>
+          </div>
+        </section>
 
-    <main class="table-container">
-        <table class="order-table">
+        <main class="table-container">
+          <table class="order-table">
             <thead>
-                <tr>
-                    <th>Reference IDs</th>
-                    <th>Hospital Name</th>
-                    <th>Request Date</th>
-                    <th>Packages</th>
-                    <th>Total Items</th>
-                    <th>Completion</th>
-                    <th>Actions</th>
-                </tr>
+              <tr>
+                <th>Reference IDs</th>
+                <th>Hospital Name</th>
+                <th>Request Date</th>
+                <th>Packages</th>
+                <th>Total Items</th>
+                <th>Completion</th>
+                <th>Actions</th>
+              </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>
-                        <div class="id-stack">
-                            <span class="req-id">REQ-8821</span>
-                            <span class="ord-id">ORD-4402</span>
-                        </div>
-                    </td>
-                    <td class="hospital-name">St. Mary's General Hospital</td>
-                    <td>Feb 24, 2026</td>
-                    <td>
-                      <span class="badge A">A</span>
-                      <span class="badge R">R</span>
-                    </td>
-                    <td>
-                        <div class="items-display">12 Items</div>
-                    </td>
-                    <td>
-                      <span class="badge A">A</span>
-                      <span class="badge R">R</span>
-                    </td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="btn-icon btn-view" title="View Details">View</button>
-                            <button class="btn-icon btn-update" title="Update Status">Update</button>
-                        </div>
-                    </td>
-                </tr>
+              <tr>
+                <td>
+                  <div class="id-stack">
+                    <span class="req-id">REQ-8821</span>
+                    <span class="ord-id">ORD-4402</span>
+                  </div>
+                </td>
+                <td class="hospital-name">St. Mary's General Hospital</td>
+                <td>Feb 24, 2026</td>
+                <td>
+                  <span class="badge A">A</span>
+                  <span class="badge R">R</span>
+                </td>
+                <td>
+                  <div class="items-display">12 Items</div>
+                </td>
+                <td>
+                  <span class="badge A">A</span>
+                  <span class="badge R">R</span>
+                </td>
+                <td>
+                  <div class="action-btns">
+                    <button class="btn-icon btn-view" title="View Details">View</button>
+                    <button class="btn-icon btn-update" title="Update Status">Update</button>
+                  </div>
+                </td>
+              </tr>
 
-                <tr>
-                    <td>
-                        <div class="id-stack">
-                            <span class="req-id">REQ-8825</span>
-                            <span class="ord-id">ORD-4409</span>
-                        </div>
-                    </td>
-                    <td class="hospital-name">City Children's Clinic</td>
-                    <td>Feb 25, 2026</td>
-                    <td>
-                      <span class="badge R">R</span>
-                      <span class="badge F">F</span>
-                    </td>
-                    <td>
-                        <div class="items-display">4 Items</div>
-                    </td>
-                    <td>
-                      <span class="badge R grey-badge">R</span>
-                      <span class="badge F">F</span>
-                    </td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="btn-icon btn-view">View</button>
-                            <button class="btn-icon btn-update">Update</button>
-                        </div>
-                    </td>
-                </tr>
+              <tr>
+                <td>
+                  <div class="id-stack">
+                    <span class="req-id">REQ-8825</span>
+                    <span class="ord-id">ORD-4409</span>
+                  </div>
+                </td>
+                <td class="hospital-name">City Children's Clinic</td>
+                <td>Feb 25, 2026</td>
+                <td>
+                  <span class="badge R">R</span>
+                  <span class="badge F">F</span>
+                </td>
+                <td>
+                  <div class="items-display">4 Items</div>
+                </td>
+                <td>
+                  <span class="badge R grey-badge">R</span>
+                  <span class="badge F">F</span>
+                </td>
+                <td>
+                  <div class="action-btns">
+                    <button class="btn-icon btn-view">View</button>
+                    <button class="btn-icon btn-update">Update</button>
+                  </div>
+                </td>
+              </tr>
 
-                <tr>
-                    <td>
-                        <div class="id-stack">
-                            <span class="req-id">REQ-8830</span>
-                            <span class="ord-id">ORD-4412</span>
-                        </div>
-                    </td>
-                    <td class="hospital-name">Metropolitan Medical Center</td>
-                    <td>Feb 26, 2026</td>
-                    <td>
-                        <span class="badge R">R</span>
-                    </td>
-                    <td>
-                        <div class="items-display">25 Items</div>
-                    </td>
-                    <td>
-                      <span class="badge R grey-badge">R</span>
-                    </td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="btn-icon btn-view">View</button>
-                            <button class="btn-icon btn-update">Update</button>
-                        </div>
-                    </td>
-                </tr>
+              <tr>
+                <td>
+                  <div class="id-stack">
+                    <span class="req-id">REQ-8830</span>
+                    <span class="ord-id">ORD-4412</span>
+                  </div>
+                </td>
+                <td class="hospital-name">Metropolitan Medical Center</td>
+                <td>Feb 26, 2026</td>
+                <td>
+                  <span class="badge R">R</span>
+                </td>
+                <td>
+                  <div class="items-display">25 Items</div>
+                </td>
+                <td>
+                  <span class="badge R grey-badge">R</span>
+                </td>
+                <td>
+                  <div class="action-btns">
+                    <button class="btn-icon btn-view">View</button>
+                    <button class="btn-icon btn-update">Update</button>
+                  </div>
+                </td>
+              </tr>
 
-                <tr>
-                    <td>
-                        <div class="id-stack">
-                            <span class="req-id">REQ-8842</span>
-                            <span class="ord-id empty">—</span>
-                        </div>
-                    </td>
-                    <td class="hospital-name">Westside Orthopedic</td>
-                    <td>Feb 26, 2026</td>
-                    <td>
-                        <span class="badge A">A</span>
-                    </td>
-                    <td>
-                        <div class="items-display">2 Items</div>
-                    </td>
-                    <td>
-                      <span class="badge A grey-badge">A</span>
-                    </td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="btn-icon btn-view">View</button>
-                            <button class="btn-icon btn-update">Update</button>
-                        </div>
-                    </td>
-                </tr>
+              <tr>
+                <td>
+                  <div class="id-stack">
+                    <span class="req-id">REQ-8842</span>
+                    <span class="ord-id empty">—</span>
+                  </div>
+                </td>
+                <td class="hospital-name">Westside Orthopedic</td>
+                <td>Feb 26, 2026</td>
+                <td>
+                  <span class="badge A">A</span>
+                </td>
+                <td>
+                  <div class="items-display">2 Items</div>
+                </td>
+                <td>
+                  <span class="badge A grey-badge">A</span>
+                </td>
+                <td>
+                  <div class="action-btns">
+                    <button class="btn-icon btn-view">View</button>
+                    <button class="btn-icon btn-update">Update</button>
+                  </div>
+                </td>
+              </tr>
 
-                <tr>
-                    <td>
-                        <div class="id-stack">
-                            <span class="req-id">REQ-8790</span>
-                            <span class="ord-id empty">—</span>
-                        </div>
-                    </td>
-                    <td class="hospital-name">Hope Wellness Hub</td>
-                    <td>Feb 20, 2026</td>
-                    <td>
-                        <span class="badge F">F</span>
-                    </td>
-                    <td>
-                        <div class="items-display">1 Item</div>
-                    </td>
-                    <td>
-                      <span class="badge F red-badge">F</span>
-                    </td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="btn-icon btn-view">View</button>
-                            <button class="btn-icon btn-update">Update</button>
-                        </div>
-                    </td>
-                </tr>
+              <tr>
+                <td>
+                  <div class="id-stack">
+                    <span class="req-id">REQ-8790</span>
+                    <span class="ord-id empty">—</span>
+                  </div>
+                </td>
+                <td class="hospital-name">Hope Wellness Hub</td>
+                <td>Feb 20, 2026</td>
+                <td>
+                  <span class="badge F">F</span>
+                </td>
+                <td>
+                  <div class="items-display">1 Item</div>
+                </td>
+                <td>
+                  <span class="badge F red-badge">F</span>
+                </td>
+                <td>
+                  <div class="action-btns">
+                    <button class="btn-icon btn-view">View</button>
+                    <button class="btn-icon btn-update">Update</button>
+                  </div>
+                </td>
+              </tr>
             </tbody>
-        </table>
-    </main>
-</div>
+          </table>
+        </main>
+      </main>
+    </div>
+  </div>
 
+  <script type="module" src="/admin_portal/orders.js"></script>
 </body>
+
 </html>
