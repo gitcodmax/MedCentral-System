@@ -66,7 +66,7 @@
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="ordersTbody">
               <tr>
                 <td>
                   <div class="id-stack">
@@ -81,7 +81,7 @@
                   <span class="badge R">R</span>
                 </td>
                 <td>
-                  <div class="items-display">12 Items</div>
+                  <div class="items-display">12</div>
                 </td>
                 <td>
                   <span class="badge A">A</span>
@@ -89,7 +89,7 @@
                 </td>
                 <td>
                   <div class="action-btns">
-                    <button class="btn-icon btn-view" title="View Details">View</button>
+                    <button class="btn-icon btn-view js-view-ord-details" title="View Details">View</button>
                     <button class="btn-icon btn-update" title="Update Status">Update</button>
                   </div>
                 </td>
@@ -109,7 +109,7 @@
                   <span class="badge F">F</span>
                 </td>
                 <td>
-                  <div class="items-display">4 Items</div>
+                  <div class="items-display">4</div>
                 </td>
                 <td>
                   <span class="badge R grey-badge">R</span>
@@ -117,7 +117,7 @@
                 </td>
                 <td>
                   <div class="action-btns">
-                    <button class="btn-icon btn-view">View</button>
+                    <button class="btn-icon btn-view js-view-ord-details">View</button>
                     <button class="btn-icon btn-update">Update</button>
                   </div>
                 </td>
@@ -136,14 +136,14 @@
                   <span class="badge R">R</span>
                 </td>
                 <td>
-                  <div class="items-display">25 Items</div>
+                  <div class="items-display">25</div>
                 </td>
                 <td>
                   <span class="badge R grey-badge">R</span>
                 </td>
                 <td>
                   <div class="action-btns">
-                    <button class="btn-icon btn-view">View</button>
+                    <button class="btn-icon btn-view js-view-ord-details">View</button>
                     <button class="btn-icon btn-update">Update</button>
                   </div>
                 </td>
@@ -162,14 +162,14 @@
                   <span class="badge A">A</span>
                 </td>
                 <td>
-                  <div class="items-display">2 Items</div>
+                  <div class="items-display">2</div>
                 </td>
                 <td>
                   <span class="badge A grey-badge">A</span>
                 </td>
                 <td>
                   <div class="action-btns">
-                    <button class="btn-icon btn-view">View</button>
+                    <button class="btn-icon btn-view js-view-ord-details">View</button>
                     <button class="btn-icon btn-update">Update</button>
                   </div>
                 </td>
@@ -188,20 +188,126 @@
                   <span class="badge F">F</span>
                 </td>
                 <td>
-                  <div class="items-display">1 Item</div>
+                  <div class="items-display">1</div>
                 </td>
                 <td>
                   <span class="badge F red-badge">F</span>
                 </td>
                 <td>
                   <div class="action-btns">
-                    <button class="btn-icon btn-view">View</button>
+                    <button class="btn-icon btn-view js-view-ord-details">View</button>
                     <button class="btn-icon btn-update">Update</button>
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
+
+          <div class="modal-overlay" id="orderDetailsOverlay">
+            <div class="modal-card detail-modal-wide">
+              <div class="modal-header order-detail-header">
+                <div class="header-main">
+                  <div class="id-badge-group">
+                    <span class="req-id-view-overlay">REQ-8821</span>
+                    <i class="fas fa-arrow-right"></i>
+                    <span class="ord-id-view-overlay">ORD-4402</span>
+                  </div>
+                  <h2>St. Mary's General Hospital</h2>
+                  <div class="header-meta">
+                    <span><i class="far fa-calendar-alt"></i> Requested: <strong>Feb 24, 2026</strong></span>
+                    <span><i class="far fa-credit-card"></i> Paid: <strong>Feb 25, 2026</strong></span>
+                    <span><i class="fas fa-box"></i> <strong>2 Packages</strong> | <strong>4 Items</strong> Total</span>
+                  </div>
+                </div>
+                <button class="modal-close-btn js-btn-close-overlay">&times;</button>
+              </div>
+
+              <div class="ord-details-modal-body">
+                <div class="package-list">
+
+                  <div class="package-card">
+                    <div class="package-card-header">
+                      <div class="pkg-id">
+                        <span class="label">Package ID</span>
+                        <strong class="view-pkg-id">PKG-4402-A</strong>
+                      </div>
+                      <div class="pkg-type">
+                        <span class="tag tag-ref"><i class="fas fa-snowflake"></i> Refrigerated (2-8°C)</span>
+                      </div>
+                      <div class="pkg-status">
+                        <span class="status-pill status-dispatched">Dispatched</span>
+                      </div>
+                    </div>
+
+                    <div class="package-items">
+                      <table class="item-table">
+                        <thead>
+                          <tr>
+                            <th>Item Description</th>
+                            <th>Quantity</th>
+                            <th>UOM</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Insulin Glargine (Lantus)</td>
+                            <td>10</td>
+                            <td>Vial</td>
+                          </tr>
+                          <tr>
+                            <td>Oxytocin 10IU Injection</td>
+                            <td>50</td>
+                            <td>Ampoule</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div class="package-card">
+                    <div class="package-card-header">
+                      <div class="pkg-id">
+                        <span class="label">Package ID</span>
+                        <strong class="view-pkg-id">PKG-4402-B</strong>
+                      </div>
+                      <div class="pkg-type">
+                        <span class="tag tag-room"><i class="fas fa-warehouse"></i> Common Room Temp</span>
+                      </div>
+                      <div class="pkg-status">
+                        <span class="status-pill status-packed">Packed</span>
+                      </div>
+                    </div>
+
+                    <div class="package-items">
+                      <table class="item-table">
+                        <thead>
+                          <tr>
+                            <th>Item Description</th>
+                            <th>Quantity</th>
+                            <th>UOM</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Amoxicillin 500mg Capsules</td>
+                            <td>200</td>
+                            <td>Strip</td>
+                          </tr>
+                          <tr>
+                            <td>Paracetamol 500mg</td>
+                            <td>500</td>
+                            <td>Strip</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
         </main>
       </main>
     </div>
