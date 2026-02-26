@@ -1,0 +1,241 @@
+.dashboard-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Header Area */
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-content h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+/* Filters */
+.filter-section {
+  background: white;
+  padding: 1.25rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.filter-grid {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  min-width: 300px;
+}
+
+.search-box i {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-quarantine);
+}
+
+.search-box input {
+  width: 100%;
+  padding: 0.6rem 1rem 0.6rem 2.5rem;
+  border: 1px solid var(--color-quarantine);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.filter-group {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.input-field {
+  padding: 0.6rem;
+  border: 1px solid var(--color-quarantine);
+  border-radius: 8px;
+  background: white;
+  font-size: 0.85rem;
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* Table Design */
+.table-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.order-table thead {
+  background: #f8fafc;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.order-table th {
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  background: var(--color-primary);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.order-table td {
+  padding: 1rem 1.5rem;
+  vertical-align: middle;
+}
+
+.order-table tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+/* Column Specific Styles */
+.id-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.req-id {
+  font-weight: 700;
+  color: var(--color-secondary);
+}
+
+.ord-id {
+  font-size: 0.8rem;
+  color: var(--color-primary);
+}
+
+.ord-id.empty {
+  color: #cbd5e1;
+}
+
+.hospital-name {
+  font-weight: 600;
+  color: #1e293b;
+  max-width: 200px;
+}
+
+.items-display small {
+  display: block;
+  color: var(--color-quarantine);
+}
+
+.grey-badge{
+  background: grey;
+}
+
+.red-badge{
+  background: red;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-icon {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-view {
+  background: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  color: white;
+}
+
+.btn-view:hover {
+  background: transparent;
+  border: 1px solid var(--color-secondary);
+  color: var(--color-secondary);
+}
+
+.btn-update {
+  background: transparent;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn-update:hover {
+  background: var(--color-secondary);
+  color: white;
+}
+
+/* Mobile Responsive */
+@media (max-width: 1024px) {
+  .filter-grid {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-group {
+    justify-content: space-between;
+  }
+
+  .search-box {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .dashboard-container {
+    padding: 1rem;
+  }
+}
