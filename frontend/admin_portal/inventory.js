@@ -243,11 +243,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const storageTempArr = SystemConfig.storageOptions
     .map(temp => ({
       id: temp.code,
-      name: `${temp.label} (${temp.range})`})
-  )
+      name: `${temp.label} (${temp.range})`
+    })
+    )
+
+  const categoryItems = (SystemConfig.categories || [])
+    .map(c => ({ value: c.id, label: c.name }))
+
+  const storageItems = (SystemConfig.storageOptions || [])
+    .map(t => ({ value: t.code, label: `${t.label} (${t.range})` }))
+
+  const uomItems = (SystemConfig.units || [])
+    .map(u => ({ value: u.id, label: u.name }))
 
   // Display the system config data on the overlay
-  function displaySystemConfigData(SystemConfigArr, SystemConfigListElem){
+  function displaySystemConfigData(SystemConfigArr, SystemConfigListElem) {
     SystemConfigListElem.innerHTML = ``
     const configListFrag = document.createDocumentFragment()
     SystemConfigArr.forEach(cat => {
@@ -357,6 +367,15 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('openAddItemBtn')
     .addEventListener('click', () => {
       handleOverlay(addItemOverlayElem)
+
+      const selectCategoryInputElem = document.getElementById('addItemCategoryInput')
+      setSelectOptions(selectCategoryInputElem, categoryItems)
+      const selectStorageTempInputElem = document.getElementById('addItemStorageTempInput')
+      setSelectOptions(selectStorageTempInputElem, storageItems)
+      const bulkUomInputElem = document.getElementById('addItemBulkUomInput')
+      setSelectOptions(bulkUomInputElem, uomItems)
+      const sellingUomInputElem = document.getElementById('addItemSellingUomInput')
+      setSelectOptions(sellingUomInputElem, uomItems)
     })
 
   // Get an item
@@ -470,16 +489,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const editCategorySelect = document.getElementById('edit-category')
       if (editCategorySelect) {
-        const categoryItems = (SystemConfig.categories || [])
-          .map(c => ({ value: c.id, label: c.name }))
         setSelectOptions(editCategorySelect, categoryItems)
         selectByLabel(editCategorySelect, categoryItems, item.category)
       }
 
       const editTempSelect = document.getElementById('edit-temp')
       if (editTempSelect) {
-        const storageItems = (SystemConfig.storageOptions || [])
-          .map(t => ({ value: t.code, label: `${t.label} (${t.range})` }))
         setSelectOptions(editTempSelect, storageItems)
         // Inventory items store the storage code directly (C/R/A/F)
         if (item.storage) editTempSelect.value = item.storage
@@ -488,8 +503,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const editBulkSelect = document.getElementById('edit-bulk')
       if (editBulkSelect) {
         // Bulk Unit and Selling Unit share the same UOM options
-        const uomItems = (SystemConfig.units || [])
-          .map(u => ({ value: u.id, label: u.name }))
         setSelectOptions(editBulkSelect, uomItems)
         selectByLabel(editBulkSelect, uomItems, item.bulkUnit)
       }
@@ -497,8 +510,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const editSellingSelect = document.getElementById('edit-selling')
       if (editSellingSelect) {
         // Bulk Unit and Selling Unit share the same UOM options
-        const uomItems = (SystemConfig.units || [])
-          .map(u => ({ value: u.id, label: u.name }))
         setSelectOptions(editSellingSelect, uomItems)
         selectByLabel(editSellingSelect, uomItems, item.sellingUnit)
       }
