@@ -74,118 +74,22 @@
               <div class="modal-header order-detail-header">
                 <div class="header-main">
                   <div class="id-badge-group">
-                    <span class="req-id-view-overlay">REQ-8821</span>
+                    <span class="req-id-view-overlay" id="reqIdOverlay"></span>
                     <i class="fas fa-arrow-right"></i>
-                    <span class="ord-id-view-overlay">ORD-4402</span>
+                    <span class="ord-id-view-overlay" id="ordIdOverlay"></span>
                   </div>
-                  <h2>St. Mary's General Hospital</h2>
+                  <h2 id="hosNameOv"></h2>
                   <div class="header-meta">
-                    <span><i class="far fa-calendar-alt"></i> Requested: <strong>Feb 24, 2026</strong></span>
-                    <span><i class="far fa-credit-card"></i> Paid: <strong>Feb 25, 2026</strong></span>
-                    <span><i class="fas fa-box"></i> <strong>2 Packages</strong> | <strong>4 Items</strong> Total</span>
+                    <span><i class="far fa-calendar-alt"></i> Requested: <strong id="reqDateOv"></strong></span>
+                    <span><i class="far fa-credit-card"></i> Paid: <strong id="payDateOv"></strong></span>
+                    <span><i class="fas fa-box"></i> <strong id="pkgsCount"></strong> | <strong id="itemsCount"></strong> Total</span>
                   </div>
                 </div>
                 <button class="modal-close-btn js-btn-close-overlay">&times;</button>
               </div>
 
               <div class="ord-details-modal-body">
-                <div class="package-list">
-
-                  <div class="package-card">
-                    <div class="package-card-header">
-                      <div>
-                        <span class="label">Package ID</span>
-                        <strong class="view-pkg-id">PKG-4402-A</strong>
-                      </div>
-                      <div>
-                        <span class="label">Packed By:</span>
-                        <strong class="clerk-name">Sam</strong>
-                      </div>
-                      <div>
-                        <span class="label">Delivered By:</span>
-                        <strong class="clerk-name">Sam</strong>
-                      </div>
-                      <div class="pkg-type">
-                        <span class="tag tag-ref"><i class="fas fa-snowflake"></i> Refrigerated (2-8°C)</span>
-                      </div>
-                      <div class="pkg-status">
-                        <span class="status-pill status-dispatched">Dispatched</span>
-                      </div>
-                    </div>
-
-                    <div class="package-items">
-                      <table class="item-table">
-                        <thead>
-                          <tr>
-                            <th>Item Description</th>
-                            <th>Quantity</th>
-                            <th>UOM</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Insulin Glargine (Lantus)</td>
-                            <td>10</td>
-                            <td>Vial</td>
-                          </tr>
-                          <tr>
-                            <td>Oxytocin 10IU Injection</td>
-                            <td>50</td>
-                            <td>Ampoule</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                  <div class="package-card">
-                    <div class="package-card-header">
-                      <div>
-                        <span class="label">Package ID</span>
-                        <strong class="view-pkg-id">PKG-4402-B</strong>
-                      </div>
-                      <div>
-                        <span class="label">Packed By:</span>
-                        <strong class="clerk-name">Sam</strong>
-                      </div>
-                      <div>
-                        <span class="label">Delivered By:</span>
-                        <strong class="clerk-name">Sam</strong>
-                      </div>
-                      <div class="pkg-type">
-                        <span class="tag tag-room"><i class="fas fa-warehouse"></i> Common Room Temp</span>
-                      </div>
-                      <div class="pkg-status">
-                        <span class="status-pill status-packed">Packed</span>
-                      </div>
-                    </div>
-
-                    <div class="package-items">
-                      <table class="item-table">
-                        <thead>
-                          <tr>
-                            <th>Item Description</th>
-                            <th>Quantity</th>
-                            <th>UOM</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Amoxicillin 500mg Capsules</td>
-                            <td>200</td>
-                            <td>Strip</td>
-                          </tr>
-                          <tr>
-                            <td>Paracetamol 500mg</td>
-                            <td>500</td>
-                            <td>Strip</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                </div>
+                <div class="package-list" id="pkgListOverlay"></div>
               </div>
             </div>
           </div>

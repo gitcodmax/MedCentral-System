@@ -196,6 +196,16 @@
   border: 1px solid var(--color-secondary);
 }
 
+.rejected-ord-btn{
+  background: red;
+  color: white;
+  text-transform: uppercase;
+  padding: 2px;
+  border-radius: var(--radius);
+  font-size: 0.6rem;
+  font-weight: bold;
+}
+
 /* Wide Modal Utility */
 .detail-modal-wide {
   max-width: 850px;
@@ -260,6 +270,30 @@
 .header-meta i {
   margin-right: 5px;
   color: var(--color-secondary);
+}
+
+.pkg-status{
+  text-transform: capitalize;
+  color: white;
+}
+
+.pkg-type{
+  border-bottom: 2px solid var(--color-quarantine);
+  padding: 2px;
+  border-radius: var(--radius);
+}
+
+.storage-temp i{
+  border: 1px solid;
+  border-radius: 50%;
+  padding: 3px;
+  color: var(--color-secondary);
+}
+
+.storage-temp {
+  font-family: monospace;
+  font-weight: 700;
+  color: var(--color-primary);
 }
 
 /* Package Cards */
@@ -333,8 +367,8 @@
 .item-table td {
   padding: 0.75rem;
   border-bottom: 1px solid #f8fafc;
-  color: #1e293b;
   font-weight: 500;
+  color: black;
 }
 
 .item-table tr:last-child td {
@@ -342,36 +376,41 @@
 }
 
 /* Status Specific Accents */
+.status-pending{
+  background: var(--pending);
+  color: black;
+}
+
+.status-approved{
+  background: var(--color-primary);
+}
+
 .status-processing {
-  background: #e0f2fe;
-  color: #0369a1;
+  background: var(--processing);
 }
 
 .status-packed {
   background: var(--packed);
-  color: white;
 }
 
 .status-dispatched {
   background: var(--dispatched);
-  ;
-  color: white;
 }
 
 .status-delayed {
-  background: #fee2e2;
-  color: #991b1b;
+  background: var(--delayed);
 }
 
-.status-delivered-issues {
-  background: #ffedd5;
-  color: #9a3412;
-  border: 1px solid #fdba74;
+.status-delivered{
+  background: var(--color-secondary);
+}
+
+.status-delivered-with-issues {
+  background: var(--deliveredIssue);
 }
 
 .status-completed {
-  background: #1e293b;
-  color: #ffffff;
+  background: var(--completed);
 }
 
 /* Mobile Responsive */

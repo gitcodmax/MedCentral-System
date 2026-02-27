@@ -377,6 +377,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
+  const StorageConfig = {
+    "A": {
+      code: "A",
+      label: "Ambient",
+      cssClass: "fa-solid fa-house-medical-circle-check"
+    },
+    "C": {
+      code: "C",
+      label: "Common Room Temp",
+      cssClass: "fas fa-thermometer-half"
+    },
+    "R": {
+      code: "R",
+      label: "Refrigerated",
+      cssClass: "fas fa-snowflake"
+    },
+    "F": {
+      code: "F",
+      label: "Frozen",
+      cssClass: "fas fa-icicles"
+    }
+  };
+
   const ordersTbodyElem = document.getElementById('ordersTbody')
 
   const ordersTableFrag = document.createDocumentFragment()
@@ -386,7 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <td>
         <div class="id-stack">
           <span class="req-id">${ord.requestId}</span>
-          <span class="ord-id">${ord.orderId}</span>
+          <span class="ord-id">${!ord.orderId ? '---' : ord.orderId}</span>
         </div>
       </td>
       <td class="hospital-name">${ord.hospitalName}</td>
@@ -400,7 +423,12 @@ document.addEventListener('DOMContentLoaded', () => {
       <td>${displayPackages(ord.requestId, 'completed')}</td>
       <td>
         <div class="action-btns">
-          <button class="btn-icon btn-view js-view-ord-details-btn" title="View Details">View</button>
+          <button class="
+            ${ord.isRejected ? "rejected-ord-btn" : 'btn-icon btn-view js-view-ord-details-btn'}" 
+            data-req-id=${ord.requestId} title="${ord.isRejected ? "REJECTED" : 'View Details'}" 
+            ${ord.isRejected ? "disabled" : ''}>
+            ${ord.isRejected ? "REJECTED" : 'View'}
+          </button>
         </div>
       </td>
     `
@@ -434,6 +462,11 @@ document.addEventListener('DOMContentLoaded', () => {
     return htmlArr.join('')
   }
 
+  // Helper to get storage details safely
+  function getStorageDetails(code) {
+    return StorageConfig[code] || { label: "Unknown", cssClass: "tag-default", icon: "fas fa-question" };
+  }
+
   // Show the order details
   ordersTbodyElem.addEventListener('click', (e) => {
     const btn = e.target.closest('button')
@@ -442,6 +475,87 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btn.classList.contains('js-view-ord-details-btn')) {
       const orderDetailsOverlayElem = document.getElementById('orderDetailsOverlay')
       handleOverlay(orderDetailsOverlayElem)
+
+      const pkgListOverlayElem = document.getElementById('pkgListOverlay')
+      pkgListOverlayElem.innerHTML = ``
+
+      const ordData = OrdersMockData.find(ord => ord.requestId === btn.dataset.reqId)
+      document.getElementById('reqIdOverlay')
+        .textContent = ordData.requestId
+      document.getElementById('ordIdOverlay')
+        .textContent = `${!ordData.orderId ? '---' : ordData.orderId}`
+      document.getElementById('hosNameOv')
+        .textContent = ordData.hospitalName
+      document.getElementById('reqDateOv')
+        .textContent = ordData.requestDate
+      document.getElementById('payDateOv')
+        .textContent = ordData.paymentDate
+      document.getElementById('pkgsCount')
+        .textContent = `${ordData.packages.length} 
+          Package${ordData.packages.length > 1 ? 's' : ''}`
+      document.getElementById('itemsCount')
+        .textContent = `${ordData.totalItems} 
+        Item${ordData.totalItems > 1 ? 's' : ''}`
+
+      const pkgsListFrag = document.createDocumentFragment()
+      ordData.packages.forEach(pkg => {
+        const storageTempDetails = getStorageDetails(pkg.storageCode)
+        const divElem = document.createElement('div')
+        divElem.className = `package-card`
+
+        // Build item rows from this package's items
+        const itemRowsHtml = pkg.items.map(item => `
+          <tr>
+            <td>${item.name}</td>
+            <td>${item.qty}</td>
+            <td>${item.uom}</td>
+          </tr>
+        `).join('')
+
+        divElem.innerHTML = `
+          <div class="package-card-header">
+            <div>
+              <span class="label">Package ID</span>
+              <strong class="view-pkg-id">${pkg.packageId}</strong>
+            </div>
+            <div>
+              <span class="label">Packed By:</span>
+              <strong class="clerk-name">${!pkg.assignedClerk ? '---' : pkg.assignedClerk}</strong>
+            </div>
+            <div>
+              <span class="label">Delivered By:</span>
+              <strong class="clerk-name">${!pkg.assignedDriver ? '---' : pkg.assignedDriver}</strong>
+            </div>
+            <div class="pkg-type">
+              <span class="storage-temp"><i class="${storageTempDetails.cssClass}"></i> 
+                ${storageTempDetails.label}
+              </span>
+            </div>
+            <div class="pkg-status">
+              <span class="status-pill status-${pkg.status.toLowerCase()}">${pkg.status.replaceAll('-', ' ')}</span>
+            </div>
+          </div>
+
+          <div class="package-items">
+            <table class="item-table">
+              <thead>
+                <tr>
+                  <th>Item Description</th>
+                  <th>Quantity</th>
+                  <th>UOM</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${itemRowsHtml}
+              </tbody>
+            </table>
+          </div>
+        `
+
+        pkgsListFrag.appendChild(divElem)
+      })
+
+      pkgListOverlayElem.appendChild(pkgsListFrag)
     }
   })
 })
