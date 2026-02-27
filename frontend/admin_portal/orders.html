@@ -23,33 +23,47 @@
       <header class="top-header" id="topHeader"></header>
 
       <main class="content">
-        <section class="filter-section">
-          <div class="filter-grid">
-            <div class="search-box">
-              <i class="fas fa-search"></i>
-              <input type="text" placeholder="Search by Reference ID or Hospital Name">
+        <section class="filter-container">
+          <div class="filter-main-row">
+            <div class="filter-item search-grow">
+              <label class="filter-label">Search Orders</label>
+              <div class="search-input-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" id="masterSearch" placeholder="Search ID or Hospital...">
+              </div>
             </div>
 
-            <div class="filter-group">
-              <input type="date" class="input-field" title="Request Date">
+            <div class="filter-group-wrapper">
+              <label class="filter-label">Request Date Range</label>
+              <div class="date-range-inputs">
+                <div class="date-input-field">
+                  <span>From</span>
+                  <input type="date" id="dateFrom" class="filter-input">
+                </div>
+                <div class="date-input-field">
+                  <span>To</span>
+                  <input type="date" id="dateTo" class="filter-input">
+                </div>
+              </div>
+            </div>
 
-              <select class="input-field">
-                <option value="">Completion: All</option>
-                <option value="full">Completed</option>
-                <option value="partial">Partially Completed</option>
-                <option value="none">Not Completed</option>
-              </select>
-
-              <select class="input-field">
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-              </select>
-
-              <label class="toggle-container">
-                <input type="checkbox">
-                <span class="toggle-label">Show Rejected</span>
+            <div class="filter-item flex-center">
+              <label class="checkbox-container">
+                <input type="checkbox" id="rejectedToggle">
+                <span class="checkmark"></span>
+                Show Only Rejected
               </label>
             </div>
+
+            <div class="filter-actions">
+              <button class="btn-clear">
+                <i class="fas fa-undo"></i> Clear Filters
+              </button>
+            </div>
+          </div>
+
+          <div class="filter-results-info">
+            <p>Showing <span id="resultCount">10</span> results found in the system</p>
           </div>
         </section>
 
@@ -82,7 +96,8 @@
                   <div class="header-meta">
                     <span><i class="far fa-calendar-alt"></i> Requested: <strong id="reqDateOv"></strong></span>
                     <span><i class="far fa-credit-card"></i> Paid: <strong id="payDateOv"></strong></span>
-                    <span><i class="fas fa-box"></i> <strong id="pkgsCount"></strong> | <strong id="itemsCount"></strong> Total</span>
+                    <span><i class="fas fa-box"></i> <strong id="pkgsCount"></strong> | <strong
+                        id="itemsCount"></strong> Total</span>
                   </div>
                 </div>
                 <button class="modal-close-btn js-btn-close-overlay">&times;</button>
