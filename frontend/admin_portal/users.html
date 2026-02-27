@@ -23,8 +23,9 @@
 
             <main class="page-content">
                 <div class="header-actions js-header-actions">
-                    <button class="btn header-btn" id="createUserBtn"><i class="fas fa-user-plus"></i> Create User</button>
-                    <button class="btn header-btn"><i class="fas fa-truck-pickup"></i> Add Driver</button>
+                    <button class="btn header-btn" id="createUserBtn"><i class="fas fa-user-plus"></i> Create
+                        User</button>
+                    <button class="btn header-btn" id="addDriverBtn"><i class="fas fa-truck-pickup"></i> Add Driver</button>
                 </div>
 
                 <div class="card" id="sysUsersCard">
@@ -131,7 +132,8 @@
                                 <div class="form-group">
                                     <label>Password</label>
                                     <div class="password-wrapper">
-                                        <input type="password" id="sysUserPassword" class="form-control" placeholder="••••••••" required>
+                                        <input type="password" id="sysUserPassword" class="form-control"
+                                            placeholder="••••••••" required>
                                         <button type="button" class="password-toggle">
                                             <i class="fas fa-eye"></i>
                                         </button>
@@ -146,6 +148,89 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn close-overlay-btn js-btn-close-overlay">Cancel</button>
                                 <button type="submit" class="btn save-btn">Save User</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="modal-overlay" id="addDriverOverlay">
+                    <div class="add-driver-modal-content">
+                        <div class="modal-header">
+                            <h2>Add New Driver</h2>
+                            <p class="modal-subtitle">Register a delivery partner and assign preferred zones.</p>
+                        </div>
+
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="driverFirstName">First Name</label>
+                                    <input type="text" id="driverFirstName" class="form-control" placeholder="e.g. John"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="driverLastName">Last Name</label>
+                                    <input type="text" id="driverLastName" class="form-control" placeholder="e.g. Doe"
+                                        required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-phone"></i>
+                                        <input type="tel" id="phone" class="form-control" placeholder="+254..."
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vehicleNo">Vehicle Number</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-truck"></i>
+                                        <input type="text" id="vehicleNo" class="form-control" placeholder="KXX 000X"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section-title">Logistics Preferences</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="county">Preferred County</label>
+                                    <select id="county" class="form-control" required>
+                                        <option value="" disabled selected>Select County</option>
+                                        <option value="nairobi">Nairobi</option>
+                                        <option value="mombasa">Mombasa</option>
+                                        <option value="kisumu">Kisumu</option>
+                                        <option value="nakuru">Nakuru</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="zone">Preferred Zone</label>
+                                    <select id="zone" class="form-control" required>
+                                        <option value="" disabled selected>Select Zone</option>
+                                        <option value="westlands">Westlands</option>
+                                        <option value="nyali">Nyali</option>
+                                        <option value="central">Central Business District</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group inline-flex status-row">
+                                <div class="status-info">
+                                    <label>Active for Assignments</label>
+                                    <small>Allow this driver to be assigned to new delivery tasks immediately.</small>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button"
+                                    class="btn close-overlay-btn js-btn-close-overlay">Discard</button>
+                                <button type="submit" class="btn save-btn">Register Driver</button>
                             </div>
                         </form>
                     </div>

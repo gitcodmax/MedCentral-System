@@ -51,10 +51,16 @@ document.addEventListener('DOMContentLoaded', () => {
         iconElem.classList.toggle('fa-eye-slash');
       });
 
-      // Container to create a new user
+      // Overlay to create a new user
       if (e.target.id === 'createUserBtn') {
         const createUserOverlayElem = document.getElementById('createUserOverlay')   
         handleOverlay(createUserOverlayElem)
+      }
+
+      // Overlay to add a new driver
+      if(e.target.id === 'addDriverBtn'){
+        const addDriverOverlayElem = document.getElementById('addDriverOverlay')
+        handleOverlay(addDriverOverlayElem)
       }
     })
 })

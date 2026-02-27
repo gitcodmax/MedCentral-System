@@ -2,9 +2,6 @@
 .page-content {
   max-width: 1400px;
   margin: 0 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .header-section {
@@ -15,6 +12,8 @@
 
 .header-actions{
   margin: 10px;
+  display: flex;
+  justify-content: center;
 }
 
 /*Navigation Tabs*/
@@ -184,7 +183,7 @@ tr:hover {
 }
 
 .btn-status-active:hover i::before {
-  content: "\f023"; /* Change to Lock icon on hover to show action */
+  content: "\f023";
 }
 
 /* State: Is currently Inactive -> Action: Activate (Show Gray/Lock) */
@@ -201,11 +200,11 @@ tr:hover {
 }
 
 .btn-status-inactive:hover i::before {
-  content: "\f09c"; /* Change to Unlock icon on hover */
+  content: "\f09c";
 }
 
 /*Modal Layout Styling*/
-.create-user-modal-content {
+.create-user-modal-content, .add-driver-modal-content {
   background: white;
   width: 95%;
   max-width: 550px;
@@ -314,6 +313,78 @@ tr:hover {
   justify-content: flex-end;
   gap: 1rem;
   margin-top: 2rem;
+}
+
+/*Driver Modal Specific Enhancements*/
+.modal-header h2{
+  margin-bottom: 5px;
+}
+.modal-subtitle {
+  font-size: 0.85rem;
+  color: var(--color-quarantine);
+  margin-bottom: 8px;
+}
+
+.form-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin: 1.5rem 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f1f5f9;
+  letter-spacing: 0.05em;
+}
+
+/* Input Icons */
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon i {
+  position: absolute;
+  left: 12px;
+  color: var(--color-quarantine);
+  font-size: 0.85rem;
+}
+
+.input-with-icon .form-control {
+  padding-left: 2.5rem;
+}
+
+/* Status Row Styling */
+.status-row {
+  background: #f8fafc;
+  padding: 1rem;
+  border-radius: 8px;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.status-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.status-info label {
+  margin-bottom: 0;
+}
+
+.status-info small {
+  color: var(--color-quarantine);
+  font-size: 0.75rem;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1;
 }
 
 /*Responsive Adjustments*/
