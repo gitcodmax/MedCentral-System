@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management | MedCentral Admin</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/global.css">
+    <link rel="stylesheet" href="/admin_portal/admin_portal_global.css">
+    <link rel="stylesheet" href="/admin_portal/users.css">
+</head>
+<body>
+
+    <div class="page-container">
+        <header class="header-section">
+            <h1>User Management</h1>
+            <div class="header-actions">
+                <button class="btn header-btn"><i class="fas fa-user-plus"></i> Create User</button>
+                <button class="btn header-btn"><i class="fas fa-truck-pickup"></i> Add Driver</button>
+            </div>
+        </header>
+
+        <nav class="tabs-nav">
+            <a href="#" class="tab-link active">System Users</a>
+            <a href="#" class="tab-link">Drivers</a>
+        </nav>
+
+        <div class="card">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong class="full-name">Sarah Connor</strong></td>
+                            <td>sarah.c@warehouse.com</td>
+                            <td><span class="user-badge role-manager">Warehouse Manager</span></td>
+                            <td><span class="user-badge status-active">Active</span></td>
+                            <td>Feb 27, 2026, 08:30</td>
+                            <td>
+                                <div class="action-group">
+                                    <button class="btn-icon" title="Edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon" title="Reset Password"><i class="fas fa-key"></i></button>
+                                    <button class="btn-icon btn-status-active" title="Deactivate User">
+                                        <i class="fas fa-unlock"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <br><br>
+
+        <div class="card">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Phone Number</th>
+                            <th>Vehicle No.</th>
+                            <th>Preferred County</th>
+                            <th>Preferred Zone</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong class="full-name">John Doe</strong></td>
+                            <td>+254 712 345 678</td>
+                            <td>KDB 123X</td>
+                            <td>Nairobi</td>
+                            <td>Westlands</td>
+                            <td><span class="user-badge status-active">Active</span></td>
+                            <td>
+                                <div class="action-group">
+                                    <button class="btn-icon" title="Edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon btn-status-inactive" title="Activate User">
+                                        <i class="fas fa-lock"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Create System User</h2>
+            </div>
+            <form>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" class="form-control" placeholder="e.g. Jane Doe">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" class="form-control" placeholder="jane@warehouse

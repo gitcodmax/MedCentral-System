@@ -1,0 +1,286 @@
+/*Layout Components*/
+.page-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header-section h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+/*Navigation Tabs*/
+.tabs-nav {
+  display: flex;
+  gap: 2.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+}
+
+.tab-link {
+  padding: 1rem 0;
+  font-weight: 600;
+  color: var(--color-quarantine);
+  text-decoration: none;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.tab-link.active {
+  color: var(--color-primary);
+}
+
+.tab-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--color-primary);
+}
+
+/*Content Card & Table*/
+.card {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+th {
+  padding: 1rem 1.5rem;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.9rem;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover {
+  background: #fbfcfe;
+}
+
+.full-name{
+  color: var(--color-secondary);
+}
+
+/*Buttons & Inputs*/
+.btn {
+  padding: 0.65rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.header-btn{
+  background: white;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+
+.header-btn:hover{
+  background: var(--color-secondary);
+  color: white;
+  border: var(--color-secondary);
+}
+
+.btn-icon {
+  background: none;
+  color: var(--color-primary);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid var(--color-primary);
+}
+
+.btn-icon:hover {
+  color: white;
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+}
+
+/*Badges*/
+.user-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.role-manager {
+  background: #e0f2fe;
+  color: var(--color-primary);
+}
+
+.role-clerk {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.status-active {
+  background: #dcfce7;
+  color: var(--color-secondary);
+}
+
+.status-inactive {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+/* State: Is currently Active -> Action: Deactivate (Show Red/Lock) */
+.btn-status-active {
+  color: var(--color-secondary);
+  border-color: #dcfce7;
+  background-color: #f0fdf4;
+  border: 1px solid;
+}
+
+.btn-status-active:hover {
+  color: red;
+  border-color: #fee2e2;
+  background-color: #fef2f2;
+}
+
+.btn-status-active:hover i::before {
+  content: "\f023"; /* Change to Lock icon on hover to show action */
+}
+
+/* State: Is currently Inactive -> Action: Activate (Show Gray/Lock) */
+.btn-status-inactive {
+  color: red;
+  background-color: #f1f5f9;
+  border: 1px solid red;
+}
+
+.btn-status-inactive:hover {
+  color: var(--color-secondary);
+  border-color: #dcfce7;
+  background-color: #f0fdf4;
+}
+
+.btn-status-inactive:hover i::before {
+  content: "\f09c"; /* Change to Unlock icon on hover */
+}
+
+/*Modal Layout Styling*/
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.4);
+  display: none;
+  /* Toggle to flex with JS */
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background: white;
+  width: 95%;
+  max-width: 550px;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.inline-flex {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/*Responsive Adjustments*/
+@media (max-width: 768px) {
+  .header-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .header-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
