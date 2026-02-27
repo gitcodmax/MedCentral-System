@@ -1,4 +1,5 @@
-import { renderSidebar } from "./sidebar.js"
+import { renderSidebar } from "./sidebar.js";
+import {handleOverlay} from "/global.js";
 
 document.addEventListener('DOMContentLoaded', () => {
   renderSidebar()
@@ -6,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     .innerHTML = `
       <div class="header-section">
         <h2>User Management</h2>
-        <div class="header-actions">
-            <button class="btn header-btn"><i class="fas fa-user-plus"></i> Create User</button>
+        <div class="header-actions js-header-actions">
+            <button class="btn header-btn" id="createUserBtn"><i class="fas fa-user-plus"></i> Create User</button>
             <button class="btn header-btn"><i class="fas fa-truck-pickup"></i> Add Driver</button>
         </div>
       </div>
@@ -33,6 +34,26 @@ document.addEventListener('DOMContentLoaded', () => {
         e.target.classList.add('active')
         sysUsersCardElem.classList.remove('hidden')
         driversCardElem.classList.add('hidden')
+      }
+    })
+
+  document.querySelector('.js-header-actions')
+    .addEventListener('click', (e) => {
+      // Toggle logic for the password "Eye" icon
+      const toggleBtnElem = document.querySelector('.password-toggle');
+      const passwordInputElem = document.getElementById('sysUserPassword');
+      const iconElem = toggleBtnElem.querySelector('i');
+
+      toggleBtnElem.addEventListener('click', () => {
+        const isPassword = passwordInputElem.type === 'password';
+        passwordInputElem.type = isPassword ? 'text' : 'password';
+        iconElem.classList.toggle('fa-eye');
+        iconElem.classList.toggle('fa-eye-slash');
+      });
+
+      if (e.target.id === 'createUserBtn') {
+        const createUserOverlayElem = document.getElementById('createUserOverlay')   
+        handleOverlay(createUserOverlayElem)
       }
     })
 })

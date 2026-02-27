@@ -203,21 +203,7 @@ tr:hover {
 }
 
 /*Modal Layout Styling*/
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(15, 23, 42, 0.4);
-  display: none;
-  /* Toggle to flex with JS */
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-}
-
-.modal {
+.create-user-modal-content {
   background: white;
   width: 95%;
   max-width: 550px;
@@ -242,6 +228,16 @@ tr:hover {
   margin-bottom: 0.5rem;
 }
 
+.form-group input{
+  border: 1px solid var(--color-quarantine);
+}
+
+.form-group input:focus{
+  border-color: var(--color-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
 .form-control {
   width: 100%;
   padding: 0.75rem;
@@ -260,6 +256,55 @@ tr:hover {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+/*Password Wrapper Logic*/
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper .form-control {
+  padding-right: 2.5rem;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.password-toggle:hover {
+  color: var(--primary);
+}
+
+.close-overlay-btn{
+  border: 1px solid red;
+  color: red;
+  background: white;
+}
+.close-overlay-btn:hover{
+  background: red;
+  color: white;
+}
+
+.save-btn{
+  background: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  color: white;
+}
+.save-btn:hover{
+  background: white;
+  color: var(--color-primary);
 }
 
 .modal-footer {
