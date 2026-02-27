@@ -7,10 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
     .innerHTML = `
       <div class="header-section">
         <h2>User Management</h2>
-        <div class="header-actions js-header-actions">
-            <button class="btn header-btn" id="createUserBtn"><i class="fas fa-user-plus"></i> Create User</button>
-            <button class="btn header-btn"><i class="fas fa-truck-pickup"></i> Add Driver</button>
-        </div>
+        <nav class="tabs-nav" id="tabsNav">
+            <a href="#" class="tab-link active sys-users-link">System Users</a>
+            <a href="#" class="tab-link drivers-link">Drivers</a>
+        </nav>
       </div>
     `
 
@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         iconElem.classList.toggle('fa-eye-slash');
       });
 
+      // Container to create a new user
       if (e.target.id === 'createUserBtn') {
         const createUserOverlayElem = document.getElementById('createUserOverlay')   
         handleOverlay(createUserOverlayElem)
