@@ -51,7 +51,8 @@
                                     <td>Feb 27, 2026, 08:30</td>
                                     <td>
                                         <div class="action-group">
-                                            <button class="btn-icon edit-user-details-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon edit-user-details-btn" title="Edit"><i
+                                                    class="fas fa-edit"></i></button>
                                             <button class="btn-icon" title="Reset Password"><i
                                                     class="fas fa-key"></i></button>
                                             <button class="btn-icon btn-status-active" title="Deactivate User">
@@ -68,7 +69,8 @@
                                     <td>Feb 27, 2026, 08:30</td>
                                     <td>
                                         <div class="action-group">
-                                            <button class="btn-icon edit-user-details-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon edit-user-details-btn" title="Edit"><i
+                                                    class="fas fa-edit"></i></button>
                                             <button class="btn-icon" title="Reset Password"><i
                                                     class="fas fa-key"></i></button>
                                             <button class="btn-icon btn-status-active" title="Deactivate User">
@@ -85,7 +87,8 @@
                                     <td>Feb 27, 2026, 08:30</td>
                                     <td>
                                         <div class="action-group">
-                                            <button class="btn-icon edit-user-details-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon edit-user-details-btn" title="Edit"><i
+                                                    class="fas fa-edit"></i></button>
                                             <button class="btn-icon" title="Reset Password"><i
                                                     class="fas fa-key"></i></button>
                                             <button class="btn-icon btn-status-active" title="Deactivate User">
@@ -113,7 +116,7 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="driversTbody">
                                 <tr>
                                     <td><strong class="full-name">John Doe</strong></td>
                                     <td>+254 712 345 678</td>
@@ -123,7 +126,39 @@
                                     <td><span class="user-badge status-active">Active</span></td>
                                     <td>
                                         <div class="action-group">
-                                            <button class="btn-icon" title="Edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon edit-driver-details-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon btn-status-inactive" title="Activate User">
+                                                <i class="fas fa-lock"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong class="full-name">John Doe</strong></td>
+                                    <td>+254 712 345 678</td>
+                                    <td>KDB 123X</td>
+                                    <td>Nairobi</td>
+                                    <td>Westlands</td>
+                                    <td><span class="user-badge status-active">Active</span></td>
+                                    <td>
+                                        <div class="action-group">
+                                            <button class="btn-icon edit-driver-details-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon btn-status-inactive" title="Activate User">
+                                                <i class="fas fa-lock"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong class="full-name">John Doe</strong></td>
+                                    <td>+254 712 345 678</td>
+                                    <td>KDB 123X</td>
+                                    <td>Nairobi</td>
+                                    <td>Westlands</td>
+                                    <td><span class="user-badge status-active">Active</span></td>
+                                    <td>
+                                        <div class="action-group">
+                                            <button class="btn-icon edit-driver-details-btn" title="Edit"><i class="fas fa-edit"></i></button>
                                             <button class="btn-icon btn-status-inactive" title="Activate User">
                                                 <i class="fas fa-lock"></i>
                                             </button>
@@ -275,7 +310,8 @@
                     <div class="create-user-modal-content">
                         <div class="modal-header">
                             <h2>Edit System User</h2>
-                            <p class="edit-header-p">Modifying details for <span class="edit-last-name">Connor</span></p>
+                            <p class="edit-header-p">Modifying details for <span class="edit-last-name">Connor</span>
+                            </p>
                         </div>
 
                         <form id="editUserForm">
@@ -309,6 +345,76 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn close-overlay-btn js-btn-close-overlay">Cancel</button>
                                 <button type="submit" class="btn save-btn">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="modal-overlay" id="editDriverOverlay">
+                    <div class="add-driver-modal-content">
+                        <div class="modal-header">
+                            <h2>Edit Driver Details</h2>
+                            <p class="modal-subtitle">Update contact information or modify geographic service zones.</p>
+                        </div>
+
+                        <form id="editDriverForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="editDriverFirstName">First Name</label>
+                                    <input type="text" id="editDriverFirstName" class="form-control" value="John"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editDriverLastName">Last Name</label>
+                                    <input type="text" id="editDriverLastName" class="form-control" value="Doe"
+                                        required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="editPhone">Phone Number</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-phone"></i>
+                                        <input type="tel" id="editPhone" class="form-control" value="+254 712 345 678"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editVehicleNo">Vehicle Number</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-truck"></i>
+                                        <input type="text" id="editVehicleNo" class="form-control" value="KDB 123X"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section-title">Logistics Preferences</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="editCounty">Preferred County</label>
+                                    <select id="editCounty" class="form-control" required>
+                                        <option value="nairobi" selected>Nairobi</option>
+                                        <option value="mombasa">Mombasa</option>
+                                        <option value="kisumu">Kisumu</option>
+                                        <option value="nakuru">Nakuru</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editZone">Preferred Zone</label>
+                                    <select id="editZone" class="form-control" required>
+                                        <option value="westlands" selected>Westlands</option>
+                                        <option value="nyali">Nyali</option>
+                                        <option value="central">Central Business District</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn close-overlay-btn js-btn-close-overlay">Cancel
+                                    Changes</button>
+                                <button type="submit" class="btn save-btn">Update Driver</button>
                             </div>
                         </form>
                     </div>

@@ -65,14 +65,28 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
 
+  // System User action buttons(Edit, change password, activate, deactivate)
   document.getElementById('sysUsersTbody')
     .addEventListener('click', (e) => {
       const btn = e.target.closest('button')
       if(!btn) return;
 
+      // Edit user details button
       if(btn.classList.contains('edit-user-details-btn')){
         const editUserOverlayElem = document.getElementById('editUserOverlay')
         handleOverlay(editUserOverlayElem)
+      }
+    })
+
+  // Driver action buttons(Edit, activate, deactivate)
+  document.getElementById('driversTbody')
+    .addEventListener('click', (e) => {
+      const btn = e.target.closest('button')
+      if(!btn) return;
+
+      if(btn.classList.contains('edit-driver-details-btn')){
+        const editDriverOverlayElem = document.getElementById('editDriverOverlay')
+        handleOverlay(editDriverOverlayElem)
       }
     })
 })
