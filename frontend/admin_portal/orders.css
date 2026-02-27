@@ -133,9 +133,8 @@
   max-width: 200px;
 }
 
-.items-display small {
-  display: block;
-  color: var(--color-quarantine);
+.items-display {
+  font-weight: 600;
 }
 
 .grey-badge {
