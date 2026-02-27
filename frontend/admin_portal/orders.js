@@ -1,5 +1,5 @@
 import { renderSidebar } from "./sidebar.js"
-import { handleOverlay } from "../global.js"
+import { handleOverlay, displayNoMatchFound } from "../global.js"
 
 document.addEventListener('DOMContentLoaded', () => {
   renderSidebar()
@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <h2>Order & Request History</h2>
       </div> 
     `
+  displayNoMatchFound()
 
   /**
    * MedCentral Warehouse - Order & Request Mock Data (Balanced Distribution)
@@ -402,10 +403,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const ordersTbodyElem = document.getElementById('ordersTbody')
 
-  const ordersTableFrag = document.createDocumentFragment()
-  OrdersMockData.forEach(ord => {
-    const tblRow = document.createElement('tr')
-    tblRow.innerHTML = `
+  function displayAllOrders(ordersData) {
+    ordersTbodyElem.innerHTML = ``
+    const ordersTableFrag = document.createDocumentFragment()
+    ordersData.forEach(ord => {
+      const tblRow = document.createElement('tr')
+      tblRow.innerHTML = `
       <td>
         <div class="id-stack">
           <span class="req-id">${ord.requestId}</span>
@@ -433,10 +436,103 @@ document.addEventListener('DOMContentLoaded', () => {
       </td>
     `
 
-    ordersTableFrag.appendChild(tblRow)
-  })
+      ordersTableFrag.appendChild(tblRow)
+    })
+    ordersTbodyElem.appendChild(ordersTableFrag)
+  }
 
-  ordersTbodyElem.appendChild(ordersTableFrag)
+  displayAllOrders(OrdersMockData)
+
+  // Search & Filter Logic
+  const masterSearchInput = document.getElementById('masterSearch')
+  const dateFromInput = document.getElementById('dateFrom')
+  const dateToInput = document.getElementById('dateTo')
+  const rejectedToggleInput = document.getElementById('rejectedToggle')
+  const clearFiltersBtn = document.querySelector('.btn-clear')
+  const resultCountElem = document.getElementById('resultCount')
+  const noMatchFoundElem = document.querySelector('.js-no-match-found')
+
+  // Filtering function
+  function applyFilters() {
+    let filtered = [...OrdersMockData]
+
+    // Text search: requestId, orderId, hospitalName
+    const searchTerm = masterSearchInput?.value.trim().toLowerCase()
+    if (searchTerm) {
+      filtered = filtered.filter(ord => {
+        const reqId = ord.requestId?.toLowerCase() || ''
+        const ordId = ord.orderId?.toLowerCase() || ''
+        const hosp = ord.hospitalName?.toLowerCase() || ''
+        return (
+          reqId.includes(searchTerm) ||
+          ordId.includes(searchTerm) ||
+          hosp.includes(searchTerm)
+        )
+      })
+    }
+
+    // Date range filter (based on requestDate)
+    const fromVal = dateFromInput?.value
+    const toVal = dateToInput?.value
+
+    if (fromVal) {
+      const fromDate = new Date(fromVal)
+      filtered = filtered.filter(ord => new Date(ord.requestDate) >= fromDate)
+    }
+
+    if (toVal) {
+      const toDate = new Date(toVal)
+      filtered = filtered.filter(ord => new Date(ord.requestDate) <= toDate)
+    }
+
+    // Rejected-only toggle
+    if (rejectedToggleInput?.checked) {
+      filtered = filtered.filter(ord => ord.isRejected)
+    }
+
+    if (filtered.length === 0) {
+      ordersTbodyElem.innerHTML = ``
+      noMatchFoundElem.classList.remove('hidden')
+    } else {
+      noMatchFoundElem.classList.add('hidden')
+      displayAllOrders(filtered)
+    }
+    if (resultCountElem) {
+      resultCountElem.textContent = String(filtered.length)
+    }
+  }
+
+  if (masterSearchInput) {
+    masterSearchInput.addEventListener('input', applyFilters)
+  }
+  if (dateFromInput) {
+    dateFromInput.addEventListener('change', applyFilters)
+  }
+  if (dateToInput) {
+    dateToInput.addEventListener('change', applyFilters)
+  }
+  if (rejectedToggleInput) {
+    rejectedToggleInput.addEventListener('change', applyFilters)
+  }
+  if (clearFiltersBtn) {
+    clearFiltersBtn.addEventListener('click', (e) => {
+      e.preventDefault()
+      if (masterSearchInput) masterSearchInput.value = ''
+      if (dateFromInput) dateFromInput.value = ''
+      if (dateToInput) dateToInput.value = ''
+      if (rejectedToggleInput) rejectedToggleInput.checked = false
+      displayAllOrders(OrdersMockData)
+      noMatchFoundElem.classList.add('hidden')
+      if (resultCountElem) {
+        resultCountElem.textContent = String(OrdersMockData.length)
+      }
+    })
+  }
+
+  // Set initial result count
+  if (resultCountElem) {
+    resultCountElem.textContent = String(OrdersMockData.length)
+  }
 
   // Displays the packages badges
   function displayPackages(reqId, columnName) {

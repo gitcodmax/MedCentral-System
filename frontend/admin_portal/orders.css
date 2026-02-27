@@ -166,19 +166,18 @@
 
 /* Results Text */
 .filter-results-info {
-  margin-top: 1.25rem;
-  padding-top: 1rem;
   border-top: 1px solid #f1f5f9;
+  margin-bottom: 0.3rem;
 }
 
 .filter-results-info p {
   font-size: 0.85rem;
-  color: #64748b;
+  color: var(--color-quarantine);
 }
 
 .filter-results-info span {
   font-weight: 700;
-  color: #2563eb;
+  color: var(--color-secondary);
 }
 
 /* Mobile Adjustments */
