@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
 
+  // Create a new user and add a new driver overlays
   document.querySelector('.js-header-actions')
     .addEventListener('click', (e) => {
       // Toggle logic for the password "Eye" icon
@@ -61,6 +62,17 @@ document.addEventListener('DOMContentLoaded', () => {
       if(e.target.id === 'addDriverBtn'){
         const addDriverOverlayElem = document.getElementById('addDriverOverlay')
         handleOverlay(addDriverOverlayElem)
+      }
+    })
+
+  document.getElementById('sysUsersTbody')
+    .addEventListener('click', (e) => {
+      const btn = e.target.closest('button')
+      if(!btn) return;
+
+      if(btn.classList.contains('edit-user-details-btn')){
+        const editUserOverlayElem = document.getElementById('editUserOverlay')
+        handleOverlay(editUserOverlayElem)
       }
     })
 })

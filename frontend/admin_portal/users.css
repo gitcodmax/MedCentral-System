@@ -218,6 +218,17 @@ tr:hover {
   font-size: 1.25rem;
 }
 
+.edit-header-p{
+  color: var(--color-quarantine);
+  font-size: 0.9rem;
+}
+
+.edit-last-name{
+  color: var(--color-secondary);
+  font-weight: bold;
+  text-decoration: underline;
+}
+
 .form-group {
   margin-bottom: 1.25rem;
 }
