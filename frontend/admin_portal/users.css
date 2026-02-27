@@ -31,6 +31,11 @@
   transition: color 0.2s;
 }
 
+.tab-link:hover{
+  background: #e8ffe8;
+  color: var(--color-primary);
+}
+
 .tab-link.active {
   color: var(--color-primary);
 }

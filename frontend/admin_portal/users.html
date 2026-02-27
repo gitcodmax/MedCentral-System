@@ -22,12 +22,12 @@
             <header class="top-header" id="topHeader"></header>
 
             <main class="page-content">
-                <nav class="tabs-nav">
-                    <a href="#" class="tab-link active">System Users</a>
-                    <a href="#" class="tab-link">Drivers</a>
+                <nav class="tabs-nav" id="tabsNav">
+                    <a href="#" class="tab-link active sys-users-link">System Users</a>
+                    <a href="#" class="tab-link drivers-link">Drivers</a>
                 </nav>
 
-                <div class="card">
+                <div class="card" id="sysUsersCard">
                     <div class="table-responsive">
                         <table>
                             <thead>
@@ -63,9 +63,7 @@
                     </div>
                 </div>
 
-                <br><br>
-
-                <div class="card">
+                <div class="card hidden" id="driversCard">
                     <div class="table-responsive">
                         <table>
                             <thead>

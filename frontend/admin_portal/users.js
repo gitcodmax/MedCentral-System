@@ -12,4 +12,27 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </div>
     `
+
+  // Navigation tab buttons code
+  document.getElementById('tabsNav')
+    .addEventListener('click', (e) => {
+      const sysUsersCardElem = document.getElementById('sysUsersCard')
+      const driversCardElem = document.getElementById('driversCard')
+
+      if (e.target.classList.contains('drivers-link')) {
+        document.querySelector('.sys-users-link')
+          .classList.remove('active')
+        e.target.classList.add('active')
+        sysUsersCardElem.classList.add('hidden')
+        driversCardElem.classList.remove('hidden')
+      }
+
+      if (e.target.classList.contains('sys-users-link')) {
+        document.querySelector('.drivers-link')
+          .classList.remove('active')
+        e.target.classList.add('active')
+        sysUsersCardElem.classList.remove('hidden')
+        driversCardElem.classList.add('hidden')
+      }
+    })
 })
