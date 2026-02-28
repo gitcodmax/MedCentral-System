@@ -55,8 +55,27 @@
                                                     class="fas fa-edit"></i></button>
                                             <button class="btn-icon reset-user-pwd-btn" title="Reset Password"><i
                                                     class="fas fa-key"></i></button>
-                                            <button class="btn-icon btn-status-active" title="Deactivate User">
+                                            <button class="btn-icon btn-status-active deactivate-user-btn"
+                                                title="Deactivate User">
                                                 <i class="fas fa-unlock"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong class="full-name">Sarah Connor</strong></td>
+                                    <td>sarah.c@warehouse.com</td>
+                                    <td><span class="user-badge role-manager">Warehouse Manager</span></td>
+                                    <td><span class="user-badge status-inactive">Inactive</span></td>
+                                    <td>Feb 27, 2026, 08:30</td>
+                                    <td>
+                                        <div class="action-group">
+                                            <button class="btn-icon edit-user-details-btn" title="Edit"><i
+                                                    class="fas fa-edit"></i></button>
+                                            <button class="btn-icon reset-user-pwd-btn" title="Reset Password"><i
+                                                    class="fas fa-key"></i></button>
+                                            <button class="btn-icon btn-status-inactive activate-user-btn" title="Activate User">
+                                                <i class="fas fa-lock"></i>
                                             </button>
                                         </div>
                                     </td>
@@ -73,25 +92,8 @@
                                                     class="fas fa-edit"></i></button>
                                             <button class="btn-icon reset-user-pwd-btn" title="Reset Password"><i
                                                     class="fas fa-key"></i></button>
-                                            <button class="btn-icon btn-status-active" title="Deactivate User">
-                                                <i class="fas fa-unlock"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong class="full-name">Sarah Connor</strong></td>
-                                    <td>sarah.c@warehouse.com</td>
-                                    <td><span class="user-badge role-manager">Warehouse Manager</span></td>
-                                    <td><span class="user-badge status-active">Active</span></td>
-                                    <td>Feb 27, 2026, 08:30</td>
-                                    <td>
-                                        <div class="action-group">
-                                            <button class="btn-icon edit-user-details-btn" title="Edit"><i
-                                                    class="fas fa-edit"></i></button>
-                                            <button class="btn-icon reset-user-pwd-btn" title="Reset Password"><i
-                                                    class="fas fa-key"></i></button>
-                                            <button class="btn-icon btn-status-active" title="Deactivate User">
+                                            <button class="btn-icon btn-status-active deactivate-user-btn"
+                                                title="Deactivate User">
                                                 <i class="fas fa-unlock"></i>
                                             </button>
                                         </div>
@@ -123,11 +125,12 @@
                                     <td>KDB 123X</td>
                                     <td>Nairobi</td>
                                     <td>Westlands</td>
-                                    <td><span class="user-badge status-active">Active</span></td>
+                                    <td><span class="user-badge status-inactive">Inactive</span></td>
                                     <td>
                                         <div class="action-group">
-                                            <button class="btn-icon edit-driver-details-btn" title="Edit"><i class="fas fa-edit"></i></button>
-                                            <button class="btn-icon btn-status-inactive" title="Activate User">
+                                            <button class="btn-icon edit-driver-details-btn" title="Edit"><i
+                                                    class="fas fa-edit"></i></button>
+                                            <button class="btn-icon btn-status-inactive activate-driver-btn" title="Activate User">
                                                 <i class="fas fa-lock"></i>
                                             </button>
                                         </div>
@@ -142,9 +145,11 @@
                                     <td><span class="user-badge status-active">Active</span></td>
                                     <td>
                                         <div class="action-group">
-                                            <button class="btn-icon edit-driver-details-btn" title="Edit"><i class="fas fa-edit"></i></button>
-                                            <button class="btn-icon btn-status-inactive" title="Activate User">
-                                                <i class="fas fa-lock"></i>
+                                            <button class="btn-icon edit-driver-details-btn" title="Edit"><i
+                                                    class="fas fa-edit"></i></button>
+                                            <button class="btn-icon btn-status-active deactivate-driver-btn"
+                                                title="Deactivate User">
+                                                <i class="fas fa-unlock"></i>
                                             </button>
                                         </div>
                                     </td>
@@ -155,11 +160,12 @@
                                     <td>KDB 123X</td>
                                     <td>Nairobi</td>
                                     <td>Westlands</td>
-                                    <td><span class="user-badge status-active">Active</span></td>
+                                    <td><span class="user-badge status-inactive">Inactive</span></td>
                                     <td>
                                         <div class="action-group">
-                                            <button class="btn-icon edit-driver-details-btn" title="Edit"><i class="fas fa-edit"></i></button>
-                                            <button class="btn-icon btn-status-inactive" title="Activate User">
+                                            <button class="btn-icon edit-driver-details-btn" title="Edit"><i
+                                                    class="fas fa-edit"></i></button>
+                                            <button class="btn-icon btn-status-inactive activate-driver-btn" title="Activate User">
                                                 <i class="fas fa-lock"></i>
                                             </button>
                                         </div>
@@ -310,7 +316,7 @@
                     <div class="create-user-modal-content">
                         <div class="modal-header">
                             <h2>Edit System User</h2>
-                            <p class="edit-header-p">Modifying details for <span class="edit-last-name">Connor</span>
+                            <p class="edit-header-p">Modifying details for <span class="overlay-target-name">Connor</span>
                             </p>
                         </div>
 
@@ -425,27 +431,79 @@
                         <div class="modal-header">
                             <h2>Reset User Password</h2>
                             <p class="reset-pwd-header-p">
-                                Resetting password for: <strong class="reset-full-name" id="resetUserTarget">Sarah Connor</strong>
+                                Resetting password for: <strong class="overlay-target-name" id="resetUserTarget">Sarah
+                                    Connor</strong>
                             </p>
                         </div>
-                
+
                         <form id="resetPasswordForm">
                             <div class="form-group">
                                 <label for="newPassword">New Temporary Password</label>
                                 <div class="password-wrapper">
-                                    <input type="password" id="newPassword" class="form-control" 
-                                           placeholder="••••••••" required>
+                                    <input type="password" id="newPassword" class="form-control" placeholder="••••••••"
+                                        required>
                                     <button type="button" class="password-toggle">
                                         <i class="fas fa-eye"></i>
                                     </button>
                                 </div>
                             </div>
-                
+
                             <div class="modal-footer">
                                 <button type="button" class="btn close-overlay-btn js-btn-close-overlay">Cancel</button>
                                 <button type="submit" class="btn save-btn">Confirm Reset</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+
+                <div class="modal-overlay" id="deactivateOverlay">
+                    <div class="deactivate-modal-content">
+
+                        <div class="warning-icon-wrapper">
+                            <i class="fas fa-user-slash"></i>
+                        </div>
+
+                        <div class="modal-header">
+                            <h2>Confirm Deactivation</h2>
+                            <p class="deactiv-header-p">
+                                You are about to deactivate <strong class="overlay-target-name"
+                                    id="deactivateTargetName">Sarah Connor</strong>.
+                            </p>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn close-overlay-btn js-btn-close-overlay">
+                                Keep Active
+                            </button>
+                            <button type="button" id="confirmDeactivateBtn" class="btn save-btn">
+                                Deactivate Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-overlay" id="activateOverlay">
+                    <div class="activate-modal-content">
+
+                        <div class="success-icon-wrapper">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+
+                        <div class="modal-header">
+                            <h2>Confirm Activation</h2>
+                            <p class="activ-header-p">
+                                Restoring access for <strong class="overlay-target-name" id="reactivateTargetName">Harvey Specter</strong>.
+                            </p>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn close-overlay-btn js-btn-close-overlay">
+                                Keep Inactive
+                            </button>
+                            <button type="button" id="confirmReactivateBtn" class="btn save-btn">
+                                Activate Now
+                            </button>
+                        </div>
                     </div>
                 </div>
             </main>

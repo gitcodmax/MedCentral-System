@@ -83,6 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
 
+  const deactivateOverlayElem = document.getElementById('deactivateOverlay')
+  const activateOverlayElem = document.getElementById('activateOverlay')
   // System User action buttons(Edit, change password, activate, deactivate)
   document.getElementById('sysUsersTbody')
     .addEventListener('click', (e) => {
@@ -99,6 +101,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const resetPwdOverlayElem = document.getElementById('resetPasswordOverlay')
         handleOverlay(resetPwdOverlayElem)
       }
+
+      if (btn.classList.contains('deactivate-user-btn')) {
+        handleOverlay(deactivateOverlayElem)
+      }
+
+      if (btn.classList.contains('activate-user-btn')) {
+        handleOverlay(activateOverlayElem)
+      }
     })
 
   // Driver action buttons(Edit, activate, deactivate)
@@ -110,6 +120,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (btn.classList.contains('edit-driver-details-btn')) {
         const editDriverOverlayElem = document.getElementById('editDriverOverlay')
         handleOverlay(editDriverOverlayElem)
+      }
+
+      if (btn.classList.contains('deactivate-driver-btn')) {
+        handleOverlay(deactivateOverlayElem)
+      }
+
+      if (btn.classList.contains('activate-driver-btn')) {
+        handleOverlay(activateOverlayElem)
       }
     })
 })

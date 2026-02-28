@@ -164,8 +164,8 @@ tr:hover {
 }
 
 .status-inactive {
-  background: #f1f5f9;
-  color: #64748b;
+  background: rgb(247, 227, 227);
+  color: red;
 }
 
 /* State: Is currently Active -> Action: Deactivate (Show Red/Lock) */
@@ -206,7 +206,9 @@ tr:hover {
 /*Modal Layout Styling*/
 .create-user-modal-content,
 .add-driver-modal-content,
-.reset-pwd-modal-content {
+.reset-pwd-modal-content,
+.deactivate-modal-content, 
+.activate-modal-content {
   background: white;
   width: 95%;
   max-width: 550px;
@@ -225,7 +227,7 @@ tr:hover {
   font-size: 0.9rem;
 }
 
-.edit-last-name, .reset-full-name {
+.overlay-target-name {
   color: var(--color-secondary);
   font-weight: bold;
   text-decoration: underline;
@@ -237,8 +239,8 @@ tr:hover {
   margin-top: 4px;
 }
 
-.reset-pwd-modal-content label{
-  margin: 5px ;
+.reset-pwd-modal-content label {
+  margin: 5px;
   margin-left: 0;
 }
 
@@ -405,13 +407,83 @@ tr:hover {
   font-size: 0.75rem;
 }
 
-.btn-close {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  color: var(--text-muted);
-  cursor: pointer;
-  line-height: 1;
+/*Deactivation Modal Specifics*/
+.deactivate-modal-content {
+  max-width: 420px;
+  text-align: center;
+  padding: 2.5rem;
+}
+
+.warning-icon-wrapper {
+  width: 64px;
+  height: 64px;
+  background: rgb(248, 230, 230);
+  color: red;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  margin: 0 auto 1.5rem auto;
+  border: 4px solid rgb(248, 198, 198);
+}
+
+.deactiv-header-p,
+.activ-header-p {
+  color: var(--color-quarantine);
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+
+.deactivate-modal-content .close-overlay-btn{
+  border: 1px solid var(--color-secondary);
+  color: var(--color-secondary);
+}
+.deactivate-modal-content .close-overlay-btn:hover{
+  border: 1px solid var(--color-secondary);
+  background: var(--color-secondary);
+  color: white;
+}
+
+.deactivate-modal-content .save-btn{
+  background: red;
+  border: 1px solid red;
+}
+.deactivate-modal-content .save-btn:hover{
+  background: transparent;
+  border: 1px solid red;
+  color: red;
+}
+
+/*Reactivation Modal Specifics */
+.activate-modal-content {
+  max-width: 420px;
+  text-align: center;
+  padding: 2.5rem;
+}
+
+.success-icon-wrapper {
+  width: 64px;
+  height: 64px;
+  background: #f0fdf4;
+  color: var(--color-secondary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  margin: 0 auto 1.5rem auto;
+  border: 4px solid #dcfce7;
+}
+
+.activate-modal-content .save-btn{
+  background: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
+}
+.activate-modal-content .save-btn:hover{
+  background: transparent;
+  border: 1px solid var(--color-secondary);
+  color: var(--color-secondary);
 }
 
 /*Responsive Adjustments*/
