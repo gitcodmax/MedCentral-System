@@ -148,24 +148,21 @@ tr:hover {
   font-weight: 600;
 }
 
-.role-manager {
+.user-role {
   background: #e0f2fe;
   color: var(--color-primary);
-}
-
-.role-clerk {
-  background: #f1f5f9;
-  color: #475569;
 }
 
 .status-active {
   background: #dcfce7;
   color: var(--color-secondary);
+  text-transform: capitalize;
 }
 
 .status-inactive {
   background: rgb(247, 227, 227);
   color: red;
+  text-transform: capitalize;
 }
 
 /* State: Is currently Active -> Action: Deactivate (Show Red/Lock) */

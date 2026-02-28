@@ -42,64 +42,7 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="sysUsersTbody">
-                                <tr>
-                                    <td><strong class="full-name">Sarah Connor</strong></td>
-                                    <td>sarah.c@warehouse.com</td>
-                                    <td><span class="user-badge role-manager">Warehouse Manager</span></td>
-                                    <td><span class="user-badge status-active">Active</span></td>
-                                    <td>Feb 27, 2026, 08:30</td>
-                                    <td>
-                                        <div class="action-group">
-                                            <button class="btn-icon edit-user-details-btn" title="Edit"><i
-                                                    class="fas fa-edit"></i></button>
-                                            <button class="btn-icon reset-user-pwd-btn" title="Reset Password"><i
-                                                    class="fas fa-key"></i></button>
-                                            <button class="btn-icon btn-status-active deactivate-user-btn"
-                                                title="Deactivate User">
-                                                <i class="fas fa-unlock"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong class="full-name">Sarah Connor</strong></td>
-                                    <td>sarah.c@warehouse.com</td>
-                                    <td><span class="user-badge role-manager">Warehouse Manager</span></td>
-                                    <td><span class="user-badge status-inactive">Inactive</span></td>
-                                    <td>Feb 27, 2026, 08:30</td>
-                                    <td>
-                                        <div class="action-group">
-                                            <button class="btn-icon edit-user-details-btn" title="Edit"><i
-                                                    class="fas fa-edit"></i></button>
-                                            <button class="btn-icon reset-user-pwd-btn" title="Reset Password"><i
-                                                    class="fas fa-key"></i></button>
-                                            <button class="btn-icon btn-status-inactive activate-user-btn" title="Activate User">
-                                                <i class="fas fa-lock"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong class="full-name">Sarah Connor</strong></td>
-                                    <td>sarah.c@warehouse.com</td>
-                                    <td><span class="user-badge role-manager">Warehouse Manager</span></td>
-                                    <td><span class="user-badge status-active">Active</span></td>
-                                    <td>Feb 27, 2026, 08:30</td>
-                                    <td>
-                                        <div class="action-group">
-                                            <button class="btn-icon edit-user-details-btn" title="Edit"><i
-                                                    class="fas fa-edit"></i></button>
-                                            <button class="btn-icon reset-user-pwd-btn" title="Reset Password"><i
-                                                    class="fas fa-key"></i></button>
-                                            <button class="btn-icon btn-status-active deactivate-user-btn"
-                                                title="Deactivate User">
-                                                <i class="fas fa-unlock"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody id="sysUsersTbody"></tbody>
                         </table>
                     </div>
                 </div>
@@ -316,7 +259,7 @@
                     <div class="create-user-modal-content">
                         <div class="modal-header">
                             <h2>Edit System User</h2>
-                            <p class="edit-header-p">Modifying details for <span class="overlay-target-name">Connor</span>
+                            <p class="edit-header-p">Modifying details for <span class="overlay-target-name"></span>
                             </p>
                         </div>
 
@@ -324,24 +267,23 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>First Name</label>
-                                    <input type="text" class="form-control" value="Sarah" required>
+                                    <input type="text" class="form-control" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Last Name</label>
-                                    <input type="text" class="form-control" value="Connor" required>
+                                    <input type="text" class="form-control" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label>Email Address</label>
-                                <input type="email" class="form-control" value="sarah.c@warehouse.com" required>
+                                <input type="email" class="form-control" required>
                             </div>
 
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>Role</label>
                                     <select class="form-control" required>
-                                        <option value="Admin" selected>Admin</option>
                                         <option value="Warehouse Manager">Warehouse Manager</option>
                                         <option value="Inventory Clerk">Inventory Clerk</option>
                                     </select>
@@ -431,8 +373,7 @@
                         <div class="modal-header">
                             <h2>Reset User Password</h2>
                             <p class="reset-pwd-header-p">
-                                Resetting password for: <strong class="overlay-target-name" id="resetUserTarget">Sarah
-                                    Connor</strong>
+                                Resetting password for: <strong class="overlay-target-name" id="resetUserTarget"></strong>
                             </p>
                         </div>
 
