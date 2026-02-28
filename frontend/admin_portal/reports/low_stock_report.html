@@ -8,150 +8,160 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <link rel="stylesheet" href="/global.css">
+  <link rel="stylesheet" href="/admin_portal/sidebar.css">
   <link rel="stylesheet" href="/admin_portal/admin_portal_global.css">
   <link rel="stylesheet" href="/admin_portal/reports/low_stock_report.css">
 </head>
 
 <body>
 
-  <div class="container">
-    <header class="page-header">
-      <div class="header-titles">
-        <h1>Low Stock Report</h1>
-        <p>Items below minimum stock levels</p>
-      </div>
-    </header>
+  <div class="app-container">
+    <div class="sidebar" id="sidebar"></div>
 
-    <section class="kpi-grid">
-      <div class="card kpi-card tot-low-stock-card">
-        <div class="kpi-content">
-          <span class="kpi-label">Total Low Stock Items</span>
-          <span class="kpi-value warning-text">42</span>
-        </div>
-        <div class="kpi-icon bg-warning-light">
-          <i class="fas fa-layer-group"></i>
-        </div>
-      </div>
-      <div class="card kpi-card out-of-stock-items-card">
-        <div class="kpi-content">
-          <span class="kpi-label">Out of Stock Items</span>
-          <span class="kpi-value critical-text">12</span>
-        </div>
-        <div class="kpi-icon bg-danger-light">
-          <i class="fas fa-circle-exclamation"></i>
-        </div>
-      </div>
-      <div class="card kpi-card affected-cat-card">
-        <div class="kpi-content">
-          <span class="kpi-label">Affected Categories</span>
-          <span class="kpi-value">8</span>
-        </div>
-        <div class="kpi-icon bg-info-light">
-          <i class="fas fa-tags"></i>
-        </div>
-      </div>
-    </section>
+    <div class="main-wrapper">
+      <header class="top-header" id="topHeader"></header>
 
-    <section class="card filter-section">
-      <div class="filter-row">
-        <div class="filter-group">
-          <label><i class="fas fa-search"></i> Item Name</label>
-          <input type="text" placeholder="Search items...">
+      <div class="container">
+        <div class="report-page-header">
+          <div class="header-text">
+            <h2>Low Stock Report</h2>
+            <p>Items below minimum stock levels</p>
+          </div>
         </div>
-        <div class="filter-group">
-          <label><i class="fas fa-filter"></i> Category</label>
-          <select>
-            <option>All Categories</option>
-            <option>Vaccines</option>
-            <option>Antibiotics</option>
-            <option>Surgical Supplies</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label><i class="fas fa-truck-medical"></i> Supplier</label>
-          <select>
-            <option>All Suppliers</option>
-            <option>Global Pharma Co.</option>
-            <option>Medline Industries</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label><i class="fas fa-temperature-half"></i> Storage Temp.</label>
-          <select>
-            <option>Any Temp</option>
-            <option>Room Temp</option>
-            <option>Refrigerated</option>
-            <option>Frozen</option>
-          </select>
-        </div>
-        <button class="btn-apply">
-          Apply Filters
-        </button>
-      </div>
-    </section>
 
-    <section class="card table-card">
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr>
-              <th>Item Name</th>
-              <th>Category</th>
-              <th class="text-right">Current Stock</th>
-              <th class="text-right">Min. Level</th>
-              <th class="text-right">Deficit</th>
-              <th>Supplier</th>
-              <th>Last Restocked</th>
-              <th>Stock Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="row-out-of-stock">
-              <td><strong class="tbl-item-name">Propofol 10mg/ml</strong></td>
-              <td>Anesthetic</td>
-              <td class="text-right">0</td>
-              <td class="text-right">50</td>
-              <td class="text-right deficit-critical">-50</td>
-              <td>Global Pharma Co.</td>
-              <td>2025-12-05</td>
-              <td><span class="stock-badge badge-out">Out of Stock</span></td>
-            </tr>
-            <tr class="row-low">
-              <td><strong class="tbl-item-name">Surgical Gloves (M)</strong></td>
-              <td>Consumables</td>
-              <td class="text-right">110</td>
-              <td class="text-right">300</td>
-              <td class="text-right deficit-low">-190</td>
-              <td>Medline Industries</td>
-              <td>2026-02-22</td>
-              <td><span class="stock-badge badge-low">Low Stock</span></td>
-            </tr>
-            <tr>
-              <td><strong class="tbl-item-name">Adrenaline 1mg/ml</strong></td>
-              <td>Emergency</td>
-              <td class="text-right">210</td>
-              <td class="text-right">200</td>
-              <td class="text-right deficit-healthy">+10</td>
-              <td>Global Pharma Co.</td>
-              <td>2026-02-10</td>
-              <td><span class="stock-badge badge-healthy">Healthy</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+        <section class="kpi-grid">
+          <div class="card kpi-card tot-low-stock-card">
+            <div class="kpi-content">
+              <span class="kpi-label">Total Low Stock Items</span>
+              <span class="kpi-value warning-text">42</span>
+            </div>
+            <div class="kpi-icon bg-warning-light">
+              <i class="fas fa-layer-group"></i>
+            </div>
+          </div>
+          <div class="card kpi-card out-of-stock-items-card">
+            <div class="kpi-content">
+              <span class="kpi-label">Out of Stock Items</span>
+              <span class="kpi-value critical-text">12</span>
+            </div>
+            <div class="kpi-icon bg-danger-light">
+              <i class="fas fa-circle-exclamation"></i>
+            </div>
+          </div>
+          <div class="card kpi-card affected-cat-card">
+            <div class="kpi-content">
+              <span class="kpi-label">Affected Categories</span>
+              <span class="kpi-value">8</span>
+            </div>
+            <div class="kpi-icon bg-info-light">
+              <i class="fas fa-tags"></i>
+            </div>
+          </div>
+        </section>
 
-    <section class="card chart-section">
-      <h3><i class="fas fa-chart-bar"></i> Low Stock Items by Category</h3>
-      <div class="chart-placeholder">
-        <div class="placeholder-content">
-          <i class="fas fa-chart-pie fa-3x"></i>
-          <p>Bar Chart Placeholder</p>
-        </div>
+        <section class="card filter-section">
+          <div class="filter-row">
+            <div class="filter-group">
+              <label><i class="fas fa-search"></i> Item Name</label>
+              <input type="text" placeholder="Search items...">
+            </div>
+            <div class="filter-group">
+              <label><i class="fas fa-filter"></i> Category</label>
+              <select>
+                <option>All Categories</option>
+                <option>Vaccines</option>
+                <option>Antibiotics</option>
+                <option>Surgical Supplies</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label><i class="fas fa-truck-medical"></i> Supplier</label>
+              <select>
+                <option>All Suppliers</option>
+                <option>Global Pharma Co.</option>
+                <option>Medline Industries</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label><i class="fas fa-temperature-half"></i> Storage Temp.</label>
+              <select>
+                <option>Any Temp</option>
+                <option>Room Temp</option>
+                <option>Refrigerated</option>
+                <option>Frozen</option>
+              </select>
+            </div>
+            <button class="btn-apply">
+              Apply Filters
+            </button>
+          </div>
+        </section>
+
+        <section class="card table-card">
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item Name</th>
+                  <th>Category</th>
+                  <th class="text-right">Current Stock</th>
+                  <th class="text-right">Min. Level</th>
+                  <th class="text-right">Deficit</th>
+                  <th>Supplier</th>
+                  <th>Last Restocked</th>
+                  <th>Stock Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="row-out-of-stock">
+                  <td><strong class="tbl-item-name">Propofol 10mg/ml</strong></td>
+                  <td>Anesthetic</td>
+                  <td class="text-right">0</td>
+                  <td class="text-right">50</td>
+                  <td class="text-right deficit-critical">-50</td>
+                  <td>Global Pharma Co.</td>
+                  <td>2025-12-05</td>
+                  <td><span class="stock-badge badge-out">Out of Stock</span></td>
+                </tr>
+                <tr class="row-low">
+                  <td><strong class="tbl-item-name">Surgical Gloves (M)</strong></td>
+                  <td>Consumables</td>
+                  <td class="text-right">110</td>
+                  <td class="text-right">300</td>
+                  <td class="text-right deficit-low">-190</td>
+                  <td>Medline Industries</td>
+                  <td>2026-02-22</td>
+                  <td><span class="stock-badge badge-low">Low Stock</span></td>
+                </tr>
+                <tr>
+                  <td><strong class="tbl-item-name">Adrenaline 1mg/ml</strong></td>
+                  <td>Emergency</td>
+                  <td class="text-right">210</td>
+                  <td class="text-right">200</td>
+                  <td class="text-right deficit-healthy">+10</td>
+                  <td>Global Pharma Co.</td>
+                  <td>2026-02-10</td>
+                  <td><span class="stock-badge badge-healthy">Healthy</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card chart-section">
+          <h3><i class="fas fa-chart-bar"></i> Low Stock Items by Category</h3>
+          <div class="chart-placeholder">
+            <div class="placeholder-content">
+              <i class="fas fa-chart-pie fa-3x"></i>
+              <p>Bar Chart Placeholder</p>
+            </div>
+          </div>
+        </section>
       </div>
-    </section>
+    </div>
   </div>
 
+  <script type="module" src="/admin_portal/reports/low_stock_report.js"></script>
 </body>
 
 </html>

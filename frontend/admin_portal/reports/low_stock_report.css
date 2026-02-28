@@ -1,6 +1,7 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 2rem;
 }
 
 /*Common Card*/
@@ -9,24 +10,6 @@
   padding: 1.5rem;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-}
-
-/*Header*/
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.header-titles h1 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #1A202C;
-}
-
-.header-titles p {
-  color: var(--color-quarantine);
 }
 
 /*KPI Summary*/
@@ -172,7 +155,6 @@
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 1000px;
 }
 
 thead th {
