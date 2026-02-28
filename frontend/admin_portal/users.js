@@ -2,6 +2,371 @@ import { renderSidebar } from "./sidebar.js";
 import { handleOverlay, displayCountyOptions, displayCountyZonesOptions } from "/global.js";
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  document.querySelector('.app-container')
+    .innerHTML = `
+        <div class="sidebar" id="sidebar"></div>
+
+        <div class="main-wrapper">
+            <header class="top-header" id="topHeader"></header>
+
+            <main class="page-content">
+                <div class="header-actions js-header-actions">
+                    <button class="btn header-btn" id="createUserBtn"><i class="fas fa-user-plus"></i> Create
+                        User</button>
+                    <button class="btn header-btn" id="addDriverBtn"><i class="fas fa-truck-pickup"></i> Add
+                        Driver</button>
+                </div>
+
+                <div class="card" id="sysUsersCard">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Last Login</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sysUsersTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card hidden" id="driversCard">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th>Phone Number</th>
+                                    <th>Vehicle No.</th>
+                                    <th>Preferred County</th>
+                                    <th>Preferred Zone</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="driversTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-overlay" id="createUserOverlay">
+                    <div class="create-user-modal-content">
+                        <div class="modal-header">
+                            <h2>Create System User</h2>
+                        </div>
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" class="form-control" placeholder="e.g. Jane" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" class="form-control" placeholder="e.g. Doe" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" class="form-control" placeholder="jane@warehouse.com" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Role</label>
+                                    <select class="form-control" required>
+                                        <option value="">Select User Role...</option>
+                                        <option>Warehouse Manager</option>
+                                        <option>Inventory Clerk</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <div class="password-wrapper">
+                                        <input type="password" id="sysUserPassword" class="form-control"
+                                            placeholder="••••••••" required>
+                                        <button type="button" class="password-toggle">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group inline-flex">
+                                <label>Active Account</label>
+                                <label class="switch"><input type="checkbox" checked><span
+                                        class="slider"></span></label>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn close-overlay-btn js-btn-close-overlay">Cancel</button>
+                                <button type="submit" class="btn save-btn">Save User</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="modal-overlay" id="addDriverOverlay">
+                    <div class="add-driver-modal-content">
+                        <div class="modal-header">
+                            <h2>Add New Driver</h2>
+                            <p class="modal-subtitle">Register a delivery partner and assign preferred zones.</p>
+                        </div>
+
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="driverFirstName">First Name</label>
+                                    <input type="text" id="driverFirstName" class="form-control" placeholder="e.g. John"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="driverLastName">Last Name</label>
+                                    <input type="text" id="driverLastName" class="form-control" placeholder="e.g. Doe"
+                                        required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-phone"></i>
+                                        <input type="tel" id="phone" class="form-control" placeholder="+254..."
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vehicleNo">Vehicle Number</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-truck"></i>
+                                        <input type="text" id="vehicleNo" class="form-control" placeholder="KXX 000X"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section-title">Logistics Preferences</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="county">Preferred County</label>
+                                    <select id="addDriverCtySelect" class="form-control" required></select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="zone">Preferred Zone</label>
+                                    <select id="addDriverZoneSelect" class="form-control" required></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group inline-flex status-row">
+                                <div class="status-info">
+                                    <label>Active for Assignments</label>
+                                    <small>Allow this driver to be assigned to new delivery tasks immediately.</small>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button"
+                                    class="btn close-overlay-btn js-btn-close-overlay">Discard</button>
+                                <button type="submit" class="btn save-btn">Register Driver</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="modal-overlay" id="editUserOverlay">
+                    <div class="create-user-modal-content">
+                        <div class="modal-header">
+                            <h2>Edit System User</h2>
+                            <p class="edit-header-p">Modifying details for <span class="overlay-target-name"></span>
+                            </p>
+                        </div>
+
+                        <form id="editUserForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Role</label>
+                                    <select class="form-control" required>
+                                        <option value="Warehouse Manager">Warehouse Manager</option>
+                                        <option value="Inventory Clerk">Inventory Clerk</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn close-overlay-btn js-btn-close-overlay">Cancel</button>
+                                <button type="submit" class="btn save-btn">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="modal-overlay" id="editDriverOverlay">
+                    <div class="add-driver-modal-content">
+                        <div class="modal-header">
+                            <h2>Edit Driver Details</h2>
+                            <p class="modal-subtitle">Update contact information or modify geographic service zones.</p>
+                        </div>
+
+                        <form id="editDriverForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="editDriverFirstName">First Name</label>
+                                    <input type="text" id="editDriverFirstName" class="form-control"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editDriverLastName">Last Name</label>
+                                    <input type="text" id="editDriverLastName" class="form-control"
+                                        required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="editPhone">Phone Number</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-phone"></i>
+                                        <input type="tel" id="editPhone" class="form-control"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editVehicleNo">Vehicle Number</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-truck"></i>
+                                        <input type="text" id="editVehicleNo" class="form-control"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section-title">Logistics Preferences</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="editCounty">Preferred County</label>
+                                    <select id="editDriverCounty" class="form-control" required></select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editZone">Preferred Zone</label>
+                                    <select id="editDriverZone" class="form-control" required></select>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn close-overlay-btn js-btn-close-overlay">Cancel
+                                    Changes</button>
+                                <button type="submit" class="btn save-btn">Update Driver</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="modal-overlay" id="resetPasswordOverlay">
+                    <div class="reset-pwd-modal-content" style="max-width: 400px;">
+                        <div class="modal-header">
+                            <h2>Reset User Password</h2>
+                            <p class="reset-pwd-header-p">
+                                Resetting password for: <strong class="overlay-target-name" id="resetUserTarget"></strong>
+                            </p>
+                        </div>
+
+                        <form id="resetPasswordForm">
+                            <div class="form-group">
+                                <label for="newPassword">New Temporary Password</label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="newPassword" class="form-control" placeholder="••••••••"
+                                        required>
+                                    <button type="button" class="password-toggle">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn close-overlay-btn js-btn-close-overlay">Cancel</button>
+                                <button type="submit" class="btn save-btn">Confirm Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="modal-overlay" id="deactivateOverlay">
+                    <div class="deactivate-modal-content">
+
+                        <div class="warning-icon-wrapper">
+                            <i class="fas fa-user-slash"></i>
+                        </div>
+
+                        <div class="modal-header">
+                            <h2>Confirm Deactivation</h2>
+                            <p class="deactiv-header-p">
+                                You are about to deactivate <strong class="overlay-target-name"
+                                    id="deactivateTargetName">Sarah Connor</strong>.
+                            </p>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn close-overlay-btn js-btn-close-overlay">
+                                Keep Active
+                            </button>
+                            <button type="button" id="confirmDeactivateBtn" class="btn save-btn">
+                                Deactivate Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-overlay" id="activateOverlay">
+                    <div class="activate-modal-content">
+
+                        <div class="success-icon-wrapper">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+
+                        <div class="modal-header">
+                            <h2>Confirm Activation</h2>
+                            <p class="activ-header-p">
+                                Restoring access for <strong class="overlay-target-name" id="reactivateTargetName">Harvey Specter</strong>.
+                            </p>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn close-overlay-btn js-btn-close-overlay">
+                                Keep Inactive
+                            </button>
+                            <button type="button" id="confirmReactivateBtn" class="btn save-btn">
+                                Activate Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    `
+
   renderSidebar()
   document.querySelector('.js-header-left')
     .innerHTML = `
