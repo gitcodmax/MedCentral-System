@@ -10,7 +10,7 @@
   align-items: center;
 }
 
-.header-actions{
+.header-actions {
   margin: 10px;
   display: flex;
   justify-content: center;
@@ -32,7 +32,7 @@
   transition: color 0.2s;
 }
 
-.tab-link:hover{
+.tab-link:hover {
   background: #e8ffe8;
   color: var(--color-primary);
 }
@@ -93,7 +93,7 @@ tr:hover {
   background: #fbfcfe;
 }
 
-.full-name{
+.full-name {
   color: var(--color-secondary);
 }
 
@@ -111,13 +111,13 @@ tr:hover {
   transition: all 0.2s ease;
 }
 
-.header-btn{
+.header-btn {
   background: white;
   color: var(--color-primary);
   border: 1px solid var(--color-primary);
 }
 
-.header-btn:hover{
+.header-btn:hover {
   background: var(--color-secondary);
   color: white;
   border: var(--color-secondary);
@@ -204,7 +204,9 @@ tr:hover {
 }
 
 /*Modal Layout Styling*/
-.create-user-modal-content, .add-driver-modal-content {
+.create-user-modal-content,
+.add-driver-modal-content,
+.reset-pwd-modal-content {
   background: white;
   width: 95%;
   max-width: 550px;
@@ -218,15 +220,26 @@ tr:hover {
   font-size: 1.25rem;
 }
 
-.edit-header-p{
+.edit-header-p {
   color: var(--color-quarantine);
   font-size: 0.9rem;
 }
 
-.edit-last-name{
+.edit-last-name, .reset-full-name {
   color: var(--color-secondary);
   font-weight: bold;
   text-decoration: underline;
+}
+
+.reset-pwd-header-p {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.reset-pwd-modal-content label{
+  margin: 5px ;
+  margin-left: 0;
 }
 
 .form-group {
@@ -240,11 +253,11 @@ tr:hover {
   margin-bottom: 0.5rem;
 }
 
-.form-group input{
+.form-group input {
   border: 1px solid var(--color-quarantine);
 }
 
-.form-group input:focus{
+.form-group input:focus {
   border-color: var(--color-primary);
   outline: none;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
@@ -299,22 +312,24 @@ tr:hover {
   color: var(--primary);
 }
 
-.close-overlay-btn{
+.close-overlay-btn {
   border: 1px solid red;
   color: red;
   background: white;
 }
-.close-overlay-btn:hover{
+
+.close-overlay-btn:hover {
   background: red;
   color: white;
 }
 
-.save-btn{
+.save-btn {
   background: var(--color-primary);
   border: 1px solid var(--color-primary);
   color: white;
 }
-.save-btn:hover{
+
+.save-btn:hover {
   background: white;
   color: var(--color-primary);
 }
@@ -327,9 +342,10 @@ tr:hover {
 }
 
 /*Driver Modal Specific Enhancements*/
-.modal-header h2{
+.modal-header h2 {
   margin-bottom: 5px;
 }
+
 .modal-subtitle {
   font-size: 0.85rem;
   color: var(--color-quarantine);

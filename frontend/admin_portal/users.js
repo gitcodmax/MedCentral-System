@@ -1,5 +1,5 @@
 import { renderSidebar } from "./sidebar.js";
-import {handleOverlay} from "/global.js";
+import { handleOverlay } from "/global.js";
 
 document.addEventListener('DOMContentLoaded', () => {
   renderSidebar()
@@ -37,29 +37,47 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
 
+  // Toggle logic for the password "Eye" icon
+  const bindPasswordToggles = (() => {
+    let isBound = false;
+
+    return function toggleEyePassword() {
+      if (isBound) return;
+      isBound = true;
+
+      document.addEventListener('click', (e) => {
+        const toggleBtnElem = e.target.closest('.password-toggle');
+        if (!toggleBtnElem) return;
+
+        const wrapperElem = toggleBtnElem.closest('.password-wrapper');
+        const passwordInputElem = wrapperElem?.querySelector('input');
+        if (!passwordInputElem) return;
+
+        passwordInputElem.type = passwordInputElem.type === 'password' ? 'text' : 'password';
+        const isShowing = passwordInputElem.type === 'text';
+
+        toggleBtnElem.querySelectorAll('i').forEach((iconElem) => {
+          iconElem.classList.toggle('fa-eye', !isShowing);
+          iconElem.classList.toggle('fa-eye-slash', isShowing);
+        });
+      });
+    };
+  })();
+
+  // bind once; works for all password inputs/buttons in this page (even inside overlays)
+  bindPasswordToggles();
+
   // Create a new user and add a new driver overlays
   document.querySelector('.js-header-actions')
     .addEventListener('click', (e) => {
-      // Toggle logic for the password "Eye" icon
-      const toggleBtnElem = document.querySelector('.password-toggle');
-      const passwordInputElem = document.getElementById('sysUserPassword');
-      const iconElem = toggleBtnElem.querySelector('i');
-
-      toggleBtnElem.addEventListener('click', () => {
-        const isPassword = passwordInputElem.type === 'password';
-        passwordInputElem.type = isPassword ? 'text' : 'password';
-        iconElem.classList.toggle('fa-eye');
-        iconElem.classList.toggle('fa-eye-slash');
-      });
-
       // Overlay to create a new user
       if (e.target.id === 'createUserBtn') {
-        const createUserOverlayElem = document.getElementById('createUserOverlay')   
+        const createUserOverlayElem = document.getElementById('createUserOverlay')
         handleOverlay(createUserOverlayElem)
       }
 
       // Overlay to add a new driver
-      if(e.target.id === 'addDriverBtn'){
+      if (e.target.id === 'addDriverBtn') {
         const addDriverOverlayElem = document.getElementById('addDriverOverlay')
         handleOverlay(addDriverOverlayElem)
       }
@@ -69,12 +87,17 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('sysUsersTbody')
     .addEventListener('click', (e) => {
       const btn = e.target.closest('button')
-      if(!btn) return;
+      if (!btn) return;
 
       // Edit user details button
-      if(btn.classList.contains('edit-user-details-btn')){
+      if (btn.classList.contains('edit-user-details-btn')) {
         const editUserOverlayElem = document.getElementById('editUserOverlay')
         handleOverlay(editUserOverlayElem)
+      }
+
+      if (btn.classList.contains('reset-user-pwd-btn')) {
+        const resetPwdOverlayElem = document.getElementById('resetPasswordOverlay')
+        handleOverlay(resetPwdOverlayElem)
       }
     })
 
@@ -82,9 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('driversTbody')
     .addEventListener('click', (e) => {
       const btn = e.target.closest('button')
-      if(!btn) return;
+      if (!btn) return;
 
-      if(btn.classList.contains('edit-driver-details-btn')){
+      if (btn.classList.contains('edit-driver-details-btn')) {
         const editDriverOverlayElem = document.getElementById('editDriverOverlay')
         handleOverlay(editDriverOverlayElem)
       }
