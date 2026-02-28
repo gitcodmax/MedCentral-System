@@ -1,0 +1,337 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/*Layout Elements*/
+.card {
+  background: var(--color-white);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 2rem;
+  border: 1px solid var(--color-border);
+}
+
+/*Header*/
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.header-text h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a202c;
+}
+
+.header-text p {
+  color: var(--color-quarantine);
+}
+
+/*Buttons*/
+.btn {
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-secondary {
+  background: var(--color-secondary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #0069d9;
+}
+
+/*Filters*/
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+  align-items: end;
+}
+
+.filter-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #4a5568;
+}
+
+.filter-group select,
+.filter-group input {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background-color: #f8fafc;
+}
+
+/*Metric Cards*/
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.metric-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  margin-bottom: 0;
+  transition: all 0.3s;
+}
+
+.metric-card:hover{
+  box-shadow: var(--shadow);
+  transform: translateY(-3px);
+}
+
+.metric-title {
+  display: block;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-quarantine);
+  letter-spacing: 0.05em;
+}
+
+.metric-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.metric-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.bg-blue {
+  background: #e0f2fe;
+  color: var(--color-primary);
+}
+
+.bg-green {
+  background: #dcfce7;
+  color: var(--color-secondary);
+}
+
+.bg-purple {
+  background: #f3e8ff;
+  color: #7e22ce;
+}
+
+.bg-red {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.text-critical {
+  color: var(--color-red-critical);
+}
+
+.critical-border {
+  border-left: 5px solid var(--color-red-critical);
+}
+
+.total-inv-card{
+  border-left: 5px solid var(--color-secondary);
+}
+
+.tot-units-card{
+  border-left: 5px solid #7e22ce;
+}
+
+.tot-items-card{
+  border-left: 5px solid var(--color-primary);
+}
+
+/*Table Styles*/
+.table-responsive {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  background: var(--color-primary);
+  text-align: left;
+  padding: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: white;
+  border-bottom: 2px solid var(--color-border);
+}
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.9rem;
+}
+
+tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+tr:hover {
+  background-color: #f1f5f9;
+}
+
+.item-name{
+  color: var(--color-secondary);
+}
+
+.text-right {
+  text-align: right;
+}
+
+.tot-value{
+  color: var(--color-secondary);
+  font-weight: 700;
+}
+
+/*Badges*/
+.stock-badge {
+  padding: 4px 10px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-healthy {
+  background: #dcfce7;
+  color: var(--color-secondary);
+}
+
+.badge-low {
+  background: #ffedd5;
+  color: #9a3412;
+}
+
+.badge-out {
+  background: rgb(245, 227, 227);
+  color: red;
+}
+
+/*Chart Placeholder*/
+.chart-placeholder {
+  height: 200px;
+  background: #f8fafc;
+  border: 2px dashed var(--color-border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.placeholder-content {
+  text-align: center;
+  color: var(--color-quarantine);
+}
+
+.placeholder-content i {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  opacity: 0.3;
+}
+
+/*Chart Container Specifics*/
+
+.chart-drawing-area {
+  position: relative;
+  width: 100%;
+  /* Standard dashboard height for pie/donut charts */
+  min-height: 280px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+/* Ensure the canvas scales to the container but stays readable */
+#stockStatusPieChart {
+  max-width: 100% !important;
+  max-height: 300px !important;
+}
+
+/*Loader Overlay (Visible before JS runs)*/
+.chart-loader-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: 8px;
+  color: var(--color-quarantine);
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.chart-footer {
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-quarantine);
+}
+
+/*Responsive Hacks*/
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
