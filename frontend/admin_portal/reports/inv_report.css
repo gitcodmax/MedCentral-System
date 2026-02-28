@@ -290,29 +290,6 @@ tr:hover {
   font-weight: 700;
 }
 
-/*Badges*/
-.stock-badge {
-  padding: 4px 10px;
-  border-radius: 50px;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.badge-healthy {
-  background: #dcfce7;
-  color: var(--color-secondary);
-}
-
-.badge-low {
-  background: #ffedd5;
-  color: #9a3412;
-}
-
-.badge-out {
-  background: rgb(245, 227, 227);
-  color: red;
-}
-
 /*Chart Placeholder*/
 .chart-placeholder {
   height: 200px;
