@@ -1,6 +1,7 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 2rem;
 }
 
 /*Layout Elements*/
@@ -13,8 +14,78 @@
   border: 1px solid var(--color-border);
 }
 
+/*Reports Navigation Container*/
+.reports-button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px 8px 8px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 30px;
+  text-decoration: none;
+  color: #475569;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.nav-btn:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.nav-btn.active{
+  border-color: var(--color-secondary);
+}
+
+/* Icon Circles */
+.nav-btn .icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  font-size: 0.75rem;
+}
+
+.bg-blue-lite {
+  background: #e0f2fe;
+  color: var(--color-primary);
+}
+
+.bg-red-lite {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.bg-purple-lite {
+  background: #f3e8ff;
+  color: #9333ea;
+}
+
+@media (max-width: 480px) {
+  .reports-button-group {
+    flex-direction: column;
+  }
+
+  .nav-btn {
+    width: 100%;
+  }
+}
+
 /*Header*/
-.page-header {
+.report-page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,7 +93,7 @@
   gap: 1rem;
 }
 
-.header-text h1 {
+.header-text h2 {
   font-size: 1.75rem;
   font-weight: 700;
   color: #1a202c;
@@ -101,7 +172,7 @@
   transition: all 0.3s;
 }
 
-.metric-card:hover{
+.metric-card:hover {
   box-shadow: var(--shadow);
   transform: translateY(-3px);
 }
@@ -158,15 +229,15 @@
   border-left: 5px solid var(--color-red-critical);
 }
 
-.total-inv-card{
+.total-inv-card {
   border-left: 5px solid var(--color-secondary);
 }
 
-.tot-units-card{
+.tot-units-card {
   border-left: 5px solid #7e22ce;
 }
 
-.tot-items-card{
+.tot-items-card {
   border-left: 5px solid var(--color-primary);
 }
 
@@ -182,7 +253,6 @@ table {
 }
 
 th {
-  position: sticky;
   top: 0;
   background: var(--color-primary);
   text-align: left;
@@ -207,7 +277,7 @@ tr:hover {
   background-color: #f1f5f9;
 }
 
-.item-name{
+.item-name {
   color: var(--color-secondary);
 }
 
@@ -215,7 +285,7 @@ tr:hover {
   text-align: right;
 }
 
-.tot-value{
+.tot-value {
   color: var(--color-secondary);
   font-weight: 700;
 }
@@ -272,7 +342,7 @@ tr:hover {
   position: relative;
   width: 100%;
   /* Standard dashboard height for pie/donut charts */
-  min-height: 280px; 
+  min-height: 280px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -313,8 +383,13 @@ tr:hover {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .chart-footer {
