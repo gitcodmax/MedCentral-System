@@ -1,5 +1,5 @@
 import { renderSidebar } from "./sidebar.js"
-import { handleOverlay, displayNoMatchFound } from "../global.js"
+import { handleOverlay, displayNoMatchFound, displayCountyOptions, displayCountyZonesOptions } from "../global.js"
 
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.app-container')
@@ -618,11 +618,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const addHosCountyElem = document.getElementById('hospCounty')
       const addHosZoneElem = document.getElementById('hospZone')
       addHosZoneElem.value = ``
-      displayCountyOptions(addHosCountyElem)
+      displayCountyOptions(GeoReferenceData, addHosCountyElem)
 
       addHosCountyElem.addEventListener('change', (e) => {
         const selectedId = parseInt(e.target.value)
-        displayCountyZonesOptions(selectedId, addHosZoneElem)
+        displayCountyZonesOptions(GeoReferenceData, selectedId, addHosZoneElem)
       })
 
 
@@ -654,31 +654,6 @@ document.addEventListener('DOMContentLoaded', () => {
           deptChipElem.classList.add('selected')
         }
       }
-    })
-  }
-
-  // Display the zones as options in the zone dropdown
-  function displayCountyZonesOptions(countyId, selectTag) {
-    const county = GeoReferenceData.find(c => c.county_id === countyId)
-    selectTag.innerHTML = '<option value="" disabled selected>Select Zone</option>'
-    if (county) {
-      county.zones.forEach(zone => {
-        const opt = document.createElement('option')
-        opt.value = zone.id
-        opt.textContent = zone.name
-        selectTag.appendChild(opt)
-      })
-    }
-  }
-
-  // Display the counties as options in the county dropdown
-  function displayCountyOptions(selectTag) {
-    selectTag.innerHTML = '<option value="" disabled selected>Select County</option>'
-    GeoReferenceData.forEach(county => {
-      const opt = document.createElement('option')
-      opt.value = county.county_id
-      opt.textContent = county.county_name
-      selectTag.appendChild(opt)
     })
   }
 
@@ -748,12 +723,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const editHospCountyElem = document.getElementById('editHospCounty')
         const editHospZoneElem = document.getElementById('editHospZone')
 
-        displayCountyOptions(editHospCountyElem)
-        displayCountyZonesOptions(hospital.location.county_id, editHospZoneElem)
+        displayCountyOptions(GeoReferenceData, editHospCountyElem)
+        displayCountyZonesOptions(GeoReferenceData, hospital.location.county_id, editHospZoneElem)
 
         editHospCountyElem.addEventListener('change', (e) => {
           const selectedId = parseInt(e.target.value)
-          displayCountyZonesOptions(selectedId, editHospZoneElem)
+          displayCountyZonesOptions(GeoReferenceData, selectedId, editHospZoneElem)
         })
 
         document.getElementById('editHeaderHospName')

@@ -61,60 +61,7 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="driversTbody">
-                                <tr>
-                                    <td><strong class="full-name">John Doe</strong></td>
-                                    <td>+254 712 345 678</td>
-                                    <td>KDB 123X</td>
-                                    <td>Nairobi</td>
-                                    <td>Westlands</td>
-                                    <td><span class="user-badge status-inactive">Inactive</span></td>
-                                    <td>
-                                        <div class="action-group">
-                                            <button class="btn-icon edit-driver-details-btn" title="Edit"><i
-                                                    class="fas fa-edit"></i></button>
-                                            <button class="btn-icon btn-status-inactive activate-driver-btn" title="Activate User">
-                                                <i class="fas fa-lock"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong class="full-name">John Doe</strong></td>
-                                    <td>+254 712 345 678</td>
-                                    <td>KDB 123X</td>
-                                    <td>Nairobi</td>
-                                    <td>Westlands</td>
-                                    <td><span class="user-badge status-active">Active</span></td>
-                                    <td>
-                                        <div class="action-group">
-                                            <button class="btn-icon edit-driver-details-btn" title="Edit"><i
-                                                    class="fas fa-edit"></i></button>
-                                            <button class="btn-icon btn-status-active deactivate-driver-btn"
-                                                title="Deactivate User">
-                                                <i class="fas fa-unlock"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong class="full-name">John Doe</strong></td>
-                                    <td>+254 712 345 678</td>
-                                    <td>KDB 123X</td>
-                                    <td>Nairobi</td>
-                                    <td>Westlands</td>
-                                    <td><span class="user-badge status-inactive">Inactive</span></td>
-                                    <td>
-                                        <div class="action-group">
-                                            <button class="btn-icon edit-driver-details-btn" title="Edit"><i
-                                                    class="fas fa-edit"></i></button>
-                                            <button class="btn-icon btn-status-inactive activate-driver-btn" title="Activate User">
-                                                <i class="fas fa-lock"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody id="driversTbody"></tbody>
                         </table>
                     </div>
                 </div>
@@ -216,22 +163,11 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="county">Preferred County</label>
-                                    <select id="county" class="form-control" required>
-                                        <option value="" disabled selected>Select County</option>
-                                        <option value="nairobi">Nairobi</option>
-                                        <option value="mombasa">Mombasa</option>
-                                        <option value="kisumu">Kisumu</option>
-                                        <option value="nakuru">Nakuru</option>
-                                    </select>
+                                    <select id="addDriverCtySelect" class="form-control" required></select>
                                 </div>
                                 <div class="form-group">
                                     <label for="zone">Preferred Zone</label>
-                                    <select id="zone" class="form-control" required>
-                                        <option value="" disabled selected>Select Zone</option>
-                                        <option value="westlands">Westlands</option>
-                                        <option value="nyali">Nyali</option>
-                                        <option value="central">Central Business District</option>
-                                    </select>
+                                    <select id="addDriverZoneSelect" class="form-control" required></select>
                                 </div>
                             </div>
 
@@ -309,12 +245,12 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="editDriverFirstName">First Name</label>
-                                    <input type="text" id="editDriverFirstName" class="form-control" value="John"
+                                    <input type="text" id="editDriverFirstName" class="form-control"
                                         required>
                                 </div>
                                 <div class="form-group">
                                     <label for="editDriverLastName">Last Name</label>
-                                    <input type="text" id="editDriverLastName" class="form-control" value="Doe"
+                                    <input type="text" id="editDriverLastName" class="form-control"
                                         required>
                                 </div>
                             </div>
@@ -324,7 +260,7 @@
                                     <label for="editPhone">Phone Number</label>
                                     <div class="input-with-icon">
                                         <i class="fas fa-phone"></i>
-                                        <input type="tel" id="editPhone" class="form-control" value="+254 712 345 678"
+                                        <input type="tel" id="editPhone" class="form-control"
                                             required>
                                     </div>
                                 </div>
@@ -332,7 +268,7 @@
                                     <label for="editVehicleNo">Vehicle Number</label>
                                     <div class="input-with-icon">
                                         <i class="fas fa-truck"></i>
-                                        <input type="text" id="editVehicleNo" class="form-control" value="KDB 123X"
+                                        <input type="text" id="editVehicleNo" class="form-control"
                                             required>
                                     </div>
                                 </div>
@@ -342,20 +278,11 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="editCounty">Preferred County</label>
-                                    <select id="editCounty" class="form-control" required>
-                                        <option value="nairobi" selected>Nairobi</option>
-                                        <option value="mombasa">Mombasa</option>
-                                        <option value="kisumu">Kisumu</option>
-                                        <option value="nakuru">Nakuru</option>
-                                    </select>
+                                    <select id="editDriverCounty" class="form-control" required></select>
                                 </div>
                                 <div class="form-group">
                                     <label for="editZone">Preferred Zone</label>
-                                    <select id="editZone" class="form-control" required>
-                                        <option value="westlands" selected>Westlands</option>
-                                        <option value="nyali">Nyali</option>
-                                        <option value="central">Central Business District</option>
-                                    </select>
+                                    <select id="editDriverZone" class="form-control" required></select>
                                 </div>
                             </div>
 
