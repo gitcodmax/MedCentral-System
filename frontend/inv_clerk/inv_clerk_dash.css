@@ -250,6 +250,28 @@ h2 {
     background: #f8f9fa;
 }
 
+.package-weight-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.package-weight-container label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.95rem;
+}
+
+.package-weight-input {
+    padding: 8px 10px;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    font-size: 0.95rem;
+    width: 180px;
+}
+
 .packed-btn {
     background-color: #008B00;
     color: white;

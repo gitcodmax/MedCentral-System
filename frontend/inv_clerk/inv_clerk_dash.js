@@ -4,71 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderHeader()
 
-    document.querySelector('.dashboard-stack')
-        .innerHTML = `
-        <section class="stock-alerts card layout-section">
-            <div class="card-title-container">
-                <h2>Stock Alerts</h2>
-                <div class="alert-key">
-                    <span class="key-item">
-                        <span class="key-color yellow"></span> Warning
-                    </span>
-                    <span class="key-item">
-                        <span class="key-color orange"></span> Low
-                    </span>
-                    <span class="key-item">
-                        <span class="key-color red"></span> Critical
-                    </span>
-                </div>
-            </div>
-            <div class="alerts-container js-alerts-container"></div>
-        </section>
-
-        <section class="pending-orders card layout-section">
-            <h2>Pending Orders</h2>
-            <div class="order-cards-container"></div>
-        </section>
-
-        <div id="orderOverlay" class="overlay">
-            <div class="overlay-content">
-                <header class="overlay-header">
-                    <div class="order-info">
-                        <h2>Order #<span id="displayOrderId"></span> for <span id="hospital-name">Hospital</span></h2>
-                        <div class="order-date-status">
-                            <p>Order Created On: <span class="status-tag" id="date-confirmed"></span></p>
-                            <p>Status: <span class="status-tag">Ready for Packing</span></p>
-                        </div>
-                    </div>
-                    <button class="close-overlay-btn js-close-overlay-btn">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </header>
-
-                <section class="overlay-body">
-                    <p class="instruction">Please retrieve and verify the following items for this order.</p>
-
-                    <table class="picking-table">
-                        <thead>
-                            <tr>
-                                <th>Item Details</th>
-                                <th>Batch/Lot No.</th>
-                                <th>Qty to Pack</th>
-                                <th>Unit</th>
-                            </tr>
-                        </thead>
-                        <tbody id="pickingItemList"></tbody>
-                    </table>
-                </section>
-
-                <footer class="overlay-footer">
-                    <button class="packed-btn" onclick="markOrderAsPacked()">
-                        <i class="fas fa-check-circle"></i> Confirm All Items Packed
-                    </button>
-                </footer>
-            </div>
-        </div>
-        
-        `
+    // document.querySelector('.dashboard-stack')
+    //     .innerHTML = ``
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //Code for the stock alerts has been repeated in another file(wh_manager)
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -99,9 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Handle clicking the pack order button 
     // Function to show the overlay
+    const confirmPackedBtnElem = document.getElementById('packedBtn')
+    const pkgWtInputElem = document.getElementById('packageWeightInput')
     function openOrderOverlay(orderId) {
         document.getElementById('displayOrderId').innerText = orderId;
         document.getElementById('orderOverlay').style.display = 'flex';
+        confirmPackedBtnElem.dataset.orderId = orderId
+        pkgWtInputElem.dataset.orderId = orderId
+        pkgWtInputElem.value = ``
     }
 
     // Function to hide the overlay
@@ -219,6 +161,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
             })
         })
+
+    // Confirm orders packed Button
+    if (document.getElementById('orderOverlay')) {
+        confirmPackedBtnElem.addEventListener('click', () => {
+            if (confirmPackedBtnElem.dataset.orderId === pkgWtInputElem.dataset.orderId) {
+                if (pkgWtInputElem.value === '') {
+                    alert('Enter package weight!!')
+                } else {
+                    // Send to db
+                    console.log('Package packed', pkgWtInputElem.value)
+                }
+            }
+        })
+    }
 
     //Close the Order details card overlay
     document.querySelector('.js-close-overlay-btn')

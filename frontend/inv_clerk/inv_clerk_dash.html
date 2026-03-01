@@ -16,7 +16,84 @@
 
     <header class="main-header"></header>
 
-    <main class="dashboard-stack"></main>
+    <main class="dashboard-stack">
+
+        <section class="stock-alerts card layout-section">
+            <div class="card-title-container">
+                <h2>Stock Alerts</h2>
+                <div class="alert-key">
+                    <span class="key-item">
+                        <span class="key-color yellow"></span> Warning
+                    </span>
+                    <span class="key-item">
+                        <span class="key-color orange"></span> Low
+                    </span>
+                    <span class="key-item">
+                        <span class="key-color red"></span> Critical
+                    </span>
+                </div>
+            </div>
+            <div class="alerts-container js-alerts-container"></div>
+        </section>
+
+        <section class="pending-orders card layout-section">
+            <h2>Pending Orders</h2>
+            <div class="order-cards-container"></div>
+        </section>
+
+        <div id="orderOverlay" class="overlay">
+            <div class="overlay-content">
+                <header class="overlay-header">
+                    <div class="order-info">
+                        <h2>Order #<span id="displayOrderId"></span> for <span id="hospital-name">Hospital</span></h2>
+                        <div class="order-date-status">
+                            <p>Order Created On: <span class="status-tag" id="date-confirmed"></span></p>
+                            <p>Status: <span class="status-tag">Ready for Packing</span></p>
+                        </div>
+                    </div>
+                    <button class="close-overlay-btn js-close-overlay-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </header>
+
+                <section class="overlay-body">
+                    <p class="instruction">Please retrieve and verify the following items for this order.</p>
+
+                    <table class="picking-table">
+                        <thead>
+                            <tr>
+                                <th>Item Details</th>
+                                <th>Batch/Lot No.</th>
+                                <th>Qty to Pack</th>
+                                <th>Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pickingItemList"></tbody>
+                    </table>
+                </section>
+
+                <footer class="overlay-footer">
+
+                    <div class="package-weight-container">
+                        <label for="packageWeightInput">Enter Package Weight in KG</label>
+                        <input
+                            type="number"
+                            id="packageWeightInput"
+                            class="package-weight-input"
+                            placeholder="Enter Package Weight"
+                            min="0"
+                            step="0.01"
+                        >
+                    </div>
+
+                    <button class="packed-btn" id="packedBtn">
+                        <i class="fas fa-check-circle"></i> Confirm All Items Packed
+                    </button>
+                </footer>
+            </div>
+        </div>
+
+    </main>
 
     <footer class="main-footer">
         © 2025 MedCentral
