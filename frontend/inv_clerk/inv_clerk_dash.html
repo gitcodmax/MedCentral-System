@@ -18,6 +18,42 @@
 
     <main class="dashboard-stack">
 
+        <section class="kpi-grid">
+            <div class="card kpi-card">
+                <div class="kpi-content">
+                    <span class="kpi-label">Awaiting Packing</span>
+                    <span class="kpi-value pkgs-to-pack">18</span>
+                    <span class="kpi-trend">Orders in preparation</span>
+                </div>
+                <div class="kpi-icon pkgs-to-pack-i">
+                    <i class="fas fa-hand-holding-medical"></i>
+                </div>
+            </div>
+
+            <div class="card kpi-card">
+                <div class="kpi-content">
+                    <span class="kpi-label">Ready for Dispatch</span>
+                    <span class="kpi-value packed-pkgs">12</span>
+                    <span class="kpi-trend">Packages in queue</span>
+                </div>
+                <div class="kpi-icon packed-pkgs-i">
+                    <i class="fas fa-boxes-packing"></i>
+                </div>
+            </div>
+
+            <div class="card kpi-card">
+                <div class="kpi-content">
+                    <span class="kpi-label">Active In-Transit</span>
+                    <span class="kpi-value in-transit">08</span>
+                    <span class="kpi-trend">Currently on road</span>
+                </div>
+                <div class="kpi-icon in-transit-i">
+                    <i class="fas fa-truck-moving"></i>
+                </div>
+            </div>
+
+        </section>
+
         <section class="stock-alerts card layout-section">
             <div class="card-title-container">
                 <h2>Stock Alerts</h2>
@@ -37,18 +73,145 @@
         </section>
 
         <section class="pending-orders card layout-section">
-            <h2>Pending Orders</h2>
+            <h2>Pending Orders Packages</h2>
             <div class="order-cards-container"></div>
         </section>
+
+        <div class="card table-card">
+            <div class="card-header-actions">
+                <h3><i class="fas fa-dolly"></i> Ready for Dispatch</h3>
+                <span class="badge-info">12 Packages Pending Dispatch</span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="dispatch-table">
+                    <thead>
+                        <tr>
+                            <th>Package ID</th>
+                            <th>Order ID</th>
+                            <th>Destination</th>
+                            <th>Driver Assigned</th>
+                            <th>Vehicle No. Plate</th>
+                            <th>Storage Req.</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong class="pkg-id">PKG-445</strong></td>
+                            <td class="ord-id">ORD-905</td>
+                            <td>Central Pharmacy</td>
+                            <td>
+                                <div class="user-info">
+                                    <i class="fas fa-user-circle"></i> Jane Wilson
+                                </div>
+                            </td>
+                            <td><span class="plate-number">KBD 123X</span></td>
+                            <td><span class="badge R">R</span></td>
+                            <td>
+                                <button class="btn-dispatch">
+                                    <i class="fas fa-check-circle"></i> Confirm Dispatch
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong class="pkg-id">PKG-446</strong></td>
+                            <td class="ord-id">ORD-908</td>
+                            <td>City General</td>
+                            <td>
+                                <div class="user-info">
+                                    <i class="fas fa-user-circle"></i> John Doe
+                                </div>
+                            </td>
+                            <td><span class="plate-number">KCC 789Y</span></td>
+                            <td><span class="badge A">A</span></td>
+                            <td>
+                                <button class="btn-dispatch">
+                                    <i class="fas fa-check-circle"></i> Confirm Dispatch
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card table-card">
+            <div class="card-header-actions">
+                <h3><i class="fas fa-truck-fast"></i> In-Transit Monitoring</h3>
+                <span class="badge-info">8 Shipments Active</span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="transit-table">
+                    <thead>
+                        <tr>
+                            <th>Delivery ID</th>
+                            <th>Package ID</th>
+                            <th>Destination</th>
+                            <th>Driver / Vehicle</th>
+                            <th>Dispatch Date</th>
+                            <th>Current Status</th>
+                            <th class="text-center">Management Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>#DLV-8825</strong></td>
+                            <td><span class="pkg-id">PKG-445</span></td>
+                            <td>Central Pharmacy</td>
+                            <td>
+                                <div class="user-info">
+                                    <span class="driver-name">Jane Wilson</span>
+                                    <span class="plate-number">KBD 123X</span>
+                                </div>
+                            </td>
+                            <td>2026-03-01</td>
+                            <td><span class="status-badge badge-dispatched">Dispatched</span></td>
+                            <td class="action-cell">
+                                <button class="btn-action btn-delay" title="Mark as Delayed">
+                                    <i class="fas fa-clock"></i> Delay
+                                </button>
+                                <button class="btn-action btn-delivered" title="Confirm Delivery">
+                                    <i class="fas fa-house-circle-check"></i> Delivered
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>#DLV-8821</strong></td>
+                            <td><span class="pkg-id">PKG-440</span></td>
+                            <td>City General Hospital</td>
+                            <td>
+                                <div class="user-info">
+                                    <span class="driver-name">John Doe</span>
+                                    <span class="plate-number">KCC 789Y</span>
+                                </div>
+                            </td>
+                            <td>2026-02-28</td>
+                            <td><span class="status-badge badge-delayed">Delayed</span></td>
+                            <td class="action-cell">
+                                <button class="btn-action btn-delay" disabled
+                                    style="opacity: 0.5; cursor: not-allowed;">
+                                    <i class="fas fa-clock"></i> Delayed
+                                </button>
+                                <button class="btn-action btn-delivered">
+                                    <i class="fas fa-house-circle-check"></i> Delivered
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <div id="orderOverlay" class="overlay">
             <div class="overlay-content">
                 <header class="overlay-header">
                     <div class="order-info">
-                        <h2>Order #<span id="displayOrderId"></span> for <span id="hospital-name">Hospital</span></h2>
+                        <h2>Package <span id="displayOrderId"></span> for <span id="hospital-name">Hospital</span></h2>
                         <div class="order-date-status">
                             <p>Order Created On: <span class="status-tag" id="date-confirmed"></span></p>
-                            <p>Status: <span class="status-tag">Ready for Packing</span></p>
+                            <p>Storage Temperature: <span class="badge A" id="tempBadge"></span></p>
                         </div>
                     </div>
                     <button class="close-overlay-btn js-close-overlay-btn">
@@ -63,6 +226,7 @@
                         <thead>
                             <tr>
                                 <th>Item Details</th>
+                                <th>Shelf Id</th>
                                 <th>Batch/Lot No.</th>
                                 <th>Qty to Pack</th>
                                 <th>Unit</th>
@@ -76,14 +240,8 @@
 
                     <div class="package-weight-container">
                         <label for="packageWeightInput">Enter Package Weight in KG</label>
-                        <input
-                            type="number"
-                            id="packageWeightInput"
-                            class="package-weight-input"
-                            placeholder="Enter Package Weight"
-                            min="0"
-                            step="0.01"
-                        >
+                        <input type="number" id="packageWeightInput" class="package-weight-input"
+                            placeholder="Enter Package Weight" min="0" step="0.01">
                     </div>
 
                     <button class="packed-btn" id="packedBtn">

@@ -15,15 +15,105 @@ body {
     flex-direction: column;
 }
 
+/*KPI Grid Layout*/
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+/*KPI Card Styling*/
+.kpi-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease-in-out;
+}
+
+.kpi-card:hover{
+    transform: translateY(-3px);
+}
+
+.kpi-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.kpi-value {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+
+.kpi-trend {
+    font-size: 0.75rem;
+    color: var(--color-quarantine);
+    font-weight: 500;
+}
+
+/*Icon Containers*/
+.kpi-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+/*Color Theme Overrides*/
+.packed-pkgs {
+    color: var(--packed);
+}
+
+.in-transit {
+    color: var(--dispatched);
+}
+
+.packed-pkgs-i {
+    background: #eff6ff;
+    color: var(--packed);
+}
+
+.in-transit-i {
+    background: #ecfeff;
+    color: var(--dispatched);
+}
+
+/*Purple Theme for Packing*/
+.pkgs-to-pack {
+    color: var(--processing);
+}
+
+.pkgs-to-pack-i {
+    background: #f5f3ff;
+    color: var(--processing);
+    border: 1px solid #ddd6fe;
+}
+
 /* Dashboard Stack Layout */
 .dashboard-stack {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     gap: 20px;
     padding: 20px;
-    max-width: 1200px; 
+    max-width: 1200px;
     width: 95%;
-    margin: 20px auto; 
+    margin: 20px auto;
     flex-grow: 1;
 }
 
@@ -31,7 +121,6 @@ body {
     background-color: var(--color-white);
     padding: 25px;
     border-radius: 8px;
-    box-shadow: var(--shadow-subtle);
 }
 
 h2 {
@@ -45,7 +134,7 @@ h2 {
 .horizontal-actions {
     display: flex;
     gap: 15px;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
 }
 
 .action-btn {
@@ -68,7 +157,7 @@ h2 {
     font-size: 1.1rem;
     font-weight: 700;
     text-align: center;
-    flex-grow: 1; 
+    flex-grow: 1;
     min-width: 200px;
 }
 
@@ -78,6 +167,7 @@ h2 {
     color: var(--color-white);
     text-align: center;
 }
+
 .action-btn.primary:hover {
     background-color: #0056b3;
 }
@@ -86,6 +176,7 @@ h2 {
     background-color: var(--color-red-critical);
     color: var(--color-white);
 }
+
 .action-btn.danger:hover {
     background-color: #a71d2a;
 }
@@ -95,6 +186,7 @@ h2 {
     color: var(--color-text);
     border: 1px solid var(--color-quarantine);
 }
+
 .action-btn.outline:hover {
     background-color: var(--color-background);
 }
@@ -114,10 +206,10 @@ h2 {
     border: 1px solid #E9ECEF;
     border-radius: 8px;
     padding: 20px;
-    width: calc(33.33% - 14px); 
+    width: calc(33.33% - 14px);
     min-width: 250px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
-    cursor: pointer; 
+    cursor: pointer;
     transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
 }
 
@@ -130,7 +222,18 @@ h2 {
     font-size: 1.1rem;
     font-weight: 600;
     margin-bottom: 5px;
+}
+
+.pkg-id {
     color: var(--color-secondary);
+}
+
+.ord-id {
+    color: var(--color-primary);
+}
+
+.pkg-value {
+    color: black;
 }
 
 .order-card-item p {
@@ -148,7 +251,7 @@ h2 {
 
 /* Overlay Background */
 .overlay {
-    display: none; 
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -164,9 +267,8 @@ h2 {
 .overlay-content {
     background-color: #fff;
     width: 90%;
-    max-width: 750px; /* Narrowed slightly since we have fewer columns */
     border-radius: 8px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     overflow: hidden;
 }
 
@@ -179,14 +281,17 @@ h2 {
     background-color: #f8f9fa;
     border-bottom: 1px solid #dee2e6;
 }
-.order-info{
+
+.order-info {
     width: 100%;
 }
-.order-info h2{
+
+.order-info h2 {
     color: var(--color-secondary);
     text-align: center;
 }
-.order-date-status{
+
+.order-date-status {
     display: flex;
     justify-content: space-evenly;
 }
@@ -201,7 +306,9 @@ h2 {
 }
 
 /* Table Styling */
-.overlay-body { padding: 25px; }
+.overlay-body {
+    padding: 25px;
+}
 
 .instruction {
     margin-bottom: 20px;
@@ -228,13 +335,18 @@ h2 {
     border-bottom: 1px solid #eee;
 }
 
-.batch-tag {
+.batch-tag,
+.shelf-tag {
     background: #fff3cd;
     padding: 4px 8px;
     border: 1px solid #ffeeba;
     border-radius: 4px;
     font-family: 'Courier New', Courier, monospace;
     font-weight: 600;
+}
+
+.shelf-tag {
+    background: #cef8ce;
 }
 
 .qty-cell {
@@ -283,7 +395,237 @@ h2 {
     cursor: pointer;
 }
 
-.packed-btn:hover { background-color: #007000; }
+.packed-btn:hover {
+    background-color: #007000;
+}
+
+/*Dispatch Table Container*/
+.table-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+/*Card Header with Stats*/
+.card-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.card-header-actions h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: black;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/*The Table Layout*/
+.table-responsive {
+    overflow-x: auto;
+}
+
+.dispatch-table,
+.transit-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.table-responsive thead th {
+    background-color: var(--color-primary);
+    padding: 1rem 1.5rem;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.table-responsive tbody td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.table-responsive tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/*Specific Column Styling*/
+
+.dispatch-table strong {
+    font-weight: 600;
+}
+
+/* User/Driver Info */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+.user-info i {
+    color: var(--color-quarantine);
+    font-size: 1.1rem;
+}
+
+/* Vehicle Plate Number (High Contrast) */
+.plate-number {
+    font-family: 'Inter', monospace;
+    background: #f1f5f9;
+    padding: 4px 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: 0.5px;
+}
+
+/*The Confirm Dispatch Button*/
+.btn-dispatch {
+    background: transparent;
+    color: var(--color-secondary);
+    border: 1px solid var(--color-secondary);
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+}
+
+.btn-dispatch i {
+    font-size: 1rem;
+}
+
+.btn-dispatch:hover {
+    background-color: var(--color-secondary);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+}
+
+.btn-dispatch:active {
+    transform: translateY(0);
+}
+
+/*Status Badge for Header*/
+.badge-info {
+    background: #eff6ff;
+    color: #2563eb;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid #dbeafe;
+}
+
+/*Transit Specific Styles*/
+
+.action-cell {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    white-space: nowrap;
+}
+
+.btn-action {
+    border: none;
+    padding: 0.5rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+/* Delayed Button - Warning Style */
+.btn-delay {
+    background-color: #FFF7ED;
+    color: #EA580C;
+    border: 1px solid #FFEDD5;
+}
+
+.btn-delay:hover {
+    background-color: #EA580C;
+    color: white;
+}
+
+/* Delivered Button - Success Style */
+.btn-delivered {
+    background-color: #F0FDF4;
+    color: var(--color-secondary);
+    border: 1px solid #DCFCE7;
+}
+
+.btn-delivered:hover {
+    background-color: var(--color-secondary);
+    color: white;
+}
+
+/* User-Info adjustment for Transit table */
+.transit-table .user-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.transit-table .plate-number {
+    font-size: 0.75rem;
+    padding: 1px 5px;
+}
+
+/* Status badges */
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: white;
+}
+
+.badge-dispatched {
+    background: var(--dispatched);
+}
+
+.badge-delayed {
+    background: var(--delayed);
+    color: black;
+}
+
+.badge-delivered {
+    background: var(--color-secondary);
+}
+
+.badge-issues {
+    background: var(--deliveredIssue);
+}
+
+.badge-completed {
+    background: var(--completed);
+}
 
 /* Footer Styling */
 .main-footer {
@@ -297,11 +639,13 @@ h2 {
 /* Responsive adjustments */
 @media (max-width: 850px) {
     .order-card-item {
-        width: calc(50% - 10px); 
+        width: calc(50% - 10px);
     }
+
     .horizontal-actions {
-        flex-direction: column; 
+        flex-direction: column;
     }
+
     .action-btn.large {
         min-width: 100%;
     }
@@ -309,6 +653,6 @@ h2 {
 
 @media (max-width: 550px) {
     .order-card-item {
-        width: 100%; 
+        width: 100%;
     }
 }

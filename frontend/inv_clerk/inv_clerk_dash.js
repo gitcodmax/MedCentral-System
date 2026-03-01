@@ -114,9 +114,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             ordersContainer.innerHTML += `
                 <div class="order-card-item">
-                    <h3>Order #${orderId}</h3>
-                    <p>Hospital: ${orderDetails.customerName}</p>
-                    <p>Items: ${orderDetails.items.length} Item(s)</p>
+                    <h3>
+                        <span class="pkg-id">ORD-8821-A</span> |
+                        <span class="ord-id">${orderId}</span>
+                    </h3>
+                    <p>Storage Temp.: <span class="pkg-value">Ambient</span></p>
+                    <p>Hospital: <span class="pkg-value">${orderDetails.customerName}</span></p>
+                    <p>Items: <span class="pkg-value">${orderDetails.items.length} Item(s)</span></p>
                     <button class="action-btn primary small-pack-btn js-pack-order-btn" data-order-id=${orderId}>Pack Order</button>
                 </div>
             `
@@ -137,9 +141,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     for (const orderId in order) {
                         if (btnOrderId === orderId) {
                             const orderDetails = order[orderId]
-                            document.getElementById('displayOrderId').innerText = orderId
+                            document.getElementById('displayOrderId').innerText = 'ORD-8821-A'
                             document.getElementById('hospital-name').innerText = orderDetails.customerName
                             document.getElementById('date-confirmed').innerText = orderDetails.orderCreatedDate
+                            document.getElementById('tempBadge').classList.add = 'A'
+                            document.getElementById('tempBadge').textContent = 'A'
 
                             const orderItems = orderDetails.items
                             orderItems.forEach((item) => {
@@ -149,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                             <strong>${item.itemName}</strong><br>
                                             <small>SKU: ${item.sku}</small>
                                         </td>
+                                        <td><span class="shelf-tag">AISLE-04-RACK-B</span></td>
                                         <td><span class="batch-tag">${item.batchNumber}</span></td>
                                         <td class="qty-cell">${item.quantityToPack}</td>
                                         <td>${item.unitOfMeasure}</td>
