@@ -1,4 +1,4 @@
-export function renderSidebar(){
+export function renderSidebar() {
   const logoImage = `<img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">`
   const sidebarElem = document.getElementById('sidebar')
 
@@ -54,15 +54,15 @@ export function renderSidebar(){
   // Set up the buttons to open and close the sidebar
   sidebarElem.addEventListener('click', (e) => {
     const btn = e.target.closest('button')
-    if(!btn) return;
+    if (!btn) return;
 
-    if(btn.classList.contains('close-sidebar-btn')){
+    if (btn.classList.contains('close-sidebar-btn')) {
       sidebarElem.classList.add('collapsed')
       document.querySelector('.top-header')
         .classList.add('collapsed')
     }
 
-    if(btn.classList.contains('open-sidebar-btn')){
+    if (btn.classList.contains('open-sidebar-btn')) {
       sidebarElem.classList.remove('collapsed')
       document.querySelector('.top-header')
         .classList.remove('collapsed')
@@ -92,4 +92,39 @@ export function renderSidebar(){
         </div>
       </div>
     `
+}
+
+export function renderReportsNavbar(pageName) {
+  document.querySelector('.js-header-left')
+    .innerHTML = `
+      <div class="reports-button-group">
+
+        <a href="/admin_portal/reports/inv_report.html" class="nav-btn" id="invReportLink">
+          <span class="icon bg-blue-lite"><i class="fas fa-boxes"></i></span>
+          <span class="label">Inventory Report</span>
+        </a>
+
+        <a href="/admin_portal/reports/low_stock_report.html" class="nav-btn" id="lowStockReportLink">
+          <span class="icon bg-red-lite"><i class="fas fa-exclamation-triangle"></i></span>
+          <span class="label">Low Stock</span>
+        </a>
+
+        <a href="/admin_portal/reports/distribution_report.html" class="nav-btn" id="distroReportLink">
+          <span class="icon bg-purple-lite"><i class="fas fa-hospital-symbol"></i></span>
+          <span class="label">Distribution</span>
+        </a>
+
+      </div>
+    `
+
+  if(pageName === 'distribution_report'){
+    document.getElementById('distroReportLink')
+      .classList.add('active')
+  }else if(pageName === 'low_stock_report'){
+    document.getElementById('lowStockReportLink')
+      .classList.add('active')
+  }else if(pageName === 'inventory_report'){
+    document.getElementById('invReportLink')
+      .classList.add('active')
+  }
 }
