@@ -8,199 +8,209 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="/global.css">
+  <link rel="stylesheet" href="/admin_portal/sidebar.css">
   <link rel="stylesheet" href="/admin_portal/admin_portal_global.css">
   <link rel="stylesheet" href="/admin_portal/reports/distribution_report.css">
 </head>
 
 <body>
 
-  <div class="container">
-    <header class="page-header">
-      <div class="header-titles">
-        <h1>Distribution Report</h1>
-        <p>Overview of warehouse delivery and distribution activities</p>
-      </div>
-    </header>
+  <div class="app-container">
+    <div class="sidebar" id="sidebar"></div>
 
-    <section class="kpi-grid">
-      <div class="card kpi-card tot-deliv-card">
-        <div class="kpi-content">
-          <span class="kpi-label">Total Deliveries</span>
-          <span class="kpi-value tot-deliveries-val">1,428</span>
-        </div>
-        <div class="kpi-icon bg-blue-lite">
-          <i class="fas fa-truck-ramp-box"></i>
-        </div>
-      </div>
-      <div class="card kpi-card deliv-card">
-        <div class="kpi-content">
-          <span class="kpi-label">Delivered</span>
-          <span class="kpi-value teal-text">1,240</span>
-        </div>
-        <div class="kpi-icon bg-teal-lite">
-          <i class="fa-solid fa-truck-fast"></i>
-        </div>
-      </div>
-      <div class="card kpi-card completed-card">
-        <div class="kpi-content">
-          <span class="kpi-label">Completed</span>
-          <span class="kpi-value green-text">1,185</span>
-        </div>
-        <div class="kpi-icon bg-green-lite">
-          <i class="fas fa-house-medical-circle-check"></i>
-        </div>
-      </div>
-      <div class="card kpi-card delayed-deliv-card">
-        <div class="kpi-content">
-          <span class="kpi-label">Delayed Deliveries</span>
-          <span class="kpi-value orange-text">14</span>
-        </div>
-        <div class="kpi-icon bg-orange-lite">
-          <i class="fas fa-clock-rotate-left"></i>
-        </div>
-      </div>
-    </section>
+    <div class="main-wrapper">
+      <header class="top-header" id="topHeader"></header>
 
-    <section class="card filter-section">
-      <div class="filter-row">
-        <div class="filter-group">
-          <label>From Date</label>
-          <input type="date">
-        </div>
-        <div class="filter-group">
-          <label>To Date</label>
-          <input type="date">
-        </div>
-        <div class="filter-group">
-          <label>Destination</label>
-          <select>
-            <option>All Hospitals</option>
-            <option>City General</option>
-            <option>St. Mary's Clinic</option>
-            <option>Northwest Medical</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label>Status</label>
-          <select>
-            <option>All Statuses</option>
-            <option>Dispatched</option>
-            <option>Delayed</option>
-            <option>Delivered</option>
-            <option>Delivered w/ Issues</option>
-            <option>Completed</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label>Search ID</label>
-          <input type="text" placeholder="Order or Delivery ID...">
-        </div>
-        <button class="btn-apply">Apply Filters</button>
-      </div>
-    </section>
-
-
-    <section class="card table-card">
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr>
-              <th>Delivery ID</th>
-              <th>Package ID</th>
-              <th>Order ID</th>
-              <th>Dispatch Date</th>
-              <th>Destination</th>
-              <th>Driver</th>
-              <th class="text-right">Total Units</th>
-              <th>Status</th>
-              <th class="text-right">Delivery Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="id">#DLV-8821</td>
-              <td class="id pkg-id">PKG-440</td>
-              <td class="id ord-id">ORD-901</td>
-              <td>2026-02-28</td>
-              <td>City General Hospital</td>
-              <td>John Doe</td>
-              <td class="text-right">450</td>
-              <td><span class="distro-badge badge-dispatched">Dispatched</span></td>
-              <td class="text-right">--</td>
-            </tr>
-            <tr>
-              <td class="id">#DLV-8819</td>
-              <td class="id pkg-id">PKG-438</td>
-              <td class="id ord-id">ORD-898</td>
-              <td>2026-02-27</td>
-              <td>St. Mary's Clinic</td>
-              <td>Sarah Smith</td>
-              <td class="text-right">120</td>
-              <td><span class="distro-badge badge-completed">Completed</span></td>
-              <td class="text-right">14:20</td>
-            </tr>
-            <tr>
-              <td class="id">#DLV-8815</td>
-              <td class="id pkg-id">PKG-432</td>
-              <td class="id ord-id">ORD-892</td>
-              <td>2026-02-27</td>
-              <td>Northwest Medical</td>
-              <td>Mike Ross</td>
-              <td class="text-right">85</td>
-              <td><span class="distro-badge badge-delayed">Delayed</span></td>
-              <td class="text-right">--</td>
-            </tr>
-            <tr>
-              <td class="id">#DLV-8810</td>
-              <td class="id pkg-id">PKG-425</td>
-              <td class="id ord-id">ORD-885</td>
-              <td>2026-02-26</td>
-              <td>Eastside Pediatrics</td>
-              <td>John Doe</td>
-              <td class="text-right">300</td>
-              <td><span class="distro-badge badge-delivered">Delivered</span></td>
-              <td class="text-right">09:45</td>
-            </tr>
-            <tr>
-              <td class="id">#DLV-8805</td>
-              <td class="id pkg-id">PKG-418</td>
-              <td class="id ord-id">ORD-880</td>
-              <td>2026-02-26</td>
-              <td>City General Hospital</td>
-              <td>Jane Wilson</td>
-              <td class="text-right">15</td>
-              <td><span class="distro-badge badge-issues">Delivered w/ Issues</span></td>
-              <td class="text-right">11:15</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-
-    <section class="charts-grid">
-      <div class="card chart-card">
-        <h3>Distribution Volume Over Time</h3>
-        <div class="chart-placeholder">
-          <div class="placeholder-text">
-            <i class="fas fa-chart-line fa-2x"></i>
-            <p>Line Chart Placeholder</p>
+      <div class="container">
+        <header class="report-page-header">
+          <div class="header-text">
+            <h2>Distribution Report</h2>
+            <p>Overview of warehouse delivery and distribution activities</p>
           </div>
-        </div>
-      </div>
+        </header>
 
-      <div class="card chart-card">
-        <h3>Distribution by Destination</h3>
-        <div class="chart-placeholder">
-          <div class="placeholder-text">
-            <i class="fas fa-chart-bar fa-2x"></i>
-            <p>Bar Chart Placeholder</p>
+        <section class="kpi-grid">
+          <div class="card kpi-card tot-deliv-card">
+            <div class="kpi-content">
+              <span class="kpi-label">Total Deliveries</span>
+              <span class="kpi-value tot-deliveries-val">1,428</span>
+            </div>
+            <div class="kpi-icon bg-blue-lite">
+              <i class="fas fa-truck-ramp-box"></i>
+            </div>
           </div>
-        </div>
+          <div class="card kpi-card deliv-card">
+            <div class="kpi-content">
+              <span class="kpi-label">Delivered</span>
+              <span class="kpi-value teal-text">1,240</span>
+            </div>
+            <div class="kpi-icon bg-teal-lite">
+              <i class="fa-solid fa-truck-fast"></i>
+            </div>
+          </div>
+          <div class="card kpi-card completed-card">
+            <div class="kpi-content">
+              <span class="kpi-label">Completed</span>
+              <span class="kpi-value green-text">1,185</span>
+            </div>
+            <div class="kpi-icon bg-green-lite">
+              <i class="fas fa-house-medical-circle-check"></i>
+            </div>
+          </div>
+          <div class="card kpi-card delayed-deliv-card">
+            <div class="kpi-content">
+              <span class="kpi-label">Delayed Deliveries</span>
+              <span class="kpi-value orange-text">14</span>
+            </div>
+            <div class="kpi-icon bg-orange-lite">
+              <i class="fas fa-clock-rotate-left"></i>
+            </div>
+          </div>
+        </section>
+
+        <section class="card filter-section">
+          <div class="filter-row">
+            <div class="filter-group">
+              <label>From Date</label>
+              <input type="date">
+            </div>
+            <div class="filter-group">
+              <label>To Date</label>
+              <input type="date">
+            </div>
+            <div class="filter-group">
+              <label>Destination</label>
+              <select>
+                <option>All Hospitals</option>
+                <option>City General</option>
+                <option>St. Mary's Clinic</option>
+                <option>Northwest Medical</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Status</label>
+              <select>
+                <option>All Statuses</option>
+                <option>Dispatched</option>
+                <option>Delayed</option>
+                <option>Delivered</option>
+                <option>Delivered w/ Issues</option>
+                <option>Completed</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Search ID</label>
+              <input type="text" placeholder="Order or Delivery ID...">
+            </div>
+            <button class="btn-apply">Apply Filters</button>
+          </div>
+        </section>
+
+
+        <section class="card table-card">
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Delivery ID</th>
+                  <th>Package ID</th>
+                  <th>Order ID</th>
+                  <th>Dispatch Date</th>
+                  <th>Destination</th>
+                  <th>Driver</th>
+                  <th class="text-right">Total Units</th>
+                  <th>Status</th>
+                  <th class="text-right">Delivery Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="id">#DLV-8821</td>
+                  <td class="id pkg-id">PKG-440</td>
+                  <td class="id ord-id">ORD-901</td>
+                  <td>2026-02-28</td>
+                  <td>City General Hospital</td>
+                  <td>John Doe</td>
+                  <td class="text-right">450</td>
+                  <td><span class="distro-badge badge-dispatched">Dispatched</span></td>
+                  <td class="text-right">--</td>
+                </tr>
+                <tr>
+                  <td class="id">#DLV-8819</td>
+                  <td class="id pkg-id">PKG-438</td>
+                  <td class="id ord-id">ORD-898</td>
+                  <td>2026-02-27</td>
+                  <td>St. Mary's Clinic</td>
+                  <td>Sarah Smith</td>
+                  <td class="text-right">120</td>
+                  <td><span class="distro-badge badge-completed">Completed</span></td>
+                  <td class="text-right">14:20</td>
+                </tr>
+                <tr>
+                  <td class="id">#DLV-8815</td>
+                  <td class="id pkg-id">PKG-432</td>
+                  <td class="id ord-id">ORD-892</td>
+                  <td>2026-02-27</td>
+                  <td>Northwest Medical</td>
+                  <td>Mike Ross</td>
+                  <td class="text-right">85</td>
+                  <td><span class="distro-badge badge-delayed">Delayed</span></td>
+                  <td class="text-right">--</td>
+                </tr>
+                <tr>
+                  <td class="id">#DLV-8810</td>
+                  <td class="id pkg-id">PKG-425</td>
+                  <td class="id ord-id">ORD-885</td>
+                  <td>2026-02-26</td>
+                  <td>Eastside Pediatrics</td>
+                  <td>John Doe</td>
+                  <td class="text-right">300</td>
+                  <td><span class="distro-badge badge-delivered">Delivered</span></td>
+                  <td class="text-right">09:45</td>
+                </tr>
+                <tr>
+                  <td class="id">#DLV-8805</td>
+                  <td class="id pkg-id">PKG-418</td>
+                  <td class="id ord-id">ORD-880</td>
+                  <td>2026-02-26</td>
+                  <td>City General Hospital</td>
+                  <td>Jane Wilson</td>
+                  <td class="text-right">15</td>
+                  <td><span class="distro-badge badge-issues">Delivered w/ Issues</span></td>
+                  <td class="text-right">11:15</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+
+        <section class="charts-grid">
+          <div class="card chart-card">
+            <h3>Distribution Volume Over Time</h3>
+            <div class="chart-placeholder">
+              <div class="placeholder-text">
+                <i class="fas fa-chart-line fa-2x"></i>
+                <p>Line Chart Placeholder</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card chart-card">
+            <h3>Distribution by Destination</h3>
+            <div class="chart-placeholder">
+              <div class="placeholder-text">
+                <i class="fas fa-chart-bar fa-2x"></i>
+                <p>Bar Chart Placeholder</p>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
-    </section>
+    </div>
   </div>
 
+  <script type="module" src="/admin_portal/reports/distribution_report.js"></script>
 </body>
 
 </html>
