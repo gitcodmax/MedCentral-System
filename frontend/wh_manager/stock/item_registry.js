@@ -60,7 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             <div class="form-group margin-set">
                                 <label>Price per Selling Unit (Ksh)</label>
-                                <input type="number" id="pricePerUnit" placeholder="0.00" required>
+                                <input type="number" id="pricePerUnit" placeholder="0.00" min='1' required>
+                            </div>
+
+                            <div class="form-group margin-set">
+                                <label>Units per Bulk</label>
+                                <input type="number" id="pricePerUnit" placeholder="0" min=1 required>
                             </div>
 
                             <button type="submit" class="submit-btn">Add to Registry</button>   
