@@ -356,7 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .innerHTML = `
     <div class="dashboard-header">
       <div class="page-title">
-        <h1>Inventory Management</h1>
+        <h2>Inventory Management</h2>
       </div>
       <div class="left-header-actions">
         <button class="btn btn-open-config" id="openConfigBtn" title="System Configuration">

@@ -64,9 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
           <section class="section-card">
             <div class="section-title">
               Recent Orders
-              <button class="view-all-orders-btn">
+              <a href="/admin_portal/orders.html" class="view-all-orders-link">
                 View All
-              </button>
+              </a>
             </div>
             <table>
               <thead>

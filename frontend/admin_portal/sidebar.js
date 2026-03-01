@@ -18,38 +18,58 @@ export function renderSidebar() {
 
     <ul class="nav-links">
       <li class="nav-item">
-        <a href="#" class="nav-link active">
+        <a href="/admin_portal/dash.html" class="nav-link" id="dashLink">
           <i class="fas fa-th-large"></i> <span>Dashboard</span>
         </a>
       </li>
       <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="/admin_portal/hospitals.html" class="nav-link" id="hospitalsLink">
           <i class="fas fa-hospital"></i> <span>Hospitals</span>
         </a>
       </li>
       <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="/admin_portal/inventory.html" class="nav-link" id="inventoryLink">
           <i class="fas fa-boxes"></i> <span>Inventory</span>
         </a>
       </li>
       <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="/admin_portal/orders.html" class="nav-link" id="ordersLink">
           <i class="fas fa-clipboard-list"></i> <span>Orders</span>
         </a>
       </li>
       <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="/admin_portal/users.html" class="nav-link" id="usersLink">
           <i class="fas fa-users"></i> <span>Users</span>
         </a>
       </li>
       <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="/admin_portal/reports/inv_report.html" class="nav-link" id="reportsLink">
           <i class="fas fa-chart-pie"></i> <span>Reports</span>
         </a>
       </li>
     </ul>
   
   `
+  const windowLink = window.location.href
+  if(windowLink.includes('dash')){
+    document.getElementById('dashLink')
+      .classList.add('active')
+  }else if(windowLink.includes('hospitals')){
+    document.getElementById('hospitalsLink')
+      .classList.add('active')
+  }else if(windowLink.includes('inventory')){
+    document.getElementById('inventoryLink')
+      .classList.add('active')
+  }else if(windowLink.includes('orders')){
+    document.getElementById('ordersLink')
+      .classList.add('active')
+  }else if(windowLink.includes('users')){
+    document.getElementById('usersLink')
+      .classList.add('active')
+  }else if(windowLink.includes('reports')){
+    document.getElementById('reportsLink')
+      .classList.add('active')
+  }
 
   // Set up the buttons to open and close the sidebar
   sidebarElem.addEventListener('click', (e) => {
@@ -94,6 +114,7 @@ export function renderSidebar() {
     `
 }
 
+// Navigation bar to reports pages
 export function renderReportsNavbar(pageName) {
   document.querySelector('.js-header-left')
     .innerHTML = `
