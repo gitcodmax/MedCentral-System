@@ -33,7 +33,7 @@
           <div class="card kpi-card tot-deliv-card">
             <div class="kpi-content">
               <span class="kpi-label">Total Deliveries</span>
-              <span class="kpi-value tot-deliveries-val">1,428</span>
+              <span class="kpi-value tot-deliveries-val" id="totDelivValue"></span>
             </div>
             <div class="kpi-icon bg-blue-lite">
               <i class="fas fa-truck-ramp-box"></i>
@@ -42,7 +42,7 @@
           <div class="card kpi-card deliv-card">
             <div class="kpi-content">
               <span class="kpi-label">Delivered</span>
-              <span class="kpi-value teal-text">1,240</span>
+              <span class="kpi-value teal-text" id="deliveredCount"></span>
             </div>
             <div class="kpi-icon bg-teal-lite">
               <i class="fa-solid fa-truck-fast"></i>
@@ -51,7 +51,7 @@
           <div class="card kpi-card completed-card">
             <div class="kpi-content">
               <span class="kpi-label">Completed</span>
-              <span class="kpi-value green-text">1,185</span>
+              <span class="kpi-value green-text" id="completedDeliv"></span>
             </div>
             <div class="kpi-icon bg-green-lite">
               <i class="fas fa-house-medical-circle-check"></i>
@@ -60,7 +60,7 @@
           <div class="card kpi-card delayed-deliv-card">
             <div class="kpi-content">
               <span class="kpi-label">Delayed Deliveries</span>
-              <span class="kpi-value orange-text">14</span>
+              <span class="kpi-value orange-text" id="delayedDeliv"></span>
             </div>
             <div class="kpi-icon bg-orange-lite">
               <i class="fas fa-clock-rotate-left"></i>
@@ -123,63 +123,7 @@
                   <th class="text-right">Delivery Time</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td class="id">#DLV-8821</td>
-                  <td class="id pkg-id">PKG-440</td>
-                  <td class="id ord-id">ORD-901</td>
-                  <td>2026-02-28</td>
-                  <td>City General Hospital</td>
-                  <td>John Doe</td>
-                  <td class="text-right">450</td>
-                  <td><span class="distro-badge badge-dispatched">Dispatched</span></td>
-                  <td class="text-right">--</td>
-                </tr>
-                <tr>
-                  <td class="id">#DLV-8819</td>
-                  <td class="id pkg-id">PKG-438</td>
-                  <td class="id ord-id">ORD-898</td>
-                  <td>2026-02-27</td>
-                  <td>St. Mary's Clinic</td>
-                  <td>Sarah Smith</td>
-                  <td class="text-right">120</td>
-                  <td><span class="distro-badge badge-completed">Completed</span></td>
-                  <td class="text-right">14:20</td>
-                </tr>
-                <tr>
-                  <td class="id">#DLV-8815</td>
-                  <td class="id pkg-id">PKG-432</td>
-                  <td class="id ord-id">ORD-892</td>
-                  <td>2026-02-27</td>
-                  <td>Northwest Medical</td>
-                  <td>Mike Ross</td>
-                  <td class="text-right">85</td>
-                  <td><span class="distro-badge badge-delayed">Delayed</span></td>
-                  <td class="text-right">--</td>
-                </tr>
-                <tr>
-                  <td class="id">#DLV-8810</td>
-                  <td class="id pkg-id">PKG-425</td>
-                  <td class="id ord-id">ORD-885</td>
-                  <td>2026-02-26</td>
-                  <td>Eastside Pediatrics</td>
-                  <td>John Doe</td>
-                  <td class="text-right">300</td>
-                  <td><span class="distro-badge badge-delivered">Delivered</span></td>
-                  <td class="text-right">09:45</td>
-                </tr>
-                <tr>
-                  <td class="id">#DLV-8805</td>
-                  <td class="id pkg-id">PKG-418</td>
-                  <td class="id ord-id">ORD-880</td>
-                  <td>2026-02-26</td>
-                  <td>City General Hospital</td>
-                  <td>Jane Wilson</td>
-                  <td class="text-right">15</td>
-                  <td><span class="distro-badge badge-issues">Delivered w/ Issues</span></td>
-                  <td class="text-right">11:15</td>
-                </tr>
-              </tbody>
+              <tbody id="deliveriesTbody"></tbody>
             </table>
           </div>
         </section>
@@ -189,20 +133,14 @@
           <div class="card chart-card">
             <h3>Distribution Volume Over Time</h3>
             <div class="chart-placeholder">
-              <div class="placeholder-text">
-                <i class="fas fa-chart-line fa-2x"></i>
-                <p>Line Chart Placeholder</p>
-              </div>
+              <canvas id="distroOverTimeLine"></canvas>
             </div>
           </div>
 
           <div class="card chart-card">
             <h3>Distribution by Destination</h3>
             <div class="chart-placeholder">
-              <div class="placeholder-text">
-                <i class="fas fa-chart-bar fa-2x"></i>
-                <p>Bar Chart Placeholder</p>
-              </div>
+              <canvas id="destDistroBar"></canvas>
             </div>
           </div>
         </section>
@@ -210,6 +148,7 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module" src="/admin_portal/reports/distribution_report.js"></script>
 </body>
 
