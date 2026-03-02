@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <label for="date-type">Filter Date By</label>
         <select id="date-type">
           <option value="creationDate">Creation Date</option>
-          <option value="packingDate">Packing Date</option>
+          <option value="completionDate">Completion Date</option>
         </select>
       </div>
 
@@ -53,9 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <tr>
                 <th>Order ID</th>
                 <th>Hospital Name</th>
+                <th>Packages</th>
+                <th>Total Items</th>
                 <th>Created On</th>
-                <th>Packed On</th>
-                <th>Status</th>
+                <th>Completed On</th>
             </tr>
         </thead>
         <tbody id="completedOrdersBody"></tbody>
@@ -68,23 +69,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const completedOrdersData = {
     "ORD-8821": {
       customerName: "St. Jude Medical Center",
-      creationDate: "2025-12-15",
-      packingDate: "2025-12-18",
-      status: "PENDING"
+      creationDate: "2026-02-15",
+      totalOrderItems: "12",
+      completionDate: "2026-02-20", 
+      packages: ["A", "R"]         
     },
     "ORD-8822": {
       customerName: "City General Clinic",
-      creationDate: "2025-12-16",
-      packingDate: "2025-12-19",
-      status: "SHIPPED"
+      creationDate: "2026-02-16",
+      totalOrderItems: "3",
+      completionDate: "2026-02-21",
+      packages: ["A"] 
     },
     "ORD-8823": {
       customerName: "Hope Children's Hospital",
-      creationDate: "2025-12-18",
-      packingDate: "2025-12-20",
-      status: "DELIVERED"
+      creationDate: "2026-02-18",
+      totalOrderItems: "22",
+      completionDate: "2026-02-22",
+      packages: ["C", "F", "R"]
     }
-  }
+  };
 
   //Completed orders table body
   const body = document.getElementById('completedOrdersBody');
@@ -148,11 +152,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return matchesSearch && matchesDate && matchesStatus
     })
 
+    body.innerHTML = '';
+    const noMatchContainerElem = document.querySelector('.js-no-match-container')
     if (filteredResults.length > 0) {
+      noMatchContainerElem.classList.add('hidden')
       displayOrders(body, filteredResults)
     } else {
-      body.innerHTML = '';
-      document.querySelector('.js-no-match-container').classList.remove('hidden')
+      noMatchContainerElem.classList.remove('hidden')
     }
   })
 
@@ -160,13 +166,17 @@ document.addEventListener('DOMContentLoaded', () => {
   function displayOrders(body, orders) {
     body.innerHTML = '';
     orders.forEach(([id, info]) => {
+      const packagesElems = info.packages.map(pkg => `<span class="badge ${pkg}"> ${pkg} </span>`).join('')
+      console.log()
+
       const row = `
             <tr>
                 <td class="order-id"><strong>${id}</strong></td>
                 <td>${info.customerName}</td>
+                <td>${packagesElems}</td>
+                <td>${info.totalOrderItems}</td>
                 <td>${info.creationDate}</td>
-                <td>${info.packingDate}</td>
-                <td><span class="status-badge">${info.status}</span></td>
+                <td><span class="completion-badge">${info.completionDate}</span></td>
             </tr>
         `;
       body.innerHTML += row;

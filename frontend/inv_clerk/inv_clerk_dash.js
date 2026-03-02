@@ -147,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
+    // Generate a packages list
     function getPackagesFromOrders(orders) {
         const packagesList = []
 

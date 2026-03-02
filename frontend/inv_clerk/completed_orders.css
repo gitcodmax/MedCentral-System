@@ -113,11 +113,11 @@ table {
 th {
   text-align: left;
   padding: 12px;
-  background: #f1f3f5;
+  background: var(--color-secondary);
   border-bottom: 2px solid var(--color-primary);
   font-size: 0.85rem;
   text-transform: uppercase;
-  color: #666;
+  color: white;
 }
 
 td {
@@ -129,7 +129,7 @@ td {
   color: var(--color-secondary);
 }
 
-.status-badge {
+.completion-badge {
   background: var(--color-primary);
   color: var(--color-white);
   padding: 4px 10px;
