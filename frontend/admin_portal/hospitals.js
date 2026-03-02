@@ -345,6 +345,36 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           </div>
 
+
+          <div class="modal-overlay" id="resetPasswordOverlay">
+            <div class="reset-pwd-modal-content" style="max-width: 400px;">
+              <div class="reset-pwd-modal-header">
+                  <h2>Reset Hospital Password</h2>
+                  <p class="reset-pwd-header-p">
+                      Resetting password for: <strong class="overlay-target-name" id="resetHosTarget"></strong>
+                  </p>
+              </div>
+
+              <form id="resetPasswordForm">
+                  <div class="form-group">
+                      <label for="newPassword">New Temporary Password</label>
+                      <div class="password-wrapper">
+                          <input type="password" id="newPassword" class="form-control" placeholder="••••••••"
+                              required>
+                          <button type="button" class="password-toggle">
+                              <i class="fas fa-eye"></i>
+                          </button>
+                      </div>
+                  </div>
+
+                  <div class="modal-footer">
+                      <button type="button" class="btn-cancel js-btn-close-overlay">Cancel</button>
+                      <button type="submit" class="btn-submit">Confirm Reset</button>
+                  </div>
+              </form>
+            </div>
+          </div>
+
         </main>
       </div>
     `
@@ -586,7 +616,8 @@ document.addEventListener('DOMContentLoaded', () => {
       <td class="action-btns">
         <button title="View" class="view-hos-btn" data-hos-id=${hos.id}><i class="fas fa-eye"></i></button>
         ${hos.status === 'archived' ? '' :
-          `<button title="Edit" class="edit-hos-btn" data-hos-id=${hos.id}><i class="fas fa-edit"></i></button>`
+          `<button title="Edit" class="edit-hos-btn" data-hos-id=${hos.id}><i class="fas fa-edit"></i></button>
+          <button class="reset-password-btn" data-hos-id=${hos.id} title="Reset Password"><i class="fas fa-key"></i></button>`
         }
         ${activeDeactiveBtnElem}
       </td>
@@ -780,6 +811,15 @@ document.addEventListener('DOMContentLoaded', () => {
         handleOverlay(deactivateHosOverlayElem)
 
         document.querySelector('.js-deactivate-hosp-name')
+          .textContent = hospital.name
+      }
+
+      // Reset password notif
+      if(btn.classList.contains('reset-password-btn')){
+        const resetPasswordOverlayElem = document.getElementById('resetPasswordOverlay')
+        handleOverlay(resetPasswordOverlayElem)
+
+        document.getElementById('resetHosTarget')
           .textContent = hospital.name
       }
     })
