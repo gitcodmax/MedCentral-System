@@ -1,9 +1,8 @@
 import { renderHeader } from "../header.js";
-import { updateUnitOfMeasureOptions } from "./handle_item_category_unit_measure.js";
 import {
   createAnotherItemDetailsContainer, validateStockForm,
   saveFormData, renderSavedFormData, getItemsContainer,
-  getFormData, handleAddingItem
+  getFormData, handleAddingItem, listenChangeInItemCodeName
 } from "./receive_stock_functions.js";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -49,18 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let itemIndexed = 0;
 
   getItemsContainer().innerHTML = createAnotherItemDetailsContainer(itemIndexed)
+  listenChangeInItemCodeName(itemIndexed)
 
   const stockForm = document.getElementById('receiveStockForm')
-
-  //Handles the connection between item category and unit of measure
-  stockForm.addEventListener('change', (event) => {
-    if (event.target.classList.contains('itemCategory')) {
-      const item = event.target.closest('.js-item-entry-card')
-      const unitSelect = item.querySelector('.unitOfMeasure')
-
-      updateUnitOfMeasureOptions(event.target, unitSelect)
-    }
-  })
 
   // Set the clear details and add another item buttons
   stockForm.addEventListener('click', (event) => {
@@ -71,8 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (stockData.items) {
           const itemIndexesList = Object.keys(stockData.items)
           itemIndexed = Math.max(...itemIndexesList)
+          itemIndexed += 1
           handleAddingItem(itemIndexed)
         } else {
+          itemIndexed += 1
           handleAddingItem(itemIndexed)
         }
       })

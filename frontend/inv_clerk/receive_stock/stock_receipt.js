@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <th>Item Code/SKU</th>
             <th>Item Name</th>
             <th>Category</th>
+            <th>Storage Temp.</th>
             <th>Batch No.</th>
             <th>Expiry Date</th>
             <th>Unit</th>
@@ -113,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td id="itemCode-${itemIndex}"></td>
         <td id="itemName-${itemIndex}"></td>
         <td id="itemCategory-${itemIndex}"></td>
+        <td id="storageTemp-${itemIndex}"></td>
         <td id="batchNo-${itemIndex}"></td>
         <td id="expiryDate-${itemIndex}"></td>
         <td id="unitOfMeasure-${itemIndex}"></td>
