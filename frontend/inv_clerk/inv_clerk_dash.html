@@ -172,6 +172,31 @@
             </div>
         </div>
 
+        <div id="confirmationOverlay" class="overlay-backdrop">
+            <div class="modal-card">
+                <div id="modalIconContainer" class="modal-icon">
+                    <i id="modalIcon" class="fas fa-question-circle"></i>
+                </div>
+                <h2 id="modalTitle">Confirm Action</h2>
+                <p id="modalMessage">Are you sure you want to proceed with this update?</p>
+
+                <div id="delayReasonContainer" class="input-group">
+                    <label>Select Delay Reason:</label>
+                    <select id="delayReason">
+                        <option value="traffic">Heavy Traffic</option>
+                        <option value="weather">Extreme Weather</option>
+                        <option value="vehicle">Vehicle Breakdown</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn-close-overlay">Cancel</button>
+                    <button id="confirmActionButton" class="btn-confirm">Confirm</button>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <footer class="main-footer">

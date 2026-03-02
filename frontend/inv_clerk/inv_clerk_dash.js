@@ -69,8 +69,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Close overlay if user clicks outside the modal box
     window.onclick = function (event) {
         const overlay = document.getElementById('orderOverlay');
+        const confirmationOverlay = document.getElementById('confirmationOverlay')
         if (event.target == overlay) {
             closeOrderOverlay();
+        }else if(event.target == confirmationOverlay){
+            closeOverlay()
         }
     }
 
@@ -170,7 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
     //Display all the pending orders
     const ordersContainer = document.querySelector('.order-cards-container')
     const packagesData = getPackagesFromOrders(ordersData)
-    console.log(packagesData)
     packagesData.forEach((pkg) => {
         ordersContainer.innerHTML += `
             <div class="order-card-item">
@@ -348,7 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <td><span class="plate-number">${pkg.vehicle_plate}</span></td>
             <td><span class="badge ${pkg.storage_req.slice(0, 1)}">${pkg.storage_req.slice(0, 1)}</span></td>
             <td>
-                <button class="btn-dispatch">
+                <button class="btn-dispatch" id="confirmDispatch" data-pkg-id=${pkg.package_id}>
                     <i class="fas fa-check-circle"></i> Confirm Dispatch
                 </button>
             </td>
@@ -381,10 +383,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${delivery.dispatch_date}</td>
                 <td><span class="status-badge badge-${delivery.status.toLowerCase()}">${delivery.status}</span></td>
                 <td class="action-cell">
-                    <button class="btn-action btn-delay"${isDelayed ? ' disabled style="opacity: 0.5; cursor: not-allowed;"' : ''} title="Mark as Delayed">
+                    <button class="btn-action btn-delay"
+                        ${isDelayed ? ' disabled style="opacity: 0.5; cursor: not-allowed;"' : ''} 
+                        title="Mark as Delayed" data-deliv-id=${delivery.delivery_id}
+                    >
                         <i class="fas fa-clock"></i> ${isDelayed ? 'Delayed' : 'Delay'}
                     </button>
-                    <button class="btn-action btn-delivered" title="Confirm Delivery">
+                    <button class="btn-action btn-delivered" 
+                        title="Confirm Delivery" data-deliv-id=${delivery.delivery_id}
+                    >
                         <i class="fas fa-house-circle-check"></i> Delivered
                     </button>
                 </td>
@@ -395,5 +402,82 @@ document.addEventListener('DOMContentLoaded', () => {
 
         transitTbodyElem.appendChild(transitTblFrag)
     }
+
+    // Opening the overlay to confirm dispatch, delay and delivery
+    function openConfirmation(type, id) {
+        const overlay = document.getElementById('confirmationOverlay');
+        const title = document.getElementById('modalTitle');
+        const message = document.getElementById('modalMessage');
+        const icon = document.getElementById('modalIcon');
+        const iconContainer = document.getElementById('modalIconContainer');
+        const delayInput = document.getElementById('delayReasonContainer');
+        const confirmBtn = document.getElementById('confirmActionButton');
+    
+        // Reset styles
+        iconContainer.className = 'modal-icon';
+        delayInput.style.display = 'none';
+    
+        if (type === 'dispatch') {
+            title.innerText = 'Confirm Dispatch';
+            message.innerHTML = `Are you sure Package <span class="overlay-id">${id}</span> is loaded and ready to leave?`;
+            icon.className = 'fas fa-shipping-fast';
+            iconContainer.classList.add('theme-dispatch');
+            confirmBtn.style.backgroundColor = '#10b981';
+        } 
+        else if (type === 'delay') {
+            title.innerText = 'Report Delay';
+            message.innerHTML = `Logging a delay for Shipment <span class="overlay-id">${id}</span>.`;
+            icon.className = 'fas fa-clock';
+            iconContainer.classList.add('theme-delay');
+            delayInput.style.display = 'block';
+            confirmBtn.style.backgroundColor = '#f97316';
+        } 
+        else if (type === 'delivery') {
+            title.innerText = 'Confirm Delivery';
+            message.innerHTML = `Finalize delivery for Shipment <span class="overlay-id">${id}</span>?`;
+            icon.className = 'fas fa-check-double';
+            iconContainer.classList.add('theme-delivery');
+            confirmBtn.style.backgroundColor = '#008B00';
+        }
+    
+        overlay.style.display = 'flex';
+    
+        // Set the action for the confirm button
+        confirmBtn.onclick = () => {
+            console.log(`Action: ${type} confirmed for ID: ${id}`);
+            closeOverlay();
+            // Here you would call your API update function
+        };
+
+        document.querySelector('.btn-close-overlay').onclick = closeOverlay
+    }
+    
+    function closeOverlay() {
+        document.getElementById('confirmationOverlay').style.display = 'none';
+    }
+    
+    dispatchTbodyElem.addEventListener('click', (e) => {
+        const btn = e.target.closest('button')
+        if(!btn) return;
+
+        if(btn.id === 'confirmDispatch'){
+            const btnPkgId = btn.dataset.pkgId
+            openConfirmation('dispatch', btnPkgId)
+        }
+    })
+
+    transitTbodyElem.addEventListener('click', (e) => {
+        const btn = e.target.closest('button')
+        if(!btn) return;
+
+        const btnDeliveryId = btn.dataset.delivId
+
+        if(btn.classList.contains('btn-delay')){
+            openConfirmation('delay', btnDeliveryId)
+        }
+        if(btn.classList.contains('btn-delivered')){
+            openConfirmation('delivery', btnDeliveryId)
+        }
+    })
 
 });
