@@ -3,7 +3,7 @@ import pool from "../../config/db.js"
 // This file contains the SQL scripts used to manipulate hospitals page.
 
 // Get the hospital data to display it in the table
-export async function getSavedHospitalsQ(){
+export async function getSavedHospitalsQ() {
   const text = `
     SELECT 
       h.hospital_id AS id,
@@ -35,16 +35,15 @@ export async function getSavedHospitalsQ(){
     JOIN cfg_zones z ON h.zone_id = z.id
     JOIN cfg_counties c ON z.county_id = c.id;
   `
-  const {rows} = await pool.query(text)
+  const { rows } = await pool.query(text)
   return rows
 }
 
-export async function getGeoReferenceDataQ(){
+export async function getGeoReferenceDataQ() {
   const text = `
     SELECT 
     c.id AS county_id,
     c.name AS county_name,
-    -- Aggregating zones into a JSON array of objects
     COALESCE(
         jsonb_agg(
             jsonb_build_object(
@@ -61,12 +60,44 @@ export async function getGeoReferenceDataQ(){
     ORDER BY c.name ASC;
   `
 
-  const {rows} = await pool.query(text)
+  const { rows } = await pool.query(text)
   return rows
 }
 
-export async function getDepartmentsQ(){
+export async function getDepartmentsQ() {
   const text = `SELECT * FROM cfg_hospital_departments`
-  const {rows} = await pool.query(text)
+  const { rows } = await pool.query(text)
   return rows
+}
+
+// POST: Save new hospital details
+export async function saveNewHosDetailsQ({ name, contact, phone, email,
+  zone, password, status }) {
+  const text = `INSERT INTO hospitals ( 
+    name,
+    contact_person,
+    phone_number, 
+    email,
+    zone_id,
+    password_hash, 
+    status
+  ) VALUES 
+  ($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
+  const values = [name, contact, phone, email, zone, password, status];
+  const { rows } = await pool.query(text, values);
+  return rows[0]
+}
+
+// Save hospital departments picked
+export async function saveHosDeptQ(hosId, deptId){
+  const text = `
+    INSERT INTO hospital_department_mapping (
+    hospital_id, 
+    department_id
+    )  VALUES (
+      $1, $2) RETURNING *
+  `;
+  const values = [hosId, deptId]
+  const {rows} = await pool.query(text, values);
+  return rows[0]
 }

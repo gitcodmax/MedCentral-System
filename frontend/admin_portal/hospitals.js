@@ -53,39 +53,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="modal-body" id="modalBody">
                   <div class="form-grid">
                     <div class="form-group full-width">
-                      <label>Hospital Name</label>
+                      <label for="hospName">Hospital Name</label>
                       <div class="input-wrapper">
                         <i class="fas fa-h-square"></i>
-                        <input type="text" name="hosp_name" placeholder="e.g. Metro General Hospital" required>
+                        <input type="text" id="hospName" name="hosp_name" placeholder="e.g. Metro General Hospital" required>
                       </div>
                     </div>
 
                     <div class="form-group">
-                      <label>Contact Person</label>
+                      <label for="hospContact">Contact Person</label>
                       <div class="input-wrapper">
                         <i class="fas fa-user-md"></i>
-                        <input type="text" name="hosp_contact" placeholder="Dr. Jane Smith" required>
+                        <input type="text" id="hospContact" name="hosp_contact" placeholder="Dr. Jane Smith" required>
                       </div>
                     </div>
 
                     <div class="form-group">
-                      <label>Phone Number</label>
+                      <label for="hospPhone">Phone Number</label>
                       <div class="input-wrapper">
                         <i class="fas fa-phone"></i>
-                        <input type="tel" name="hosp_phone" placeholder="+1 (555) 000-0000" required>
+                        <input type="tel" id="hospPhone" name="hosp_phone" placeholder="+1 (555) 000-0000" required>
                       </div>
                     </div>
 
                     <div class="form-group full-width">
-                      <label>Email Address</label>
+                      <label for="hospEmail">Email Address</label>
                       <div class="input-wrapper">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" name="hosp_email" placeholder="admin@hospital-domain.org" required>
+                        <input type="email" id="hospEmail" name="hosp_email" placeholder="admin@hospital-domain.org" required>
                       </div>
                     </div>
 
                     <div class="form-group">
-                      <label for="hosp-county">Hospital County</label>
+                      <label for="hospCounty">Hospital County</label>
                       <div class="input-wrapper">
                         <i class="fas fa-map-marker-alt"></i>
                         <select name="hosp_county" id="hospCounty" required>
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
 
                     <div class="form-group">
-                      <label for="hosp-zone">Zone / Sub-County</label>
+                      <label for="hospZone">Zone / Sub-County</label>
                       <div class="input-wrapper">
                         <i class="fas fa-map-signs"></i>
                         <select name="hosp_zone" id="hospZone" required></select>
@@ -104,7 +104,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     <div class="form-group full-width">
                       <label>Select Active Departments</label>
-                      <div id="deptContainer" class="dept-selector-grid">
+                      <div id="deptContainer" class="dept-selector-grid"></div>
+                    </div>
+
+                    <div class="form-group full-width">
+                      <label for="hospPwd">Password</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-key"></i>
+                        <input type="text" id="hospPwd" name="hosp_pwd" placeholder="-----" required>
                       </div>
                     </div>
                   </div>
@@ -112,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 <div class="modal-footer">
                   <button type="button" class="btn-cancel js-btn-close-overlay">Cancel</button>
-                  <button type="submit" class="btn-submit">Register Facility</button>
+                  <button type="submit" class="btn-submit" id="registerNewHospital">Register Facility</button>
                 </div>
               </form>
             </div>
@@ -471,6 +478,48 @@ document.addEventListener('DOMContentLoaded', () => {
       // Handles the toggling when the chips are clicked
       handleDeptChipsToggle(addHosOverlayElem, selectedDeptIds)
 
+      // Submit new hospital details
+      document.querySelector('form').addEventListener('submit', async (e) => {
+        e.preventDefault()
+
+        console.log([...selectedDeptIds])
+        if (selectedDeptIds.size <= 2) {
+          alert('Enter more than two departments for the hospital!!')
+          deptContainerElem.focus()
+        } else {
+          // Input Elements
+          const nameInput = document.getElementById('hospName');
+          const contactInput = document.getElementById('hospContact');
+          const phoneInput = document.getElementById('hospPhone');
+          const emailInput = document.getElementById('hospEmail');
+          const zoneSelect = document.getElementById('hospZone');
+          const passwordInput = document.getElementById('hospPwd');
+
+          const response = await fetch('http://localhost:3000/admin/newHosDetails', 
+            {
+              method: 'POST', 
+              headers: {
+                'Content-Type': 'application/json'
+              }, 
+              body: JSON.stringify({
+                name: nameInput.value, 
+                contact: contactInput.value, 
+                phone: phoneInput.value, 
+                email: emailInput.value, 
+                zone: zoneSelect.value, 
+                password: passwordInput.value, 
+                status: 'active', 
+                selectedDeptIds: [...selectedDeptIds]
+              })
+            }
+          )
+
+          const result = await response.json()
+          if(result.newHosDetails){
+            window.reload()
+          }
+        }
+      })
     })
 
   //Get specific hospital details
@@ -499,7 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Set up the overlay to view and edit hospital details and activate/deactivate an account
   document.getElementById('hosDetailsTbody')
-    .addEventListener('click',async (e) => {
+    .addEventListener('click', async (e) => {
       const btn = e.target.closest('button')
       if (!btn) return;
 
@@ -624,7 +673,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // Reset password notif
-      if(btn.classList.contains('reset-password-btn')){
+      if (btn.classList.contains('reset-password-btn')) {
         const resetPasswordOverlayElem = document.getElementById('resetPasswordOverlay')
         handleOverlay(resetPasswordOverlayElem)
 
@@ -665,19 +714,19 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 // API calls
-async function getSavedHospitalsDetails(){
+async function getSavedHospitalsDetails() {
   const response = await fetch('http://localhost:3000/admin/getSavedHospitals')
   const result = await response.json()
   return result.savedHos
 }
 
-async function getGeoRefData(){
+async function getGeoRefData() {
   const response = await fetch('http://localhost:3000/admin/getGeoRefData')
   const result = await response.json()
   return result.countyData
 }
 
-async function getDepartments(){
+async function getDepartments() {
   const response = await fetch('http://localhost:3000/admin/getDepartments')
   const result = await response.json()
   return result.departmentsData
