@@ -629,7 +629,12 @@ document.addEventListener('DOMContentLoaded', () => {
     hosDetailsTbodyElem.appendChild(hospitalDetailsTblFrag)
   }
 
-  displayAllHospitals(HospitalMockData)
+  // Display hospitals on the table
+  async function displayDbHosData() {
+    const hospitalsData = await getSavedHospitalsDetails()
+    displayAllHospitals(hospitalsData)
+  }
+  displayDbHosData()
 
   // Displays the chips in the container
   function displayDeptChips(deptContainerElem) {
@@ -666,8 +671,9 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
   //Get specific hospital details
-  function getHospitalDetails(btnId) {
-    return HospitalMockData.find(hos => hos.id === btnId)
+  async function getHospitalDetails(btnId) {
+    const hospitalsData = await getSavedHospitalsDetails()
+    return hospitalsData.find(hos => hos.id === btnId)
   }
 
   // Hnadle the toggling of the department chips
@@ -690,12 +696,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Set up the overlay to view and edit hospital details and activate/deactivate an account
   document.getElementById('hosDetailsTbody')
-    .addEventListener('click', (e) => {
+    .addEventListener('click',async (e) => {
       const btn = e.target.closest('button')
       if (!btn) return;
 
       const btnHosId = btn.dataset.hosId
-      const hospital = getHospitalDetails(btnHosId)
+      const hospital = await getHospitalDetails(btnHosId)
 
       // Display hospital details
       if (btn.classList.contains('view-hos-btn')) {
@@ -828,11 +834,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const hospitalSearchElem = document.getElementById('hospitalSearch')
   const statusFilterElem = document.getElementById('statusFilter')
 
-  function searchFilterHandler() {
+  async function searchFilterHandler() {
     const searchValue = hospitalSearchElem.value
     const statusValue = statusFilterElem.value
 
-    const searchResult = HospitalMockData.filter((hos) => {
+    const hospitalsData = await getSavedHospitalsDetails()
+    const searchResult = hospitalsData.filter((hos) => {
       const hospNameMatch = hos.name.toLowerCase().includes(searchValue.toLowerCase())
       const statusMatch = statusValue === 'all' || hos.status === statusValue
 
@@ -853,3 +860,11 @@ document.addEventListener('DOMContentLoaded', () => {
   hospitalSearchElem.addEventListener('keyup', searchFilterHandler)
   statusFilterElem.addEventListener('change', searchFilterHandler)
 })
+
+// API calls
+async function getSavedHospitalsDetails(){
+  const response = await fetch('http://localhost:3000/admin/getSavedHospitals')
+  const result = await response.json()
+  console.log(result.savedHos)
+  return result.savedHos
+}
