@@ -1,12 +1,12 @@
 import express from 'express';
 import cors from 'cors';
-import  getSavedHospitalsRouter  from './routes/admin_routes/rou_hospitals.js';
+import adminHosRouter from './controllers_routes/admin_con_routes/c_r_hospitals.js';
 
 const app = express()
 
 app.use(cors())
 app.use(express.json())
 
-app.use('/admin', getSavedHospitalsRouter)
+app.use('/admin', adminHosRouter)
 
 export default app
