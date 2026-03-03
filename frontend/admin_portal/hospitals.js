@@ -388,194 +388,6 @@ document.addEventListener('DOMContentLoaded', () => {
   `
   displayNoMatchFound()
 
-  const HospitalMockData = [
-    {
-      id: "HOSP-2026-001",
-      name: "Nairobi West Hospital",
-      contactPerson: "Dr. Evans Kamau",
-      phone: "+254 711 222 333",
-      email: "admin@nairobiwest.co.ke",
-      status: "active",
-      registeredDate: "2025-11-10",
-      location: { county_id: 47, county_name: "Nairobi", zone_id: 4701, zone_name: "Westlands" },
-      departments: [
-        { id: 10, name: "Emergency Room" },
-        { id: 15, name: "ICU" },
-        { id: 22, name: "Pharmacy" }
-      ]
-    },
-    {
-      id: "HOSP-2026-002",
-      name: "Coast General Hospital",
-      contactPerson: "Mary Atieno",
-      phone: "+254 722 444 555",
-      email: "info@coastgeneral.org",
-      status: "active",
-      registeredDate: "2025-12-15",
-      location: { county_id: 1, county_name: "Mombasa", zone_id: 101, zone_name: "Mvita" },
-      departments: [
-        { id: 11, name: "Pediatrics" },
-        { id: 22, name: "Pharmacy" },
-        { id: 25, name: "Laboratory" }
-      ]
-    },
-    {
-      id: "HOSP-2026-003",
-      name: "Lake View Clinic",
-      contactPerson: "Dr. Silas Omollo",
-      phone: "+254 733 666 777",
-      email: "records@lakeview.com",
-      status: "inactive",
-      registeredDate: "2026-02-01",
-      location: { county_id: 41, county_name: "Kisumu", zone_id: 4101, zone_name: "Kisumu Central" },
-      departments: [
-        { id: 10, name: "Emergency Room" },
-        { id: 25, name: "Laboratory" }
-      ]
-    },
-    {
-      id: "HOSP-2026-004",
-      name: "Rift Valley Trauma Center",
-      contactPerson: "Sarah Njeri",
-      phone: "+254 744 888 999",
-      email: "snjeri@rift-trauma.go.ke",
-      status: "archived",
-      registeredDate: "2024-05-20",
-      location: { county_id: 32, county_name: "Nakuru", zone_id: 3202, zone_name: "Nakuru West" },
-      departments: [
-        { id: 10, name: "Emergency Room" },
-        { id: 14, name: "Radiology" }
-      ]
-    },
-    {
-      id: "HOSP-2026-005",
-      name: "St. Anne’s Specialized",
-      contactPerson: "Father Peter Ojiambo",
-      phone: "+254 755 000 111",
-      email: "admin@stannes.org",
-      status: "active",
-      registeredDate: "2026-02-12",
-      location: { county_id: 47, county_name: "Nairobi", zone_id: 4703, zone_name: "Kasarani" },
-      departments: [
-        { id: 12, name: "Oncology" },
-        { id: 22, name: "Pharmacy" }
-      ]
-    },
-    {
-      id: "HOSP-2026-006",
-      name: "Mombasa Health Annex",
-      contactPerson: "Alice Waweru",
-      phone: "+254 766 111 222",
-      email: "annex@mombasa.go.ke",
-      status: "active",
-      registeredDate: "2026-01-30",
-      location: { county_id: 1, county_name: "Mombasa", zone_id: 102, zone_name: "Nyali" },
-      departments: [
-        { id: 13, name: "Maternity" },
-        { id: 22, name: "Pharmacy" }
-      ]
-    },
-    {
-      id: "HOSP-2026-007",
-      name: "Kisumu Children's Hospital",
-      contactPerson: "Dr. Ben Ochieng",
-      phone: "+254 777 333 444",
-      email: "care@kisumukids.co.ke",
-      status: "active",
-      registeredDate: "2025-09-10",
-      location: { county_id: 41, county_name: "Kisumu", zone_id: 4103, zone_name: "Kisumu West" },
-      departments: [
-        { id: 11, name: "Pediatrics" },
-        { id: 15, name: "ICU" }
-      ]
-    },
-    {
-      id: "HOSP-2026-008",
-      name: "Old City Dispensary",
-      contactPerson: "Hassan Ali",
-      phone: "+254 788 444 555",
-      email: "hassan@oldcity.com",
-      status: "archived",
-      registeredDate: "2023-01-15",
-      location: { county_id: 1, county_name: "Mombasa", zone_id: 103, zone_name: "Likoni" },
-      departments: [
-        { id: 22, name: "Pharmacy" }
-      ]
-    },
-    {
-      id: "HOSP-2026-009",
-      name: "Nakuru Medical Plaza",
-      contactPerson: "Jane Koech",
-      phone: "+254 799 555 666",
-      email: "jk@nakuruplaza.com",
-      status: "inactive",
-      registeredDate: "2025-10-05",
-      location: { county_id: 32, county_name: "Nakuru", zone_id: 3204, zone_name: "Lanet" },
-      departments: [
-        { id: 14, name: "Radiology" },
-        { id: 25, name: "Laboratory" }
-      ]
-    },
-    {
-      id: "HOSP-2026-010",
-      name: "Westlands Health Hub",
-      contactPerson: "Mark Tsoi",
-      phone: "+254 700 999 000",
-      email: "mtsoi@westlandshealth.com",
-      status: "active",
-      registeredDate: "2026-02-18",
-      location: { county_id: 47, county_name: "Nairobi", zone_id: 4701, zone_name: "Westlands" },
-      departments: [
-        { id: 10, name: "Emergency Room" },
-        { id: 14, name: "Radiology" }
-      ]
-    }
-  ];
-
-  const GeoReferenceData = [
-    {
-      county_id: 47,
-      county_name: "Nairobi",
-      zones: [
-        { id: 4701, name: "Westlands" },
-        { id: 4702, name: "Dagoretti" },
-        { id: 4703, name: "Kasarani" },
-        { id: 4704, name: "Embakasi" },
-        { id: 4705, name: "Kibra" }
-      ]
-    },
-    {
-      county_id: 1,
-      county_name: "Mombasa",
-      zones: [
-        { id: 101, name: "Mvita" },
-        { id: 102, name: "Nyali" },
-        { id: 103, name: "Likoni" },
-        { id: 104, name: "Kisauni" },
-        { id: 105, name: "Changamwe" }
-      ]
-    },
-    {
-      county_id: 41,
-      county_name: "Kisumu",
-      zones: [
-        { id: 4101, name: "Kisumu Central" },
-        { id: 4102, name: "Kisumu East" },
-        { id: 4103, name: "Kisumu West" },
-        { id: 4104, name: "Seme" }
-      ]
-    },
-    {
-      county_id: 32,
-      county_name: "Nakuru",
-      zones: [
-        { id: 3201, name: "Nakuru East" },
-        { id: 3202, name: "Nakuru West" },
-        { id: 3203, name: "Naivasha" },
-        { id: 3204, name: "Lanet" }
-      ]
-    }
-  ];
 
   const MasterDepartments = [
     { id: 10, name: "Emergency Room" },
@@ -648,8 +460,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Set up the overlay to add a new hospital
   const addHosOverlayElem = document.getElementById('addHospitalOverlay')
   document.getElementById('btnAddHospital')
-    .addEventListener('click', () => {
+    .addEventListener('click', async () => {
       handleOverlay(addHosOverlayElem)
+
+      const GeoReferenceData = await getGeoRefData()
 
       const addHosCountyElem = document.getElementById('hospCounty')
       const addHosZoneElem = document.getElementById('hospZone')
@@ -702,6 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const btnHosId = btn.dataset.hosId
       const hospital = await getHospitalDetails(btnHosId)
+      const GeoReferenceData = await getGeoRefData()
 
       // Display hospital details
       if (btn.classList.contains('view-hos-btn')) {
@@ -866,4 +681,10 @@ async function getSavedHospitalsDetails(){
   const response = await fetch('http://localhost:3000/admin/getSavedHospitals')
   const result = await response.json()
   return result.savedHos
+}
+
+async function getGeoRefData(){
+  const response = await fetch('http://localhost:3000/admin/getGeoRefData')
+  const result = await response.json()
+  return result.countyData
 }

@@ -1,5 +1,8 @@
 import pool from "../../config/db.js"
 
+// This file contains the SQL scripts used to manipulate hospitals page.
+
+// Get the hospital data to display it in the table
 export async function getSavedHospitalsQ(){
   const text = `
     SELECT 
@@ -32,6 +35,32 @@ export async function getSavedHospitalsQ(){
     JOIN cfg_zones z ON h.zone_id = z.id
     JOIN cfg_counties c ON z.county_id = c.id;
   `
+  const {rows} = await pool.query(text)
+  return rows
+}
+
+export async function getGeoReferenceDataQ(){
+  const text = `
+    SELECT 
+    c.id AS county_id,
+    c.name AS county_name,
+    -- Aggregating zones into a JSON array of objects
+    COALESCE(
+        jsonb_agg(
+            jsonb_build_object(
+                'id', z.id,
+                'name', z.zone_name
+            ) 
+            ORDER BY z.zone_name ASC
+        ), 
+        '[]'
+    ) AS zones
+    FROM cfg_counties c
+    LEFT JOIN cfg_zones z ON c.id = z.county_id
+    GROUP BY c.id, c.name
+    ORDER BY c.name ASC;
+  `
+
   const {rows} = await pool.query(text)
   return rows
 }
