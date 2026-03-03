@@ -1,5 +1,7 @@
 import express from 'express'
-import { getSavedHospitalsQ, getGeoReferenceDataQ } from '../../repositories/admin_repo/rep_hospitals.js'
+import { getSavedHospitalsQ, getGeoReferenceDataQ, 
+  getDepartmentsQ
+ } from '../../repositories/admin_repo/rep_hospitals.js'
 
 const adminHosRouter = express.Router()
 
@@ -17,6 +19,15 @@ adminHosRouter.get('/getGeoRefData', async (req, res) => {
   try{
     const countyData = await getGeoReferenceDataQ()
     res.status(200).json({countyData})
+  }catch(err){
+    res.status(500).json({Error: err.message})
+  }
+})
+
+adminHosRouter.get('/getDepartments', async (req, res) => {
+  try{
+    const departmentsData = await getDepartmentsQ()
+    res.status(200).json({departmentsData})
   }catch(err){
     res.status(500).json({Error: err.message})
   }

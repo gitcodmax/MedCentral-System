@@ -388,18 +388,6 @@ document.addEventListener('DOMContentLoaded', () => {
   `
   displayNoMatchFound()
 
-
-  const MasterDepartments = [
-    { id: 10, name: "Emergency Room" },
-    { id: 11, name: "Pediatrics" },
-    { id: 12, name: "Oncology" },
-    { id: 13, name: "Maternity" },
-    { id: 14, name: "Radiology" },
-    { id: 15, name: "ICU" },
-    { id: 22, name: "Pharmacy" },
-    { id: 25, name: "Laboratory" }
-  ];
-
   const hosDetailsTbodyElem = document.getElementById('hosDetailsTbody')
   // Display the hospital details in the table
   function displayAllHospitals(hosData) {
@@ -449,7 +437,8 @@ document.addEventListener('DOMContentLoaded', () => {
   displayDbHosData()
 
   // Displays the chips in the container
-  function displayDeptChips(deptContainerElem) {
+  async function displayDeptChips(deptContainerElem) {
+    const MasterDepartments = await getDepartments()
     deptContainerElem.innerHTML = MasterDepartments.map(dept => `
       <div class="dept-chip" data-dept-id=${dept.id}>
         ${dept.name}
@@ -478,7 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       let selectedDeptIds = new Set()
       const deptContainerElem = document.getElementById('deptContainer')
-      displayDeptChips(deptContainerElem)
+      await displayDeptChips(deptContainerElem)
       // Handles the toggling when the chips are clicked
       handleDeptChipsToggle(addHosOverlayElem, selectedDeptIds)
 
@@ -601,17 +590,16 @@ document.addEventListener('DOMContentLoaded', () => {
         editHospZoneElem.value = hospital.location.zone_id
 
         const editDeptContainerElem = document.getElementById('editDeptContainer')
-        displayDeptChips(editDeptContainerElem)
+        await displayDeptChips(editDeptContainerElem)
 
         // Display chips already selected
-        const hospDeptIds = hospital.departments.map(dept => dept.id)
-        let selectedDeptIds = new Set()
-        hospDeptIds.forEach(id => {
-          selectedDeptIds.add(parseInt(id))
-          const targetChip = document.querySelector(`.dept-chip[data-dept-id="${id}"]`)
-          if (targetChip) {
-            targetChip.classList.add('selected')
-          }
+        const hospDeptIds = hospital.departments.map(dept => Number(dept.id))
+        const selectedDeptIds = new Set(hospDeptIds)
+        hospDeptIds.forEach((id) => {
+          const targetChip = editDeptContainerElem.querySelector(
+            `.dept-chip[data-dept-id="${id}"]`
+          )
+          if (targetChip) targetChip.classList.add('selected')
         })
 
         handleDeptChipsToggle(editHosOverlayElem, selectedDeptIds)
@@ -687,4 +675,10 @@ async function getGeoRefData(){
   const response = await fetch('http://localhost:3000/admin/getGeoRefData')
   const result = await response.json()
   return result.countyData
+}
+
+async function getDepartments(){
+  const response = await fetch('http://localhost:3000/admin/getDepartments')
+  const result = await response.json()
+  return result.departmentsData
 }

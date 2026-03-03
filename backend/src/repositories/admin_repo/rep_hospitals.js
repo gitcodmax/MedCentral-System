@@ -64,3 +64,9 @@ export async function getGeoReferenceDataQ(){
   const {rows} = await pool.query(text)
   return rows
 }
+
+export async function getDepartmentsQ(){
+  const text = `SELECT * FROM cfg_hospital_departments`
+  const {rows} = await pool.query(text)
+  return rows
+}
