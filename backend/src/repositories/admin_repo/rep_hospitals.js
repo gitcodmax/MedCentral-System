@@ -89,7 +89,7 @@ export async function saveNewHosDetailsQ({ name, contact, phone, email,
 }
 
 // Save hospital departments picked
-export async function saveHosDeptQ(hosId, deptId){
+export async function saveHosDeptQ(hosId, deptId) {
   const text = `
     INSERT INTO hospital_department_mapping (
     hospital_id, 
@@ -98,6 +98,35 @@ export async function saveHosDeptQ(hosId, deptId){
       $1, $2) RETURNING *
   `;
   const values = [hosId, deptId]
-  const {rows} = await pool.query(text, values);
+  const { rows } = await pool.query(text, values);
   return rows[0]
+}
+
+export async function updateHosDetailsQ({ hosId, name, contact, phone,
+  email, zone, status }) {
+  const text = `
+    UPDATE hospitals
+    SET 
+      name = $1,
+      email = $2,
+      zone_id = $3,
+      contact_person = $4,
+      phone_number = $5,
+      status = $6
+    WHERE hospital_id = $7 RETURNING *
+  `
+  const values = [name, email, zone, contact, phone, status, hosId]
+  const {rows} = await pool.query(text, values)
+  return rows[0]
+}
+
+// Check whether hospital and department id exist in the table b4 inserting them
+export async function checkHosDeptIdQ(hosId, deptId){
+  const text = `
+    SELECT * FROM hospital_department_mapping  
+    WHERE hospital_id = $1 AND department_id = $2
+  `
+  const values = [hosId, deptId]
+  const {rows} = await pool.query(text, values)
+  return rows
 }

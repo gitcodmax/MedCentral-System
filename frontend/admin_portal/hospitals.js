@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="modal-close-btn js-btn-close-overlay">&times;</button>
               </div>
 
-              <form id="edit-hospital-form">
+              <form id="editHospitalForm">
                 <div class="modal-body">
                   <div class="edit-status-bar">
                     <div class="status-info">
@@ -515,7 +515,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (selectedDeptIds.size <= 2) {
           alert('Enter more than two departments for the hospital!!')
-          deptContainerElem.focus()
         } else {
           // Input Elements
           const nameInput = document.getElementById('hospName');
@@ -548,7 +547,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (result.newHosDetails) {
             triggerStatus('success')
             location.reload()
-          }else{
+          } else {
             triggerStatus('error')
           }
         }
@@ -643,6 +642,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const editHosOverlayElem = document.getElementById('editHospitalOverlay')
         handleOverlay(editHosOverlayElem)
 
+        const editStatusElem = document.getElementById('editStatus');
+        const editUuidElem = document.getElementById('editUuid');
+        const editHospNameElem = document.getElementById('editHospName');
+        const editHospContactElem = document.getElementById('editHospContact');
+        const editHospPhoneElem = document.getElementById('editHospPhone');
+        const editHospEmailElem = document.getElementById('editHospEmail');
         const editHospCountyElem = document.getElementById('editHospCounty')
         const editHospZoneElem = document.getElementById('editHospZone')
 
@@ -656,18 +661,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('editHeaderHospName')
           .textContent = hospital.name
-        document.getElementById('editStatus')
-          .value = hospital.status
-        document.getElementById('editUuid')
-          .textContent = hospital.id
-        document.getElementById('editHospName')
-          .value = hospital.name
-        document.getElementById('editHospContact')
-          .value = hospital.contactPerson
-        document.getElementById('editHospPhone')
-          .value = hospital.phone
-        document.getElementById('editHospEmail')
-          .value = hospital.email
+        editStatusElem.value = hospital.status
+        editUuidElem.textContent = hospital.id
+        editHospNameElem.value = hospital.name
+        editHospContactElem.value = hospital.contactPerson
+        editHospPhoneElem.value = hospital.phone
+        editHospEmailElem.value = hospital.email
         editHospCountyElem.value = hospital.location.county_id
         editHospZoneElem.value = hospital.location.zone_id
 
@@ -685,6 +684,43 @@ document.addEventListener('DOMContentLoaded', () => {
         })
 
         handleDeptChipsToggle(editHosOverlayElem, selectedDeptIds)
+
+        if (selectedDeptIds.size <= 2) {
+          alert('Enter more than two departments for the hospital!!')
+        } else {
+          // Saving the updates made
+          document.getElementById('editHospitalForm')
+            .addEventListener('submit', async (e) => {
+              e.preventDefault()
+
+              const response = await fetch('http://localhost:3000/admin/updateHosDetails',
+                {
+                  method: 'PUT',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    hosId: btnHosId, 
+                    name: editHospNameElem.value,
+                    contact: editHospContactElem.value,
+                    phone: editHospPhoneElem.value,
+                    email: editHospEmailElem.value,
+                    zone: editHospZoneElem.value,
+                    status: editStatusElem.value, 
+                    selectedDeptIds: [...selectedDeptIds]
+                  })
+                }
+              )
+
+              const result = await response.json()
+              if(result.updatedHosDetails){
+                triggerStatus('success')
+                location.reload()
+              }else{
+                triggerStatus('error')
+              }
+            }, {once: true})
+        }
       }
 
       // Notify user they are about to activate an account
