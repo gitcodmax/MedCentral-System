@@ -504,12 +504,12 @@ tr:hover {
   margin-bottom: 4px;
 }
 
-.edit-header-hosp-name{
+.edit-header-hosp-name {
   font-weight: 700;
   color: var(--color-primary);
 }
 
-.edit-uuid{
+.edit-uuid {
   color: var(--color-secondary);
   font-family: monospace;
   border: 1px solid;
@@ -573,7 +573,8 @@ tr:hover {
   font-size: 0.95rem;
 }
 
-.activate-hosp-name, .deactivate-hosp-name {
+.activate-hosp-name,
+.deactivate-hosp-name {
   color: var(--color-primary);
 }
 
@@ -624,12 +625,12 @@ textarea.deactivate-reason:focus {
   box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1);
 }
 
-.deactivate-btn:hover{
+.deactivate-btn:hover {
   background: red;
 }
 
 /* Reset Password Modal */
-.reset-pwd-modal-content{
+.reset-pwd-modal-content {
   background: white;
   width: 95%;
   max-width: 550px;
@@ -711,6 +712,54 @@ textarea.deactivate-reason:focus {
   padding-right: 2.5rem;
 }
 
+/* Saved / Error from db notification message styling */
+.db-notif-card {
+  border-radius: 1.5rem;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Icon Styling */
+.icon-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-wrapper i{
+  font-size: 48px;
+}
+
+/* Themes */
+.success-theme {
+  background: #ecfdf5;
+  color: var(--color-secondary);
+}
+
+.error-theme {
+  background: #fef2f2;
+  color: #ef4444;
+}
+
+/* Typography */
+.modal-title {
+  font-family: sans-serif;
+  font-size: 1.5rem;
+  color: #1e293b;
+  margin: 0 0 0.5rem;
+}
+
+.modal-text {
+  font-family: sans-serif;
+  color: #64748b;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
 
 /*RESPONSIVE*/
 @media (max-width: 1024px) {

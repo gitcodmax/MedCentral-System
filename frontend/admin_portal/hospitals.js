@@ -382,6 +382,25 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           </div>
 
+          <div id="successOverlay" class="modal-overlay">
+              <div class="modal-card db-notif-card">
+                  <div class="icon-wrapper success-theme">
+                      <i class="fa-solid fa-circle-check"></i>
+                  </div>
+                  <h2 class="modal-title">Saved successfully</h2>
+                  <p class="modal-text">Records are now up to date.</p>
+              </div>
+          </div>
+
+          <div id="errorOverlay" class="modal-overlay">
+              <div class="modal-card db-notif-card">
+                  <div class="icon-wrapper error-theme">
+                      <i class="fa-solid fa-triangle-exclamation"></i>
+                  </div>
+                  <h2 class="modal-title">Save failed</h2>
+                  <p class="modal-text">Could not connect to the server. Please retry.</p>
+              </div>
+          </div>
         </main>
       </div>
     `
@@ -453,6 +472,18 @@ document.addEventListener('DOMContentLoaded', () => {
     `).join('')
   }
 
+  // Display the notification message based on db response
+  function triggerStatus(type) {
+    const overlayId = type === 'success' ? 'successOverlay' : 'errorOverlay';
+    const dbNotifOverlay = document.getElementById(overlayId);
+
+    handleOverlay(dbNotifOverlay)
+
+    setTimeout(() => {
+      dbNotifOverlay.classList.remove('active');
+    }, 3000);
+  }
+
   // Set up the overlay to add a new hospital
   const addHosOverlayElem = document.getElementById('addHospitalOverlay')
   document.getElementById('btnAddHospital')
@@ -482,7 +513,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelector('form').addEventListener('submit', async (e) => {
         e.preventDefault()
 
-        console.log([...selectedDeptIds])
         if (selectedDeptIds.size <= 2) {
           alert('Enter more than two departments for the hospital!!')
           deptContainerElem.focus()
@@ -495,28 +525,31 @@ document.addEventListener('DOMContentLoaded', () => {
           const zoneSelect = document.getElementById('hospZone');
           const passwordInput = document.getElementById('hospPwd');
 
-          const response = await fetch('http://localhost:3000/admin/newHosDetails', 
+          const response = await fetch('http://localhost:3000/admin/newHosDetails',
             {
-              method: 'POST', 
+              method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
-              }, 
+              },
               body: JSON.stringify({
-                name: nameInput.value, 
-                contact: contactInput.value, 
-                phone: phoneInput.value, 
-                email: emailInput.value, 
-                zone: zoneSelect.value, 
-                password: passwordInput.value, 
-                status: 'active', 
+                name: nameInput.value,
+                contact: contactInput.value,
+                phone: phoneInput.value,
+                email: emailInput.value,
+                zone: zoneSelect.value,
+                password: passwordInput.value,
+                status: 'active',
                 selectedDeptIds: [...selectedDeptIds]
               })
             }
           )
 
           const result = await response.json()
-          if(result.newHosDetails){
-            window.reload()
+          if (result.newHosDetails) {
+            triggerStatus('success')
+            location.reload()
+          }else{
+            triggerStatus('error')
           }
         }
       })
