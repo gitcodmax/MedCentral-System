@@ -315,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 <div class="modal-footer flex-center">
                   <button class="btn-cancel js-btn-close-overlay">No, Cancel</button>
-                  <button class="btn-submit bg-success" id="confirm-activate-btn">Yes, Activate Account</button>
+                  <button class="btn-submit bg-success" id="activateHosBtn">Yes, Activate Account</button>
                 </div>
               </div>
             </div>
@@ -731,6 +731,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.querySelector('.js-activate-hosp-name')
           .textContent = hospital.name
+
+        activateHosOverlayElem.addEventListener('click', async (e) => {
+          if(e.target.id === 'activateHosBtn'){
+            console.log('Activate', btnHosId)
+
+            const response = await fetch('http://localhost:3000/admin/activateHos', 
+              {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json'
+                }, 
+                body: JSON.stringify({hosId: btnHosId})
+              }
+            )
+
+            const result = await response.json()
+            triggerStatus(result.msg)
+          }
+        })
       }
 
       // Account Deactivation Notification
@@ -761,7 +780,7 @@ document.addEventListener('DOMContentLoaded', () => {
             )
 
             const result = await response.json()
-            triggerStatus(result.message)
+            triggerStatus(result.msg)
 
           }, {once: true})
       }

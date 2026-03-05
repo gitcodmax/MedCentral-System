@@ -166,3 +166,14 @@ export async function deactivateHosQ({hosId, reason}){
     client.release()
   }
 }
+
+// Activate an hospital
+export async function activateHosQ(hosId){
+  const {rows} = await pool.query(
+    `UPDATE hospitals 
+    SET status = 'active' 
+    WHERE hospital_id = $1 RETURNING *`, 
+    [hosId]
+  )
+  return rows[0]
+}
