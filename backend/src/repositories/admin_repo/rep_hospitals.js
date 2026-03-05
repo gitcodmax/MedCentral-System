@@ -1,6 +1,13 @@
 import pool from "../../config/db.js"
+import bcrypt from 'bcrypt'
 
 // This file contains the SQL scripts used to manipulate hospitals page.
+
+async function hashPassword(plainPassword){
+  const saltRounds = 12
+  const hashedPassword = await bcrypt.hash(plainPassword, saltRounds)
+  return hashedPassword
+}
 
 // Get the hospital data to display it in the table
 export async function getSavedHospitalsQ() {
@@ -73,6 +80,7 @@ export async function getDepartmentsQ() {
 // POST: Save new hospital details
 export async function saveNewHosDetailsQ({ name, contact, phone, email,
   zone, password, status }) {
+  const hashedPassword = await hashPassword(password)
   const text = `INSERT INTO hospitals ( 
     name,
     contact_person,
@@ -83,7 +91,7 @@ export async function saveNewHosDetailsQ({ name, contact, phone, email,
     status
   ) VALUES 
   ($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
-  const values = [name, contact, phone, email, zone, password, status];
+  const values = [name, contact, phone, email, zone, hashedPassword, status];
   const { rows } = await pool.query(text, values);
   return rows[0]
 }
