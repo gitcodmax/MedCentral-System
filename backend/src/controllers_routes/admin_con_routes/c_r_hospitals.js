@@ -5,7 +5,8 @@ import {
   saveNewHosDetailsQ,
   saveHosDeptQ,
   updateHosDetailsQ,
-  checkHosDeptIdQ
+  checkHosDeptIdQ,
+  deactivateHosQ
 } from '../../repositories/admin_repo/rep_hospitals.js'
 
 const adminHosRouter = express.Router()
@@ -68,12 +69,22 @@ adminHosRouter.put('/updateHosDetails', async (req, res) => {
       // hospital_department_mapping b4 inserting the details
       for (const deptId of selectedDeptIds) {
         const hosDeptIds = await checkHosDeptIdQ(updatedHosId, deptId)
-        if(hosDeptIds.length === 0) await saveHosDeptQ(updatedHosId, deptId)
+        if (hosDeptIds.length === 0) await saveHosDeptQ(updatedHosId, deptId)
       }
     }
     res.status(200).json({ updatedHosDetails })
   } catch (err) {
     res.status(500).json({ Error: err.message })
+  }
+})
+
+// Transaction to deactivate hos
+adminHosRouter.patch('/deactivateHos', async (req, res) => {
+  try {
+    const deactiveHosDetails = await deactivateHosQ(req.body)
+    res.status(200).json({message: 'success', deactiveHosDetails})
+  }catch(err){
+    res.status(500).json({message: 'error', Error: err.message})
   }
 })
 

@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <i class="fas fa-user-slash"></i>
               </div>
 
-              <form id="deactivation-form">
+              <form id="deactivationForm">
                 <div class="modal-body">
                   <div class="text-center">
                     <h3>Deactivate Hospital?</h3>
@@ -338,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                   <div class="form-group full-width mt-1">
                     <label for="deactivate-reason">Reason for Deactivation <span class="text-danger">*</span></label>
-                    <textarea class="deactivate-reason"
+                    <textarea class="deactivate-reason" id="deactivateReason"
                       placeholder="e.g. Contract expired, facility maintenance, or security breach..."
                       required></textarea>
                   </div>
@@ -481,6 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setTimeout(() => {
       dbNotifOverlay.classList.remove('active');
+      location.reload()
     }, 3000);
   }
 
@@ -739,6 +740,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.querySelector('.js-deactivate-hosp-name')
           .textContent = hospital.name
+
+        document.getElementById('deactivationForm')
+          .addEventListener('submit', async (e) => {
+            e.preventDefault()
+
+            const deactivateReasonElem = document.getElementById('deactivateReason')
+
+            const response = await fetch('http://localhost:3000/admin/deactivateHos', 
+              {
+                method: 'PATCH', 
+                headers: {
+                  'Content-Type': 'application/json'
+                }, 
+                body: JSON.stringify({
+                  hosId: btnHosId,
+                  reason: deactivateReasonElem.value
+                })
+              }
+            )
+
+            const result = await response.json()
+            triggerStatus(result.message)
+
+          }, {once: true})
       }
 
       // Reset password notif

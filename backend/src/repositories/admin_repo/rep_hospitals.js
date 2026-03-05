@@ -130,3 +130,39 @@ export async function checkHosDeptIdQ(hosId, deptId){
   const {rows} = await pool.query(text, values)
   return rows
 }
+
+// Transaction query to deactivate an hospital
+export async function deactivateHosQ({hosId, reason}){
+  const client = await pool.connect();
+
+  try{
+    await client.query('BEGIN');
+
+    const updatedHos = await client.query(
+      `UPDATE hospitals 
+      SET status = 'inactive' 
+      WHERE hospital_id = $1 
+      RETURNING *`, 
+      [hosId]
+    )
+
+    if(updatedHos.rowCount === 0){
+      throw new Error('Hospital not found')
+    }
+
+    await client.query(
+      `INSERT INTO hospital_deactivation_log (hospital_id, reason)
+       VALUES ($1, $2)`, 
+       [hosId, reason]
+    );
+
+    await client.query('COMMIT')
+
+    return updatedHos.rows[0]
+  }catch (err){
+    await client.query('ROLLBACK')
+    throw err
+  }finally{
+    client.release()
+  }
+}
