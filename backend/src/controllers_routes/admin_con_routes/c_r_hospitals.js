@@ -7,7 +7,8 @@ import {
   updateHosDetailsQ,
   checkHosDeptIdQ,
   deactivateHosQ,
-  activateHosQ
+  activateHosQ,
+  updateHosPasswordQ
 } from '../../repositories/admin_repo/rep_hospitals.js'
 
 const adminHosRouter = express.Router()
@@ -94,6 +95,16 @@ adminHosRouter.put('/activateHos', async (req, res) => {
   try{
     const activatedHosDetails = await activateHosQ(req.body.hosId)
     res.status(200).json({msg: 'success', activatedHosDetails})
+  }catch(err){
+    res.status(500).json({msg: 'error', Error: err.message})
+  }
+})
+
+// Update hospital password
+adminHosRouter.put('/updateHosPassword', async (req, res) => {
+  try{
+    await updateHosPasswordQ(req.body)
+    res.status(200).json({msg: 'success'})
   }catch(err){
     res.status(500).json({msg: 'error', Error: err.message})
   }

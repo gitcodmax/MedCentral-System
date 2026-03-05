@@ -364,9 +364,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
               <form id="resetPasswordForm">
                   <div class="form-group">
-                      <label for="newPassword">New Temporary Password</label>
+                      <label for="newPassword">New Password</label>
                       <div class="password-wrapper">
-                          <input type="password" id="newPassword" class="form-control" placeholder="••••••••"
+                          <input type="text" id="newPassword" class="form-control" placeholder="••••••••"
                               required>
                           <button type="button" class="password-toggle">
                               <i class="fas fa-eye"></i>
@@ -701,26 +701,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json'
                   },
                   body: JSON.stringify({
-                    hosId: btnHosId, 
+                    hosId: btnHosId,
                     name: editHospNameElem.value,
                     contact: editHospContactElem.value,
                     phone: editHospPhoneElem.value,
                     email: editHospEmailElem.value,
                     zone: editHospZoneElem.value,
-                    status: editStatusElem.value, 
+                    status: editStatusElem.value,
                     selectedDeptIds: [...selectedDeptIds]
                   })
                 }
               )
 
               const result = await response.json()
-              if(result.updatedHosDetails){
+              if (result.updatedHosDetails) {
                 triggerStatus('success')
                 location.reload()
-              }else{
+              } else {
                 triggerStatus('error')
               }
-            }, {once: true})
+            }, { once: true })
         }
       }
 
@@ -733,16 +733,16 @@ document.addEventListener('DOMContentLoaded', () => {
           .textContent = hospital.name
 
         activateHosOverlayElem.addEventListener('click', async (e) => {
-          if(e.target.id === 'activateHosBtn'){
+          if (e.target.id === 'activateHosBtn') {
             console.log('Activate', btnHosId)
 
-            const response = await fetch('http://localhost:3000/admin/activateHos', 
+            const response = await fetch('http://localhost:3000/admin/activateHos',
               {
                 method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json'
-                }, 
-                body: JSON.stringify({hosId: btnHosId})
+                },
+                body: JSON.stringify({ hosId: btnHosId })
               }
             )
 
@@ -766,12 +766,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const deactivateReasonElem = document.getElementById('deactivateReason')
 
-            const response = await fetch('http://localhost:3000/admin/deactivateHos', 
+            const response = await fetch('http://localhost:3000/admin/deactivateHos',
               {
-                method: 'PATCH', 
+                method: 'PATCH',
                 headers: {
                   'Content-Type': 'application/json'
-                }, 
+                },
                 body: JSON.stringify({
                   hosId: btnHosId,
                   reason: deactivateReasonElem.value
@@ -782,7 +782,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json()
             triggerStatus(result.msg)
 
-          }, {once: true})
+          }, { once: true })
       }
 
       // Reset password notif
@@ -792,6 +792,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('resetHosTarget')
           .textContent = hospital.name
+        const newPasswordElem = document.getElementById('newPassword')
+
+        resetPasswordOverlayElem.addEventListener('submit', async (e) => {
+          e.preventDefault()
+
+          const response = await fetch('http://localhost:3000/admin/updateHosPassword',
+            {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ hosId: btnHosId, password: newPasswordElem.value })
+            }
+          )
+          const result = await response.json()
+          triggerStatus(result.msg)
+        })
       }
     })
 
