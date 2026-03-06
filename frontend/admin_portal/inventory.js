@@ -151,38 +151,34 @@ document.addEventListener('DOMContentLoaded', async () => {
               <div class="detail-grid">
                 <div class="detail-item">
                   <label>Category</label>
-                  <p id="viewCategory">Endocrinology / Vaccines</p>
+                  <p id="viewCategory"></p>
                 </div>
                 <div class="detail-item">
                   <label>Storage Temperature</label>
-                  <p id="viewTemp"><i class="fas fa-snowflake"></i> Cold Chain (2-8°C)</p>
+                  <p id="viewTemp"><i class="fas fa-snowflake"></i></p>
                 </div>
 
                 <div class="detail-item">
                   <label>Bulk Unit</label>
-                  <p id="viewBulkUnit">Carton</p>
+                  <p id="viewBulkUnit"></p>
                 </div>
                 <div class="detail-item">
                   <label>Selling Unit</label>
-                  <p id="viewSellingUnit">Vial</p>
+                  <p id="viewSellingUnit"></p>
                 </div>
 
                 <div class="detail-item highlight">
                   <label>Current Stock</label>
-                  <p id="viewCurrentStock">120 Vials</p>
+                  <p id="viewCurrentStock"></p>
                 </div>
                 <div class="detail-item">
                   <label>Minimum Level</label>
-                  <p id="viewMinLevel">30 Vials</p>
+                  <p id="viewMinLevel"></p>
                 </div>
 
                 <div class="detail-item">
                   <label>Price per Unit</label>
-                  <p id="viewPrice">$45.00</p>
-                </div>
-                <div class="detail-item">
-                  <label>Last Updated</label>
-                  <p id="viewLastUpdated">2026-02-24 14:30 PM</p>
+                  <p id="viewPrice"></p>
                 </div>
               </div>
             </div>
@@ -399,7 +395,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         ${item.status.toLowerCase() === 'out of stock' ? 'out' : item.status.toLowerCase()}"
         >${item.status}</span>
       </td>
-      <td class="actions-cell" data-item-id=${item.id}>
+      <td class="actions-cell" data-item-id=${item.item_id}>
         <i class="fas fa-eye" title="View"></i>
         <i class="fas fa-edit" title="Edit"></i>
         <i class="fas fa-balance-scale" title="Adjust Stock Amount"></i>
@@ -560,7 +556,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Get an item
   function getItemDetails(itemId) {
-    return itemsDetails.find(item => item.id === itemId)
+    return itemsDetails.find(item => item.item_id === Number(itemId))
   }
 
   // Return a string without spaces and only lowercase
@@ -633,7 +629,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       })
     document.querySelectorAll('.global-sku')
       .forEach(skuElem => {
-        skuElem.textContent = item.sku
+        skuElem.textContent = item.sku_code
       })
 
     // View item details
@@ -641,13 +637,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       handleOverlay(viewItemOverlayElem)
 
       document.getElementById('viewCategory')
-        .textContent = getCatName(item.category)
+        .textContent = getCatName(item.category_id)
       document.getElementById('viewTemp')
-        .textContent = item.storage
+        .textContent = item.storage_temp_code
       document.getElementById('viewBulkUnit')
-        .textContent = getUnitName(item.bulkUnit)
+        .textContent = getUnitName(item.bulk_uom_id)
       document.getElementById('viewSellingUnit')
-        .textContent = getUnitName(item.sellingUnit)
+        .textContent = getUnitName(item.selling_uom_id)
       const viewStatusElem = document.getElementById('view-status')
       viewStatusElem.textContent = item.status
       viewStatusElem.className = `status-badge ${item.status.toLowerCase() === 'out of stock'
@@ -655,13 +651,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         : item.status.toLowerCase()
         }`
       document.getElementById('viewCurrentStock')
-        .textContent = `${item.currentStock} ${getUnitName(item.sellingUnit)}${item.currentStock > 1 ? 's' : ''}`
+        .textContent = `${item.current_stock} ${getUnitName(item.selling_uom_id)}${item.current_stock > 1 ? 's' : ''}`
       document.getElementById('viewMinLevel')
-        .textContent = `${item.minLevel} ${getUnitName(item.sellingUnit)}${item.minLevel !== 1 ? 's' : ''}`
+        .textContent = `${item.min_stock_level} ${getUnitName(item.selling_uom_id)}${item.min_stock_level !== 1 ? 's' : ''}`
       document.getElementById('viewPrice')
-        .textContent = `$${item.price.toFixed(2)}`
-      document.getElementById('viewLastUpdated')
-        .textContent = item.lastUpdated
+        .textContent = `$${Number(item.price_per_selling).toFixed(2)}`
     }
 
     // Edit item details
