@@ -1,7 +1,7 @@
 import { renderSidebar } from "./sidebar.js";
 import { handleOverlay, displayNoMatchFound } from "../global.js";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
   document.querySelector('.app-container')
     .innerHTML = `
@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
                   <th>Bulk / Selling</th>
                   <th>Current Stock</th>
                   <th>Status</th>
-                  <th>Last Updated</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -370,190 +369,8 @@ document.addEventListener('DOMContentLoaded', () => {
   `
   displayNoMatchFound()
 
-  const InventoryMockData = [
-    {
-      id: "INV-001",
-      name: "Amoxicillin 500mg Capsules",
-      sku: "PHARM-AMX-500",
-      category: "cat_01", // Antibiotics
-      storage: "C",       // Common Room
-      bulkUnit: "u_01",    // Carton
-      sellingUnit: "u_04", // Strip
-      unitsPerBulk: 50,
-      price: 12.50,
-      currentStock: 450,
-      minLevel: 100,
-      status: "healthy",
-      lastUpdated: "2026-02-24 09:15 AM"
-    },
-    {
-      id: "INV-002",
-      name: "Insulin Glargine (Lantus)",
-      sku: "COLD-INS-GLA",
-      category: "cat_02", // Vaccines
-      storage: "R",       // Refrigerated
-      bulkUnit: "u_02",    // Box
-      sellingUnit: "u_03", // Vial
-      unitsPerBulk: 5,
-      price: 85.00,
-      currentStock: 12,
-      minLevel: 25,
-      status: "low",
-      lastUpdated: "2026-02-25 14:30 PM"
-    },
-    {
-      id: "INV-003",
-      name: "Surgical Face Masks (3-Ply)",
-      sku: "PPE-MSK-003",
-      category: "cat_03", // Surgical Supplies
-      storage: "A",       // Ambient
-      bulkUnit: "u_02",    // Box
-      sellingUnit: "u_05", // Piece
-      unitsPerBulk: 100,
-      price: 0.50,
-      currentStock: 0,
-      minLevel: 500,
-      status: "out of stock",
-      lastUpdated: "2026-02-20 11:00 AM"
-    },
-    {
-      id: "INV-004",
-      name: "Normal Saline 0.9% (500ml)",
-      sku: "IVF-NS-500",
-      category: "cat_04", // IV Fluids
-      storage: "C",       // Common Room
-      bulkUnit: "u_09",    // Crate
-      sellingUnit: "u_06", // Bottle
-      unitsPerBulk: 24,
-      price: 4.20,
-      currentStock: 156,
-      minLevel: 48,
-      status: "healthy",
-      lastUpdated: "2026-02-24 16:45 PM"
-    },
-    {
-      id: "INV-005",
-      name: "Paracetamol 500mg",
-      sku: "PHARM-PCM-500",
-      category: "cat_05", // Analgesics
-      storage: "C",       // Common Room
-      bulkUnit: "u_02",    // Box
-      sellingUnit: "u_04", // Strip
-      unitsPerBulk: 10,
-      price: 2.00,
-      currentStock: 85,
-      minLevel: 100,
-      status: "low",
-      lastUpdated: "2026-02-25 08:20 AM"
-    },
-    {
-      id: "INV-006",
-      name: "Latex Examination Gloves (M)",
-      sku: "PPE-GLV-LAT-M",
-      category: "cat_07", // Consumables
-      storage: "A",       // Ambient
-      bulkUnit: "u_01",    // Carton
-      sellingUnit: "u_05", // Piece
-      unitsPerBulk: 1000,
-      price: 0.15,
-      currentStock: 2400,
-      minLevel: 1000,
-      status: "healthy",
-      lastUpdated: "2026-02-22 13:10 PM"
-    },
-    {
-      id: "INV-007",
-      name: "Oxytocin 10IU Injection",
-      sku: "MAT-OXY-010",
-      category: "cat_02", // Vaccines/Maternity
-      storage: "R",       // Refrigerated
-      bulkUnit: "u_08",    // Pack
-      sellingUnit: "u_07", // Ampoule
-      unitsPerBulk: 10,
-      price: 15.00,
-      currentStock: 45,
-      minLevel: 50,
-      status: "low",
-      lastUpdated: "2026-02-25 10:55 AM"
-    },
-    {
-      id: "INV-008",
-      name: "Frozen Plasma Units",
-      sku: "BLD-PLM-FZ",
-      category: "cat_06", // Controlled/Blood
-      storage: "F",       // Frozen
-      bulkUnit: "u_09",    // Crate/Cooler
-      sellingUnit: "u_10", // Unit
-      unitsPerBulk: 10,
-      price: 120.00,
-      currentStock: 8,
-      minLevel: 5,
-      status: "healthy",
-      lastUpdated: "2026-02-24 15:00 PM"
-    },
-    {
-      id: "INV-009",
-      name: "Disposable Syringes (5ml)",
-      sku: "CONS-SYR-005",
-      category: "cat_07", // Consumables
-      storage: "C",       // Common Room
-      bulkUnit: "u_02",    // Box
-      sellingUnit: "u_05", // Piece
-      unitsPerBulk: 100,
-      price: 0.10,
-      currentStock: 1250,
-      minLevel: 500,
-      status: "healthy",
-      lastUpdated: "2026-02-21 09:30 AM"
-    },
-    {
-      id: "INV-010",
-      name: "Diazepam 5mg Tablets",
-      sku: "PHARM-DZP-005",
-      category: "cat_06", // Controlled Substances
-      storage: "C",       // Common Room
-      bulkUnit: "u_06",    // Bottle
-      sellingUnit: "u_10", // Unit (Tablet)
-      unitsPerBulk: 1000,
-      price: 0.08,
-      currentStock: 0,
-      minLevel: 500,
-      status: "out of stock",
-      lastUpdated: "2026-01-15 12:00 PM"
-    }
-  ];
-
-  const SystemConfig = {
-    categories: [
-      { id: "cat_01", name: "Antibiotics" },
-      { id: "cat_02", name: "Vaccines" },
-      { id: "cat_03", name: "Surgical Supplies" },
-      { id: "cat_04", name: "IV Fluids" },
-      { id: "cat_05", name: "Analgesics" },
-      { id: "cat_06", name: "Controlled Substances" },
-      { id: "cat_07", name: "Consumables" }
-    ],
-
-    storageOptions: [
-      { code: "C", label: "Common Room Temp", range: "20-25°C" },
-      { code: "R", label: "Refrigerated", range: "2-8°C" },
-      { code: "A", label: "Ambient", range: "15-25°C" },
-      { code: "F", label: "Frozen", range: "-20°C" }
-    ],
-
-    units: [
-      { id: "u_01", name: "Carton" },
-      { id: "u_02", name: "Box" },
-      { id: "u_03", name: "Vial" },
-      { id: "u_04", name: "Strip" },
-      { id: "u_05", name: "Piece" },
-      { id: "u_06", name: "Bottle" },
-      { id: "u_07", name: "Ampoule" },
-      { id: "u_08", name: "Pack" },
-      { id: "u_09", name: "Crate" },
-      { id: "u_10", name: "Unit" }
-    ]
-  };
+  const itemsDetails = await getItemsDetails()
+  const SystemConfig = await getSystemConfig()
 
   // Get Category Name
   const getCatName = (id) => SystemConfig.categories.find(c => c.id === id)?.name || "N/A";
@@ -572,17 +389,16 @@ document.addEventListener('DOMContentLoaded', () => {
       tblRow.innerHTML = `
       <td>
         <strong>${item.name}</strong><br>
-        <span class="sku">SKU: ${item.sku}</span>
+        <span class="sku">SKU: ${item.sku_code}</span>
       </td>
-      <td>${getCatName(item.category)}</td>
-      <td><span class="badge ${item.storage}">${item.storage}</span></td>
-      <td>${getUnitName(item.bulkUnit)} / ${getUnitName(item.sellingUnit)} (${item.unitsPerBulk} units)</td>
-      <td>${item.currentStock} ${getUnitName(item.sellingUnit)}</td>
+      <td>${getCatName(item.category_id)}</td>
+      <td><span class="badge ${item.storage_temp_code}">${item.storage_temp_code}</span></td>
+      <td>${getUnitName(item.bulk_uom_id)} / ${getUnitName(item.selling_uom_id)} (${item.units_per_bulk} units)</td>
+      <td>${item.current_stock} ${getUnitName(item.selling_uom_id)}</td>
       <td><span class="status-badge 
         ${item.status.toLowerCase() === 'out of stock' ? 'out' : item.status.toLowerCase()}"
         >${item.status}</span>
       </td>
-      <td>${item.lastUpdated}</td>
       <td class="actions-cell" data-item-id=${item.id}>
         <i class="fas fa-eye" title="View"></i>
         <i class="fas fa-edit" title="Edit"></i>
@@ -596,7 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     itemsTbodyElem.appendChild(itemsTableFrag)
   }
-  displayTableItems(InventoryMockData)
+  displayTableItems(itemsDetails)
 
   // Create an array that matches other system config arrays for storage options
   // Used to display system config data
@@ -744,7 +560,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Get an item
   function getItemDetails(itemId) {
-    return InventoryMockData.find(item => item.id === itemId)
+    return itemsDetails.find(item => item.id === itemId)
   }
 
   // Return a string without spaces and only lowercase
@@ -927,7 +743,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectedStatus = statusFilterElem?.value || 'all'
     const selectedTemp = tempFilterElem?.value || ''
 
-    const filtered = InventoryMockData.filter(item => {
+    const filtered = itemsDetails.filter(item => {
       if (searchTerm) {
         const name = normalizeText(item.name)
         const sku = normalizeText(item.sku)
@@ -978,3 +794,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   applyFilters()
 })
+
+// Get the System Config data: Categories, Storage Temp, Uom
+async function getSystemConfig(){
+  const response = await fetch(`http://localhost:3000/admin/getCatStorageUom`)
+  const result = await response.json()
+  return result.catStorageUomDetails
+}
+
+// Get all item details
+async function getItemsDetails(){
+  const response = await fetch(`http://localhost:3000/admin/getAllItems`)
+  const result = await response.json()
+  return result.itemsWithStatus
+}
