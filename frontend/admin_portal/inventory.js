@@ -280,7 +280,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="modal-body">
               <div class="current-stock-display">
                 <label>System Count (Before)</label>
-                <div class="count-value"><span id="currentStockCount">450</span> <small
+                <div class="count-value"><span id="currentStockCount"></span> <small
                     id="adjustUnitLabel">Strips</small></div>
               </div>
 
@@ -289,13 +289,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                   <div class="form-group">
                     <label>New Quantity</label>
-                    <input type="number" id="adjust-qty" class="input-field qty-input" placeholder="0" min="1">
+                    <input type="number" id="adjustQty" class="input-field qty-input" placeholder="0" min="1">
                   </div>
                 </div>
 
                 <div class="form-group" style="margin-top: 1.2rem;">
                   <label>Reason for Adjustment</label>
-                  <textarea id="adjust-notes" class="input-field" rows="3"
+                  <textarea id="adjustReason" class="input-field" rows="3"
                     placeholder="Describe why this adjustment is being made..." required></textarea>
                 </div>
               </form>
@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             <div class="modal-footer">
               <button class="btn discard-btn js-btn-close-overlay">Cancel Changes</button>
-              <button class="btn btn-primary">
+              <button id="updateStockBtn" class="btn btn-primary">
                 <i class="fas fa-check"></i> Update Stock Count
               </button>
             </div>
@@ -741,7 +741,35 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('currentStockCount')
         .textContent = item.current_stock
       document.getElementById('adjustUnitLabel')
-        .textContent = item.selling_uom_id
+        .textContent = getUnitName(item.selling_uom_id)
+
+      document.getElementById("updateStockBtn")
+        .addEventListener('click', async () => {
+          const newQtyElem = document.getElementById('adjustQty')
+          const adjustReasonElem = document.getElementById('adjustReason')
+
+          if(newQtyElem.value === '' || adjustReasonElem.value === ''){
+            alert('All the fields should be filled!')
+          }else{
+            const response = await fetch('http://localhost:3000/admin/updateCurrentStock', 
+              {
+                method: 'PATCH', 
+                headers: {
+                  'Content-Type': 'application/json'
+                }, 
+                body: JSON.stringify({
+                  itemId: btnItemId, 
+                  newStockQty: newQtyElem.value, 
+                  adjustReason: adjustReasonElem.value
+                })
+              }
+            )
+
+            const result = await response.json()
+            triggerStatus(result.msg)
+          }
+
+        })
     }
 
     // Delete an item

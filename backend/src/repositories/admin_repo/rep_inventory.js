@@ -66,3 +66,41 @@ export async function updateItemsDetailsQ({ itemId, name, cat, storageTemp,
 
   return rows
 }
+
+export async function updateCurrentStockQ({itemId, newStockQty, adjustReason}){
+  const client = await pool.connect()
+
+  try {
+    await client.query('BEGIN')
+
+    const res = await client.query(`
+      SELECT current_stock FROM items WHERE item_id = $1
+    `, [itemId])
+
+    if (res.rows.length === 0) throw new Error("Item does not exist!");
+
+    const currentStock = res.rows[0].current_stock;
+    const qtyChange = currentStock - newStockQty;
+
+    if(qtyChange === 0) throw new Error("The item quantity was not changed!")
+
+    await client.query(`
+      INSERT INTO stock_log(item_id, quantity_change, new_stock_level, adjustment_reason)
+      VALUES ($1, $2, $3, $4)
+    `, [itemId, -qtyChange, newStockQty, adjustReason]);
+
+    const updated = await client.query(`
+      UPDATE items SET current_stock = $1 WHERE item_id = $2 RETURNING *
+    `, [newStockQty, itemId]);
+
+    await client.query('COMMIT')
+
+    return updated.rows[0]; 
+
+  } catch(err) {
+    await client.query('ROLLBACK')
+    throw err;
+  } finally {
+    client.release()
+  }
+}
