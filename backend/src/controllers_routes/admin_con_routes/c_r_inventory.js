@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllItemsQ, getCatStorageUomQ } from "../../repositories/admin_repo/rep_inventory.js";
+import { getAllItemsQ, getCatStorageUomQ, updateItemsDetailsQ } from "../../repositories/admin_repo/rep_inventory.js";
 
 const adminInvRouter = express.Router()
 
@@ -35,6 +35,16 @@ adminInvRouter.get('/getCatStorageUom', async (req, res) => {
     res.status(200).json({ msg: 'success', catStorageUomDetails })
   } catch (err) {
     res.status(500).json({ msg: 'error', Error: err.message })
+  }
+})
+
+adminInvRouter.put('/updateItemsDetails', async (req, res) => {
+  try{
+    const updatedItemsDetails = await updateItemsDetailsQ(req.body)
+    console.log(updatedItemsDetails)
+    res.status(200).json({msg: 'success', updatedItemsDetails})
+  }catch(err){
+    res.status(500).json({msg: 'error', Error: err.message})
   }
 })
 

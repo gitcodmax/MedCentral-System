@@ -1,5 +1,6 @@
 import { renderSidebar } from "./sidebar.js";
-import { handleOverlay, displayNoMatchFound } from "../global.js";
+import { handleOverlay, displayNoMatchFound, 
+  renderSuccessErrorOverlay, triggerStatus } from "../global.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -258,7 +259,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             <div class="modal-footer">
               <button class="btn discard-btn js-btn-close-overlay">Cancel Changes</button>
-              <button class="btn btn-primary">
+              <button id="updateItemBtn" class="btn btn-primary">
                 <i class="fas fa-check"></i> Update Item
               </button>
             </div>
@@ -346,6 +347,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
     `
 
+  renderSuccessErrorOverlay()
   renderSidebar()
   document.querySelector('.js-header-left')
     .innerHTML = `
@@ -424,7 +426,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     .map(c => ({ value: c.id, label: c.name }))
 
   const storageItems = (SystemConfig.storageOptions || [])
-    .map(t => ({ value: t.code, label: `${t.label} (${t.range})` }))
+    .map(t => ({ value: t.code, label: `${t.description} (${t.temp_range})` }))
 
   const uomItems = (SystemConfig.units || [])
     .map(u => ({ value: u.id, label: u.name }))
@@ -670,40 +672,66 @@ document.addEventListener('DOMContentLoaded', async () => {
       const editUnitsPerBulkInput = document.getElementById('edit-conversion')
       const editMinLevelInput = document.getElementById('edit-min-level')
 
-      if (editItemIdInput) editItemIdInput.value = item.id
+      if (editItemIdInput) editItemIdInput.value = item.item_id
       if (editNameInput) editNameInput.value = item.name
-      if (editSkuInput) editSkuInput.value = item.sku
-      if (editPriceInput) editPriceInput.value = item.price.toFixed(2)
-      if (editUnitsPerBulkInput) editUnitsPerBulkInput.value = item.unitsPerBulk
-      if (editMinLevelInput) editMinLevelInput.value = item.minLevel
+      if (editSkuInput) editSkuInput.value = item.sku_code
+      if (editPriceInput) editPriceInput.value = Number(item.price_per_selling).toFixed(2)
+      if (editUnitsPerBulkInput) editUnitsPerBulkInput.value = item.bulk_uom_id
+      if (editMinLevelInput) editMinLevelInput.value = item.min_stock_level
 
       // Populate select options from SystemConfig, then select current values
       const editCategorySelect = document.getElementById('edit-category')
       if (editCategorySelect) {
         setSelectOptions(editCategorySelect, categoryItems)
-        selectByLabel(editCategorySelect, categoryItems, item.category)
+        selectByLabel(editCategorySelect, categoryItems, item.category_id)
       }
 
       const editTempSelect = document.getElementById('edit-temp')
       if (editTempSelect) {
         setSelectOptions(editTempSelect, storageItems)
         // Inventory items store the storage code directly (C/R/A/F)
-        if (item.storage) editTempSelect.value = item.storage
+        if (item.storage_temp_code) editTempSelect.value = item.storage_temp_code
       }
 
       const editBulkSelect = document.getElementById('edit-bulk')
       if (editBulkSelect) {
         // Bulk Unit and Selling Unit share the same UOM options
         setSelectOptions(editBulkSelect, uomItems)
-        selectByLabel(editBulkSelect, uomItems, item.bulkUnit)
+        selectByLabel(editBulkSelect, uomItems, item.bulk_uom_id)
       }
 
       const editSellingSelect = document.getElementById('edit-selling')
       if (editSellingSelect) {
         // Bulk Unit and Selling Unit share the same UOM options
         setSelectOptions(editSellingSelect, uomItems)
-        selectByLabel(editSellingSelect, uomItems, item.sellingUnit)
+        selectByLabel(editSellingSelect, uomItems, item.selling_uom_id)
       }
+
+      document.getElementById('updateItemBtn')
+        .addEventListener('click', async () => {
+          const response = await fetch('http://localhost:3000/admin/updateItemsDetails',
+            {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                itemId: btnItemId,
+                name: editNameInput.value,
+                cat: editCategorySelect.value,
+                storageTemp: editTempSelect.value,
+                bulkUom: editBulkSelect.value,
+                sellingUom: editSellingSelect.value,
+                unitsPerBulk: editUnitsPerBulkInput.value,
+                pricePerSelling: editPriceInput.value,
+                minStockLevel: editMinLevelInput.value
+              })
+            }
+          )
+
+          const result = await response.json()
+          triggerStatus(result.msg)
+        }, { once: true })
     }
 
     // Adjust the stock amount
@@ -711,9 +739,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       handleOverlay(adjustStockOverlayElem)
 
       document.getElementById('currentStockCount')
-        .textContent = item.currentStock
+        .textContent = item.current_stock
       document.getElementById('adjustUnitLabel')
-        .textContent = item.sellingUnit
+        .textContent = item.selling_uom_id
     }
 
     // Delete an item
@@ -790,14 +818,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 })
 
 // Get the System Config data: Categories, Storage Temp, Uom
-async function getSystemConfig(){
+async function getSystemConfig() {
   const response = await fetch(`http://localhost:3000/admin/getCatStorageUom`)
   const result = await response.json()
   return result.catStorageUomDetails
 }
 
 // Get all item details
-async function getItemsDetails(){
+async function getItemsDetails() {
   const response = await fetch(`http://localhost:3000/admin/getAllItems`)
   const result = await response.json()
   return result.itemsWithStatus

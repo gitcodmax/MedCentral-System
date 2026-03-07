@@ -66,3 +66,44 @@ export function displayCountyOptions(geoData, selectTag) {
     selectTag.appendChild(opt)
   })
 }
+
+// Add the html to display the success and error messages
+export function renderSuccessErrorOverlay(){
+  const successErrorHTML = `
+    <div id="successOverlay" class="modal-overlay">
+      <div class="modal-card db-notif-card">
+        <div class="icon-wrapper success-theme">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h2 class="modal-title">Saved successfully</h2>
+        <p class="modal-text">Records are now up to date.</p>
+      </div>
+    </div>
+
+    <div id="errorOverlay" class="modal-overlay">
+      <div class="modal-card db-notif-card">
+        <div class="icon-wrapper error-theme">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h2 class="modal-title">Save failed</h2>
+        <p class="modal-text">Could not connect to the server. Please retry.</p>
+      </div>
+    </div>
+  `
+
+  document.querySelector('main')
+    .insertAdjacentHTML('beforeend', successErrorHTML)
+}
+
+// Display the notification message based on db response
+export function triggerStatus(type) {
+  const overlayId = type === 'success' ? 'successOverlay' : 'errorOverlay';
+  const dbNotifOverlay = document.getElementById(overlayId);
+
+  handleOverlay(dbNotifOverlay)
+
+  setTimeout(() => {
+    dbNotifOverlay.classList.remove('active');
+    location.reload()
+  }, 3000);
+}

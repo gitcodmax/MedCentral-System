@@ -1,5 +1,7 @@
 import { renderSidebar } from "./sidebar.js"
-import { handleOverlay, displayNoMatchFound, displayCountyOptions, displayCountyZonesOptions } from "../global.js"
+import { handleOverlay, displayNoMatchFound, 
+  displayCountyOptions, displayCountyZonesOptions, 
+ renderSuccessErrorOverlay, triggerStatus} from "../global.js"
 
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.app-container')
@@ -381,30 +383,11 @@ document.addEventListener('DOMContentLoaded', () => {
               </form>
             </div>
           </div>
-
-          <div id="successOverlay" class="modal-overlay">
-              <div class="modal-card db-notif-card">
-                  <div class="icon-wrapper success-theme">
-                      <i class="fa-solid fa-circle-check"></i>
-                  </div>
-                  <h2 class="modal-title">Saved successfully</h2>
-                  <p class="modal-text">Records are now up to date.</p>
-              </div>
-          </div>
-
-          <div id="errorOverlay" class="modal-overlay">
-              <div class="modal-card db-notif-card">
-                  <div class="icon-wrapper error-theme">
-                      <i class="fa-solid fa-triangle-exclamation"></i>
-                  </div>
-                  <h2 class="modal-title">Save failed</h2>
-                  <p class="modal-text">Could not connect to the server. Please retry.</p>
-              </div>
-          </div>
         </main>
       </div>
     `
 
+  renderSuccessErrorOverlay()
   renderSidebar()
   document.querySelector('.js-header-left')
     .innerHTML = `
@@ -472,18 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `).join('')
   }
 
-  // Display the notification message based on db response
-  function triggerStatus(type) {
-    const overlayId = type === 'success' ? 'successOverlay' : 'errorOverlay';
-    const dbNotifOverlay = document.getElementById(overlayId);
 
-    handleOverlay(dbNotifOverlay)
-
-    setTimeout(() => {
-      dbNotifOverlay.classList.remove('active');
-      location.reload()
-    }, 3000);
-  }
 
   // Set up the overlay to add a new hospital
   const addHosOverlayElem = document.getElementById('addHospitalOverlay')
@@ -734,8 +706,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         activateHosOverlayElem.addEventListener('click', async (e) => {
           if (e.target.id === 'activateHosBtn') {
-            console.log('Activate', btnHosId)
-
             const response = await fetch('http://localhost:3000/admin/activateHos',
               {
                 method: 'PUT',
