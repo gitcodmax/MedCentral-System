@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllItemsQ, getCatStorageUomQ, updateCurrentStockQ, updateItemsDetailsQ } from "../../repositories/admin_repo/rep_inventory.js";
+import { deleteItemQ, getAllItemsQ, getCatStorageUomQ, updateCurrentStockQ, updateItemsDetailsQ } from "../../repositories/admin_repo/rep_inventory.js";
 
 const adminInvRouter = express.Router()
 
@@ -51,6 +51,15 @@ adminInvRouter.patch('/updateCurrentStock', async (req, res) => {
   try{
     const updatedItemDetails = await updateCurrentStockQ(req.body)
     res.status(200).json({msg: 'success', updatedItemDetails})
+  }catch(err){
+    res.status(500).json({msg: 'error', Error: err.message})
+  }
+})
+
+adminInvRouter.delete('/deleteItem', async (req, res) => {
+  try{
+    await deleteItemQ(req.body.itemId)
+    res.status(200).json({msg: 'success'})
   }catch(err){
     res.status(500).json({msg: 'error', Error: err.message})
   }

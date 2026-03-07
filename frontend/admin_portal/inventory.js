@@ -777,7 +777,22 @@ document.addEventListener('DOMContentLoaded', async () => {
       handleOverlay(deleteItemOverlayElem)
 
       document.getElementById('currentStockSellUom')
-        .textContent = `${item.currentStock} ${item.sellingUnit}`
+        .textContent = `${item.current_stock} ${getUnitName(item.selling_uom_id)}`
+
+      document.getElementById('confirmDeleteBtn')
+        .addEventListener('click', async () => {
+          const response = await fetch('http://localhost:3000/admin/deleteItem', 
+            {
+              method: 'DELETE', 
+              headers: {
+                'Content-Type': 'application/json'
+              }, 
+              body: JSON.stringify({itemId: btnItemId})
+            }
+          )
+          const result = await response.json()
+          triggerStatus(result.msg)
+        })
     }
   })
 
@@ -796,19 +811,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     const filtered = itemsDetails.filter(item => {
       if (searchTerm) {
         const name = normalizeText(item.name)
-        const sku = normalizeText(item.sku)
+        const sku = normalizeText(item.sku_code)
         if (!name.includes(searchTerm) && !sku.includes(searchTerm)) {
           return false
         }
       }
 
       // Category filter (matches category id)
-      if (selectedCategory && item.category !== selectedCategory) {
+      if (selectedCategory && item.category_id !== Number(selectedCategory)) {
         return false
       }
 
       // Storage temperature filter (matches storage code C/R/A/F)
-      if (selectedTemp && item.storage !== selectedTemp) {
+      if (selectedTemp && item.storage_temp_code !== selectedTemp) {
         return false
       }
 
@@ -826,6 +841,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       return true
     })
 
+    console.log(filtered)
+
     if (filtered.length === 0) {
       itemsTbodyElem.innerHTML = ``
       document.querySelector('.js-no-match-found')
@@ -842,7 +859,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (statusFilterElem) statusFilterElem.addEventListener('change', applyFilters)
   if (tempFilterElem) tempFilterElem.addEventListener('change', applyFilters)
 
-  applyFilters()
+  // applyFilters()
 })
 
 // Get the System Config data: Categories, Storage Temp, Uom

@@ -104,3 +104,7 @@ export async function updateCurrentStockQ({itemId, newStockQty, adjustReason}){
     client.release()
   }
 }
+
+export async function deleteItemQ(itemId){
+  await pool.query(`DELETE FROM items WHERE item_id = $1`, [itemId])
+}
