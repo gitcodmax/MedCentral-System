@@ -3,7 +3,7 @@ import pool from "../../config/db.js";
 export async function getAllSysUsersQ(){
   const {rows} = await pool.query(`
     SELECT user_id AS id, full_name, email, 
-      (SELECT name FROM cfg_roles WHERE id = role_id) AS role, 
+      (SELECT id FROM cfg_roles WHERE id = role_id) AS role_id, 
       CASE WHEN is_active THEN 'Active' ELSE 'Inactive' END AS status , 
       last_login AS lastLogin
     FROM users
@@ -23,6 +23,18 @@ export async function getAllDriversQ(){
       CASE WHEN is_active THEN 'Active' ELSE 'Inactive' END AS status 
     FROM drivers
   `)
+
+  return rows
+}
+
+export async function updateSysUsersDataQ({fullName, email, roleId, userId}){
+  const {rows} = await pool.query(`
+    UPDATE users SET 
+      full_name = $1, 
+      email = $2, 
+      role_id = $3
+    WHERE user_id = $4 RETURNING *
+  `, [fullName, email, roleId, userId])
 
   return rows
 }

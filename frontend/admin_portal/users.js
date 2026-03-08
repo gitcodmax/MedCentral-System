@@ -1,3 +1,4 @@
+import { renderSuccessErrorOverlay, triggerStatus } from "../global.js";
 import { renderSidebar } from "./sidebar.js";
 import { handleOverlay, displayCountyOptions, displayCountyZonesOptions } from "/global.js";
 
@@ -209,8 +210,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 <div class="form-group">
                                     <label>Role</label>
                                     <select class="form-control" required>
-                                        <option value="Warehouse Manager">Warehouse Manager</option>
-                                        <option value="Inventory Clerk">Inventory Clerk</option>
+                                        <option value="2">Warehouse Manager</option>
+                                        <option value="1">Inventory Clerk</option>
                                     </select>
                                 </div>
                             </div>
@@ -378,119 +379,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </nav>
       </div>
     `
-
-  const UsersMockData = {
-    "systemUsers": [
-      {
-        "id": "USR-001",
-        "firstName": "Sarah",
-        "lastName": "Connor",
-        "email": "s.connor@warehouse.com",
-        "role": "Inventory Clerk",
-        "status": "Active",
-        "lastLogin": "2026-02-28T08:30:00Z"
-      },
-      {
-        "id": "USR-002",
-        "firstName": "Mike",
-        "lastName": "Ross",
-        "email": "m.ross@warehouse.com",
-        "role": "Warehouse Manager",
-        "status": "Active",
-        "lastLogin": "2026-02-27T17:15:00Z"
-      },
-      {
-        "id": "USR-003",
-        "firstName": "Elena",
-        "lastName": "Fisher",
-        "email": "e.fisher@warehouse.com",
-        "role": "Inventory Clerk",
-        "status": "Active",
-        "lastLogin": "2026-02-28T09:00:00Z"
-      },
-      {
-        "id": "USR-004",
-        "firstName": "Harvey",
-        "lastName": "Specter",
-        "email": "h.specter@warehouse.com",
-        "role": "Warehouse Manager",
-        "status": "Inactive",
-        "lastLogin": "2026-01-12T11:20:00Z"
-      },
-      {
-        "id": "USR-005",
-        "firstName": "Arthur",
-        "lastName": "Morgan",
-        "email": "a.morgan@warehouse.com",
-        "role": "Inventory Clerk",
-        "status": "Active",
-        "lastLogin": "2026-02-25T14:05:00Z"
-      }
-    ],
-    "drivers": [
-      {
-        "id": "DRV-501",
-        "firstName": "John",
-        "lastName": "Doe",
-        "phone": "+254 712 345 678",
-        "vehicleNo": "KDB 123X",
-        "county_id": 47,
-        "county_name": "Nairobi",
-        "zone_id": 4701,
-        "zone_name": "Westlands",
-        "status": "Active"
-      },
-      {
-        "id": "DRV-502",
-        "firstName": "Amos",
-        "lastName": "Burton",
-        "phone": "+254 722 987 654",
-        "vehicleNo": "KCC 777Z",
-        "county_id": 1,
-        "county_name": "Mombasa",
-        "zone_id": 102,
-        "zone_name": "Nyali",
-        "status": "Active"
-      },
-      {
-        "id": "DRV-503",
-        "firstName": "James",
-        "lastName": "Holden",
-        "phone": "+254 733 111 222",
-        "vehicleNo": "KDD 456Y",
-        "county_id": 47,
-        "county_name": "Nairobi",
-        "zone_id": 4704,
-        "zone_name": "Embakasi",
-        "status": "Inactive"
-      },
-      {
-        "id": "DRV-504",
-        "firstName": "Naomi",
-        "lastName": "Nagata",
-        "phone": "+254 700 444 555",
-        "vehicleNo": "KAA 999A",
-        "county_id": 41,
-        "county_name": "Kisumu",
-        "zone_id": 4101,
-        "zone_name": "Kisumu Central",
-        "status": "Active"
-      },
-      {
-        "id": "DRV-505",
-        "firstName": "Alex",
-        "lastName": "Kamal",
-        "phone": "+254 788 000 333",
-        "vehicleNo": "KBZ 555B",
-        "county_id": 32,
-        "county_name": "Nakuru",
-        "zone_id": 3204,
-        "zone_name": "Lanet",
-        "status": "Active"
-      }
-    ]
-  }
-
+  renderSuccessErrorOverlay()
   const GeoReferenceData = [
     {
       county_id: 47,
@@ -537,7 +426,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   ];
 
   const sysUsers = await getAllSysUsers()
-  console.log(sysUsers)
   const drivers = await getAllDrivers()
 
   const systemUsersTbodyElem = document.getElementById('sysUsersTbody')
@@ -556,7 +444,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     tblRow.innerHTML = `
       <td><strong class="full-name">${user.firstName} ${user.lastName}</strong></td>
       <td>${user.email}</td>
-      <td><span class="user-badge user-role">${user.role}</span></td>
+      <td><span class="user-badge user-role">${user.role_id === 1 ? 'Inventory Clerk' : 'Warehouse Manager'}</span></td>
       <td><span class="user-badge status-${statusLower}">${user.status}</span></td>
       <td>${!user.lastLogin ? 'Not yet logged in' : formatLastLogin(user.lastLogin)}</td>
       <td>
@@ -706,23 +594,48 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btn = e.target.closest('button')
     if (!btn) return;
 
-    const userData = getUserDetails(btn.dataset.userId, 'system user')
+    const btnUserId = Number(btn.dataset.userId)
+    const userData = getUserDetails(btnUserId, 'system user')
     document.querySelectorAll('.overlay-target-name')
       .forEach(targetNameElem => targetNameElem.textContent = `${userData.firstName} ${userData.lastName}`)
 
     // Edit user details button
     if (btn.classList.contains('edit-user-details-btn')) {
       const editUserOverlayElem = document.getElementById('editUserOverlay')
+      const form = document.getElementById('editUserForm')
+      const inputs = form.querySelectorAll('input.form-control')
+      const roleSelect = form.querySelector('select.form-control')
       if (userData) {
-        const form = document.getElementById('editUserForm')
-        const inputs = form.querySelectorAll('input.form-control')
-        const roleSelect = form.querySelector('select.form-control')
         inputs[0].value = userData.firstName
         inputs[1].value = userData.lastName
         inputs[2].value = userData.email
-        roleSelect.value = userData.role
+        roleSelect.value = userData.role_id
       }
       handleOverlay(editUserOverlayElem)
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault()
+
+        const inputFullName = inputs[0].value + ' ' + inputs[1].value
+
+        const response = await fetch('http://localhost:3000/admin/updateSysUsersData', 
+          {
+            method: 'PUT', 
+            headers: {
+              'Content-type': 'application/json'
+            }, 
+            body: JSON.stringify({
+              fullName: inputFullName, 
+              email: inputs[2].value, 
+              roleId: Number(roleSelect.value), 
+              userId: btnUserId
+            })
+          }
+        )
+
+        const result = await response.json()
+        triggerStatus(result.msg)
+      }, {once: true})
     }
 
     if (btn.classList.contains('reset-user-pwd-btn')) {
@@ -744,7 +657,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btn = e.target.closest('button')
     if (!btn) return;
 
-    const userData = getUserDetails(btn.dataset.driverId, 'driver')
+    const userData = getUserDetails(Number(btn.dataset.driverId), 'driver')
     document.querySelectorAll('.overlay-target-name')
       .forEach(targetNameElem => targetNameElem.textContent = `${userData.firstName} ${userData.lastName}`)
 
