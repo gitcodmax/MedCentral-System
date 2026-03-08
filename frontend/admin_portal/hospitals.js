@@ -530,7 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
   //Get specific hospital details
   async function getHospitalDetails(btnId) {
     const hospitalsData = await getSavedHospitalsDetails()
-    return hospitalsData.find(hos => hos.id === btnId)
+    return hospitalsData.find(hos => hos.id === Number(btnId))
   }
 
   // Hnadle the toggling of the department chips

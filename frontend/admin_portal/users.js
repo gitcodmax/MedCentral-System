@@ -1,7 +1,7 @@
 import { renderSidebar } from "./sidebar.js";
 import { handleOverlay, displayCountyOptions, displayCountyZonesOptions } from "/global.js";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
   document.querySelector('.app-container')
     .innerHTML = `
@@ -536,6 +536,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
+  const sysUsers = await getAllSysUsers()
+  console.log(sysUsers)
+  const drivers = await getAllDrivers()
+
   const systemUsersTbodyElem = document.getElementById('sysUsersTbody')
   const driversTbodyElem = document.getElementById('driversTbody')
 
@@ -545,7 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const d = new Date(isoString)
     return d.toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
   }
-  UsersMockData.systemUsers.forEach(user => {
+  sysUsers.forEach(user => {
     const tblRow = document.createElement('tr')
     const statusLower = user.status.toLowerCase()
     const isActive = statusLower === 'active'
@@ -554,7 +558,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <td>${user.email}</td>
       <td><span class="user-badge user-role">${user.role}</span></td>
       <td><span class="user-badge status-${statusLower}">${user.status}</span></td>
-      <td>${formatLastLogin(user.lastLogin)}</td>
+      <td>${!user.lastLogin ? 'Not yet logged in' : formatLastLogin(user.lastLogin)}</td>
       <td>
           <div class="action-group">
               <button class="btn-icon edit-user-details-btn" data-user-id=${user.id} title="Edit"><i
@@ -574,7 +578,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Populate the mock data in the drivers table
   const driversTableFrag = document.createDocumentFragment()
-  UsersMockData.drivers.forEach(driver => {
+  drivers.forEach(driver => {
     const tblRow = document.createElement('tr')
     const statusLower = driver.status.toLowerCase()
     const isActive = statusLower === 'active'
@@ -689,9 +693,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Get a user's details
   function getUserDetails(userId, userType) {
     if (userType === 'system user') {
-      return UsersMockData.systemUsers.find(user => user.id === userId)
+      return sysUsers.find(user => user.id === userId)
     } else if (userType === 'driver') {
-      return UsersMockData.drivers.find(driver => driver.id === userId)
+      return drivers.find(driver => driver.id === userId)
     }
   }
 
@@ -776,3 +780,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 })
+
+async function getAllSysUsers(){
+  const response = await fetch('http://localhost:3000/admin/getAllSysUsers')
+  const result = await response.json()
+  return result.sysUsersMod
+}
+
+async function getAllDrivers(){
+  const response = await fetch('http://localhost:3000/admin/getAllDrivers')
+  const result = await response.json()
+  return result.allDriversMod
+}

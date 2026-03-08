@@ -841,8 +841,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       return true
     })
 
-    console.log(filtered)
-
     if (filtered.length === 0) {
       itemsTbodyElem.innerHTML = ``
       document.querySelector('.js-no-match-found')
@@ -859,7 +857,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (statusFilterElem) statusFilterElem.addEventListener('change', applyFilters)
   if (tempFilterElem) tempFilterElem.addEventListener('change', applyFilters)
 
-  // applyFilters()
 })
 
 // Get the System Config data: Categories, Storage Temp, Uom
