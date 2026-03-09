@@ -629,7 +629,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       document.getElementById('confirmDeactivateBtn')
         .addEventListener('click', () => {
-          updateDbStatus(btnUserId, userData.status)
+          updateDbStatus(btnUserId, userData.status, 'sysUser')
         }, { once: true })
     }
 
@@ -638,7 +638,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       document.getElementById('confirmReactivateBtn')
         .addEventListener('click', () => {
-          updateDbStatus(btnUserId, userData.status)
+          updateDbStatus(btnUserId, userData.status, 'sysUser')
         }, { once: true })
     }
   })
@@ -684,32 +684,42 @@ document.addEventListener('DOMContentLoaded', async () => {
           e.preventDefault()
           const driverFullName = editDriverFirstNameElem.value + ' ' + editDriverLastNameElem.value
 
-          const response = await fetch('http://localhost:3000/admin/updateDriverData', 
-          {
-            method: 'PUT', 
-            headers: {
-              'Content-Type': 'application/json'
-            }, 
-            body: JSON.stringify({
-              fullName: driverFullName, 
-              phoneNo: editPhoneElem.value, 
-              vehicleNo: editVehicleNoElem.value, 
-              zoneId: editZoneSelectElem.value, 
-              driverId: btnDriverId
+          const response = await fetch('http://localhost:3000/admin/updateDriverData',
+            {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                fullName: driverFullName,
+                phoneNo: editPhoneElem.value,
+                vehicleNo: editVehicleNoElem.value,
+                zoneId: editZoneSelectElem.value,
+                driverId: btnDriverId
+              })
             })
-          })
 
           const res = await response.json()
           triggerStatus(res.msg)
-        }, {once: true})
+        }, { once: true })
     }
 
     if (btn.classList.contains('deactivate-driver-btn')) {
       handleOverlay(deactivateOverlayElem)
+
+      document.getElementById('confirmDeactivateBtn')
+        .addEventListener('click', () => {
+          updateDbStatus(btnDriverId, userData.status, 'driver')
+        }, { once: true })
     }
 
     if (btn.classList.contains('activate-driver-btn')) {
       handleOverlay(activateOverlayElem)
+
+      document.getElementById('confirmReactivateBtn')
+        .addEventListener('click', () => {
+          updateDbStatus(btnDriverId, userData.status, 'driver')
+        }, { once: true })
     }
   })
 })
@@ -726,8 +736,8 @@ async function getAllDrivers() {
   return result.allDriversMod
 }
 
-// Used by the buttons to activate and deactivate a user
-async function updateDbStatus(btnUserId, currentStatus) {
+// Used by the buttons to activate and deactivate a user and driver
+async function updateDbStatus(btnUserId, currentStatus, userType) {
   const response = await fetch(`http://localhost:3000/admin/deActivateUser`,
     {
       method: 'PUT',
@@ -736,7 +746,8 @@ async function updateDbStatus(btnUserId, currentStatus) {
       },
       body: JSON.stringify({
         userId: btnUserId,
-        status: currentStatus.toLowerCase()
+        status: currentStatus.toLowerCase(),
+        userType
       })
     }
   )

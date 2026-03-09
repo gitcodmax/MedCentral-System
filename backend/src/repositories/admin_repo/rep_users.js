@@ -51,14 +51,25 @@ export async function updateSysUsersPasswordQ({userId, plainPwd}){
   return rows
 }
 
-export async function deActivateUserQ({userId, status}){
-  status === 'active' ? 
-  await pool.query(`
-    UPDATE users SET is_active = false WHERE user_id = $1
-  `, [userId]) : 
-  await pool.query(`
-    UPDATE users SET is_active = true WHERE user_id = $1
-  `, [userId])
+// Deactivates and activates the sys. users and the drivers
+export async function deActivateUserQ({userId, status, userType}){
+  if(status === 'active'){
+    userType === 'sysUser' ? 
+    await pool.query(`
+      UPDATE users SET is_active = false WHERE user_id = $1
+    `, [userId]) : 
+    await pool.query(`
+      UPDATE drivers SET is_active = false WHERE driver_id = $1
+    `, [userId])
+  }else{
+    userType === 'sysUser' ? 
+    await pool.query(`
+      UPDATE users SET is_active = true WHERE user_id = $1
+    `, [userId]) : 
+    await pool.query(`
+      UPDATE drivers SET is_active = true WHERE driver_id = $1
+    `, [userId])
+  }
 }
 
 // Drivers edit, activation and deactivation
