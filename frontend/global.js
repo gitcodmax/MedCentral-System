@@ -103,7 +103,7 @@ export function triggerStatus(type) {
   handleOverlay(dbNotifOverlay)
 
   setTimeout(() => {
-    dbNotifOverlay.classList.remove('active');
     location.reload()
+    dbNotifOverlay.classList.remove('active');
   }, 3000);
 }

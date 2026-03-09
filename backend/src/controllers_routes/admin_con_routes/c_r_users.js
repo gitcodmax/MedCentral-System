@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllDriversQ, getAllSysUsersQ, updateSysUsersDataQ, updateSysUsersPasswordQ } from "../../repositories/admin_repo/rep_users.js";
+import { deActivateUserQ, getAllDriversQ, getAllSysUsersQ, updateSysUsersDataQ, updateSysUsersPasswordQ } from "../../repositories/admin_repo/rep_users.js";
 
 const adminUsersRouter = express.Router()
 
@@ -40,6 +40,15 @@ adminUsersRouter.put('/updateSysUsersPassword', async (req, res) => {
     res.status(200).json({msg: 'success'})
   }catch(err){
     res.status(500).json({msg: 'error', Error: err.message})
+  }
+})
+
+adminUsersRouter.put('/deActivateUser', async (req, res) => {
+  try{
+    await deActivateUserQ(req.body)
+    res.status(200).json({msg: 'success'})
+  }catch(err){
+    res.status(500).json({msg: 'error'})
   }
 })
 

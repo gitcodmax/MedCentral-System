@@ -572,7 +572,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         displayCountyOptions(GeoReferenceData, addDriverCntySelectElem)
 
         addDriverCntySelectElem.addEventListener('change', (e) => {
-          displayCountyZonesOptions(GeoReferenceData, 
+          displayCountyZonesOptions(GeoReferenceData,
             parseInt(e.target.value), document.getElementById('addDriverZoneSelect'))
         })
       }
@@ -618,16 +618,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const inputFullName = inputs[0].value + ' ' + inputs[1].value
 
-        const response = await fetch('http://localhost:3000/admin/updateSysUsersData', 
+        const response = await fetch('http://localhost:3000/admin/updateSysUsersData',
           {
-            method: 'PUT', 
+            method: 'PUT',
             headers: {
               'Content-type': 'application/json'
-            }, 
+            },
             body: JSON.stringify({
-              fullName: inputFullName, 
-              email: inputs[2].value, 
-              roleId: Number(roleSelect.value), 
+              fullName: inputFullName,
+              email: inputs[2].value,
+              roleId: Number(roleSelect.value),
               userId: btnUserId
             })
           }
@@ -635,7 +635,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const result = await response.json()
         triggerStatus(result.msg)
-      }, {once: true})
+      }, { once: true })
     }
 
     if (btn.classList.contains('reset-user-pwd-btn')) {
@@ -643,18 +643,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       handleOverlay(resetPwdOverlayElem)
 
       document.getElementById('resetPasswordForm')
-        .addEventListener('submit',async (e) => {
+        .addEventListener('submit', async (e) => {
           e.preventDefault()
 
           const newPasswordElem = document.getElementById('newPassword')
-          const response = await fetch('http://localhost:3000/admin/updateSysUsersPassword', 
+          const response = await fetch('http://localhost:3000/admin/updateSysUsersPassword',
             {
-              method: 'PUT', 
+              method: 'PUT',
               headers: {
                 'Content-Type': 'application/json'
-              }, 
+              },
               body: JSON.stringify({
-                userId: btnUserId, 
+                userId: btnUserId,
                 plainPwd: newPasswordElem.value
               })
             }
@@ -663,15 +663,25 @@ document.addEventListener('DOMContentLoaded', async () => {
           const res = await response.json()
           triggerStatus(res.msg)
 
-        }, {once: true})
+        }, { once: true })
     }
 
     if (btn.classList.contains('deactivate-user-btn')) {
       handleOverlay(deactivateOverlayElem)
+
+      document.getElementById('confirmDeactivateBtn')
+        .addEventListener('click', () => {
+          updateDbStatus(btnUserId, userData.status)
+        }, { once: true })
     }
 
     if (btn.classList.contains('activate-user-btn')) {
       handleOverlay(activateOverlayElem)
+
+      document.getElementById('confirmReactivateBtn')
+        .addEventListener('click', () => {
+          updateDbStatus(btnUserId, userData.status)
+        }, { once: true })
     }
   })
 
@@ -717,14 +727,32 @@ document.addEventListener('DOMContentLoaded', async () => {
   })
 })
 
-async function getAllSysUsers(){
+async function getAllSysUsers() {
   const response = await fetch('http://localhost:3000/admin/getAllSysUsers')
   const result = await response.json()
   return result.sysUsersMod
 }
 
-async function getAllDrivers(){
+async function getAllDrivers() {
   const response = await fetch('http://localhost:3000/admin/getAllDrivers')
   const result = await response.json()
   return result.allDriversMod
+}
+
+async function updateDbStatus(btnUserId, currentStatus) {
+  const response = await fetch(`http://localhost:3000/admin/deActivateUser`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userId: btnUserId,
+        status: currentStatus.toLowerCase()
+      })
+    }
+  )
+
+  const res = await response.json()
+  triggerStatus(res.msg)
 }

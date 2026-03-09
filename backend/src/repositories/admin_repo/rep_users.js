@@ -50,3 +50,13 @@ export async function updateSysUsersPasswordQ({userId, plainPwd}){
 
   return rows
 }
+
+export async function deActivateUserQ({userId, status}){
+  status === 'active' ? 
+  await pool.query(`
+    UPDATE users SET is_active = false WHERE user_id = $1
+  `, [userId]) : 
+  await pool.query(`
+    UPDATE users SET is_active = true WHERE user_id = $1
+  `, [userId])
+}
