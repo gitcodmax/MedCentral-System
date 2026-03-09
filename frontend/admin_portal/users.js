@@ -62,34 +62,34 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <div class="modal-header">
                             <h2>Create System User</h2>
                         </div>
-                        <form>
+                        <form id="createUserForm">
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>First Name</label>
-                                    <input type="text" class="form-control" placeholder="e.g. Jane" required>
+                                    <input type="text" id="newUserFname" class="form-control" placeholder="e.g. Jane" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Last Name</label>
-                                    <input type="text" class="form-control" placeholder="e.g. Doe" required>
+                                    <input type="text" id="newUserLname" class="form-control" placeholder="e.g. Doe" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Email Address</label>
-                                <input type="email" class="form-control" placeholder="jane@warehouse.com" required>
+                                <input type="email" id="newUserEmail" class="form-control" placeholder="jane@warehouse.com" required>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>Role</label>
-                                    <select class="form-control" required>
+                                    <select class="form-control" id="newUserRoleId" required>
                                         <option value="">Select User Role...</option>
-                                        <option>Warehouse Manager</option>
-                                        <option>Inventory Clerk</option>
+                                        <option value="2">Warehouse Manager</option>
+                                        <option value="1">Inventory Clerk</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
                                     <div class="password-wrapper">
-                                        <input type="password" id="sysUserPassword" class="form-control"
+                                        <input type="password" id="newUserPassword" class="form-control"
                                             placeholder="••••••••" required>
                                         <button type="button" class="password-toggle">
                                             <i class="fas fa-eye"></i>
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <p class="modal-subtitle">Register a delivery partner and assign preferred zones.</p>
                         </div>
 
-                        <form>
+                        <form id="addDriverForm">
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="driverFirstName">First Name</label>
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                     <label for="phone">Phone Number</label>
                                     <div class="input-with-icon">
                                         <i class="fas fa-phone"></i>
-                                        <input type="tel" id="phone" class="form-control" placeholder="+254..."
+                                        <input type="tel" id="driverPhone" class="form-control" placeholder="+254..."
                                             required>
                                     </div>
                                 </div>
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                     <label for="vehicleNo">Vehicle Number</label>
                                     <div class="input-with-icon">
                                         <i class="fas fa-truck"></i>
-                                        <input type="text" id="vehicleNo" class="form-control" placeholder="KXX 000X"
+                                        <input type="text" id="driverVehicleNo" class="form-control" placeholder="KXX 000X"
                                             required>
                                     </div>
                                 </div>
@@ -517,6 +517,36 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (btn.id === 'createUserBtn') {
         const createUserOverlayElem = document.getElementById('createUserOverlay')
         handleOverlay(createUserOverlayElem)
+
+        const newUserFname = document.getElementById('newUserFname');
+        const newUserLname = document.getElementById('newUserLname');
+        const newUserEmail = document.getElementById('newUserEmail');
+        const newUserRoleId = document.getElementById('newUserRoleId');
+        const newUserPassword = document.getElementById('newUserPassword');
+
+        document.getElementById('createUserForm')
+          .addEventListener('submit', async (e) => {
+            e.preventDefault()
+
+            const fullName = newUserFname.value + ' ' + newUserLname.value
+            const response = await fetch('http://localhost:3000/admin/addNewSysUser',
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  fullName,
+                  email: newUserEmail.value,
+                  roleId: Number(newUserRoleId.value),
+                  plainPwd: newUserPassword.value
+                })
+              }
+            )
+
+            const res = await response.json()
+            triggerStatus(res.msg)
+          }, { once: true })
       }
 
       // Overlay to add a new driver
@@ -533,6 +563,35 @@ document.addEventListener('DOMContentLoaded', async () => {
           displayCountyZonesOptions(GeoReferenceData,
             parseInt(e.target.value), document.getElementById('addDriverZoneSelect'))
         })
+
+        const driverFirstName = document.getElementById('driverFirstName');
+        const driverLastName = document.getElementById('driverLastName');
+        const driverPhone = document.getElementById('driverPhone');
+        const driverVehicleNo = document.getElementById('driverVehicleNo');
+
+        document.getElementById('addDriverForm')
+          .addEventListener('submit', async (e) => {
+            e.preventDefault()
+
+            const driverFullName = driverFirstName.value + ' ' + driverLastName.value
+            const response = await fetch('http://localhost:3000/admin/addNewDriver', 
+              {
+                method: 'POST', 
+                headers: {
+                  'Content-Type': 'application/json'
+                }, 
+                body: JSON.stringify({
+                  fullName: driverFullName, 
+                  phoneNo: driverPhone.value, 
+                  vehicleNo: driverVehicleNo.value, 
+                  zoneId: addDriverZoneSelectElem.value
+                })
+              }
+            )
+
+            const res = await response.json()
+            triggerStatus(res.msg)
+          }, {once: true})
       }
     })
 

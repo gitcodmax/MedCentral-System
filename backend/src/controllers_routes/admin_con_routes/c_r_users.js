@@ -1,5 +1,6 @@
 import express from "express";
-import { deActivateUserQ, getAllDriversQ, getAllSysUsersQ, updateDriverDataQ, updateSysUsersDataQ, updateSysUsersPasswordQ } from "../../repositories/admin_repo/rep_users.js";
+import { addNewDriverQ, addNewSysUserQ, deActivateUserQ, getAllDriversQ, getAllSysUsersQ, updateDriverDataQ, 
+  updateSysUsersDataQ, updateSysUsersPasswordQ } from "../../repositories/admin_repo/rep_users.js";
 
 const adminUsersRouter = express.Router()
 
@@ -22,6 +23,24 @@ adminUsersRouter.get('/getAllDrivers', async (req, res) => {
     res.status(200).json({allDriversMod})
   }catch(err){
     res.status(500).json({Error: err.message})
+  }
+})
+
+adminUsersRouter.post('/addNewSysUser', async (req, res) => {
+  try{
+    await addNewSysUserQ(req.body)
+    res.status(200).json({msg: 'success'})
+  }catch(err){
+    res.status(500).json({msg: 'error', Error: err.message})
+  }
+})
+
+adminUsersRouter.post('/addNewDriver', async (req, res) => {
+  try{
+    await addNewDriverQ(req.body)
+    res.status(200).json({msg: 'success'})
+  }catch(err){
+    res.status(500).json({msg: 'error'})
   }
 })
 

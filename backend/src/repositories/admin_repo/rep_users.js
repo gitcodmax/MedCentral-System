@@ -1,3 +1,4 @@
+import { hash } from "bcrypt";
 import pool from "../../config/db.js";
 import { hashPassword } from "./rep_hospitals.js";
 
@@ -26,6 +27,21 @@ export async function getAllDriversQ(){
   `)
 
   return rows
+}
+
+export async function addNewSysUserQ({fullName, email, roleId, plainPwd}){
+  const hashedPassword = await hashPassword(plainPwd)
+  await pool.query(`
+    INSERT INTO users (email, password_hash, full_name, role_id)
+      VALUES ($1, $2, $3, $4) 
+  `, [email, hashedPassword, fullName, roleId])
+}
+
+export async function addNewDriverQ({fullName, phoneNo, vehicleNo, zoneId}){
+  await pool.query(`
+    INSERT INTO drivers (full_name, phone_number, vehicle_plates, preferred_zone_id)
+    VALUES ($1, $2, $3, $4)
+  `, [fullName, phoneNo, vehicleNo, zoneId])
 }
 
 export async function updateSysUsersDataQ({fullName, email, roleId, userId}){
