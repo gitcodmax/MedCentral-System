@@ -1,4 +1,5 @@
 import pool from "../../config/db.js";
+import { hashPassword } from "./rep_hospitals.js";
 
 export async function getAllSysUsersQ(){
   const {rows} = await pool.query(`
@@ -35,6 +36,17 @@ export async function updateSysUsersDataQ({fullName, email, roleId, userId}){
       role_id = $3
     WHERE user_id = $4 RETURNING *
   `, [fullName, email, roleId, userId])
+
+  return rows
+}
+
+export async function updateSysUsersPasswordQ({userId, plainPwd}){
+  const pwdHash = await hashPassword(plainPwd)
+  const {rows} = await pool.query(`
+    UPDATE users SET 
+    password_hash = $1
+    WHERE user_id = $2
+  `, [pwdHash, userId])
 
   return rows
 }

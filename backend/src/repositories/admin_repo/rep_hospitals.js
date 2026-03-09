@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 
 // This file contains the SQL scripts used to manipulate hospitals page.
 
-async function hashPassword(plainPassword){
+ export async function hashPassword(plainPassword){
   const saltRounds = 12
   const hashedPassword = await bcrypt.hash(plainPassword, saltRounds)
   return hashedPassword

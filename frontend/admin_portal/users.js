@@ -641,6 +641,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (btn.classList.contains('reset-user-pwd-btn')) {
       const resetPwdOverlayElem = document.getElementById('resetPasswordOverlay')
       handleOverlay(resetPwdOverlayElem)
+
+      document.getElementById('resetPasswordForm')
+        .addEventListener('submit',async (e) => {
+          e.preventDefault()
+
+          const newPasswordElem = document.getElementById('newPassword')
+          const response = await fetch('http://localhost:3000/admin/updateSysUsersPassword', 
+            {
+              method: 'PUT', 
+              headers: {
+                'Content-Type': 'application/json'
+              }, 
+              body: JSON.stringify({
+                userId: btnUserId, 
+                plainPwd: newPasswordElem.value
+              })
+            }
+          )
+
+          const res = await response.json()
+          triggerStatus(res.msg)
+
+        }, {once: true})
     }
 
     if (btn.classList.contains('deactivate-user-btn')) {
