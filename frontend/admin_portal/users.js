@@ -1,4 +1,5 @@
 import { renderSuccessErrorOverlay, triggerStatus } from "../global.js";
+import { getGeoRefData } from "./hospitals.js";
 import { renderSidebar } from "./sidebar.js";
 import { handleOverlay, displayCountyOptions, displayCountyZonesOptions } from "/global.js";
 
@@ -380,50 +381,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       </div>
     `
   renderSuccessErrorOverlay()
-  const GeoReferenceData = [
-    {
-      county_id: 47,
-      county_name: "Nairobi",
-      zones: [
-        { id: 4701, name: "Westlands" },
-        { id: 4702, name: "Dagoretti" },
-        { id: 4703, name: "Kasarani" },
-        { id: 4704, name: "Embakasi" },
-        { id: 4705, name: "Kibra" }
-      ]
-    },
-    {
-      county_id: 1,
-      county_name: "Mombasa",
-      zones: [
-        { id: 101, name: "Mvita" },
-        { id: 102, name: "Nyali" },
-        { id: 103, name: "Likoni" },
-        { id: 104, name: "Kisauni" },
-        { id: 105, name: "Changamwe" }
-      ]
-    },
-    {
-      county_id: 41,
-      county_name: "Kisumu",
-      zones: [
-        { id: 4101, name: "Kisumu Central" },
-        { id: 4102, name: "Kisumu East" },
-        { id: 4103, name: "Kisumu West" },
-        { id: 4104, name: "Seme" }
-      ]
-    },
-    {
-      county_id: 32,
-      county_name: "Nakuru",
-      zones: [
-        { id: 3201, name: "Nakuru East" },
-        { id: 3202, name: "Nakuru West" },
-        { id: 3203, name: "Naivasha" },
-        { id: 3204, name: "Lanet" }
-      ]
-    }
-  ];
+  const GeoReferenceData = await getGeoRefData();
 
   const sysUsers = await getAllSysUsers()
   const drivers = await getAllDrivers()
@@ -690,23 +648,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btn = e.target.closest('button')
     if (!btn) return;
 
-    const userData = getUserDetails(Number(btn.dataset.driverId), 'driver')
+    const btnDriverId = Number(btn.dataset.driverId)
+    const userData = getUserDetails(btnDriverId, 'driver')
     document.querySelectorAll('.overlay-target-name')
       .forEach(targetNameElem => targetNameElem.textContent = `${userData.firstName} ${userData.lastName}`)
 
     if (btn.classList.contains('edit-driver-details-btn')) {
       const editDriverOverlayElem = document.getElementById('editDriverOverlay')
 
+      const editDriverFirstNameElem = document.getElementById('editDriverFirstName')
+      const editDriverLastNameElem = document.getElementById('editDriverLastName')
+      const editPhoneElem = document.getElementById('editPhone')
+      const editVehicleNoElem = document.getElementById('editVehicleNo')
       const editCountySelectElem = document.getElementById('editDriverCounty')
       const editZoneSelectElem = document.getElementById('editDriverZone')
 
       displayCountyOptions(GeoReferenceData, editCountySelectElem)
       if (userData) {
         displayCountyZonesOptions(GeoReferenceData, userData.county_id, editZoneSelectElem)
-        document.getElementById('editDriverFirstName').value = userData.firstName
-        document.getElementById('editDriverLastName').value = userData.lastName
-        document.getElementById('editPhone').value = userData.phone
-        document.getElementById('editVehicleNo').value = userData.vehicleNo
+        editDriverFirstNameElem.value = userData.firstName
+        editDriverLastNameElem.value = userData.lastName
+        editPhoneElem.value = userData.phone
+        editVehicleNoElem.value = userData.vehicleNo
         editCountySelectElem.value = userData.county_id
         editZoneSelectElem.value = userData.zone_id
       }
@@ -715,6 +678,30 @@ document.addEventListener('DOMContentLoaded', async () => {
       editCountySelectElem.addEventListener('change', (e) => {
         displayCountyZonesOptions(GeoReferenceData, parseInt(e.target.value), editZoneSelectElem)
       })
+
+      document.getElementById('editDriverForm')
+        .addEventListener('submit', async (e) => {
+          e.preventDefault()
+          const driverFullName = editDriverFirstNameElem.value + ' ' + editDriverLastNameElem.value
+
+          const response = await fetch('http://localhost:3000/admin/updateDriverData', 
+          {
+            method: 'PUT', 
+            headers: {
+              'Content-Type': 'application/json'
+            }, 
+            body: JSON.stringify({
+              fullName: driverFullName, 
+              phoneNo: editPhoneElem.value, 
+              vehicleNo: editVehicleNoElem.value, 
+              zoneId: editZoneSelectElem.value, 
+              driverId: btnDriverId
+            })
+          })
+
+          const res = await response.json()
+          triggerStatus(res.msg)
+        }, {once: true})
     }
 
     if (btn.classList.contains('deactivate-driver-btn')) {
@@ -739,6 +726,7 @@ async function getAllDrivers() {
   return result.allDriversMod
 }
 
+// Used by the buttons to activate and deactivate a user
 async function updateDbStatus(btnUserId, currentStatus) {
   const response = await fetch(`http://localhost:3000/admin/deActivateUser`,
     {

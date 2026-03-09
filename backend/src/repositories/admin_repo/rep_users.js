@@ -60,3 +60,17 @@ export async function deActivateUserQ({userId, status}){
     UPDATE users SET is_active = true WHERE user_id = $1
   `, [userId])
 }
+
+// Drivers edit, activation and deactivation
+export async function updateDriverDataQ({fullName, phoneNo, vehicleNo, zoneId, driverId}){
+  const {rows} = await pool.query(`
+    UPDATE drivers SET 
+      full_name = $1, 
+      phone_number = $2, 
+      vehicle_plates = $3, 
+      preferred_zone_id = $4
+    WHERE driver_id = $5
+  `, [fullName, phoneNo, vehicleNo, zoneId, driverId])
+
+  return rows
+}

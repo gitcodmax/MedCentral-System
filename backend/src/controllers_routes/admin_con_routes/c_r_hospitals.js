@@ -17,7 +17,6 @@ const adminHosRouter = express.Router()
 adminHosRouter.get('/getSavedHospitals', async (req, res) => {
   try {
     const savedHos = await getSavedHospitalsQ()
-    console.log(savedHos) 
     res.status(200).json({ savedHos })
   } catch (err) {
     res.status(500).json({ Error: err.message })

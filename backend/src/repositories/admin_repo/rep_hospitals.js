@@ -49,22 +49,20 @@ export async function getSavedHospitalsQ() {
 export async function getGeoReferenceDataQ() {
   const text = `
     SELECT 
-    c.id AS county_id,
-    c.name AS county_name,
-    COALESCE(
-        jsonb_agg(
-            jsonb_build_object(
+        c.id AS county_id,
+        c.name AS county_name,
+        JSON_AGG(
+            JSON_BUILD_OBJECT(
                 'id', z.id,
                 'name', z.zone_name
-            ) 
-            ORDER BY z.zone_name ASC
-        ), 
-        '[]'
-    ) AS zones
-    FROM cfg_counties c
-    LEFT JOIN cfg_zones z ON c.id = z.county_id
-    GROUP BY c.id, c.name
-    ORDER BY c.name ASC;
+            )
+        ) AS zones
+    FROM 
+        cfg_counties c
+    JOIN 
+        cfg_zones z ON c.id = z.county_id
+    GROUP BY 
+        c.id, c.name;
   `
 
   const { rows } = await pool.query(text)

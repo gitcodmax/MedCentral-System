@@ -820,7 +820,7 @@ async function getSavedHospitalsDetails() {
   return result.savedHos
 }
 
-async function getGeoRefData() {
+export async function getGeoRefData() {
   const response = await fetch('http://localhost:3000/admin/getGeoRefData')
   const result = await response.json()
   return result.countyData
