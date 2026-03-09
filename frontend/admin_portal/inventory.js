@@ -1,6 +1,7 @@
 import { renderSidebar } from "./sidebar.js";
 import { handleOverlay, displayNoMatchFound, 
-  renderSuccessErrorOverlay, triggerStatus } from "../global.js";
+  renderSuccessErrorOverlay, triggerStatus, 
+  adminPagesLink} from "../global.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -709,7 +710,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       document.getElementById('updateItemBtn')
         .addEventListener('click', async () => {
-          const response = await fetch('http://localhost:3000/admin/updateItemsDetails',
+          const response = await fetch(`${adminPagesLink}/updateItemsDetails`,
             {
               method: 'PUT',
               headers: {
@@ -751,7 +752,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           if(newQtyElem.value === '' || adjustReasonElem.value === ''){
             alert('All the fields should be filled!')
           }else{
-            const response = await fetch('http://localhost:3000/admin/updateCurrentStock', 
+            const response = await fetch(`${adminPagesLink}/updateCurrentStock`, 
               {
                 method: 'PATCH', 
                 headers: {
@@ -781,7 +782,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       document.getElementById('confirmDeleteBtn')
         .addEventListener('click', async () => {
-          const response = await fetch('http://localhost:3000/admin/deleteItem', 
+          const response = await fetch(`${adminPagesLink}/deleteItem`, 
             {
               method: 'DELETE', 
               headers: {
@@ -861,14 +862,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Get the System Config data: Categories, Storage Temp, Uom
 async function getSystemConfig() {
-  const response = await fetch(`http://localhost:3000/admin/getCatStorageUom`)
+  const response = await fetch(`${adminPagesLink}/getCatStorageUom`)
   const result = await response.json()
   return result.catStorageUomDetails
 }
 
 // Get all item details
 async function getItemsDetails() {
-  const response = await fetch(`http://localhost:3000/admin/getAllItems`)
+  const response = await fetch(`${adminPagesLink}/getAllItems`)
   const result = await response.json()
   return result.itemsWithStatus
 }

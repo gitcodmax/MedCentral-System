@@ -1,7 +1,8 @@
 import { renderSidebar } from "./sidebar.js"
 import { handleOverlay, displayNoMatchFound, 
   displayCountyOptions, displayCountyZonesOptions, 
- renderSuccessErrorOverlay, triggerStatus} from "../global.js"
+ renderSuccessErrorOverlay, triggerStatus,
+ adminPagesLink} from "../global.js"
 
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.app-container')
@@ -497,7 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const zoneSelect = document.getElementById('hospZone');
           const passwordInput = document.getElementById('hospPwd');
 
-          const response = await fetch('http://localhost:3000/admin/newHosDetails',
+          const response = await fetch(`${adminPagesLink}/newHosDetails`,
             {
               method: 'POST',
               headers: {
@@ -666,7 +667,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .addEventListener('submit', async (e) => {
               e.preventDefault()
 
-              const response = await fetch('http://localhost:3000/admin/updateHosDetails',
+              const response = await fetch(`${adminPagesLink}/updateHosDetails`,
                 {
                   method: 'PUT',
                   headers: {
@@ -706,7 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         activateHosOverlayElem.addEventListener('click', async (e) => {
           if (e.target.id === 'activateHosBtn') {
-            const response = await fetch('http://localhost:3000/admin/activateHos',
+            const response = await fetch(`${adminPagesLink}/activateHos`,
               {
                 method: 'PUT',
                 headers: {
@@ -736,7 +737,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const deactivateReasonElem = document.getElementById('deactivateReason')
 
-            const response = await fetch('http://localhost:3000/admin/deactivateHos',
+            const response = await fetch(`${adminPagesLink}/deactivateHos`,
               {
                 method: 'PATCH',
                 headers: {
@@ -767,7 +768,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resetPasswordOverlayElem.addEventListener('submit', async (e) => {
           e.preventDefault()
 
-          const response = await fetch('http://localhost:3000/admin/updateHosPassword',
+          const response = await fetch(`${adminPagesLink}/updateHosPassword`,
             {
               method: 'PUT',
               headers: {
@@ -815,19 +816,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // API calls
 async function getSavedHospitalsDetails() {
-  const response = await fetch('http://localhost:3000/admin/getSavedHospitals')
+  const response = await fetch(`${adminPagesLink}/getSavedHospitals`)
   const result = await response.json()
   return result.savedHos
 }
 
 export async function getGeoRefData() {
-  const response = await fetch('http://localhost:3000/admin/getGeoRefData')
+  const response = await fetch(`${adminPagesLink}/getGeoRefData`)
   const result = await response.json()
   return result.countyData
 }
 
 async function getDepartments() {
-  const response = await fetch('http://localhost:3000/admin/getDepartments')
+  const response = await fetch(`${adminPagesLink}/getDepartments`)
   const result = await response.json()
   return result.departmentsData
 }

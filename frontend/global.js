@@ -107,3 +107,5 @@ export function triggerStatus(type) {
     dbNotifOverlay.classList.remove('active');
   }, 3000);
 }
+
+export const adminPagesLink = `http://localhost:3000/admin`

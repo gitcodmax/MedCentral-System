@@ -1,4 +1,4 @@
-import { renderSuccessErrorOverlay, triggerStatus } from "../global.js";
+import { adminPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../global.js";
 import { getGeoRefData } from "./hospitals.js";
 import { renderSidebar } from "./sidebar.js";
 import { handleOverlay, displayCountyOptions, displayCountyZonesOptions } from "/global.js";
@@ -529,7 +529,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.preventDefault()
 
             const fullName = newUserFname.value + ' ' + newUserLname.value
-            const response = await fetch('http://localhost:3000/admin/addNewSysUser',
+            const response = await fetch(`${adminPagesLink}/addNewSysUser`,
               {
                 method: 'POST',
                 headers: {
@@ -574,7 +574,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.preventDefault()
 
             const driverFullName = driverFirstName.value + ' ' + driverLastName.value
-            const response = await fetch('http://localhost:3000/admin/addNewDriver', 
+            const response = await fetch(`${adminPagesLink}/addNewDriver`, 
               {
                 method: 'POST', 
                 headers: {
@@ -635,7 +635,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const inputFullName = inputs[0].value + ' ' + inputs[1].value
 
-        const response = await fetch('http://localhost:3000/admin/updateSysUsersData',
+        const response = await fetch(`${adminPagesLink}/updateSysUsersData`,
           {
             method: 'PUT',
             headers: {
@@ -664,7 +664,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           e.preventDefault()
 
           const newPasswordElem = document.getElementById('newPassword')
-          const response = await fetch('http://localhost:3000/admin/updateSysUsersPassword',
+          const response = await fetch(`${adminPagesLink}/updateSysUsersPassword`,
             {
               method: 'PUT',
               headers: {
@@ -743,7 +743,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           e.preventDefault()
           const driverFullName = editDriverFirstNameElem.value + ' ' + editDriverLastNameElem.value
 
-          const response = await fetch('http://localhost:3000/admin/updateDriverData',
+          const response = await fetch(`${adminPagesLink}/updateDriverData`,
             {
               method: 'PUT',
               headers: {
@@ -784,20 +784,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 })
 
 async function getAllSysUsers() {
-  const response = await fetch('http://localhost:3000/admin/getAllSysUsers')
+  const response = await fetch(`${adminPagesLink}/getAllSysUsers`)
   const result = await response.json()
   return result.sysUsersMod
 }
 
 async function getAllDrivers() {
-  const response = await fetch('http://localhost:3000/admin/getAllDrivers')
+  const response = await fetch(`${adminPagesLink}/getAllDrivers`)
   const result = await response.json()
   return result.allDriversMod
 }
 
 // Used by the buttons to activate and deactivate a user and driver
 async function updateDbStatus(btnUserId, currentStatus, userType) {
-  const response = await fetch(`http://localhost:3000/admin/deActivateUser`,
+  const response = await fetch(`${adminPagesLink}/deActivateUser`,
     {
       method: 'PUT',
       headers: {
