@@ -6,6 +6,7 @@ import adminHosRouter from './controllers_routes/admin_con_routes/c_r_hospitals.
 import adminInvRouter from './controllers_routes/admin_con_routes/c_r_inventory.js';
 import adminUsersRouter from './controllers_routes/admin_con_routes/c_r_users.js';
 import adminOrdersRouter from './controllers_routes/admin_con_routes/c_r_orders.js';
+import adminReportsRouter from './controllers_routes/admin_con_routes/c_r_reports.js';
 
 const app = express();
 
@@ -21,6 +22,10 @@ app.use(express.static(frontendPath));
 app.use(cors());
 app.use(express.json());
 
-app.use('/admin', adminHosRouter, adminInvRouter, adminUsersRouter, adminOrdersRouter);
+app.use('/admin', 
+  adminHosRouter, adminInvRouter, 
+  adminUsersRouter, adminOrdersRouter, 
+  adminReportsRouter
+);
 
 export default app;
