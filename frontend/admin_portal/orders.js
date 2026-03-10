@@ -1,7 +1,7 @@
 import { renderSidebar } from "./sidebar.js"
-import { handleOverlay, displayNoMatchFound } from "../global.js"
+import { handleOverlay, displayNoMatchFound, adminPagesLink } from "../global.js"
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
   document.querySelector('.app-container')
     .innerHTML = `
@@ -114,365 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `
   displayNoMatchFound()
 
-  const OrdersMockData = [
-    {
-      requestId: "REQ-9901",
-      orderId: "ORD-5501",
-      hospitalName: "St. Mary's General Hospital",
-      requestDate: "2026-02-20",
-      paymentDate: "2026-02-21",
-      totalItems: 12,
-      isRejected: false,
-      packages: [
-        {
-          packageId: "PKG-5501-A",
-          storageCode: "A",
-          status: "completed",
-          assignedClerk: "Sarah Connor",
-          assignedDriver: "John Doe",
-          items: [
-            { name: "Latex Gloves", qty: 20, uom: "Box" },
-            { name: "Surgical Tape", qty: 50, uom: "Roll" },
-            { name: "Gauze Pads", qty: 100, uom: "Pack" }
-          ]
-        },
-        {
-          packageId: "PKG-5501-C",
-          storageCode: "C",
-          status: "delivered",
-          assignedClerk: "Mike Ross",
-          assignedDriver: "John Doe",
-          items: [
-            { name: "Paracetamol 500mg", qty: 100, uom: "Strip" },
-            { name: "Amoxicillin 500mg", qty: 40, uom: "Strip" },
-            { name: "Ibuprofen 400mg", qty: 60, uom: "Strip" }
-          ]
-        },
-        {
-          packageId: "PKG-5501-R",
-          storageCode: "R",
-          status: "completed",
-          assignedClerk: "Sarah Connor",
-          assignedDriver: "John Doe",
-          items: [
-            { name: "Insulin Glargine", qty: 20, uom: "Vial" },
-            { name: "Oxytocin 10IU", qty: 30, uom: "Ampoule" },
-            { name: "Hepatitis B Vaccine", qty: 50, uom: "Vial" }
-          ]
-        },
-        {
-          packageId: "PKG-5501-F",
-          storageCode: "F",
-          status: "completed",
-          assignedClerk: "Elena Fisher",
-          assignedDriver: "John Doe",
-          items: [
-            { name: "Fresh Frozen Plasma", qty: 10, uom: "Unit" },
-            { name: "Stem Cell Vials", qty: 4, uom: "Vial" },
-            { name: "Cryoprecipitate", qty: 5, uom: "Unit" }
-          ]
-        }
-      ]
-    },
-    {
-      requestId: "REQ-9902",
-      orderId: "ORD-5502",
-      hospitalName: "City Children's Clinic",
-      requestDate: "2026-02-22",
-      paymentDate: "2026-02-23",
-      totalItems: 9,
-      isRejected: false,
-      packages: [
-        {
-          packageId: "PKG-5502-R",
-          storageCode: "R",
-          status: "delivered",
-          assignedClerk: "Elena Fisher",
-          assignedDriver: "Amos Burton",
-          items: [
-            { name: "Measles Vaccine", qty: 100, uom: "Vial" },
-            { name: "BCG Vaccine", qty: 50, uom: "Vial" },
-            { name: "Polio Oral Vaccine", qty: 200, uom: "Vial" }
-          ]
-        },
-        {
-          packageId: "PKG-5502-A",
-          storageCode: "A",
-          status: "delivered",
-          assignedClerk: "Sarah Connor",
-          assignedDriver: "Amos Burton",
-          items: [
-            { name: "Pediatric Syringes", qty: 500, uom: "Piece" },
-            { name: "Alcohol Swabs", qty: 10, uom: "Box" }
-          ]
-        },
-        {
-          packageId: "PKG-5502-C",
-          storageCode: "C",
-          status: "delivered",
-          assignedClerk: "Mike Ross",
-          assignedDriver: "Amos Burton",
-          items: [
-            { name: "Child-Size Masks", qty: 200, uom: "Piece" },
-            { name: "Hand Sanitizer 100ml", qty: 50, uom: "Bottle" },
-            { name: "Pediatric Ibuprofen", qty: 30, uom: "Bottle" },
-            { name: "Thermometer Covers", qty: 5, uom: "Box" }
-          ]
-        }
-      ]
-    },
-    {
-      requestId: "REQ-9903",
-      orderId: "ORD-5503",
-      hospitalName: "Metropolitan Medical Center",
-      requestDate: "2026-02-24",
-      paymentDate: "2026-02-24",
-      totalItems: 6,
-      isRejected: false,
-      packages: [
-        {
-          packageId: "PKG-5503-C",
-          storageCode: "C",
-          status: "delivered-with-issues",
-          assignedClerk: "Harvey Specter",
-          assignedDriver: "James Holden",
-          items: [
-            { name: "Normal Saline 500ml", qty: 50, uom: "Bottle" },
-            { name: "Dextrose 5% 500ml", qty: 40, uom: "Bottle" },
-            { name: "IV Giving Sets", qty: 100, uom: "Unit" }
-          ]
-        },
-        {
-          packageId: "PKG-5503-A",
-          storageCode: "A",
-          status: "delivered",
-          assignedClerk: "Harvey Specter",
-          assignedDriver: "James Holden",
-          items: [
-            { name: "IV Cannula 22G", qty: 200, uom: "Piece" },
-            { name: "Medical Tape", qty: 50, uom: "Roll" },
-            { name: "Tourniquets", qty: 10, uom: "Unit" }
-          ]
-        }
-      ]
-    },
-    {
-      requestId: "REQ-9904",
-      orderId: "ORD-5504",
-      hospitalName: "Hope Wellness Hub",
-      requestDate: "2026-02-25",
-      paymentDate: "2026-02-25",
-      totalItems: 7,
-      isRejected: false,
-      packages: [
-        {
-          packageId: "PKG-5504-F",
-          storageCode: "F",
-          status: "delayed",
-          assignedClerk: "Mike Ross",
-          assignedDriver: "John Doe",
-          items: [
-            { name: "Frozen Skin Grafts", qty: 2, uom: "Unit" },
-            { name: "Bone Morphogenetic Protein", qty: 5, uom: "Vial" }
-          ]
-        },
-        {
-          packageId: "PKG-5504-R",
-          storageCode: "R",
-          status: "dispatched",
-          assignedClerk: "Mike Ross",
-          assignedDriver: "John Doe",
-          items: [
-            { name: "Botulinum Toxin", qty: 10, uom: "Vial" },
-            { name: "Epinephrine 1:1000", qty: 20, uom: "Ampoule" },
-            { name: "Hydrocortisone Inj", qty: 15, uom: "Vial" }
-          ]
-        },
-        {
-          packageId: "PKG-5504-C",
-          storageCode: "C",
-          status: "packed",
-          assignedClerk: "Mike Ross",
-          assignedDriver: null,
-          items: [
-            { name: "Disposable Gowns", qty: 50, uom: "Piece" },
-            { name: "N95 Respirators", qty: 100, uom: "Piece" }
-          ]
-        }
-      ]
-    },
-    {
-      requestId: "REQ-9905",
-      orderId: "ORD-5505",
-      hospitalName: "Westside Orthopedic",
-      requestDate: "2026-02-25",
-      paymentDate: "2026-02-26",
-      totalItems: 4,
-      isRejected: false,
-      packages: [
-        {
-          packageId: "PKG-5505-A",
-          storageCode: "A",
-          status: "dispatched",
-          assignedClerk: "Sarah Connor",
-          assignedDriver: "Amos Burton",
-          items: [
-            { name: "Knee Braces (M)", qty: 5, uom: "Unit" },
-            { name: "Elastic Bandages", qty: 50, uom: "Roll" },
-            { name: "Crutches (Pair)", qty: 10, uom: "Unit" },
-            { name: "Ankle Support", qty: 8, uom: "Unit" }
-          ]
-        }
-      ]
-    },
-    {
-      requestId: "REQ-9906",
-      orderId: "ORD-5506",
-      hospitalName: "Green Valley Rehab",
-      requestDate: "2026-02-26",
-      paymentDate: "2026-02-26",
-      totalItems: 5,
-      isRejected: false,
-      packages: [
-        {
-          packageId: "PKG-5506-C",
-          storageCode: "C",
-          status: "packed",
-          assignedClerk: "Elena Fisher",
-          assignedDriver: "James Holden",
-          items: [
-            { name: "Latex Gloves (M)", qty: 20, uom: "Box" },
-            { name: "Alcohol Swabs", qty: 10, uom: "Box" },
-            { name: "Adhesive Bandages", qty: 15, uom: "Box" }
-          ]
-        },
-        {
-          packageId: "PKG-5506-A",
-          storageCode: "A",
-          status: "completed",
-          assignedClerk: "Elena Fisher",
-          assignedDriver: "Noah MIles",
-          items: [
-            { name: "Medical Tape", qty: 30, uom: "Roll" },
-            { name: "Cotton Balls", qty: 50, uom: "Bag" }
-          ]
-        }
-      ]
-    },
-    {
-      requestId: "REQ-9907",
-      orderId: "ORD-5507",
-      hospitalName: "Central Health Institute",
-      requestDate: "2026-02-26",
-      paymentDate: "2026-02-27",
-      totalItems: 4,
-      isRejected: false,
-      packages: [
-        {
-          packageId: "PKG-5507-R",
-          storageCode: "R",
-          status: "processing",
-          assignedClerk: "Harvey Specter",
-          assignedDriver: null,
-          items: [
-            { name: "Tetanus Antitoxin", qty: 15, uom: "Ampoule" },
-            { name: "Rabies Vaccine", qty: 10, uom: "Vial" }
-          ]
-        },
-        {
-          packageId: "PKG-5507-F",
-          storageCode: "F",
-          status: "approved",
-          assignedClerk: null,
-          assignedDriver: null,
-          items: [
-            { name: "Snake Antivenom", qty: 5, uom: "Vial" },
-            { name: "Varicella Vaccine", qty: 20, uom: "Vial" }
-          ]
-        }
-      ]
-    },
-    {
-      requestId: "REQ-9908",
-      orderId: "ORD-5508",
-      hospitalName: "Northside Emergency",
-      requestDate: "2026-02-27",
-      paymentDate: null,
-      totalItems: 6,
-      isRejected: false,
-      packages: [
-        {
-          packageId: "PKG-TEMP-99",
-          storageCode: "C",
-          status: "completed",
-          assignedClerk: "Kimani Robert",
-          assignedDriver: "Chris Turker",
-          items: [
-            { name: "Paracetamol 500mg", qty: 30, uom: "Strip" },
-            { name: "Ibuprofen 400mg", qty: 20, uom: "Strip" },
-            { name: "Diclofenac Gel", qty: 10, uom: "Unit" }
-          ]
-        },
-        {
-          packageId: "PKG-TEMP-98",
-          storageCode: "A",
-          status: "completed",
-          assignedClerk: "John Snow",
-          assignedDriver: "Maria Espanoza",
-          items: [
-            { name: "Surgical Blades #11", qty: 100, uom: "Piece" },
-            { name: "Sutures 3-0 Silk", qty: 50, uom: "Unit" },
-            { name: "Sterile Drape", qty: 20, uom: "Piece" }
-          ]
-        }
-      ]
-    },
-    {
-      requestId: "REQ-9909",
-      orderId: null,
-      hospitalName: "Riverside Community Clinic",
-      requestDate: "2026-02-27",
-      paymentDate: null,
-      totalItems: 3,
-      isRejected: true,
-      packages: [
-        {
-          packageId: "PEND-01",
-          storageCode: "C",
-          status: "pending",
-          assignedClerk: null,
-          assignedDriver: null,
-          items: [
-            { name: "Hand Sanitizer 500ml", qty: 8, uom: "Bottle" },
-            { name: "Liquid Soap 1L", qty: 12, uom: "Bottle" },
-            { name: "Paper Towels", qty: 50, uom: "Roll" }
-          ]
-        }
-      ]
-    },
-    {
-      requestId: "REQ-9910",
-      orderId: null,
-      hospitalName: "Private Care Center",
-      requestDate: "2026-02-15",
-      paymentDate: null,
-      totalItems: 2,
-      isRejected: false,
-      packages: [
-        {
-          packageId: "PEND-02",
-          storageCode: "C",
-          status: "pending",
-          assignedClerk: null,
-          assignedDriver: null,
-          items: [
-            { name: "Adhesive Tape", qty: 10, uom: "Roll" },
-            { name: "Zinc Oxide Cream", qty: 5, uom: "Unit" }
-          ]
-        }
-      ]
-    }
-  ];
+  const ordReqData = await getAllOrdReq()
 
   const StorageConfig = {
     "A": {
@@ -537,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ordersTbodyElem.appendChild(ordersTableFrag)
   }
 
-  displayAllOrders(OrdersMockData)
+  displayAllOrders(ordReqData)
 
   // Search & Filter Logic
   const masterSearchInput = document.getElementById('masterSearch')
@@ -550,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Filtering function
   function applyFilters() {
-    let filtered = [...OrdersMockData]
+    let filtered = [...ordReqData]
 
     // Text search: requestId, orderId, hospitalName
     const searchTerm = masterSearchInput?.value.trim().toLowerCase()
@@ -617,29 +259,29 @@ document.addEventListener('DOMContentLoaded', () => {
       if (dateFromInput) dateFromInput.value = ''
       if (dateToInput) dateToInput.value = ''
       if (rejectedToggleInput) rejectedToggleInput.checked = false
-      displayAllOrders(OrdersMockData)
+      displayAllOrders(ordReqData)
       noMatchFoundElem.classList.add('hidden')
       if (resultCountElem) {
-        resultCountElem.textContent = String(OrdersMockData.length)
+        resultCountElem.textContent = String(ordReqData.length)
       }
     })
   }
 
   // Set initial result count
   if (resultCountElem) {
-    resultCountElem.textContent = String(OrdersMockData.length)
+    resultCountElem.textContent = String(ordReqData.length)
   }
 
   // Displays the packages badges
   function displayPackages(reqId, columnName) {
-    const orderData = OrdersMockData.find(ord => reqId === ord.requestId)
+    const orderData = ordReqData.find(ord => reqId === ord.requestId)
     if (!orderData) return ''
 
     const htmlArr = orderData.packages.map(pkg => {
       let badgeStatus = ``
       if (orderData.isRejected) {
         badgeStatus = 'red-badge'
-      } else if (pkg.status !== 'completed') {
+      } else if (pkg.status.toLowerCase() !== 'completed') {
         badgeStatus = 'grey-badge'
       }
       if (columnName === 'packages') {
@@ -671,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const pkgListOverlayElem = document.getElementById('pkgListOverlay')
       pkgListOverlayElem.innerHTML = ``
 
-      const ordData = OrdersMockData.find(ord => ord.requestId === btn.dataset.reqId)
+      const ordData = ordReqData.find(ord => ord.requestId === btn.dataset.reqId)
       document.getElementById('reqIdOverlay')
         .textContent = ordData.requestId
       document.getElementById('ordIdOverlay')
@@ -751,3 +393,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 })
+
+async function getAllOrdReq(){
+  const response = await fetch(`${adminPagesLink}/getOrdReq`)
+  const res = await response.json()
+  return res.ordReqData.ordersrequests
+}
+
+getAllOrdReq()

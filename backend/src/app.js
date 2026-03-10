@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import adminHosRouter from './controllers_routes/admin_con_routes/c_r_hospitals.js';
 import adminInvRouter from './controllers_routes/admin_con_routes/c_r_inventory.js';
 import adminUsersRouter from './controllers_routes/admin_con_routes/c_r_users.js';
+import adminOrdersRouter from './controllers_routes/admin_con_routes/c_r_orders.js';
 
 const app = express();
 
@@ -20,6 +21,6 @@ app.use(express.static(frontendPath));
 app.use(cors());
 app.use(express.json());
 
-app.use('/admin', adminHosRouter, adminInvRouter, adminUsersRouter);
+app.use('/admin', adminHosRouter, adminInvRouter, adminUsersRouter, adminOrdersRouter);
 
 export default app;
