@@ -1,3 +1,4 @@
+import { adminPagesLink } from "../../global.js"
 import { renderSidebar, renderReportsNavbar } from "../sidebar.js"
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -132,7 +133,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       <td class="text-right">${item.current_stock}</td>
       <td class="text-right">${item.min_level}</td>
       <td class="text-right deficit-${itemStatusLower}">${item.deficit}</td>
-      <td>${item.last_restocked}</td>
+      <td>${!item.last_restocked ? '---' : new Date(item.last_restocked).toDateString()}</td>
       <td><span class="stock-badge badge-${itemStatusLower}">${item.stock_status}</span></td>
     `
 
@@ -170,7 +171,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 })
 
 async function getLowStockReportData(){
-  const response = await fetch('http://localhost:3000/admin/lowStockReportData')
+  const response = await fetch(`${adminPagesLink}/lowStockReportData`)
   const res = await response.json()
   return res.lowStockReportData.low_stock_data
 }

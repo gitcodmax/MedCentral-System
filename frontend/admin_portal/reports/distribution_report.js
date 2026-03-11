@@ -1,6 +1,7 @@
+import { adminPagesLink } from "../../global.js"
 import { renderSidebar, renderReportsNavbar } from "../sidebar.js"
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
   document.querySelector('.app-container')
     .innerHTML = `   
@@ -139,120 +140,29 @@ document.addEventListener('DOMContentLoaded', () => {
   renderSidebar()
   renderReportsNavbar('distribution_report')
 
-  const DistroReportMockData = {
-    "kpi_metrics": {
-      "total_deliveries": 1428,
-      "delivered_count": 1240,
-      "completed_count": 1185,
-      "delayed_deliveries": 14
-    },
-    "deliveries_table": [
-      {
-        "delivery_id": "DLV-8821",
-        "package_id": "PKG-440",
-        "order_id": "ORD-901",
-        "dispatch_date": "2026-02-28",
-        "destination": "City General Hospital",
-        "driver": "John Doe",
-        "total_units": 450,
-        "status": "Dispatched",
-        "delivery_date": "2026-03-01"
-      },
-      {
-        "delivery_id": "DLV-8819",
-        "package_id": "PKG-438",
-        "order_id": "ORD-898",
-        "dispatch_date": "2026-02-27",
-        "destination": "St. Mary's Clinic",
-        "driver": "Sarah Smith",
-        "total_units": 120,
-        "status": "Completed",
-        "delivery_date": "2026-02-28"
-      },
-      {
-        "delivery_id": "DLV-8815",
-        "package_id": "PKG-432",
-        "order_id": "ORD-892",
-        "dispatch_date": "2026-02-27",
-        "destination": "Northwest Medical",
-        "driver": "Mike Ross",
-        "total_units": 85,
-        "status": "Delayed",
-        "delivery_date": "2026-03-02"
-      },
-      {
-        "delivery_id": "DLV-8810",
-        "package_id": "PKG-425",
-        "order_id": "ORD-885",
-        "dispatch_date": "2026-02-26",
-        "destination": "Eastside Pediatrics",
-        "driver": "John Doe",
-        "total_units": 300,
-        "status": "Delivered",
-        "delivery_date": "2026-02-27"
-      },
-      {
-        "delivery_id": "DLV-8825",
-        "package_id": "PKG-445",
-        "order_id": "ORD-905",
-        "dispatch_date": "2026-03-01",
-        "destination": "Central Pharmacy",
-        "driver": "Jane Wilson",
-        "total_units": 600,
-        "status": "Delivered with issues",
-        "delivery_date": "2026-03-01"
-      },
-      {
-        "delivery_id": "DLV-8821",
-        "package_id": "PKG-440",
-        "order_id": "ORD-901",
-        "dispatch_date": "2026-02-28",
-        "destination": "City General Hospital",
-        "driver": "John Doe",
-        "total_units": 450,
-        "status": "Dispatched",
-        "delivery_date": null
-      }
-    ],
-    "volume_over_time_line_chart": [
-      { "date": "2026-02-22", "deliveries": 145 },
-      { "date": "2026-02-23", "deliveries": 162 },
-      { "date": "2026-02-24", "deliveries": 158 },
-      { "date": "2026-02-25", "deliveries": 190 },
-      { "date": "2026-02-26", "deliveries": 175 },
-      { "date": "2026-02-27", "deliveries": 210 },
-      { "date": "2026-02-28", "deliveries": 188 }
-    ],
-    "destination_distribution_bar_chart": [
-      { "destination": "City General", "count": 450 },
-      { "destination": "St. Mary's", "count": 320 },
-      { "destination": "Northwest Medical", "count": 280 },
-      { "destination": "Eastside Peds", "count": 150 },
-      { "destination": "Central Pharmacy", "count": 228 }
-    ]
-  }
+  const distroReportData = await getDistroReportData()
 
   document.getElementById('totDelivValue')
-    .textContent = DistroReportMockData.kpi_metrics.total_deliveries
+    .textContent = distroReportData.kpi_metrics.total_deliveries
   document.getElementById('deliveredCount')
-    .textContent = DistroReportMockData.kpi_metrics.delivered_count
+    .textContent = distroReportData.kpi_metrics.delivered_count
   document.getElementById('completedDeliv')
-    .textContent = DistroReportMockData.kpi_metrics.completed_count
+    .textContent = distroReportData.kpi_metrics.completed_count
   document.getElementById('delayedDeliv')
-    .textContent = DistroReportMockData.kpi_metrics.delayed_deliveries
+    .textContent = distroReportData.kpi_metrics.delayed_deliveries
 
   const deliveriesTblFrag = document.createDocumentFragment()
-  DistroReportMockData.deliveries_table.forEach(deliv => {
+  distroReportData.deliveries_table.forEach(deliv => {
     const tblRow = document.createElement('tr')
     const delivStatusLower = deliv.status.toLowerCase()
     const delivStatusClass = delivStatusLower === 'delivered with issues' ? 'issues' : delivStatusLower
-    const delivDate = !deliv.delivery_date ? '--' : deliv.delivery_date
+    const delivDate = !deliv.delivery_date ? '--' : new Date(deliv.delivery_date).toDateString()
 
     tblRow.innerHTML = `
       <td class="id">${deliv.delivery_id}</td>
       <td class="id pkg-id">${deliv.package_id}</td>
       <td class="id ord-id">${deliv.order_id}</td>
-      <td>${deliv.dispatch_date}</td>
+      <td>${new Date(deliv.dispatch_date).toDateString()}</td>
       <td>${deliv.destination}</td>
       <td>${deliv.driver}</td>
       <td class="text-right">${deliv.total_units}</td>
@@ -266,8 +176,8 @@ document.addEventListener('DOMContentLoaded', () => {
     .appendChild(deliveriesTblFrag)
 
   // Distro over time line chart
-  const labels = DistroReportMockData.volume_over_time_line_chart.map(deliv => deliv.date)
-  const dataValues = DistroReportMockData.volume_over_time_line_chart.map(deliv => deliv.deliveries)
+  const labels = distroReportData.volume_over_time_line_chart.map(deliv => deliv.date)
+  const dataValues = distroReportData.volume_over_time_line_chart.map(deliv => deliv.deliveries)
 
   const distroTimeCtx = document.getElementById('distroOverTimeLine').getContext('2d')
   new Chart(distroTimeCtx, {
@@ -299,8 +209,8 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   // Destination Distro Bar chart
-  const destLabels = DistroReportMockData.destination_distribution_bar_chart.map(dest => dest.destination)
-  const destValues = DistroReportMockData.destination_distribution_bar_chart.map(dest => dest.count)
+  const destLabels = distroReportData.destination_distribution_bar_chart.map(dest => dest.destination)
+  const destValues = distroReportData.destination_distribution_bar_chart.map(dest => dest.count)
 
   const destiDistroCtx = document.getElementById('destDistroBar').getContext('2d')
   new Chart(destiDistroCtx, {
@@ -327,3 +237,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 })
+
+async function getDistroReportData(){
+  const response = await fetch(`${adminPagesLink}/distroReportData`)
+  const res = await response.json()
+  return res.distroReportData.distro_report
+}

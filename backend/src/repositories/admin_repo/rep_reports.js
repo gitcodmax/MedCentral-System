@@ -127,3 +127,74 @@ export async function lowStockReportDataQ(){
 
   return rows[0]
 }
+
+export async function distroReportDataQ(){
+  const {rows} = await pool.query(`
+    WITH kpi_data AS (
+        SELECT 
+            COUNT(d.delivery_id) AS total_deliveries,
+            COUNT(CASE WHEN p.status_id IN (8, 9, 10) THEN 1 END) AS delivered_count,
+            COUNT(CASE WHEN p.status_id = 10 THEN 1 END) AS completed_count,
+            COUNT(CASE WHEN p.status_id = 7 THEN 1 END) AS delayed_deliveries
+        FROM deliveries d
+        JOIN order_packages p ON d.package_id = p.package_id
+    ),
+    table_data AS (
+        SELECT 
+            'DLV-' || d.delivery_id AS delivery_id,
+            'PKG-' || d.package_id || '-' || (
+          SELECT op.storage_temp_code 
+          FROM package_items pi 
+          JOIN order_packages op ON pi.package_id = op.package_id 
+          WHERE pi.package_id = d.package_id
+          LIMIT 1
+        ) AS package_id,
+            'ORD-' || p.order_id AS order_id,
+            d.dispatched_at AS dispatch_date,
+            h.name AS destination,
+            u.full_name AS driver,
+            (SELECT SUM(ri.quantity_requested) 
+            FROM package_items pi
+            JOIN request_items ri ON pi.request_item_id = ri.request_item_id
+            WHERE pi.package_id = d.package_id) AS total_units,
+            s.status_name AS status,
+            d.delivered_at AS delivery_date
+        FROM deliveries d
+        JOIN order_packages p ON d.package_id = p.package_id
+        JOIN orders o ON p.order_id = o.order_id
+        JOIN requests r ON o.request_id = r.request_id
+        JOIN hospitals h ON r.hospital_id = h.hospital_id
+        LEFT JOIN drivers u ON p.assigned_driver_id = u.driver_id
+        JOIN cfg_statuses s ON p.status_id = s.id
+    ),
+    time_chart AS (
+        SELECT 
+            delivered_at::DATE AS date,
+            COUNT(delivery_id) AS deliveries
+        FROM deliveries
+        WHERE delivered_at IS NOT NULL
+        GROUP BY delivered_at::DATE
+        ORDER BY date DESC
+    ),
+    dist_chart AS (
+        SELECT 
+            h.name AS destination,
+            COUNT(d.delivery_id) AS count
+        FROM deliveries d
+        JOIN order_packages p ON d.package_id = p.package_id
+        JOIN orders o ON p.order_id = o.order_id
+        JOIN requests r ON o.request_id = r.request_id
+        JOIN hospitals h ON r.hospital_id = h.hospital_id
+        GROUP BY h.name
+        ORDER BY count DESC
+    )
+    SELECT jsonb_build_object(
+        'kpi_metrics', (SELECT row_to_json(kpi_data) FROM kpi_data),
+        'deliveries_table', (SELECT json_agg(table_data) FROM table_data),
+        'volume_over_time_line_chart', (SELECT json_agg(time_chart) FROM time_chart),
+        'destination_distribution_bar_chart', (SELECT json_agg(dist_chart) FROM dist_chart)
+    ) AS distro_report;
+  `)
+
+  return rows[0]
+}
