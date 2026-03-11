@@ -1,7 +1,16 @@
 import express from 'express'
-import { getOrdReqQ } from '../../repositories/admin_repo/rep_orders.js'
+import { getAdminDashDataQ, getOrdReqQ } from '../../repositories/admin_repo/rep_orders.js'
 
 const adminOrdersRouter = express.Router()
+
+adminOrdersRouter.get('/getAdminDashData', async (req, res) => {
+  try{
+    const adminDashData = await getAdminDashDataQ()
+    res.status(200).json({adminDashData})
+  }catch(err){
+    res.status(500).json({Error: err.message})
+  }
+})
 
 adminOrdersRouter.get('/getOrdReq', async (req, res) => {
   try{

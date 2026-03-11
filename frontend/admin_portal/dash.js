@@ -1,6 +1,7 @@
+import { adminPagesLink } from "../global.js";
 import { renderSidebar } from "./sidebar.js";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
   document.querySelector('.app-container')
     .innerHTML = `   
@@ -48,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="card-icon icon-in-transit"><i class="fas fa-truck-loading"></i></div>
               <h3 id="ordInTransit"></h3>
             </div>
-            <p>Orders in Transit</p>
+            <p>Packages in Transit</p>
           </div>
 
           <div class="stat-card completed-ord-card">
@@ -73,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <tr>
                   <th>Order ID</th>
                   <th>Hospital Name</th>
-                  <th>Status</th>
                   <th>Date</th>
                 </tr>
               </thead>
@@ -166,29 +166,31 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   };
 
+  const adminDashData = await getDashData()
+  console.log(adminDashData)
+
   document.getElementById('totalHospitals')
-    .textContent = AdminDashboardData.stats.totalHospitals
+    .textContent = adminDashData.stats.total_hospitals
   document.getElementById('inventoryItems')
-    .textContent = AdminDashboardData.stats.totalInventoryItems
+    .textContent = adminDashData.stats.total_inventory_items
   document.getElementById('lowStockItems')
-    .textContent = AdminDashboardData.stats.lowStockItems
+    .textContent = adminDashData.stats.low_stock_items
   document.getElementById('pendingOrders')
-    .textContent = AdminDashboardData.stats.pendingOrders
+    .textContent = adminDashData.stats.pending_orders
   document.getElementById('ordInTransit')
-    .textContent = AdminDashboardData.stats.ordersInTransit
+    .textContent = adminDashData.stats.packages_in_transit
   document.getElementById('completedOrders')
-    .textContent = AdminDashboardData.stats.completedOrders
+    .textContent = adminDashData.stats.completed_orders
 
   // Display the recent orders
   const recentOrdersTblFrag = document.createDocumentFragment()
-  AdminDashboardData.recentOrders.forEach(ord => {
+  adminDashData.recentOrders.forEach(ord => {
     const tblRow = document.createElement('tr')
 
     tblRow.innerHTML = `
-      <td class="ord-id">${ord.id}</td>
-      <td>${ord.hospital}</td>
-      <td><span class="status-pill status-${ord.status.toLowerCase()}">${ord.status}</span></td>
-      <td>${ord.date}</td>
+      <td class="ord-id">${ord.order_id}</td>
+      <td>${ord.hospital_name}</td>
+      <td>${ord.order_date}</td>
     `
 
     recentOrdersTblFrag.appendChild(tblRow)
@@ -198,16 +200,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Display the items with low stocks
   const lowStocksAlertsCardFrag = document.createDocumentFragment()
-  AdminDashboardData.lowStockAlerts.forEach(item => {
+  adminDashData.lowStockAlerts.forEach(item => {
     const itemDivContainer = document.createElement('div')
     itemDivContainer.classList = 'alert-item'
 
     itemDivContainer.innerHTML = `
       <div class="alert-info">
-        <p>${item.itemName}</p>
-        <span>Min Req: ${item.minRequired} ${item.unit}</span>
+        <p>${item.item_name}</p>
+        <span>Min Req: ${item.min_required} ${item.unit}</span>
       </div>
-      <div class="stock-badge">${item.currentStock}</div>
+      <div class="stock-badge">${item.current_stock}</div>
     `
 
     lowStocksAlertsCardFrag.appendChild(itemDivContainer)
@@ -216,3 +218,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('lowStockCard')
     .appendChild(lowStocksAlertsCardFrag)
 })
+
+async function getDashData(){
+  const response = await fetch(`${adminPagesLink}/getAdminDashData`)
+  const res = await response.json()
+  return res.adminDashData.admin_dash_data
+}

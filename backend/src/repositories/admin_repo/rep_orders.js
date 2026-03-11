@@ -1,5 +1,56 @@
 import pool from "../../config/db.js";
 
+// Get admin dash data
+export async function getAdminDashDataQ(){
+  const {rows} = await pool.query(`
+    WITH kpi_stats AS (
+        SELECT 
+            (SELECT COUNT(hospital_id) FROM hospitals) AS total_hospitals,
+            (SELECT COUNT(item_id) FROM items) AS total_inventory_items,
+            (SELECT COUNT(item_id) FROM items WHERE current_stock <= min_stock_level) AS low_stock_items,
+            (SELECT COUNT(request_id) FROM requests WHERE status_id = 1) AS pending_orders,
+            (SELECT COUNT(package_id) FROM order_packages WHERE status_id = 6) AS packages_in_transit,
+            (SELECT COUNT(DISTINCT order_id) 
+            FROM order_packages op1 
+            WHERE NOT EXISTS (
+                SELECT 1 FROM order_packages op2 
+                WHERE op2.order_id = op1.order_id 
+                AND op2.status_id != 10
+            )) AS completed_orders
+    ),
+    recent_orders_list AS (
+        SELECT 
+            'ORD-' || o.order_id AS order_id,
+            h.name AS hospital_name,
+            o.created_at AS order_date
+        FROM orders o
+        JOIN requests r ON o.request_id = r.request_id
+        JOIN hospitals h ON r.hospital_id = h.hospital_id
+        ORDER BY o.created_at DESC
+        LIMIT 5
+    ),
+    low_stock_list AS (
+        SELECT 
+            i.name AS item_name,
+            i.current_stock,
+            i.min_stock_level AS min_required,
+            u.name AS unit
+        FROM items i
+        JOIN cfg_uoms u ON i.selling_uom_id = u.id
+        WHERE i.current_stock <= i.min_stock_level
+        ORDER BY i.current_stock ASC
+    )
+    SELECT jsonb_build_object(
+        'stats', (SELECT row_to_json(kpi_stats) FROM kpi_stats),
+        'recentOrders', (SELECT json_agg(recent_orders_list) FROM recent_orders_list),
+        'lowStockAlerts', (SELECT json_agg(low_stock_list) FROM low_stock_list)
+    ) AS admin_dash_data;
+  `)
+
+  return rows[0]
+}
+
+// Get orders page data
 export async function getOrdReqQ(){
   const {rows} = await pool.query(`
     SELECT json_agg(result_json) AS ordersRequests FROM
