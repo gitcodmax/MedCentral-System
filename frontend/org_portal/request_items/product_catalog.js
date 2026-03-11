@@ -1,7 +1,7 @@
 import { renderSidebar,  renderRequestItemsNavbar } from "../sidebar.js";
 import { displayNoMatchFound } from "../../global.js";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
   document.querySelector('.app-container')
     .innerHTML = `
@@ -22,11 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
                   <label for="globalDeptSelect">Default Destination Department</label>
                   <select id="globalDeptSelect" class="global-dept-dropdown">
                     <option value="">Select Department...</option>
-                    <option value="general_ward">General Ward</option>
-                    <option value="icu">ICU (Intensive Care)</option>
-                    <option value="pharmacy">Pharmacy Storage</option>
-                    <option value="emergency">Emergency Room</option>
-                    <option value="maternity">Maternity Wing</option>
                   </select>
                 </div>
               </div>
@@ -83,14 +78,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const hospitalOrderData = {
     departments: [
-      "General Ward",
-      "ICU",
-      "Pharmacy",
-      "Emergency Room",
-      "Laboratory",
-      "Maternity",
-      "Surgery",
-      "Outpatient"
+      { id: 1, name: "General Ward" },
+      { id: 2, name: "ICU" },
+      { id: 3, name: "Pharmacy" },
+      { id: 4, name: "Emergency Room" },
+      { id: 5, name: "Laboratory" },
+      { id: 6, name: "Maternity" },
+      { id: 7, name: "Surgery" },
+      { id: 8, name: "Outpatient" }
     ],
 
     catalog: [
@@ -177,6 +172,21 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   };
 
+  const productCatalogData = await getProductCatalogData()
+  console.log(productCatalogData)
+
+  // Populate the data to select a global department for the items selected
+  const globalDeptSelectFrag = document.createDocumentFragment()
+  productCatalogData.departments.forEach(dept => {
+    const option = document.createElement('option')
+    option.value = dept.id
+    option.textContent = dept.name
+
+    globalDeptSelectFrag.appendChild(option)
+  })
+  document.getElementById('globalDeptSelect')
+    .appendChild(globalDeptSelectFrag)
+
   const productGridElem = document.querySelector('.js-product-grid')
 
   //Display the products ihe page
@@ -187,11 +197,11 @@ document.addEventListener('DOMContentLoaded', () => {
       itemCardDiv.className = 'item-card'
 
       let storageTempIcon = 'fa-solid fa-house-medical-circle-check'
-      if (product.tempZone === 'crt') {
+      if (product.tempzone === 'crt') {
         storageTempIcon = `fas fa-thermometer-half`
-      } else if (product.tempZone === 'refrigerated') {
+      } else if (product.tempzone === 'refrigerated') {
         storageTempIcon = `fas fa-snowflake`
-      } else if (product.tempZone === 'frozen') {
+      } else if (product.tempzone === 'frozen') {
         storageTempIcon = `fas fa-icicles`
       }
 
@@ -221,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
     productGridElem.appendChild(productsCatalogFragment)
   }
 
-  displayProducts(hospitalOrderData.catalog)
+  displayProducts(productCatalogData.catalog)
 
   productGridElem.addEventListener('click', (e) => {
     const btn = e.target.closest('button')
@@ -229,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!btn) return
 
     if (btn.classList.contains('btn-add')) {
-      hospitalOrderData.catalog.forEach(prd => {
+      productCatalogData.catalog.forEach(prd => {
         if (prd.id === btnProductId) {
           document.querySelector('.js-cart-list')
             .innerHTML += `
@@ -265,11 +275,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function handleSearchTempFilter() {
     const searchValue = searchBarElem.value.toLowerCase().trim()
 
-    const searchResult = hospitalOrderData.catalog.filter(prd => {
+    const searchResult = productCatalogData.catalog.filter(prd => {
       const searchMatch = prd.name.toLowerCase().includes(searchValue)
         || prd.sku.toLowerCase().includes(searchValue)
 
-      const tempMatch = tempFilterElem.value === 'all' || prd.tempZone === tempFilterElem.value
+      const tempMatch = tempFilterElem.value === 'all' || prd.tempzone === tempFilterElem.value
 
       return searchMatch && tempMatch
     })
@@ -296,3 +306,9 @@ document.addEventListener('DOMContentLoaded', () => {
   searchBarElem.addEventListener('keyup', () => handleSearchTempFilter())
   tempFilterElem.addEventListener('change', () => handleSearchTempFilter())
 })
+
+async function getProductCatalogData(){
+  const response = await fetch('http://localhost:3000/org/getProductCatalogData')
+  const res = await response.json()
+  return res.product_catalog
+}

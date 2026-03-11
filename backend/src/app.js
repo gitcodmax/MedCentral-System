@@ -7,6 +7,7 @@ import adminInvRouter from './controllers_routes/admin_con_routes/c_r_inventory.
 import adminUsersRouter from './controllers_routes/admin_con_routes/c_r_users.js';
 import adminOrdersRouter from './controllers_routes/admin_con_routes/c_r_orders.js';
 import adminReportsRouter from './controllers_routes/admin_con_routes/c_r_reports.js';
+import orgPortalRouter from './controllers_routes/org_con_routes/c_r_request_items.js';
 
 const app = express();
 
@@ -27,5 +28,9 @@ app.use('/admin',
   adminUsersRouter, adminOrdersRouter, 
   adminReportsRouter
 );
+
+app.use('/org', 
+  orgPortalRouter
+)
 
 export default app;
