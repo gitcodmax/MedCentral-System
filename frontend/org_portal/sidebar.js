@@ -1,3 +1,5 @@
+import { noHospCartItems } from "./request_items/order_summary.js"
+
 export function renderSidebar(pageName) {
   const sidebar = document.querySelector('.js-sidebar')
   const logoImg = `<img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">`
@@ -65,7 +67,7 @@ export function renderSidebar(pageName) {
 }
 
 // Display the navigation bar in the request items page
-export function renderRequestItemsNavbar(){
+export async function renderRequestItemsNavbar(){
   document.querySelector('.js-view-navigation')
     .addEventListener('click', (e) => {
       const btn = e.target.closest('button')
@@ -88,11 +90,14 @@ export function renderRequestItemsNavbar(){
 
         <button class="nav-tab js-ord-sum-nav" data-view="summary">
           <i class="fas fa-clipboard-list"></i>
-          <span>Order Summary</span>
+          <span>Order Summary / Cart</span>
           <span class="cart-badge" id="navCartCount">0</span>
         </button>
       </div>    
     `
+
+  document.getElementById('navCartCount')
+    .textContent = await noHospCartItems(3)
 
   if(window.location.href.includes('product_catalog')){
     document.querySelector('.js-catalog-nav')

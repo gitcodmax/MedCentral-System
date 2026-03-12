@@ -109,3 +109,4 @@ export function triggerStatus(type) {
 }
 
 export const adminPagesLink = `http://localhost:3000/admin`
+export const orgPortalPagesLink = `http://localhost:3000/org`

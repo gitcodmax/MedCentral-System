@@ -26,86 +26,9 @@
   font-size: 14px;
 }
 
-/* Request metadata styling */
-.request-header-card {
-  margin-bottom: 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 /* ID and Status Grouping */
-.request-identity {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.id-badge-group .label {
-  font-size: 11px;
-  font-weight: 800;
-  color: var(--color-quarantine);
-  text-transform: uppercase;
-  display: block;
-}
-
-.id-badge-group h2 {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--color-secondary);
-  letter-spacing: -0.5px;
-}
-
-.status-pill {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
-  background: #fff7ed;
-  color: #c2410c;
-}
 
 /* Metadata Grid */
-.request-meta-grid {
-  display: flex;
-  gap: 32px;
-}
-
-.meta-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.meta-item i {
-  font-size: 18px;
-  color: var(--color-primary);
-}
-
-.meta-item.border-left {
-  padding-left: 32px;
-  border-left: 1px solid var(--color-quarantine);
-}
-
-.meta-content {
-  display: flex;
-  flex-direction: column;
-}
-
-.meta-label {
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--color-quarantine);
-  text-transform: uppercase;
-}
-
-.meta-value {
-  font-size: 14px;
-  font-weight: 700;
-}
 
 
 /* Table Styling */
@@ -544,19 +467,4 @@
     position: static;
   }
 
-  .request-header-card {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-  }
-
-  .request-meta-grid {
-    width: 100%;
-    justify-content: space-between;
-    gap: 0;
-  }
-
-  .meta-item.border-left {
-    padding-left: 16px;
-  }
 }

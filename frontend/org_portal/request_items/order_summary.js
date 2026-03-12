@@ -1,7 +1,8 @@
+import { orgPortalPagesLink } from "../../global.js";
 import { renderSidebar, renderRequestItemsNavbar } from "../sidebar.js";
 import { handleOverlay } from "/global.js";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   document.querySelector('.app-container')
     .innerHTML = `
     <nav class="sidebar js-sidebar"></nav>
@@ -20,39 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
 
           <div class="items-review-container">
-
-            <div class="request-header-card">
-              <div class="request-identity">
-                <div class="id-badge-group">
-                  <span class="label">Requisition ID</span>
-                  <h2 id="summaryRequestId"></h2>
-                </div>
-                <div class="status-pill-wrapper">
-                  <span class="status-pill draft">
-                    <i class="fas fa-pencil-alt"></i> Draft Mode
-                  </span>
-                </div>
-              </div>
-
-              <div class="request-meta-grid">
-                <div class="meta-item">
-                  <i class="far fa-calendar-alt"></i>
-                  <div class="meta-content">
-                    <span class="meta-label">Date Initiated</span>
-                    <span class="meta-value" id="summaryDate"></span>
-                  </div>
-                </div>
-
-                <div class="meta-item border-left">
-                  <i class="fas fa-hospital-alt"></i>
-                  <div class="meta-content">
-                    <span class="meta-label">Primary Department</span>
-                    <span class="meta-value" id="summaryDefaultDept"></span>
-                  </div>
-                </div>
-
-              </div>
-            </div>
 
             <table class="summary-table">
               <thead>
@@ -161,80 +129,11 @@ document.addEventListener('DOMContentLoaded', () => {
   renderSidebar('request_items')
   renderRequestItemsNavbar()
 
-  const hospitalDepartmentData = {
-    departments: [
-      { id: "dept_01", name: "General Ward" },
-      { id: "dept_02", name: "ICU (Intensive Care)" },
-      { id: "dept_03", name: "Emergency Room" },
-      { id: "dept_04", name: "Pharmacy Storage" },
-      { id: "dept_05", name: "Maternity Wing" },
-      { id: "dept_06", name: "Surgery / Theatre" },
-      { id: "dept_07", name: "Laboratory" },
-      { id: "dept_08", name: "Outpatient Clinic" },
-      { id: "dept_09", name: "Pediatrics" },
-      { id: "dept_10", name: "Radiology" }
-    ]
-  };
+  const hospitalDepartmentData = await getAllDept();
 
   // Mock data for the order summary page
-  const hospitalRequestData = {
-    requestId: "REQ-2026-05521",
-    status: "draft",
-    dateInitiated: "2026-01-31",
-    defaultDepartment: "dept_01", // Using ID for General Ward
-    totalOfAllItems: 110450.00,
-    currency: "KES",
+  const hospitalRequestData = await getHospCartItems(3)
 
-    items: [
-      {
-        sku: "MED-001-P",
-        name: "Paracetamol 500mg",
-        uom: "tablet",
-        storageTemp: "ambient",
-        quantity: 500,
-        unitPrice: 5.50,
-        department: "dept_01", // ID for General Ward
-        subtotal: 2750.00
-      },
-      {
-        sku: "INS-GL-04",
-        name: "Insulin Glargine",
-        uom: "vial",
-        storageTemp: "refrigerated",
-        quantity: 12,
-        unitPrice: 3400.00,
-        department: "dept_02", // ID for ICU
-        subtotal: 40800.00
-      },
-      {
-        sku: "IV-FL-09",
-        name: "Saline Solution 500ml",
-        uom: "vial",
-        storageTemp: "crt",
-        quantity: 50,
-        unitPrice: 1250.00,
-        department: "dept_01", // ID for General Ward
-        subtotal: 62500.00
-      },
-      {
-        sku: "GS-992-M",
-        name: "Surgical Gloves (Medium)",
-        uom: "pair",
-        storageTemp: "ambient",
-        quantity: 200,
-        unitPrice: 22.00,
-        department: "dept_06", // ID for Surgery / Theatre
-        subtotal: 4400.00
-      }
-    ]
-  };
-
-  document.getElementById('summaryRequestId')
-    .textContent = hospitalRequestData.requestId
-  document.getElementById('summaryDate')
-    .textContent = hospitalRequestData.dateInitiated
-  document.getElementById('summaryDefaultDept')
-    .textContent = getDeptName(hospitalRequestData.defaultDepartment)
   document.querySelectorAll('.js-total-items')
     .forEach(elem => elem.textContent = hospitalRequestData.items.length)
   document.querySelectorAll('.js-grand-total')
@@ -256,11 +155,11 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="row-uom">per ${item.uom}</span>
         </div>
       </td>
-      <td class="row-storage">${item.storageTemp}</td>
+      <td class="row-storage">${item.storage_temp}</td>
       <td>
         <input type="number" class="row-qty js-row-qty-${item.sku}" value="${item.quantity}" oninput="updateItemQuantity('${item.sku}', this.value)">
       </td>
-      <td class="row-price">KES ${item.unitPrice}</td>
+      <td class="row-price">KES ${item.unit_price}</td>
       <td>
         <select class="row-dept js-row-dept-${item.sku}"></select>
       </td>
@@ -289,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //Returns the name of a department
   function getDeptName(deptId) {
-    const dept = hospitalDepartmentData.departments.find(dept => dept.id === deptId)
+    const dept = hospitalDepartmentData.departments.find(dept => dept.id === Number(deptId))
     return dept.name
   }
 
@@ -335,3 +234,39 @@ document.addEventListener('DOMContentLoaded', () => {
     `
   }
 })
+
+const getAllDept = async () => {
+  const response = await fetch(`${orgPortalPagesLink}/getAllDept`)
+  const res = await response.json()
+  return res
+}
+
+const getHospCartItems = async (hosId) => {
+  const response = await fetch(`${orgPortalPagesLink}/getHospCartItems`, 
+    {
+      method: 'POST',
+       headers: {
+        'Content-Type': 'application/json'
+       }, 
+       body: JSON.stringify({hosId})
+    }
+  )
+
+  const res = await response.json()
+  return res.hospital_cart
+}
+
+export const noHospCartItems = async (hosId) => {
+  const response = await fetch(`${orgPortalPagesLink}/getNoHospCartItems`, 
+    {
+      method: 'POST',
+       headers: {
+        'Content-Type': 'application/json'
+       }, 
+       body: JSON.stringify({hosId})
+    }
+  )
+
+  const res = await response.json()
+  return res.count
+}

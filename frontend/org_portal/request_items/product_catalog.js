@@ -1,5 +1,5 @@
 import { renderSidebar,  renderRequestItemsNavbar } from "../sidebar.js";
-import { displayNoMatchFound } from "../../global.js";
+import { displayNoMatchFound, orgPortalPagesLink } from "../../global.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -308,7 +308,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 })
 
 async function getProductCatalogData(){
-  const response = await fetch('http://localhost:3000/org/getProductCatalogData')
+  const response = await fetch(`${orgPortalPagesLink}/getProductCatalogData`)
   const res = await response.json()
   return res.product_catalog
 }
