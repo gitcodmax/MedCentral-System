@@ -1,5 +1,5 @@
 import express from "express";
-import { getProductCatalogDataQ, getAllDeptQ, getHospCartItemsQ, getNoHospCartItemsQ } from "../../repositories/org_repo/rep_request_items.js";
+import { getProductCatalogDataQ, getAllDeptQ, getHospCartItemsQ, getNoHospCartItemsQ, updateCartItemsQ } from "../../repositories/org_repo/rep_request_items.js";
 
 const orgPortalRouter = express.Router()
 
@@ -37,6 +37,15 @@ orgPortalRouter.post('/getNoHospCartItems', async (req, res) => {
     res.status(200).json(noHospCartItems)
   }catch(err){
     res.status(500).json({Error: err.message})
+  }
+})
+
+orgPortalRouter.put('/updateCartItems', async (req, res) => {
+  try{
+    await updateCartItemsQ(req.body)
+    res.status(200).json({msg: 'success'})
+  }catch(e){
+    res.status(500).json({msg: 'error', Error: e.message})
   }
 })
 

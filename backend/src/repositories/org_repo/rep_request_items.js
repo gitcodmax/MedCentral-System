@@ -48,6 +48,8 @@ export const getHospCartItemsQ = async (hospId) => {
         SELECT 
             json_agg(
                 jsonb_build_object(
+                    'cart_item_id', c.cart_id,
+                    'item_id', c.item_id,
                     'sku', i.sku_code,
                     'name', i.name,
                     'uom', u.name,
@@ -79,4 +81,27 @@ export const getNoHospCartItemsQ = async (hosId) => {
   `, [hosId])
 
   return rows[0]
+}
+
+export const updateCartItemsQ = async (updatedCartItems) => {
+  const client = await pool.connect()
+
+  try{
+    await client.query('BEGIN')
+
+    for(let item of updatedCartItems.changeItemsArr){
+      await client.query(`
+        UPDATE cart_items 
+        SET quantity = $1, department_id = $2, 
+        updated_at = CURRENT_TIMESTAMP
+        WHERE cart_id = $3 AND item_id = $4 RETURNING *
+      `, [item.quantity, item.department, item.cart_item_id, item.item_id])
+    }
+
+    await client.query('COMMIT');
+  }catch(e){
+    await client.query('ROLLBACK')
+  } finally{
+    client.release()
+  }
 }

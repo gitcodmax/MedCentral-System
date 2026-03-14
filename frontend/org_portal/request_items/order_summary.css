@@ -26,11 +26,6 @@
   font-size: 14px;
 }
 
-/* ID and Status Grouping */
-
-/* Metadata Grid */
-
-
 /* Table Styling */
 .items-review-container {
   background: white;
@@ -208,6 +203,29 @@
   background: #b91c1c;
 }
 
+.update-btn-container{
+  display: flex;
+  border-top: 1px solid var(--color-primary);
+  padding-top: 10px;
+}
+.update-cart-btn{
+  padding: 5px 20px;
+  text-transform: uppercase;
+  border-radius: 5px;
+  background: var(--color-primary);
+  color: white;
+  border: 1px solid var(--color-primary);
+  height: 40px;
+  transition: 0.3s all;
+  margin-left: auto;
+  margin-right: auto;
+}
+.update-cart-btn:hover{
+  background: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
+  transform: translateY(-3px);
+}
+
 /* Checkout Card Styling */
 .submission-container {
   display: flex;
@@ -292,7 +310,7 @@
 
 
 /* Modal Overlay Box */
-.modal-container {
+.modal-container, .modal-card {
   background: white;
   width: 90%;
   max-width: 650px;

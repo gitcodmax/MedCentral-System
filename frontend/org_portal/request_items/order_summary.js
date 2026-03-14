@@ -1,4 +1,4 @@
-import { orgPortalPagesLink } from "../../global.js";
+import { orgPortalPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../../global.js";
 import { renderSidebar, renderRequestItemsNavbar } from "../sidebar.js";
 import { handleOverlay } from "/global.js";
 
@@ -37,6 +37,9 @@ document.addEventListener('DOMContentLoaded', async () => {
               </thead>
               <tbody id="summaryTableBody"></tbody>
             </table>
+            <div class="update-btn-container">
+              <button class="update-cart-btn" id="updateCartBtn">Update Cart Details</button>
+            </div>
 
             <div id="deleteConfirmOverlay" class="modal-overlay">
               <div class="delete-card">
@@ -128,11 +131,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   renderSidebar('request_items')
   renderRequestItemsNavbar()
+  renderSuccessErrorOverlay()
 
   const hospitalDepartmentData = await getAllDept();
-
-  // Mock data for the order summary page
   const hospitalRequestData = await getHospCartItems(3)
+
+  const cartItems = hospitalRequestData.items
+  const cartItemsCopy = structuredClone(cartItems)
 
   document.querySelectorAll('.js-total-items')
     .forEach(elem => elem.textContent = hospitalRequestData.items.length)
@@ -157,11 +162,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       </td>
       <td class="row-storage">${item.storage_temp}</td>
       <td>
-        <input type="number" class="row-qty js-row-qty-${item.sku}" value="${item.quantity}" oninput="updateItemQuantity('${item.sku}', this.value)">
+        <input type="number" class="row-qty js-row-qty-${item.sku}" data-c-item-id=${item.cart_item_id}
+        value="${item.quantity}">
       </td>
       <td class="row-price">KES ${item.unit_price}</td>
       <td>
-        <select class="row-dept js-row-dept-${item.sku}"></select>
+        <select class="row-dept js-row-dept-${item.sku}" data-c-item-id=${item.cart_item_id}></select>
       </td>
       <td class="row-subtotal">KES ${item.subtotal}</td>
       <td>
@@ -176,6 +182,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   summaryTbodyElem.appendChild(summaryTbodyFragment)
 
+  document.querySelectorAll('.row-qty')
+    .forEach(qtyInputElem => {
+        qtyInputElem.addEventListener('input', () => {
+          const itemElemCartItemId = qtyInputElem.dataset.cItemId
+          const itemElemValue = qtyInputElem.value
+
+          const itemObj = cartItemsCopy.find(item => item.cart_item_id === Number(itemElemCartItemId))
+          itemObj.quantity = Number(itemElemValue)
+      })
+    })
+
   //Display all the departments for the user to select
   hospitalRequestData.items.forEach(item => {
     hospitalDepartmentData.departments.forEach(dpt => {
@@ -185,6 +202,66 @@ document.addEventListener('DOMContentLoaded', async () => {
         >${dpt.name}</option>`
     })
   })
+
+  document.querySelectorAll('.row-dept')
+    .forEach(deptInputElem => {
+      deptInputElem.addEventListener('change', () => {
+        const deptInputElemValue = deptInputElem.value
+        const deptElemCartItemId = deptInputElem.dataset.cItemId
+
+        const itemObj = cartItemsCopy.find(item => item.cart_item_id === Number(deptElemCartItemId))
+        itemObj.department = Number(deptInputElemValue)
+      })
+    })
+
+  // Function to modify the keys and values in the cart items array objects
+  // The objects in the array are updated to have only three keys: sku, department and quantity
+  const updateCartItemsObj = (cartItemsArr) => {
+    const cartItemsArrUpd = []
+    cartItemsArr.forEach(cartItem => {
+      const {cart_item_id, item_id, department, quantity} = cartItem
+      const cartItemsUpd = {cart_item_id, item_id, department, quantity}
+      cartItemsArrUpd.push(cartItemsUpd)
+    })
+
+    return cartItemsArrUpd
+  }
+
+  const getChangedItems = (cartItems, cartItemsCopy) => {
+    return cartItemsCopy.filter(copyItem => {
+      const originCartItem = cartItems.find(item => item.cart_item_id === copyItem.cart_item_id)
+
+      const hasQtyChanged = copyItem.quantity !== originCartItem.quantity
+      const hasDeptChanged = copyItem.department !== originCartItem.department
+
+      return hasQtyChanged || hasDeptChanged
+    })
+  }
+
+  document.getElementById('updateCartBtn')
+    .addEventListener('click', async () => {
+      const updCartItems = updateCartItemsObj(cartItems)
+      const updCartItemsCopy = updateCartItemsObj(cartItemsCopy)
+      const changeItemsArr = getChangedItems(updCartItems, updCartItemsCopy)
+
+      if(changeItemsArr.length === 0) {
+        alert('No updates made on the cart items!')
+        location.reload()
+      }
+
+      const response = await fetch(`${orgPortalPagesLink}/updateCartItems`, 
+        {
+          method: 'PUT', 
+          headers: {
+            'Content-Type': 'application/json'
+          }, 
+          body: JSON.stringify({changeItemsArr})
+        }
+      )
+
+      const res = await response.json()
+      triggerStatus(res.msg)
+    }, {once: true})
 
   //Returns the name of a department
   function getDeptName(deptId) {
