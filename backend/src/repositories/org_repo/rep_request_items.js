@@ -105,3 +105,10 @@ export const updateCartItemsQ = async (updatedCartItems) => {
     client.release()
   }
 }
+
+export const deleteCartItemQ = async ({ cartItemId, hosId }) => {
+  await pool.query(
+    `DELETE FROM cart_items 
+     WHERE cart_id = $1 AND hospital_id = $2`
+  , [cartItemId, hosId])
+}

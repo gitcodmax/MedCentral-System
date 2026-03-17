@@ -135,6 +135,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const hospitalDepartmentData = await getAllDept();
   const hospitalRequestData = await getHospCartItems(3)
+  console.log(hospitalRequestData.items)
 
   const cartItems = hospitalRequestData.items
   const cartItemsCopy = structuredClone(cartItems)
@@ -171,7 +172,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       </td>
       <td class="row-subtotal">KES ${item.subtotal}</td>
       <td>
-        <button class="btn-remove-row js-btn-remove" data-sku=${item.sku} title="Remove Item">
+        <button class="btn-remove-row js-btn-remove" data-c-item-id=${item.cart_item_id} title="Remove Item">
           <i class="fas fa-times"></i>
         </button>
       </td>
@@ -281,14 +282,33 @@ document.addEventListener('DOMContentLoaded', async () => {
   summaryTbodyElem.addEventListener('click', (e) => {
     const btn = e.target.closest('button')
     if (!btn) return;
-    const btnSku = btn.dataset.sku
+    const btnCartItemId = btn.dataset.cItemId
 
     if (btn.classList.contains('js-btn-remove')) {
       hospitalRequestData.items.forEach(item => {
-        if (btnSku === item.sku) {
+        if (Number(btnCartItemId) === item.cart_item_id) {
           handleOverlay(deleteConfirmOverlayElem)
           document.getElementById('deleteItemName')
             .textContent = item.name
+          
+          document.getElementById('finalDeleteBtn')
+            .addEventListener('click', async () => {
+              const response = await fetch(`${orgPortalPagesLink}/deleteCartItem`, 
+                {
+                  method: 'DELETE', 
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }, 
+                  body: JSON.stringify({
+                    cartItemId: Number(btnCartItemId),
+                    hosId: 3
+                  })
+                }
+              )
+
+              const res = await response.json()
+              triggerStatus(res.msg)
+            }, {once: true})
         }
       })
     }
