@@ -112,3 +112,45 @@ export const deleteCartItemQ = async ({ cartItemId, hosId }) => {
      WHERE cart_id = $1 AND hospital_id = $2`
   , [cartItemId, hosId])
 }
+
+export const updateCartItemsToRequestQ = async ({hosId, totalItemsValue}) => {
+  const client = await pool.connect()
+
+  try {
+    await client.query('BEGIN')
+
+    // Create a request in requests table
+    const { rows } = await client.query(`
+      INSERT INTO requests (hospital_id, status_id, total_estimated_value, created_at) 
+      VALUES ($1, 1, $2, CURRENT_TIMESTAMP) RETURNING request_id;
+    `, [hosId, totalItemsValue])
+    const requestId = rows[0].request_id
+
+    if (!requestId) {
+      throw new Error('Request id not returned')
+    }
+
+    // Insert the cart items in the request_items table 
+    await client.query(`
+      INSERT INTO request_items(request_id, item_id, department_id, quantity_requested, 
+      unit_price_at_request) 
+      SELECT $1, c.item_id, c.department_id, c.quantity, i.price_per_selling 
+      FROM cart_items c 
+      JOIN items i ON c.item_id = i.item_id 
+      WHERE c.hospital_id = $2
+    `, [requestId, hosId])
+
+    // Clear all the items in the cart
+    await client.query(`
+      DELETE FROM cart_items WHERE hospital_id = $1
+    `, [hosId])
+
+    await client.query('COMMIT')
+
+  } catch (e) {
+    await client.query('ROLLBACK')
+    throw e
+  } finally {
+    client.release()
+  }
+}

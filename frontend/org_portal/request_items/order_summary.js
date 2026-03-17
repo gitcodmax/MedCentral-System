@@ -110,14 +110,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                   </div>
                   <div class="summary-line">
                     <span>Grand Total:</span>
-                    <strong class="grand-total-text js-grand-total">KES 13,050.00</strong>
+                    <strong class="grand-total-text js-grand-total"></strong>
                   </div>
                 </div>
               </div>
 
               <div class="modal-footer">
                 <button class="btn-cancel js-btn-close-overlay">Make Changes</button>
-                <button class="btn-final-submit">
+                <button class="btn-final-submit" id="submitRequestBtn">
                   Yes, Submit to Warehouse
                 </button>
               </div>
@@ -135,7 +135,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const hospitalDepartmentData = await getAllDept();
   const hospitalRequestData = await getHospCartItems(3)
-  console.log(hospitalRequestData.items)
 
   const cartItems = hospitalRequestData.items
   const cartItemsCopy = structuredClone(cartItems)
@@ -275,6 +274,25 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.querySelector('.js-btn-confirm-order')
     .addEventListener('click', () => {
       handleOverlay(confirmOrderOverlayElem)
+
+      document.getElementById('submitRequestBtn')
+        .addEventListener('click', async () => {
+          const response = await fetch(`${orgPortalPagesLink}/updateCartItemsToRequest`,
+            {
+              method: 'POST', 
+              headers: {
+                'Content-Type': 'application/json'
+              }, 
+              body: JSON.stringify({
+                hosId: 3,
+                totalItemsValue: hospitalRequestData.totalOfAllItems
+              })
+            }
+          )
+
+          const res = await response.json()
+          triggerStatus(res.msg)
+        }, {once: true})
     })
 
   //Remove an item from the order summary
