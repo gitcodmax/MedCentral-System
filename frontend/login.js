@@ -15,9 +15,9 @@ document.querySelector('.js-login-container')
         <form id="loginForm">
             
             <div class="input-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username" required>
-                <small class="error-text" id="usernameError"></small>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <small class="error-text" id="emailError"></small>
             </div>
 
             <div class="input-group">
@@ -40,14 +40,14 @@ document.querySelector('.js-login-container')
 document.addEventListener('DOMContentLoaded', () => {
     // Get the form and the submit button
     const loginForm = document.getElementById('loginForm');
-    const usernameInput = document.getElementById('username');
+    const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
-    const usernameError = document.getElementById('usernameError');
+    const emailError = document.getElementById('emailError');
     const passwordError = document.getElementById('passwordError');
 
     // Function to clear all existing error messages
     const clearErrors = () => {
-        usernameError.textContent = '';
+        emailError.textContent = '';
         passwordError.textContent = '';
     };
 
@@ -56,12 +56,12 @@ document.addEventListener('DOMContentLoaded', () => {
         let isValid = true;
         clearErrors(); // Start by clearing old errors
 
-        const username = usernameInput.value.trim();
+        const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
 
         // 1. Validate Username
-        if (username === '') {
-            usernameError.textContent = 'Username is required.';
+        if (email === '') {
+            emailError.textContent = 'Email is required.';
             isValid = false;
         } 
         // Optional: Add more complex validation (e.g., minimum length, format check)

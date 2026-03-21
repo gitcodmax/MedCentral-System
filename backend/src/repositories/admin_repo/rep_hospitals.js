@@ -17,7 +17,7 @@ export async function getSavedHospitalsQ() {
       h.name,
       h.contact_person AS "contactPerson",
       h.phone_number AS phone,
-      h.email,
+      u.email,
       h.status,
       TO_CHAR(h.created_at, 'YYYY-MM-DD') AS "registeredDate",
       
@@ -39,6 +39,7 @@ export async function getSavedHospitalsQ() {
       ) AS departments
 
     FROM hospitals h
+    JOIN users u ON h.hospital_id = u.hospital_id 
     JOIN cfg_zones z ON h.zone_id = z.id
     JOIN cfg_counties c ON z.county_id = c.id;
   `
@@ -79,19 +80,45 @@ export async function getDepartmentsQ() {
 export async function saveNewHosDetailsQ({ name, contact, phone, email,
   zone, password, status }) {
   const hashedPassword = await hashPassword(password)
-  const text = `INSERT INTO hospitals ( 
-    name,
-    contact_person,
-    phone_number, 
-    email,
-    zone_id,
-    password_hash, 
-    status
-  ) VALUES 
-  ($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
-  const values = [name, contact, phone, email, zone, hashedPassword, status];
-  const { rows } = await pool.query(text, values);
-  return rows[0]
+  
+  // Save the hospital in the hospitals table and insert it into the users 
+  //  table(email and password) for login
+  const client = await pool.connect()
+
+  try {
+    await client.query('BEGIN')
+
+    const hosDetails  = await client.query(`INSERT INTO hospitals ( 
+        name,
+        contact_person,
+        phone_number, 
+        zone_id, 
+        status
+      ) VALUES 
+      ($1, $2, $3, $4, $5) RETURNING *
+    `, [name, contact, phone, zone, status])
+
+    const hospData = hosDetails.rows[0]
+    const hospId = hospData.hospital_id
+    if (!hospId) throw new Error('Hospital not created!')
+    
+    let activeStatus = true
+    if(hospData.status !== 'active'){activeStatus = false}
+    
+    const { rows } = await client.query(
+      `INSERT INTO users (email, password_hash, full_name, role_id, hospital_id, is_active) 
+      VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
+      , [email, hashedPassword, hospData.name, 3, hospId, activeStatus])
+    
+    await client.query('COMMIT')
+
+    return hospData
+  } catch (e) {
+    await client.query('ROLLBACK')
+    throw e
+  } finally {
+    client.release()
+  }
 }
 
 // Save hospital departments picked
