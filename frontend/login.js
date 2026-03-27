@@ -38,77 +38,82 @@ document.querySelector('.js-login-container')
   `
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Get the form and the submit button
-    const loginForm = document.getElementById('loginForm');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const emailError = document.getElementById('emailError');
-    const passwordError = document.getElementById('passwordError');
+  // Get the form and the submit button
+  const loginForm = document.getElementById('loginForm');
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const emailError = document.getElementById('emailError');
+  const passwordError = document.getElementById('passwordError');
 
-    // Function to clear all existing error messages
-    const clearErrors = () => {
-        emailError.textContent = '';
-        passwordError.textContent = '';
-    };
+  // Function to clear all existing error messages
+  const clearErrors = () => {
+    emailError.textContent = '';
+    passwordError.textContent = '';
+  };
 
-    // Function to validate the form inputs
-    const validateForm = () => {
-        let isValid = true;
-        clearErrors(); // Start by clearing old errors
+  // Function to validate the form inputs
+  const validateForm = () => {
+    let isValid = true;
+    clearErrors();
 
-        const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
 
-        // 1. Validate Username
-        if (email === '') {
-            emailError.textContent = 'Email is required.';
-            isValid = false;
-        } 
-        // Optional: Add more complex validation (e.g., minimum length, format check)
-        // else if (username.length < 4) {
-        //     usernameError.textContent = 'Username must be at least 4 characters long.';
-        //     isValid = false;
-        // }
+    if (email === '') {
+      emailError.textContent = 'Email is required.';
+      isValid = false;
+    }
 
-        // 2. Validate Password
-        if (password === '') {
-            passwordError.textContent = 'Password is required.';
-            isValid = false;
+    if (password === '') {
+      passwordError.textContent = 'Password is required.';
+      isValid = false;
+    }
+
+    return { isValid, email, password };
+  };
+
+  const redirectToDash = (roleId) => {
+    if (roleId === 1) {
+      window.location.href = `http://localhost:3000/inv_clerk/inv_clerk_dash.html`
+    } else if (roleId === 2) {
+      window.location.href = `http://localhost:3000/wh_manager/wh_manager_dash.html`
+    } else if (roleId === 3) {
+      window.location.href = `http://localhost:3000/org_portal/dash.html`
+    } else if (roleId === 4) {
+      window.location.href = `http://localhost:3000/admin_portal/dash.html`
+    }
+  }
+
+  // Attach the validation function to the form's submit event
+  loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const validateFormVal = validateForm()
+    // Run the validation check
+    if (validateFormVal.isValid) {
+      const response = await fetch('http://localhost:3000/login/getUserDetails',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(
+            {
+              email: validateFormVal.email,
+              password: validateFormVal.password
+            }
+          )
         }
-        // Optional: Add more complex validation (e.g., minimum length)
-        // else if (password.length < 8) {
-        //     passwordError.textContent = 'Password must be at least 8 characters long.';
-        //     isValid = false;
-        // }
+      )
 
-        return isValid;
-    };
+      const res = await response.json()
+      if (res.msg === 'success') {
+        loginForm.reset();
+        clearErrors();
+        localStorage.setItem('token', res.token)
+        redirectToDash(res.role)
+      }
 
-    // Attach the validation function to the form's submit event
-    loginForm.addEventListener('submit', (event) => {
-        // Prevent the default form submission (which would refresh the page)
-        event.preventDefault(); 
-
-        // Run the validation check
-        if (validateForm()) {
-            // If validation passes (isValid is true):
-            
-            // In a real application, you would send the data to a server here:
-            // fetch('/api/login', { method: 'POST', body: new FormData(loginForm) })
-            //   .then(response => ...)
-
-            // For this static demo, we'll just log success and reset the form
-            console.log('Login successful! Navigating to dashboard...');
-            
-            // Example of a simulated success action:
-            alert('Login successful! (In a real system, you would now be redirected.)');
-            loginForm.reset();
-            clearErrors(); // Clear the form and any residual errors
-
-        } else {
-            // If validation fails (isValid is false)
-            console.log('Login failed: Please check the highlighted fields.');
-            // The error messages are already set by validateForm()
-        }
-    });
+    } else {
+      alert('Login failed: Please check the highlighted fields.');
+    }
+  });
 });

@@ -8,7 +8,7 @@ export async function getAllSysUsersQ(){
       (SELECT id FROM cfg_roles WHERE id = role_id) AS role_id, 
       CASE WHEN is_active THEN 'Active' ELSE 'Inactive' END AS status , 
       last_login AS lastLogin
-    FROM users
+    FROM users WHERE role_id IN (1, 2)
   `)
 
   return rows
