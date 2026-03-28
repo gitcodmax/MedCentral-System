@@ -197,9 +197,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     })
 
   //Display all the departments for the user to select
-  if (!hospitalRequestData.items || !hospitalRequestData.departments) {
-    return
-  }
   hospitalRequestData.items.forEach(item => {
     hospitalDepartmentData.departments.forEach(dpt => {
       document.querySelector(`.js-row-dept-${item.sku}`)

@@ -1,7 +1,7 @@
 import pool from "../../config/db.js";
 
-export async function getProductCatalogDataQ(){
-  const {rows} = await pool.query(
+export async function getProductCatalogDataQ() {
+  const { rows } = await pool.query(
     `
       SELECT json_build_object(
         'departments', (
@@ -27,7 +27,7 @@ export async function getProductCatalogDataQ(){
 
 // Order Summary / Cart
 export const getAllDeptQ = async () => {
-  const {rows} = await pool.query(`
+  const { rows } = await pool.query(`
     SELECT json_agg(jsonb_build_object('id', id, 'name', name)) 
     AS departments FROM cfg_hospital_departments 
   `)
@@ -36,7 +36,7 @@ export const getAllDeptQ = async () => {
 }
 
 export const getHospCartItemsQ = async (hospId) => {
-  const {rows} = await pool.query(`
+  const { rows } = await pool.query(`
     WITH grand_total AS (
         SELECT 
             SUM(c.quantity * i.price_per_selling) AS total
@@ -76,7 +76,7 @@ export const getHospCartItemsQ = async (hospId) => {
 }
 
 export const getNoHospCartItemsQ = async (hosId) => {
-  const {rows} = await pool.query(`
+  const { rows } = await pool.query(`
     SELECT COUNT(*) FROM cart_items WHERE hospital_id = $1
   `, [hosId])
 
@@ -86,10 +86,10 @@ export const getNoHospCartItemsQ = async (hosId) => {
 export const updateCartItemsQ = async (updatedCartItems) => {
   const client = await pool.connect()
 
-  try{
+  try {
     await client.query('BEGIN')
 
-    for(let item of updatedCartItems.changeItemsArr){
+    for (let item of updatedCartItems.changeItemsArr) {
       await client.query(`
         UPDATE cart_items 
         SET quantity = $1, department_id = $2, 
@@ -99,9 +99,9 @@ export const updateCartItemsQ = async (updatedCartItems) => {
     }
 
     await client.query('COMMIT');
-  }catch(e){
+  } catch (e) {
     await client.query('ROLLBACK')
-  } finally{
+  } finally {
     client.release()
   }
 }
@@ -110,10 +110,10 @@ export const deleteCartItemQ = async ({ cartItemId, hosId }) => {
   await pool.query(
     `DELETE FROM cart_items 
      WHERE cart_id = $1 AND hospital_id = $2`
-  , [cartItemId, hosId])
+    , [cartItemId, hosId])
 }
 
-export const updateCartItemsToRequestQ = async ({hosId, totalItemsValue}) => {
+export const updateCartItemsToRequestQ = async ({ hosId, totalItemsValue }) => {
   const client = await pool.connect()
 
   try {
@@ -156,11 +156,50 @@ export const updateCartItemsToRequestQ = async ({hosId, totalItemsValue}) => {
 }
 
 // Product Catalog Page
+// export async function saveItemToCartQ({ hosId, itemId, deptId, qty }) {
+//   await pool.query(
+//     `INSERT INTO cart_items (hospital_id, item_id, department_id, quantity)
+//       VALUES 
+//     ($1, $2, $3, $4)`
+//     , [hosId, itemId, deptId, qty]
+//   )
+// }
 export async function saveItemToCartQ({ hosId, itemId, deptId, qty }) {
-  await pool.query(
-    `INSERT INTO cart_items (hospital_id, item_id, department_id, quantity)
-      VALUES 
-    ($1, $2, $3, $4)`
-    , [hosId, itemId, deptId, qty]
-  )
+  const client = await pool.connect()
+
+  try {
+    await client.query('BEGIN')
+
+    const { rows } = await client.query(`
+      SELECT * FROM cart_items 
+      WHERE hospital_id = $1 AND item_id = $2 
+    `, [hosId, itemId])
+
+    if (rows.length !== 0) {
+      const dbHosId = rows[0].hospital_id
+      const dbItemId = rows[0].item_id
+      const dbItemQty = rows[0].quantity
+      const totalItemQty = dbItemQty + Number(qty)
+
+      await client.query(
+        `UPDATE cart_items 
+          SET quantity = $1
+          WHERE hospital_id = $2 AND item_id = $3
+        `, [totalItemQty, dbHosId, dbItemId]
+      )
+    } else {
+      await client.query(
+        `INSERT INTO cart_items (hospital_id, item_id, department_id, quantity)
+          VALUES 
+        ($1, $2, $3, $4)`
+        , [hosId, itemId, deptId, qty]
+      )
+    }
+
+    await client.query('COMMIT')
+  } catch (e) {
+    throw e
+  } finally {
+    client.release()
+  }
 }
