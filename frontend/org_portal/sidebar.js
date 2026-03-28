@@ -1,3 +1,4 @@
+import { hosId } from "./dash.js"
 import { noHospCartItems } from "./request_items/order_summary.js"
 
 export function renderSidebar(pageName) {
@@ -97,7 +98,7 @@ export async function renderRequestItemsNavbar(){
     `
 
   document.getElementById('navCartCount')
-    .textContent = await noHospCartItems(3)
+    .textContent = await noHospCartItems(hosId)
 
   if(window.location.href.includes('product_catalog')){
     document.querySelector('.js-catalog-nav')

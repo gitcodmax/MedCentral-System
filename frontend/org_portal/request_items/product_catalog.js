@@ -1,5 +1,6 @@
-import { renderSidebar,  renderRequestItemsNavbar } from "../sidebar.js";
-import { displayNoMatchFound, orgPortalPagesLink } from "../../global.js";
+import { renderSidebar, renderRequestItemsNavbar } from "../sidebar.js";
+import { displayNoMatchFound, orgPortalPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../../global.js";
+import { hosId } from "../dash.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -75,105 +76,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderSidebar('request_items')
   displayNoMatchFound()
   renderRequestItemsNavbar()
-
-  const hospitalOrderData = {
-    departments: [
-      { id: 1, name: "General Ward" },
-      { id: 2, name: "ICU" },
-      { id: 3, name: "Pharmacy" },
-      { id: 4, name: "Emergency Room" },
-      { id: 5, name: "Laboratory" },
-      { id: 6, name: "Maternity" },
-      { id: 7, name: "Surgery" },
-      { id: 8, name: "Outpatient" }
-    ],
-
-    catalog: [
-      {
-        id: '1001',
-        sku: "MED-001-P",
-        name: "Paracetamol 500mg",
-        uom: "tablet",
-        tempZone: "ambient",
-        price: 5.50
-      },
-      {
-        id: '1002',
-        sku: "IV-FL-09",
-        name: "Saline Solution 500ml",
-        uom: "vial",
-        tempZone: "crt",
-        price: 1250.00
-      },
-      {
-        id: '1003',
-        sku: "GS-992-M",
-        name: "Surgical Gloves (Medium)",
-        uom: "pair",
-        tempZone: "ambient",
-        price: 22.00
-      },
-      {
-        id: '1004',
-        sku: "ANT-772-L",
-        name: "Amoxicillin 250mg",
-        uom: "capsule",
-        tempZone: "crt",
-        price: 15.00
-      },
-      {
-        id: '1005',
-        sku: "INS-GL-04",
-        name: "Insulin Glargine",
-        uom: "vial",
-        tempZone: "refrigerated",
-        price: 3400.00
-      },
-      {
-        id: '1006',
-        sku: "SYR-2ML-G",
-        name: "Syringe 2ml with Needle",
-        uom: "piece",
-        tempZone: "ambient",
-        price: 12.50
-      },
-      {
-        id: '1007',
-        sku: "LAB-TUBE-V",
-        name: "Vacutainer Blood Tube",
-        uom: "tube",
-        tempZone: "ambient",
-        price: 45.00
-      },
-      {
-        id: '1008',
-        sku: "SUR-BLD-11",
-        name: "Surgical Blade Size 11",
-        uom: "piece",
-        tempZone: "ambient",
-        price: 35.00
-      },
-      {
-        id: '1009',
-        sku: "VACC-BCG-1",
-        name: "BCG Vaccine 0.1ml",
-        uom: "dose",
-        tempZone: "frozen",
-        price: 850.00
-      },
-      {
-        id: '1010',
-        sku: "CAN-18G-G",
-        name: "IV Cannula 18G (Green)",
-        uom: "piece",
-        tempZone: "crt",
-        price: 110.00
-      }
-    ]
-  };
+  renderSuccessErrorOverlay()
 
   const productCatalogData = await getProductCatalogData()
-  console.log(productCatalogData)
 
   // Populate the data to select a global department for the items selected
   const globalDeptSelectFrag = document.createDocumentFragment()
@@ -220,7 +125,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       <div class="item-price">KES ${product.price}</div>
 
       <div class="item-actions">
-        <input type="number" class="qty-input" value="1" min="1">
+        <input type="number" class="qty-input js-qty-input-${product.id}" value="1" min="1">
         <button class="btn-add" data-product-id=${product.id}>Add to Order</button>
       </div>        
     `
@@ -233,35 +138,46 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   displayProducts(productCatalogData.catalog)
 
+  const globalDeptSelectElem = document.getElementById('globalDeptSelect')
+  const globalDeptValue = localStorage.getItem('globalDept')
+  globalDeptSelectElem.value = globalDeptValue
+  globalDeptSelectElem.addEventListener('change', (e) => {
+    const deptId = e.target.value
+    if (!localStorage.getItem('globalDept') !== null) {
+      localStorage.removeItem('globalDept')
+    }
+    localStorage.setItem('globalDept', deptId)
+  })
+
   productGridElem.addEventListener('click', (e) => {
     const btn = e.target.closest('button')
-    const btnProductId = btn.dataset.productId
     if (!btn) return
 
-    if (btn.classList.contains('btn-add')) {
-      productCatalogData.catalog.forEach(prd => {
-        if (prd.id === btnProductId) {
-          document.querySelector('.js-cart-list')
-            .innerHTML += `
-              <div class="cart-item">
-                <div class="cart-item-info">
-                  <div>
-                    <span class="cart-item-name">Paracetamol 500mg</span>
-                    <div class="cart-item-meta">100 Tablets × KES 4.50</div>
-                  </div>
-                  <span class="cart-item-price">KES 450.00</span>
-                </div>
+    const btnProductId = btn.dataset.productId
 
-                <div class="line-assignment">
-                  <label>Assign to Dept</label>
-                  <select class="dept-select-item">
-                    <option selected>General Ward</option>
-                    <option>ICU</option>
-                    <option>Pharmacy</option>
-                  </select>
-                </div>
-              </div>
-            `
+    if (btn.classList.contains('btn-add')) {
+      productCatalogData.catalog.forEach(async (prd) => {
+        if (prd.id === Number(btnProductId)) {
+          const itemQty = document.querySelector(`.js-qty-input-${prd.id}`).value
+          if (globalDeptValue === '') {
+            alert('Enter default department')
+          } else {
+            const response = await fetch(`${orgPortalPagesLink}/saveItemToCart`,
+              {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  hosId,
+                  itemId: prd.id,
+                  deptId: globalDeptValue,
+                  qty: itemQty
+                })
+              }
+            )
+
+            const res = await response.json()
+            triggerStatus(res.msg)
+          }
         }
       })
     }
@@ -288,26 +204,26 @@ document.addEventListener('DOMContentLoaded', async () => {
       .textContent = searchResult.length
     productGridElem.innerHTML = ``
 
-    if(searchResult.length === 0){
+    if (searchResult.length === 0) {
       noMatchElem.classList.remove('hidden')
-    }else{
+    } else {
       displayProducts(searchResult)
       noMatchElem.classList.add('hidden')
     }
   }
 
   document.querySelector('.js-btn-reset')
-  .addEventListener('click', () => {
-    searchBarElem.value = ''
-    tempFilterElem.value = 'all'
-    handleSearchTempFilter()
-  })
+    .addEventListener('click', () => {
+      searchBarElem.value = ''
+      tempFilterElem.value = 'all'
+      handleSearchTempFilter()
+    })
 
   searchBarElem.addEventListener('keyup', () => handleSearchTempFilter())
   tempFilterElem.addEventListener('change', () => handleSearchTempFilter())
 })
 
-async function getProductCatalogData(){
+async function getProductCatalogData() {
   const response = await fetch(`${orgPortalPagesLink}/getProductCatalogData`)
   const res = await response.json()
   return res.product_catalog

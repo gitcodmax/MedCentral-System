@@ -109,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loginForm.reset();
         clearErrors();
         localStorage.setItem('token', res.token)
+        if(res.role === 3) localStorage.setItem('hosId', res.hosId)
         redirectToDash(res.role)
       }
 

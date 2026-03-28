@@ -1,4 +1,5 @@
 import { orgPortalPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../../global.js";
+import { hosId } from "../dash.js";
 import { renderSidebar, renderRequestItemsNavbar } from "../sidebar.js";
 import { handleOverlay } from "/global.js";
 
@@ -134,7 +135,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderSuccessErrorOverlay()
 
   const hospitalDepartmentData = await getAllDept();
-  const hospitalRequestData = await getHospCartItems(3)
+  const hospitalRequestData = await getHospCartItems(hosId)
 
   const cartItems = hospitalRequestData.items
   const cartItemsCopy = structuredClone(cartItems)
@@ -142,17 +143,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.querySelectorAll('.js-total-items')
     .forEach(elem => elem.textContent = hospitalRequestData.items.length)
   document.querySelectorAll('.js-grand-total')
-    .forEach(elem => elem.textContent = hospitalRequestData.totalOfAllItems)   
+    .forEach(elem => elem.textContent = hospitalRequestData.totalOfAllItems)
 
   const summaryTbodyElem = document.getElementById('summaryTableBody')
 
   // Display the items in the table
   const summaryTbodyFragment = document.createDocumentFragment()
-  hospitalRequestData.items.forEach(item => {
-    const tblRow = document.createElement('tr')
-    tblRow.className = 'summary-row'
+  if (hospitalRequestData.items !== null) {
+    hospitalRequestData.items.forEach(item => {
+      const tblRow = document.createElement('tr')
+      tblRow.className = 'summary-row'
 
-    tblRow.innerHTML = `
+      tblRow.innerHTML = `
       <td>
         <div class="item-info">
           <span class="row-sku">${item.sku}</span>
@@ -177,23 +179,27 @@ document.addEventListener('DOMContentLoaded', async () => {
       </td>
     `
 
-    summaryTbodyFragment.appendChild(tblRow)
-  })
+      summaryTbodyFragment.appendChild(tblRow)
+    })
+  }
 
-  summaryTbodyElem.appendChild(summaryTbodyFragment)
+  if (summaryTbodyElem !== null) { summaryTbodyElem.appendChild(summaryTbodyFragment) }
 
   document.querySelectorAll('.row-qty')
     .forEach(qtyInputElem => {
-        qtyInputElem.addEventListener('input', () => {
-          const itemElemCartItemId = qtyInputElem.dataset.cItemId
-          const itemElemValue = qtyInputElem.value
+      qtyInputElem.addEventListener('input', () => {
+        const itemElemCartItemId = qtyInputElem.dataset.cItemId
+        const itemElemValue = qtyInputElem.value
 
-          const itemObj = cartItemsCopy.find(item => item.cart_item_id === Number(itemElemCartItemId))
-          itemObj.quantity = Number(itemElemValue)
+        const itemObj = cartItemsCopy.find(item => item.cart_item_id === Number(itemElemCartItemId))
+        itemObj.quantity = Number(itemElemValue)
       })
     })
 
   //Display all the departments for the user to select
+  if (!hospitalRequestData.items || !hospitalRequestData.departments) {
+    return
+  }
   hospitalRequestData.items.forEach(item => {
     hospitalDepartmentData.departments.forEach(dpt => {
       document.querySelector(`.js-row-dept-${item.sku}`)
@@ -219,8 +225,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const updateCartItemsObj = (cartItemsArr) => {
     const cartItemsArrUpd = []
     cartItemsArr.forEach(cartItem => {
-      const {cart_item_id, item_id, department, quantity} = cartItem
-      const cartItemsUpd = {cart_item_id, item_id, department, quantity}
+      const { cart_item_id, item_id, department, quantity } = cartItem
+      const cartItemsUpd = { cart_item_id, item_id, department, quantity }
       cartItemsArrUpd.push(cartItemsUpd)
     })
 
@@ -244,24 +250,24 @@ document.addEventListener('DOMContentLoaded', async () => {
       const updCartItemsCopy = updateCartItemsObj(cartItemsCopy)
       const changeItemsArr = getChangedItems(updCartItems, updCartItemsCopy)
 
-      if(changeItemsArr.length === 0) {
+      if (changeItemsArr.length === 0) {
         alert('No updates made on the cart items!')
         location.reload()
       }
 
-      const response = await fetch(`${orgPortalPagesLink}/updateCartItems`, 
+      const response = await fetch(`${orgPortalPagesLink}/updateCartItems`,
         {
-          method: 'PUT', 
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
-          }, 
-          body: JSON.stringify({changeItemsArr})
+          },
+          body: JSON.stringify({ changeItemsArr })
         }
       )
 
       const res = await response.json()
       triggerStatus(res.msg)
-    }, {once: true})
+    }, { once: true })
 
   //Returns the name of a department
   function getDeptName(deptId) {
@@ -279,10 +285,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         .addEventListener('click', async () => {
           const response = await fetch(`${orgPortalPagesLink}/updateCartItemsToRequest`,
             {
-              method: 'POST', 
+              method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
-              }, 
+              },
               body: JSON.stringify({
                 hosId: 3,
                 totalItemsValue: hospitalRequestData.totalOfAllItems
@@ -292,7 +298,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           const res = await response.json()
           triggerStatus(res.msg)
-        }, {once: true})
+        }, { once: true })
     })
 
   //Remove an item from the order summary
@@ -308,15 +314,15 @@ document.addEventListener('DOMContentLoaded', async () => {
           handleOverlay(deleteConfirmOverlayElem)
           document.getElementById('deleteItemName')
             .textContent = item.name
-          
+
           document.getElementById('finalDeleteBtn')
             .addEventListener('click', async () => {
-              const response = await fetch(`${orgPortalPagesLink}/deleteCartItem`, 
+              const response = await fetch(`${orgPortalPagesLink}/deleteCartItem`,
                 {
-                  method: 'DELETE', 
+                  method: 'DELETE',
                   headers: {
                     'Content-Type': 'application/json'
-                  }, 
+                  },
                   body: JSON.stringify({
                     cartItemId: Number(btnCartItemId),
                     hosId: 3
@@ -326,7 +332,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
               const res = await response.json()
               triggerStatus(res.msg)
-            }, {once: true})
+            }, { once: true })
         }
       })
     }
@@ -357,13 +363,13 @@ const getAllDept = async () => {
 }
 
 const getHospCartItems = async (hosId) => {
-  const response = await fetch(`${orgPortalPagesLink}/getHospCartItems`, 
+  const response = await fetch(`${orgPortalPagesLink}/getHospCartItems`,
     {
       method: 'POST',
-       headers: {
+      headers: {
         'Content-Type': 'application/json'
-       }, 
-       body: JSON.stringify({hosId})
+      },
+      body: JSON.stringify({ hosId })
     }
   )
 
@@ -372,13 +378,13 @@ const getHospCartItems = async (hosId) => {
 }
 
 export const noHospCartItems = async (hosId) => {
-  const response = await fetch(`${orgPortalPagesLink}/getNoHospCartItems`, 
+  const response = await fetch(`${orgPortalPagesLink}/getNoHospCartItems`,
     {
       method: 'POST',
-       headers: {
+      headers: {
         'Content-Type': 'application/json'
-       }, 
-       body: JSON.stringify({hosId})
+      },
+      body: JSON.stringify({ hosId })
     }
   )
 

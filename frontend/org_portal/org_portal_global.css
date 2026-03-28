@@ -8,6 +8,16 @@
   min-height: 100vh;
 }
 
+.modal-card {
+  background: #FFFFFF;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 /* Overlay Styling */
 .modal-overlay{
   position: fixed;

@@ -18,11 +18,11 @@ loginRouter.post('/getUserDetails', async (req, res) => {
 
     if (userDetails && await bcrypt.compare(reqPwd, savedPwdHash)) {
       const token = jwt.sign(
-        { userId: savedUserId, role: savedRoleId },
+        { userId: savedUserId, role: savedRoleId},
         process.env.JWT_SECRET,
         { expiresIn: '8h' }
       );
-      res.status(200).json({token, role: savedRoleId, msg: 'success'})
+      res.status(200).json({token, role: savedRoleId, hosId: userDetails.hospital_id, msg: 'success'})
     } else {
       res.status(401).send('Invalid credentials')
     }

@@ -77,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
   `
 
   renderSidebar('dash')
-
   //Hospital dash mock data
   const hospitalDashboardData = {
     metrics: {
@@ -87,14 +86,14 @@ document.addEventListener('DOMContentLoaded', () => {
       delivered: 122
     },
 
-    milestoneDistribution: [ 4, 138, 122],
+    milestoneDistribution: [4, 138, 122],
 
     recentOrders: [
       { orderId: "ORD-2026-140", creationDate: "Jan 28, 10:00 AM", status: "Pending" },
-      { orderId: "ORD-2026-138", creationDate: "Jan 27, 02:15 PM", status: "Dispatched"},
-      { orderId: "ORD-2026-135", creationDate: "Jan 27, 09:45 AM", status: "Delayed"},
-      { orderId: "ORD-2026-132", creationDate: "Jan 26, 03:20 PM", status: "Issue"},
-      { orderId: "ORD-2026-130", creationDate: "Jan 25, 11:30 AM", status: "Completed"}
+      { orderId: "ORD-2026-138", creationDate: "Jan 27, 02:15 PM", status: "Dispatched" },
+      { orderId: "ORD-2026-135", creationDate: "Jan 27, 09:45 AM", status: "Delayed" },
+      { orderId: "ORD-2026-132", creationDate: "Jan 26, 03:20 PM", status: "Issue" },
+      { orderId: "ORD-2026-130", creationDate: "Jan 25, 11:30 AM", status: "Completed" }
     ]
   };
 
@@ -110,6 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //Creating the order status chart
   const ctx = document.getElementById('ordersChart');
+  if (typeof Chart === 'undefined') {
+    return;
+  }
   new Chart(ctx, {
     type: 'bar',
     data: {
@@ -132,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //Display the recent orders in the recent orders card
   const recentOrdersTableFragment = document.createDocumentFragment()
-  const {recentOrders} = hospitalDashboardData
+  const { recentOrders } = hospitalDashboardData
   recentOrders.forEach(order => {
     const tblRow = document.createElement('tr')
 
@@ -147,3 +149,5 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.js-recent-orders-tbody')
     .appendChild(recentOrdersTableFragment)
 })
+
+export const hosId = Number(localStorage.getItem('hosId'))
