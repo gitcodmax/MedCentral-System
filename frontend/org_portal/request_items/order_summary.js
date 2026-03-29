@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'Content-Type': 'application/json'
               },
               body: JSON.stringify({
-                hosId: 3,
+                hosId,
                 totalItemsValue: hospitalRequestData.totalOfAllItems
               })
             }

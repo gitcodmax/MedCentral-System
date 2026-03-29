@@ -156,14 +156,6 @@ export const updateCartItemsToRequestQ = async ({ hosId, totalItemsValue }) => {
 }
 
 // Product Catalog Page
-// export async function saveItemToCartQ({ hosId, itemId, deptId, qty }) {
-//   await pool.query(
-//     `INSERT INTO cart_items (hospital_id, item_id, department_id, quantity)
-//       VALUES 
-//     ($1, $2, $3, $4)`
-//     , [hosId, itemId, deptId, qty]
-//   )
-// }
 export async function saveItemToCartQ({ hosId, itemId, deptId, qty }) {
   const client = await pool.connect()
 

@@ -9,6 +9,7 @@ import adminOrdersRouter from './controllers_routes/admin_con_routes/c_r_orders.
 import adminReportsRouter from './controllers_routes/admin_con_routes/c_r_reports.js';
 import orgPortalRouter from './controllers_routes/org_con_routes/c_r_request_items.js';
 import loginRouter from './controllers_routes/c_r_login.js';
+import receiveItemsRouter from './controllers_routes/org_con_routes/c_r_receive_items.js';
 
 const app = express();
 
@@ -33,7 +34,7 @@ app.use('/admin',
 app.use('/login', loginRouter)
 
 app.use('/org', 
-  orgPortalRouter
+  orgPortalRouter, receiveItemsRouter
 )
 
 export default app;
