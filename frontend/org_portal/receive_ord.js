@@ -127,17 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     { id: "STAT-WRNG", label: "Wrong Item" }
   ];
 
-  // Specific Damage Types
-  const commonDamageTypes = [
-    { id: "DMG-SEAL", label: "Broken/Tampered Seal" },
-    { id: "DMG-LEAK", label: "Leaking/Spillage" },
-    { id: "DMG-CRUSH", label: "Crushed/Compressed Packaging" },
-    { id: "DMG-TEMP", label: "Temperature Indicator Triggered" },
-    { id: "DMG-MOIST", label: "Water/Moisture Damage" },
-    { id: "DMG-VIAL", label: "Cracked Glass/Vial" },
-    { id: "DMG-CONTAM", label: "Visible Contamination" },
-    { id: "DMG-OTHR", label: "Other" }
-  ];
+  const commonDamageTypes = await getCommonDamageTypes()
 // ====================================
 // ====================================
 // ====================================
@@ -379,6 +369,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   })
 
+  console.log(receivingData)
+
   // Set up button to confirm the items inspection
   inspectionOverlayElem.addEventListener('click', (e) => {
     const btn = e.target.closest('button')
@@ -402,13 +394,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             let errorMessage = "";
             if (!quantityInputElem.value) {
               errorMessage = `Enter qty affected in ${item.name}`;
-            } else if (!evidenceImageElem.value) {
-              errorMessage = `Enter the evidence image for ${item.name}`;
-            } else if (statusSelectElem.value === 'STAT-DMG') {
+            }  else if (statusSelectElem.value === 'STAT-DMG') {
               if (!damageTypeElem.value) {
                 errorMessage = `Enter the damage type for ${item.name}`;
-              } else if (damageTypeElem.value === 'DMG-OTHR' && !otherDamageTypeElem.value.trim()) {
-                errorMessage = `Enter the type of damage in ${item.name} text area`;
+              } else if (damageTypeElem.value === '7' && !otherDamageTypeElem.value.trim()) {
+                errorMessage = `Enter the type of damage in ${item.name} in the text area`;
               }
             }
 
@@ -436,4 +426,10 @@ async function getDeliveredPackages(hosId) {
 
   const res = await response.json()
   return res.deliveredPkgs.deliveries_made
+}
+
+async function getCommonDamageTypes() {
+  const response = await fetch(`${orgPortalPagesLink}/getCommonDamageTypes`)
+  const res = await response.json()
+  return res.commonDamageTypes
 }

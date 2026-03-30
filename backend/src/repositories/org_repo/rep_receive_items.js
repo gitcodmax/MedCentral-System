@@ -63,3 +63,10 @@ export async function getAllDeliveredPackagesQ(hosId) {
 
   return rows[0]
 }
+
+export async function getCommonDamageTypesQ() {
+  const {rows} = await pool.query(
+    `SELECT * FROM cfg_damage_types`
+  )
+  return rows
+}
