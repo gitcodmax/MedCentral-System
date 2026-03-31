@@ -1,4 +1,4 @@
-import { orgPortalPagesLink } from "../global.js"
+import { orgPortalPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../global.js"
 import { renderSidebar } from "./sidebar.js"
 import { handleOverlay } from "/global.js"
 
@@ -118,25 +118,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     `
 
   renderSidebar('receive_ord')
+  renderSuccessErrorOverlay()
 
-  //Primary Item Status
-  const itemStatusOptions = [
-    { id: "STAT-GOOD", label: "Good Condition" },
-    { id: "STAT-DMG", label: "Damaged" },
-    { id: "STAT-EXP", label: "Expired" },
-    { id: "STAT-WRNG", label: "Wrong Item" }
-  ];
-
+  const itemStatusOptions = await getReceivedItemsStatuses()
   const commonDamageTypes = await getCommonDamageTypes()
-// ====================================
-// ====================================
-// ====================================
-// ====================================
+  // ====================================
+  // ====================================
+  // ====================================
+  // ====================================
   const hosId = 1
-// ====================================
-// ====================================
-// ====================================
-// ====================================
+  // ====================================
+  // ====================================
+  // ====================================
+  // ====================================
   const receivingData = await getDeliveredPackages(hosId)
   const receiveItemsTbodyElem = document.getElementById('packagesTbody')
 
@@ -369,32 +363,37 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   })
 
-  console.log(receivingData)
-
   // Set up button to confirm the items inspection
-  inspectionOverlayElem.addEventListener('click', (e) => {
+  inspectionOverlayElem.addEventListener('click', async (e) => {
     const btn = e.target.closest('button')
     if (!btn) return;
 
     if (btn.classList.contains('js-btn-confirm-inspection')) {
       const confirmBtnPkgId = btn.dataset.packageId
+      console.log(confirmBtnPkgId)
 
       // Validate the inputs for item inspection
       for (const pkg of receivingData) {
         if (pkg.packageId === confirmBtnPkgId) {
-          for (const item of pkg.items) {
-            const statusSelectElem = document.getElementById(`statusSelect-${item.sku}`);
-            const quantityInputElem = document.getElementById(`qtyInput-${item.sku}`)
-            const evidenceImageElem = document.getElementById(`evidenceImage-${item.sku}`)
-            const damageTypeElem = document.getElementById(`damageType-${item.sku}`)
-            const otherDamageTypeElem = document.getElementById(`otherDamageType-${item.sku}`)
+          let deliveryIssuesArr = [];
+          let errorMessage = "";
 
+          for (const item of pkg.items) {
+            const requestItemId = item.requestItemId; 
+            const deliveryId = pkg.deliveryId;
+
+            const statusSelectElem = document.getElementById(`statusSelect-${item.sku}`);
+            const quantityInputElem = document.getElementById(`qtyInput-${item.sku}`);
+            const evidenceImageElem = document.getElementById(`evidenceImage-${item.sku}`);
+            const damageTypeElem = document.getElementById(`damageType-${item.sku}`);
+            const otherDamageTypeElem = document.getElementById(`otherDamageType-${item.sku}`);
+
+            // Skip good items
             if (statusSelectElem.value === 'STAT-GOOD') continue;
 
-            let errorMessage = "";
             if (!quantityInputElem.value) {
               errorMessage = `Enter qty affected in ${item.name}`;
-            }  else if (statusSelectElem.value === 'STAT-DMG') {
+            } else if (statusSelectElem.value === 'STAT-DMG') {
               if (!damageTypeElem.value) {
                 errorMessage = `Enter the damage type for ${item.name}`;
               } else if (damageTypeElem.value === '7' && !otherDamageTypeElem.value.trim()) {
@@ -402,10 +401,55 @@ document.addEventListener('DOMContentLoaded', async () => {
               }
             }
 
-            if (errorMessage) {
-              alert(errorMessage);
-              return;
-            }
+            if (errorMessage) break;
+
+            // Collect valid "issue" data
+            deliveryIssuesArr.push({
+              requestItemId: requestItemId,
+              deliveryId: deliveryId,
+              damageStatus: statusSelectElem.value,
+              quantityAffected: Number(quantityInputElem.value),
+              damageType: damageTypeElem.value !== '' ? Number(damageTypeElem.value) : null,
+              otherDamageType: otherDamageTypeElem.value !== '' ? otherDamageTypeElem.value.trim() : null
+            });
+          }
+
+          // After checking all items in this package
+          if (errorMessage) {
+            alert(errorMessage);
+            return;
+          }
+
+          // Success - now you have ALL issues collected properly
+          if (deliveryIssuesArr.length > 0) {
+            console.log("Delivery Issues:", deliveryIssuesArr);
+
+            const response = await fetch(`${orgPortalPagesLink}/saveDeliveredItemsWithIssues`, 
+              {
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({deliveryIssuesArr})
+              }
+            )
+
+            const res = await response.json()
+            triggerStatus(res.msg)
+
+          } else {
+            const packageIdMod = pkg.packageId
+            const packageId = Number(packageIdMod.slice(4, (packageIdMod.length - 2)))
+            const deliveryId = pkg.deliveryId
+
+            const response = await fetch(`${orgPortalPagesLink}/updatePackageStatus`, 
+              {
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({packageId, deliveryId})
+              }
+            )
+
+            const res = await response.json()
+            triggerStatus(res.msg)
           }
         }
       }
@@ -416,10 +460,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Get the delivered packages from the db
 async function getDeliveredPackages(hosId) {
-  const response = await fetch(`${orgPortalPagesLink}/getAllDeliveredPackages`, 
+  const response = await fetch(`${orgPortalPagesLink}/getAllDeliveredPackages`,
     {
-      method: 'POST', 
-      headers: { 'Content-Type': "application/json" }, 
+      method: 'POST',
+      headers: { 'Content-Type': "application/json" },
       body: JSON.stringify({ hosId })
     }
   )
@@ -432,4 +476,10 @@ async function getCommonDamageTypes() {
   const response = await fetch(`${orgPortalPagesLink}/getCommonDamageTypes`)
   const res = await response.json()
   return res.commonDamageTypes
+}
+
+async function getReceivedItemsStatuses() {
+  const response = await fetch(`${orgPortalPagesLink}/getReceivedItemsStatus`)
+  const res = await response.json()
+  return res.recievedItemsStatuses
 }
