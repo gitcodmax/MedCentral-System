@@ -1,6 +1,7 @@
+import { orgPortalPagesLink } from "../../global.js"
 import { renderSidebar, renderReportsNavbar } from "../sidebar.js"
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
   document.querySelector('.app-container')
     .innerHTML = `
@@ -153,31 +154,15 @@ document.addEventListener('DOMContentLoaded', () => {
   renderReportsNavbar()
   lucide.createIcons();
 
-  const reportData = {
-    summary: {
-      totalItems: "18,422",
-      totalCategories: "18",
-      mostConsumed: "Latex Gloves (L)",
-      avgMonthly: "3,070"
-    },
-    trends: {
-      labels: ['Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025', 'Jan 2026', 'Feb 2026'],
-      values: [2100, 2450, 2200, 3100, 2850, 3070]
-    },
-    categories: {
-      labels: ["PPE", "Surgical", "Pharma", "Fluids", "Wound Care", "Lab", "Diag", "Hygiene", "Anesthesia", "Emergency"],
-      values: [7700, 5200, 5000, 1200, 1100, 950, 800, 650, 400, 222]
-    },
-    tableData: [
-      { name: "Latex Gloves (Large)", cat: "PPE", qty: 4500, unit: "Box (100ct)", orders: 42, last: "Feb 10, 2026" },
-      { name: "Disposable Syringes 5ml", cat: "Surgical", qty: 2800, unit: "Pack (50ct)", orders: 28, last: "Feb 08, 2026" },
-      { name: "Saline Solution 500ml", cat: "Fluids", qty: 1200, unit: "Unit (Bag)", orders: 15, last: "Feb 11, 2026" },
-      { name: "Paracetamol 500mg", cat: "Pharma", qty: 5000, unit: "Strip (10ct)", orders: 12, last: "Feb 05, 2026" },
-      { name: "Surgical Face Masks", cat: "PPE", qty: 3200, unit: "Box (50ct)", orders: 35, last: "Feb 12, 2026" },
-      { name: "Adhesive Bandages", cat: "Wound Care", qty: 1100, unit: "Box (100ct)", orders: 20, last: "Jan 30, 2026" },
-      { name: "IV Cannula G20", cat: "Surgical", qty: 622, unit: "Unit", orders: 18, last: "Feb 09, 2026" }
-    ]
-  };
+  // ==============================
+  // ==============================
+  // ==============================
+  const hosId = 1
+  // ==============================
+  // ==============================
+  // ==============================
+
+  const reportData = await getItemConsumptionReportData(hosId)
 
   // Set up the kpi summary details
   document.querySelector('.js-total-items-kpi')
@@ -252,3 +237,16 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('rankedItemsTbody')
     .appendChild(rankedTblFrag)
 })
+
+const getItemConsumptionReportData = async (hosId) => {
+  const response = await fetch(`${orgPortalPagesLink}/getItemConsumptionReportData`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ hosId })
+    }
+  )
+
+  const res = await response.json()
+  return res.itemConsumptionData.report_data
+}

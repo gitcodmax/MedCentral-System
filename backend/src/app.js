@@ -11,6 +11,7 @@ import orgPortalRouter from './controllers_routes/org_con_routes/c_r_request_ite
 import loginRouter from './controllers_routes/c_r_login.js';
 import receiveItemsRouter from './controllers_routes/org_con_routes/c_r_receive_items.js';
 import ordHistoryRouter from './controllers_routes/org_con_routes/c_r_ord_history.js';
+import orgReportsRouter from './controllers_routes/org_con_routes/c_r_reports.js';
 
 const app = express();
 
@@ -36,7 +37,7 @@ app.use('/login', loginRouter)
 
 app.use('/org', 
   orgPortalRouter, receiveItemsRouter,
-  ordHistoryRouter
+  ordHistoryRouter, orgReportsRouter
 )
 
 export default app;
