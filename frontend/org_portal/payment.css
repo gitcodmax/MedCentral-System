@@ -1,0 +1,244 @@
+/* .payment-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+} */
+
+.payment-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: white;
+  max-width: 900px;
+  width: 95%;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Left Summary Column */
+.payment-summary {
+  background-color: #f8f9fa;
+  padding: 40px;
+  border-right: 1px solid #eee;
+}
+
+.req-id-badge {
+  background: var(--color-primary);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.item-list {
+  margin-top: 30px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  color: #666;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.753);
+  margin-top: 20px;
+}
+
+.total-price {
+  color: var(--color-secondary);
+}
+
+/* Right Payment Column */
+.payment-methods {
+  padding: 40px;
+}
+
+.method-option {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.method-option:has(input:checked) {
+  border-color: var(--color-primary);
+  background-color: #e7f3ff;
+}
+
+.method-details {
+  margin-left: 15px;
+}
+
+.method-details strong {
+  display: block;
+}
+
+.form-group {
+  margin-top: 25px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+input[type="email"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.pay-btn {
+  width: 100%;
+  background-color: var(--color-secondary);
+  color: white;
+  border: 1px solid transparent;
+  padding: 16px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  margin-top: 30px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.pay-btn:hover {
+  background-color: transparent;
+  color: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
+}
+
+.secure-text {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #aaa;
+  margin-top: 15px;
+}
+
+.req-id{
+  color: var(--color-secondary);
+}
+
+/* Pending Payments Table */
+.table-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.table-header {
+  margin-bottom: 24px;
+}
+
+.table-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #1e293b;
+}
+
+.table-header p {
+  color: #64748b;
+  margin: 4px 0 0;
+}
+
+.med-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.med-table th {
+  padding: 14px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  background: var(--color-primary);
+  color: white;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.med-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.95rem;
+}
+
+.med-table tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Status Badge Styles */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-badge.approved {
+  background-color: #e3eefa;
+  color: var(--color-primary);
+}
+
+/* Specific Column Styling */
+.amount {
+  font-weight: 700;
+  color: var(--color-secondary);
+}
+
+/* Action Button */
+.btn-pay {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-pay:hover {
+  background-color: var(--color-secondary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .med-table {
+    min-width: 800px;
+  }
+
+  .payment-container {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-summary {
+    border-right: none;
+    border-bottom: 1px solid #eee;
+  }
+}

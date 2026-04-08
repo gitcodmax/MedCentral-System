@@ -25,6 +25,9 @@ export function renderSidebar(pageName) {
       <li class="request_items-li">
         <a href="/org_portal/request_items/product_catalog.html"><i class="fas fa-plus-circle"></i> <span class="page-name">Request Items</span></a>
       </li>
+      <li class="request_items-li">
+        <a href="/org_portal/request_items/product_catalog.html"><i class="fa-solid fa-circle-check"></i> <span class="page-name">Approved Requests</span></a>
+      </li>
       <li class="receive_ord-li">
         <a href="/org_portal/receive_ord.html"><i class="fas fa-inbox"></i> <span class="page-name">Recieve Items</span></a>
       </li>
