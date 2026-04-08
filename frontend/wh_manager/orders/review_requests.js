@@ -1,6 +1,6 @@
 import { renderSidebar } from "../sidebar.js";
 import { displayNoMatch, xRemoveOverlay, clickToRemoveOverlay } from "../overlay.js";
-import { whManagerPagesLink } from "../../global.js";
+import { renderSuccessErrorOverlay, triggerStatus, whManagerPagesLink } from "../../global.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           <div class="deny-footer">
               <button class="btn-cancel js-btn-no">No, Keep Pending</button>
-              <button class="btn-confirm-deny">Yes, Deny Request</button>
+              <button class="btn-confirm-deny" id="denyRequestBtn">Yes, Deny Request</button>
           </div>
         </div>
       </div>
@@ -101,214 +101,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   renderSidebar('review_requests')
   displayNoMatch()
-  //Mock data for the requests made
-  // const pendingReview = [
-  //   {
-  //     "requestId": "REQ-4410",
-  //     "orgName": "Karen Hospital",
-  //     "location": "Karen, Nairobi",
-  //     "createdAt": "Jan 05, 10:20 AM",
-  //     "totalAmount": 15200.00,
-  //     "items": [
-  //       {
-  //         "name": "Insulin Glargine",
-  //         "unitPrice": 1200.00,
-  //         "quantity": 10,
-  //         "uom": "Cartridges",
-  //         "subtotal": 12000.00,
-  //         "warehouseStock": 45
-  //       },
-  //       {
-  //         "name": "Syringes 2ml",
-  //         "unitPrice": 8.00,
-  //         "quantity": 400,
-  //         "uom": "Units",
-  //         "subtotal": 3200.00,
-  //         "warehouseStock": 1200
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     "requestId": "REQ-4411",
-  //     "orgName": "Mater Misericordiae Hospital",
-  //     "location": "South B, Nairobi",
-  //     "createdAt": "Jan 05, 11:45 AM",
-  //     "totalAmount": 2150.00,
-  //     "items": [
-  //       {
-  //         "name": "Ibuprofen 400mg",
-  //         "unitPrice": 5.00,
-  //         "quantity": 300,
-  //         "uom": "Tablets",
-  //         "subtotal": 1500.00,
-  //         "warehouseStock": 5000
-  //       },
-  //       {
-  //         "name": "Medical Tape",
-  //         "unitPrice": 65.00,
-  //         "quantity": 10,
-  //         "uom": "Rolls",
-  //         "subtotal": 650.00,
-  //         "warehouseStock": 85
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     "requestId": "REQ-4412",
-  //     "orgName": "MP Shah Hospital",
-  //     "location": "Parklands, Nairobi",
-  //     "createdAt": "Jan 05, 01:15 PM",
-  //     "totalAmount": 8900.00,
-  //     "items": [
-  //       {
-  //         "name": "Saline Solution 500ml",
-  //         "unitPrice": 89.00,
-  //         "quantity": 100,
-  //         "uom": "Bags",
-  //         "subtotal": 8900.00,
-  //         "warehouseStock": 250
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     "requestId": "REQ-4413",
-  //     "orgName": "Nairobi West Hospital",
-  //     "location": "South C, Nairobi",
-  //     "createdAt": "Jan 05, 02:30 PM",
-  //     "totalAmount": 3450.50,
-  //     "items": [
-  //       {
-  //         "name": "Azithromycin 500mg",
-  //         "unitPrice": 45.00,
-  //         "quantity": 50,
-  //         "uom": "Packs",
-  //         "subtotal": 2250.00,
-  //         "warehouseStock": 120
-  //       },
-  //       {
-  //         "name": "Face Masks (3-Ply)",
-  //         "unitPrice": 12.00,
-  //         "quantity": 100,
-  //         "uom": "Pieces",
-  //         "subtotal": 1200.50,
-  //         "warehouseStock": 4000
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     "requestId": "REQ-4414",
-  //     "orgName": "Kenyatta National Hospital",
-  //     "location": "Hospital Rd, Nairobi",
-  //     "createdAt": "Jan 05, 04:00 PM",
-  //     "totalAmount": 12500.00,
-  //     "items": [
-  //       {
-  //         "name": "Oxytocin Injection",
-  //         "unitPrice": 250.00,
-  //         "quantity": 50,
-  //         "uom": "Ampoules",
-  //         "subtotal": 12500.00,
-  //         "warehouseStock": 300
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     "requestId": "REQ-4415",
-  //     "orgName": "Avenue Hospital",
-  //     "location": "Parklands, Nairobi",
-  //     "createdAt": "Jan 06, 08:00 AM",
-  //     "totalAmount": 560.00,
-  //     "items": [
-  //       {
-  //         "name": "Hand Sanitizer 500ml",
-  //         "unitPrice": 280.00,
-  //         "quantity": 2,
-  //         "uom": "Bottles",
-  //         "subtotal": 560.00,
-  //         "warehouseStock": 140
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     "requestId": "REQ-4416",
-  //     "orgName": "Gertrude's Children's Hospital",
-  //     "location": "Muthaiga, Nairobi",
-  //     "createdAt": "Jan 06, 09:15 AM",
-  //     "totalAmount": 4100.00,
-  //     "items": [
-  //       {
-  //         "name": "Pediatric Paracetamol Syrup",
-  //         "unitPrice": 150.00,
-  //         "quantity": 20,
-  //         "uom": "Bottles",
-  //         "subtotal": 3000.00,
-  //         "warehouseStock": 60
-  //       },
-  //       {
-  //         "name": "Oral Rehydration Salts",
-  //         "unitPrice": 22.00,
-  //         "quantity": 50,
-  //         "uom": "Sachets",
-  //         "subtotal": 1100.00,
-  //         "warehouseStock": 900
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     "requestId": "REQ-4417",
-  //     "orgName": "Coptic Hospital",
-  //     "location": "Ngong Road, Nairobi",
-  //     "createdAt": "Jan 06, 10:45 AM",
-  //     "totalAmount": 7200.00,
-  //     "items": [
-  //       {
-  //         "name": "Metformin 500mg",
-  //         "unitPrice": 12.00,
-  //         "quantity": 600,
-  //         "uom": "Tablets",
-  //         "subtotal": 7200.00,
-  //         "warehouseStock": 2500
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     "requestId": "REQ-4418",
-  //     "orgName": "Nairobi Hospital",
-  //     "location": "Argwings Kodhek, Nairobi",
-  //     "createdAt": "Jan 06, 11:30 AM",
-  //     "totalAmount": 18500.00,
-  //     "items": [
-  //       {
-  //         "name": "Surgical Gowns",
-  //         "unitPrice": 370.00,
-  //         "quantity": 50,
-  //         "uom": "Units",
-  //         "subtotal": 18500.00,
-  //         "warehouseStock": 75
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     "requestId": "REQ-4419",
-  //     "orgName": "Metropolitan Hospital",
-  //     "location": "Buruburu, Nairobi",
-  //     "createdAt": "Jan 06, 02:20 PM",
-  //     "totalAmount": 2400.00,
-  //     "items": [
-  //       {
-  //         "name": "Ceftriaxone 1g",
-  //         "unitPrice": 120.00,
-  //         "quantity": 20,
-  //         "uom": "Vials",
-  //         "subtotal": 2400.00,
-  //         "warehouseStock": 10
-  //       }
-  //     ]
-  //   }
-  // ];
+  renderSuccessErrorOverlay()
 
   const pendingReview = await getAllReqData()
-  console.log(pendingReview)
 
   document.querySelector('.requests')
     .innerText = pendingReview.length
@@ -329,10 +124,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!btn) return
 
     const btnReqId = btn.dataset.reqId
-    const {orgName, items, totalAmount} = getReqDetails(btnReqId)
+    const {orgName, items, totalAmount} = getReqDetails(Number(btnReqId))
 
     if (btn.classList.contains('js-btn-deny')) {
       const denyRequestInputElem = document.getElementById(`denyReason-${btnReqId}`)
+      const denyRequestBtnElem = document.getElementById('denyRequestBtn')
 
       if (denyRequestInputElem.value === '') {
         alert('Enter a reason to deny the request')
@@ -347,6 +143,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         xRemoveOverlay(denyRequestOverlayElem)
         clickToRemoveOverlay(denyRequestOverlayElem)
+
+        denyRequestBtnElem.addEventListener('click', async () => {
+          const response = await fetch(`${whManagerPagesLink}/denyRequest`, 
+            {
+              method: 'PUT', 
+              headers: { 'Content-Type': 'application/json' }, 
+              body: JSON.stringify({
+                reqId: Number(btnReqId), 
+                rejectionReason: denyRequestInputElem.value
+              })
+            }
+          )
+
+          const res = await response.json()
+          triggerStatus(res.msg)
+        }, {once: true})
       }
     }
 

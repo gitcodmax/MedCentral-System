@@ -30,18 +30,27 @@ export async function getAllRequestsQ() {
                 'orgName', h.name,
                 'location', z.zone_name || ', ' || (SELECT name FROM cfg_counties WHERE id = z.county_id), 
                 'createdAt', TO_CHAR(r.created_at, 'Mon DD, HH12:MI AM'),
-                'totalAmount', (SELECT SUM(quantity_requested * unit_price_at_request) 
-                                FROM request_items 
-                                WHERE request_id = r.request_id),
+                'totalAmount', r.total_estimated_value,
                 'items', COALESCE(rid.items_list, '[]'::jsonb)
             ) AS request_payload
         FROM requests r
         JOIN hospitals h ON r.hospital_id = h.hospital_id 
         JOIN cfg_zones z ON h.zone_id = z.id
         LEFT JOIN request_items_details rid ON r.request_id = rid.request_id
+        WHERE rejection_reason IS NULL
       );
     `
   )
 
   return rows[0]
+}
+
+export async function denyRequestQ({ reqId, rejectionReason }) {
+  await pool.query(
+    `
+    UPDATE requests
+    SET status_id = 2, rejection_reason = $1
+    WHERE request_id = $2
+    `, [rejectionReason, reqId]
+  )
 }
