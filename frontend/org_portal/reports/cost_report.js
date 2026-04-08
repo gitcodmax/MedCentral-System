@@ -1,6 +1,7 @@
+import { orgPortalPagesLink } from "../../global.js"
 import { renderReportsNavbar, renderSidebar } from "../sidebar.js"
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
   document.querySelector('.app-container')
     .innerHTML = `
@@ -132,79 +133,15 @@ document.addEventListener('DOMContentLoaded', () => {
   renderSidebar('reports')
   renderReportsNavbar()
 
-  const MedCentralFinanceData = {
-    summary: {
-      totalExpenditure: 2840500.00,
-      avgMonthlySpend: 236708.33,
-      highestCostCategory: "Critical Care",
-      highestCostItem: "Pacemaker Gen-X",
-      currency: "USD"
-    },
+  // =============================
+  // =============================
+  // =============================
+  const hosId = 1
+  // =============================
+  // =============================
+  // =============================
 
-    expenditureTrend: {
-      labels: ["Sept 2025", "Oct 2025", "Nov 2025", "Dec 2025", "Jan 2026", "Feb 2026"],
-      values: [210000, 245000, 198000, 310000, 225000, 236708]
-    },
-
-    costByCategory: {
-      labels: ["Pharmaceuticals", "Critical Care", "Surgical Supplies", "Laboratory", "PPE & Hygiene"],
-      values: [850000, 1200000, 450000, 240500, 100000],
-      colors: ["#007BFF", "#008B00", "#6C757D", "#17A2B8", "#FFC107"]
-    },
-
-    topCostItems: {
-      labels: ["Pacemaker Gen-X", "MRI Contrast", "Titanium Hip", "Ventilator Circ.", "Dexamethasone"],
-      values: [450000, 180000, 148800, 95000, 54000]
-    },
-
-    detailedBreakdown: [
-      {
-        id: "FIN-001",
-        itemName: "Pacemaker Gen-X",
-        category: "Critical Care",
-        totalQuantity: 15,
-        unitCost: 30000.00,
-        totalCost: 450000.00,
-        numOrders: 5
-      },
-      {
-        id: "FIN-002",
-        itemName: "Titanium Hip Implant",
-        category: "Orthopedic",
-        totalQuantity: 12,
-        unitCost: 12400.00,
-        totalCost: 148800.00,
-        numOrders: 3
-      },
-      {
-        id: "FIN-003",
-        itemName: "Dexamethasone 4mg",
-        category: "Pharmaceuticals",
-        totalQuantity: 1200,
-        unitCost: 45.00,
-        totalCost: 54000.00,
-        numOrders: 15
-      },
-      {
-        id: "FIN-004",
-        itemName: "N95 Respirators (Box 50)",
-        category: "PPE",
-        totalQuantity: 500,
-        unitCost: 85.00,
-        totalCost: 42500.00,
-        numOrders: 22
-      },
-      {
-        id: "FIN-005",
-        itemName: "Saline 0.9% 500ml",
-        category: "Fluids",
-        totalQuantity: 5000,
-        unitCost: 2.50,
-        totalCost: 12500.00,
-        numOrders: 45
-      }
-    ]
-  };
+  const MedCentralFinanceData = await getFinanceData(hosId)
 
   document.querySelector('.total-ex')
     .textContent = MedCentralFinanceData.summary.totalExpenditure
@@ -303,3 +240,16 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('detailedCostsTbody')
     .appendChild(detailedCostsTblFrag)
 })
+
+const getFinanceData = async (hosId) => {
+  const response = await fetch(`${orgPortalPagesLink}/getFinancialReportData`, 
+    {
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json' }, 
+      body: JSON.stringify({hosId})
+    }
+  )
+
+  const res = await response.json()
+  return res.finance_payload
+}
