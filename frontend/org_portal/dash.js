@@ -1,6 +1,9 @@
+import { orgPortalPagesLink } from "../global.js";
 import { renderSidebar } from "./sidebar.js";
 
-document.addEventListener('DOMContentLoaded', () => {
+export const hosId = Number(localStorage.getItem('hosId'))
+
+document.addEventListener('DOMContentLoaded', async () => {
   document.querySelector('.app-container')
     .innerHTML = `
     <nav class="sidebar js-sidebar"></nav>
@@ -77,33 +80,15 @@ document.addEventListener('DOMContentLoaded', () => {
   `
 
   renderSidebar('dash')
-  //Hospital dash mock data
-  const hospitalDashboardData = {
-    metrics: {
-      totalOrders: 142,
-      pending: 12,
-      inTransit: 8,
-      delivered: 122
-    },
-
-    milestoneDistribution: [4, 138, 122],
-
-    recentOrders: [
-      { orderId: "ORD-2026-140", creationDate: "Jan 28, 10:00 AM", status: "Pending" },
-      { orderId: "ORD-2026-138", creationDate: "Jan 27, 02:15 PM", status: "Dispatched" },
-      { orderId: "ORD-2026-135", creationDate: "Jan 27, 09:45 AM", status: "Delayed" },
-      { orderId: "ORD-2026-132", creationDate: "Jan 26, 03:20 PM", status: "Issue" },
-      { orderId: "ORD-2026-130", creationDate: "Jan 25, 11:30 AM", status: "Completed" }
-    ]
-  };
+  const hospitalDashboardData = await getOrgDashData(hosId)
 
   //Display quick analytics in the dash
   document.querySelector('.js-total-ord-value')
-    .textContent = hospitalDashboardData.metrics.totalOrders
+    .textContent = hospitalDashboardData.metrics.total_orders
   document.querySelector('.js-pending-value')
     .textContent = hospitalDashboardData.metrics.pending
   document.querySelector('.js-dispatched-value')
-    .textContent = hospitalDashboardData.metrics.inTransit
+    .textContent = hospitalDashboardData.metrics.in_transit
   document.querySelector('.js-delivered-value')
     .textContent = hospitalDashboardData.metrics.delivered
 
@@ -118,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
       labels: ['Rejected', 'Approved', 'Completed'],
       datasets: [{
         label: 'Orders',
-        data: hospitalDashboardData.milestoneDistribution,
+        data: hospitalDashboardData.ordersStatusDistroData,
         backgroundColor: [
           '#DC3545', '#007BFF', '#157347'
         ]
@@ -150,4 +135,15 @@ document.addEventListener('DOMContentLoaded', () => {
     .appendChild(recentOrdersTableFragment)
 })
 
-export const hosId = Number(localStorage.getItem('hosId'))
+const getOrgDashData = async (hosId) => {
+  const response = await fetch(`${orgPortalPagesLink}/getOrgDashData`, 
+    {
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json' }, 
+      body: JSON.stringify({hosId})
+    }
+  )
+
+  const res = await response.json()
+  return res.dashboard_data
+}
