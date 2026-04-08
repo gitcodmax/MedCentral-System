@@ -121,9 +121,6 @@ export function renderReportsNavbar(){
       <a href="#" class="tab-link finance green">
         <i class="fas fa-file-invoice-dollar"></i> Financial Report
       </a>
-      <a href="#" class="tab-link issues red">
-        <i class="fas fa-exclamation-triangle"></i> Issues & Returns
-      </a>
     </div>
   `
 
@@ -132,9 +129,6 @@ export function renderReportsNavbar(){
       .classList.add('active')
   }else if(window.location.href.includes('cost_report')){
     document.querySelector('.finance')
-      .classList.add('active')
-  }else{
-    document.querySelector('.issues')
       .classList.add('active')
   }
 
@@ -146,8 +140,6 @@ export function renderReportsNavbar(){
       window.location.href = '/org_portal/reports/item_consumption.html'
     } else if(pageLink.classList.contains('finance')){
       window.location.href = `/org_portal/reports/cost_report.html`
-    }else{
-      window.location.href = `/org_portal/reports/issues_report.html`
     }
   })
 }
