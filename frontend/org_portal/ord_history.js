@@ -3,6 +3,7 @@ import {
   getStorageTempIcon, displayNoMatchFound,
   orgPortalPagesLink
 } from "../global.js"
+import { hosId } from "./dash.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
   document.querySelector('.app-container')
@@ -115,16 +116,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderSidebar('ord_history')
   displayNoMatchFound()
 
-  // ========================  
-  // ========================  
-  // ========================  
-  const hosId = 1
-  // ========================
-  // ========================
-  // ========================
-
   const orderHistoryData = await getAllHosRequests(hosId)
-  console.log(orderHistoryData)
 
   //Display the requests/orders in the table
   const ordTblBodyElem = document.getElementById('orderTableBody')

@@ -1,4 +1,5 @@
 import { orgPortalPagesLink } from "../../global.js"
+import { hosId } from "../dash.js"
 import { renderReportsNavbar, renderSidebar } from "../sidebar.js"
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -132,14 +133,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   renderSidebar('reports')
   renderReportsNavbar()
-
-  // =============================
-  // =============================
-  // =============================
-  const hosId = 1
-  // =============================
-  // =============================
-  // =============================
 
   const MedCentralFinanceData = await getFinanceData(hosId)
 

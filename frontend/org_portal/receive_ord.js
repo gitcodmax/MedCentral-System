@@ -1,4 +1,5 @@
 import { orgPortalPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../global.js"
+import { hosId } from "./dash.js"
 import { renderSidebar } from "./sidebar.js"
 import { handleOverlay } from "/global.js"
 
@@ -122,15 +123,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const itemStatusOptions = await getReceivedItemsStatuses()
   const commonDamageTypes = await getCommonDamageTypes()
-  // ====================================
-  // ====================================
-  // ====================================
-  // ====================================
-  const hosId = 1
-  // ====================================
-  // ====================================
-  // ====================================
-  // ====================================
+
   const receivingData = await getDeliveredPackages(hosId)
   const receiveItemsTbodyElem = document.getElementById('packagesTbody')
 

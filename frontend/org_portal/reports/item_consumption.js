@@ -1,4 +1,5 @@
 import { orgPortalPagesLink } from "../../global.js"
+import { hosId } from "../dash.js"
 import { renderSidebar, renderReportsNavbar } from "../sidebar.js"
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -153,14 +154,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderSidebar('reports')
   renderReportsNavbar()
   lucide.createIcons();
-
-  // ==============================
-  // ==============================
-  // ==============================
-  const hosId = 1
-  // ==============================
-  // ==============================
-  // ==============================
 
   const reportData = await getItemConsumptionReportData(hosId)
 
