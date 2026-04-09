@@ -14,6 +14,7 @@ import ordHistoryRouter from './controllers_routes/org_con_routes/c_r_ord_histor
 import orgReportsRouter from './controllers_routes/org_con_routes/c_r_reports.js';
 import orgDashRouter from './controllers_routes/org_con_routes/c_r_dash.js';
 import reviewReqRouter from './controllers_routes/wh_manager_con_routes/c_r_review_requests.js';
+import orgPortalPaymentsRouter from './controllers_routes/org_con_routes/c_r_payments.js';
 
 const app = express();
 
@@ -40,7 +41,7 @@ app.use('/login', loginRouter)
 app.use('/org', 
   orgPortalRouter, receiveItemsRouter,
   ordHistoryRouter, orgReportsRouter, 
-  orgDashRouter
+  orgDashRouter, orgPortalPaymentsRouter
 )
 
 app.use('/whManager', 
