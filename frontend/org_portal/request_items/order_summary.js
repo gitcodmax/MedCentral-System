@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const cartItemsCopy = structuredClone(cartItems)
 
   document.querySelectorAll('.js-total-items')
-    .forEach(elem => elem.textContent = hospitalRequestData.items.length)
+    .forEach(elem => { if (hospitalRequestData.items) elem.textContent = hospitalRequestData.items.length })
   document.querySelectorAll('.js-grand-total')
     .forEach(elem => elem.textContent = hospitalRequestData.totalOfAllItems)
 
@@ -197,14 +197,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     })
 
   //Display all the departments for the user to select
-  hospitalRequestData.items.forEach(item => {
-    hospitalDepartmentData.departments.forEach(dpt => {
-      document.querySelector(`.js-row-dept-${item.sku}`)
-        .innerHTML += `<option value=${dpt.id} 
+  if (hospitalRequestData.items) {
+    hospitalRequestData.items.forEach(item => {
+      hospitalDepartmentData.departments.forEach(dpt => {
+        document.querySelector(`.js-row-dept-${item.sku}`)
+          .innerHTML += `<option value=${dpt.id} 
         ${item.department === dpt.id ? 'selected' : ''} 
         >${dpt.name}</option>`
+      })
     })
-  })
+  }
 
   document.querySelectorAll('.row-dept')
     .forEach(deptInputElem => {
@@ -337,6 +339,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Display the final order details for confirmation
   const verificationGridElem = document.querySelector('.js-verification-grid')
+  if(hospitalRequestData.items)
   hospitalRequestData.items.forEach(item => {
     displayItemsforConfirmation(item)
   })

@@ -6,121 +6,103 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MedCentral | Secure Payment</title>
 
-  <link rel="stylesheet" href="/frontend/global.css">
-  <link rel="stylesheet" href="/frontend/org_portal/org_portal_global.css">
-  <link rel="stylesheet" href="/frontend/org_portal/payment.css">
+  <link rel="stylesheet" href="/global.css">
+  <link rel="stylesheet" href="/org_portal/sidebar.css">
+  <link rel="stylesheet" href="/org_portal/org_portal_global.css">
+  <link rel="stylesheet" href="/org_portal/payment.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
 
-  <div class="app-container">
-    <div class="table-container">
-      <div class="table-header">
-        <h2>Pending Payments</h2>
-        <p>Select an approved request to authorize disbursement.</p>
-      </div>
+  <div class="payments-app-container">
+    <nav class="sidebar js-sidebar"></nav>
 
-      <table class="med-table">
-        <thead>
-          <tr>
-            <th>Request ID</th>
-            <th>Status</th>
-            <th>Items</th>
-            <th>Amount</th>
-            <th>Requested At</th>
-            <th>Approved At</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="req-id"><strong>REQ-4410</strong></td>
-            <td><span class="status-badge approved">Approved</span></td>
-            <td>12</td>
-            <td class="amount">$15,200.00</td>
-            <td>Jan 05, 10:20 AM</td>
-            <td><strong>Jan 06, 09:15 AM</strong></td>
-            <td>
-              <button class="btn-pay" onclick="location.href='/pay/4410'">Pay Now</button>
-            </td>
-          </tr>
-          <tr>
-            <td class="req-id"><strong>REQ-4422</strong></td>
-            <td><span class="status-badge approved">Approved</span></td>
-            <td>5</td>
-            <td class="amount">$8,450.00</td>
-            <td>Jan 07, 02:30 PM</td>
-            <td><strong> Jan 08, 11:00 AM</strong></td>
-            <td>
-              <button class="btn-pay" onclick="location.href='/pay/4422'">Pay Now</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <main class="app-content">
+      <div class="main-content-logo"></div>
 
-    <div class="modal-overlay">
-      <div class="payment-container">
-        <div class="payment-summary">
-          <header>
-            <h2>Complete Payment</h2>
-            <p>Request ID: <span class="req-id-badge">REQ-4410</span></p>
-          </header>
-
-          <div class="hospital-info">
-            <h3>Karen Hospital</h3>
-            <p>Karen, Nairobi | Jan 05, 2026</p>
-          </div>
-
-          <div class="item-list">
-            <div class="item">
-              <span>Insulin Glargine (x10)</span>
-              <strong>$12,000.00</strong>
-            </div>
-            <div class="item">
-              <span>Syringes 2ml (x400)</span>
-              <strong>$3,200.00</strong>
-            </div>
-            <hr>
-            <div class="total-row">
-              <span>Total Amount</span>
-              <span class="total-price">$15,200.00</span>
-            </div>
-          </div>
+      <div class="table-container">
+        <div class="table-header">
+          <h2>Pending Payments</h2>
+          <p>Select an approved request to authorize disbursement.</p>
         </div>
 
-        <div class="payment-methods">
-          <h3>Choose Payment Method</h3>
-          <form id="payment-form">
-            <label class="method-option">
-              <input type="radio" name="method" value="mpesa" checked>
-              <div class="method-details">
-                <strong>M-Pesa Business</strong>
-                <span>Instant STK Push</span>
-              </div>
-            </label>
+        <table class="med-table">
+          <thead>
+            <tr>
+              <th>Request ID</th>
+              <th>Status</th>
+              <th>Items</th>
+              <th>Amount</th>
+              <th>Requested At</th>
+              <th>Approved At</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="approvedReqTable"></tbody>
+        </table>
+      </div>
 
-            <label class="method-option">
-              <input type="radio" name="method" value="bank">
-              <div class="method-details">
-                <strong>RTGS / Bank Transfer</strong>
-                <span>Verification takes 24hrs</span>
-              </div>
-            </label>
+      <div class="modal-overlay" id="paymentOverlay">
+        <div class="payment-container">
+          <div class="payment-summary">
+            <header>
+              <h2>Complete Payment</h2>
+              <p>Request ID: <span class="req-id-badge" id="reqIdBadge"></span></p>
+            </header>
 
-            <div class="form-group">
-              <label>Billing Email</label>
-              <input type="email" placeholder="finance@karenhospital.org" required>
+            <div class="hospital-info">
+              <h3 class="js-hos"></h3>
+              <p><span class="js-hos-loc"></span> | <span class="js-appr-at"></span></p>
             </div>
 
-            <button type="submit" class="pay-btn">Authorize Payment of $15,200.00</button>
-            <p class="secure-text">🔒 Encrypted Secure Transaction</p>
-          </form>
+            <div class="item-list">
+              <div id="reqItemsList"></div>
+              <hr>
+              <div class="total-row">
+                <span>Total Amount</span>
+                <span class="total-price" id="overlayTotPrice"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="payment-methods">
+            <div class="header-close-container">
+              <h3>Choose Payment Method</h3>
+              <button class="modal-close-btn js-btn-close-overlay">&times;</button>
+            </div>
+            <form id="payment-form">
+              <label class="method-option">
+                <input type="radio" name="method" value="mpesa" checked>
+                <div class="method-details">
+                  <strong>M-Pesa Business</strong>
+                  <span>Instant STK Push</span>
+                </div>
+              </label>
+
+              <label class="method-option">
+                <input type="radio" name="method" value="bank">
+                <div class="method-details">
+                  <strong>RTGS / Bank Transfer</strong>
+                  <span>Verification takes 24hrs</span>
+                </div>
+              </label>
+
+              <div class="form-group">
+                <label>Billing Email</label>
+                <input type="email" id="billingEmail" placeholder="finance@karenhospital.org" required>
+              </div>
+
+              <button type="submit" class="pay-btn">Authorize Payment of $<span id="btnTotAmt"></span></button>
+              <p class="secure-text">🔒 Encrypted Secure Transaction</p>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
+
+  <script type="module" src="payment.js"></script>
 </body>
 
 </html>

@@ -3,7 +3,7 @@
   padding: 0;
 }
 
-.app-container {
+.app-container, .payments-app-container {
   display: flex;
   min-height: 100vh;
 }
@@ -37,6 +37,23 @@
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
+}
+
+.modal-close-btn {
+  background: red;
+  border: none;
+  width: 30px;
+  height: 30px;
+  font-size: 25px;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.modal-close-btn:hover {
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.822);
+  transform: translateY(-3px);
 }
 
 .close-modal-btn {
