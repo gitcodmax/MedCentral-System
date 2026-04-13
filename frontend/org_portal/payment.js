@@ -1,17 +1,96 @@
 import { handleOverlay, orgPortalPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../global.js"
+import { hosId } from "./dash.js"
 import { renderSidebar } from "./sidebar.js"
 
 document.addEventListener('DOMContentLoaded', async () => {
+
+  document.querySelector('.payments-app-container')
+    .innerHTML = `
+      <nav class="sidebar js-sidebar"></nav>
+
+      <main class="app-content">
+        <div class="main-content-logo"></div>
+
+        <div class="table-container">
+          <div class="table-header">
+            <h2>Pending Payments</h2>
+            <p>Select an approved request to authorize disbursement.</p>
+          </div>
+
+          <table class="med-table">
+            <thead>
+              <tr>
+                <th>Request ID</th>
+                <th>Status</th>
+                <th>Items</th>
+                <th>Amount</th>
+                <th>Requested At</th>
+                <th>Approved At</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="approvedReqTable"></tbody>
+          </table>
+        </div>
+
+        <div class="modal-overlay" id="paymentOverlay">
+          <div class="payment-container">
+            <div class="payment-summary">
+              <header>
+                <h2>Complete Payment</h2>
+                <p>Request ID: <span class="req-id-badge" id="reqIdBadge"></span></p>
+              </header>
+
+              <div class="hospital-info">
+                <h3 class="js-hos"></h3>
+                <p><span class="js-hos-loc"></span> | <span class="js-appr-at"></span></p>
+              </div>
+
+              <div class="item-list">
+                <div id="reqItemsList"></div>
+                <hr>
+                <div class="total-row">
+                  <span>Total Amount</span>
+                  <span class="total-price" id="overlayTotPrice"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-methods">
+              <div class="header-close-container">
+                <h3>Choose Payment Method</h3>
+                <button class="modal-close-btn js-btn-close-overlay">&times;</button>
+              </div>
+              <form id="paymentForm">
+                <label class="method-option">
+                  <input type="radio" name="method" value="mpesa" checked>
+                  <div class="method-details">
+                    <strong>M-Pesa Business</strong>
+                    <span>Instant STK Push</span>
+                  </div>
+                </label>
+
+                <label class="method-option">
+                  <input type="radio" name="method" value="bank">
+                  <div class="method-details">
+                    <strong>RTGS / Bank Transfer</strong>
+                    <span>Verification takes 24hrs</span>
+                  </div>
+                </label>
+
+                <button type="submit" class="pay-btn">Authorize Payment of $<span id="btnTotAmt"></span></button>
+                <p class="secure-text">🔒 Encrypted Secure Transaction</p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+    `
+
   renderSidebar('payment')
   renderSuccessErrorOverlay()
 
   const payOverlayElem = document.getElementById('paymentOverlay')
-
-  // ==================
-  // ==================
-  const hosId = 21
-  // ==================
-  // ==================
   const approvedReq = await getAprovedReq(hosId)
 
   const approvedReqTblBodyElem = document.getElementById('approvedReqTable')
