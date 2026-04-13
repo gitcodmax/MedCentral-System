@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           <div class="approve-footer">
               <button class="btn-cancel js-btn-no">Back to Review</button>
-              <button class="btn-confirm-approve">Confirm & Proceed</button>
+              <button class="btn-confirm-approve" id="approveReqBtn">Confirm & Proceed</button>
           </div>
         </div>
       </div>
@@ -109,9 +109,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     .innerText = pendingReview.length
 
   //Get the organization name, items and total amount in a request
-  function getReqDetails(requestId){
+  function getReqDetails(requestId) {
     const req = pendingReview.find(req => req.requestId === requestId)
-    return({'orgName': req.orgName, 'items': req.items, 'totalAmount': req.totalAmount})
+    return ({ 'orgName': req.orgName, 'items': req.items, 'totalAmount': req.totalAmount })
   }
 
   //Set up opening the overlay when deny and approve buttons are clicked
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!btn) return
 
     const btnReqId = btn.dataset.reqId
-    const {orgName, items, totalAmount} = getReqDetails(Number(btnReqId))
+    const { orgName, items, totalAmount } = getReqDetails(Number(btnReqId))
 
     if (btn.classList.contains('js-btn-deny')) {
       const denyRequestInputElem = document.getElementById(`denyReason-${btnReqId}`)
@@ -145,12 +145,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         clickToRemoveOverlay(denyRequestOverlayElem)
 
         denyRequestBtnElem.addEventListener('click', async () => {
-          const response = await fetch(`${whManagerPagesLink}/denyRequest`, 
+          const response = await fetch(`${whManagerPagesLink}/denyRequest`,
             {
-              method: 'PUT', 
-              headers: { 'Content-Type': 'application/json' }, 
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                reqId: Number(btnReqId), 
+                reqId: Number(btnReqId),
                 rejectionReason: denyRequestInputElem.value
               })
             }
@@ -158,11 +158,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           const res = await response.json()
           triggerStatus(res.msg)
-        }, {once: true})
+        }, { once: true })
       }
     }
 
-    if(btn.classList.contains('js-btn-approve')){
+    if (btn.classList.contains('js-btn-approve')) {
       approveRequestOverlayElem.classList.add('active')
       document.querySelector('.js-app-req-id')
         .textContent = btnReqId
@@ -175,6 +175,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       xRemoveOverlay(approveRequestOverlayElem)
       clickToRemoveOverlay(approveRequestOverlayElem)
+
+      document.getElementById('approveReqBtn')
+        .addEventListener('click', async () => {
+          const reqId = Number(btnReqId)
+          const response = await fetch(`${whManagerPagesLink}/approveReq`, 
+            {
+              method: 'PUT', 
+              headers: { 'Content-Type': 'application/json' }, 
+              body: JSON.stringify({reqId})
+            }
+          )
+
+          const res = await response.json()
+          triggerStatus(res.msg)
+
+        }, {once: true})
     }
   })
 

@@ -1,5 +1,5 @@
 import express from "express";
-import { denyRequestQ, getAllRequestsQ } from "../../repositories/wh_manager_repo/rep_review_requests.js";
+import { approveReqQ, denyRequestQ, getAllRequestsQ } from "../../repositories/wh_manager_repo/rep_review_requests.js";
 
 const reviewReqRouter = express.Router()
 
@@ -18,6 +18,15 @@ reviewReqRouter.put('/denyRequest', async (req, res) => {
     res.status(200).json({msg: 'success'})
   } catch (e) {
     res.status(500).json({Error: e.message, msg: 'error'})
+  }
+})
+
+reviewReqRouter.put('/approveReq', async (req, res) => {
+  try {
+    await approveReqQ(req.body.reqId)
+    res.status(200).json({msg: 'success'})
+  } catch (e) {
+    res.status(500).json({msg: 'error', Error: e.message})
   }
 })
 

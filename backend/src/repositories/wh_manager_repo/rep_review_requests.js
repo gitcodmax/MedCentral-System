@@ -37,7 +37,7 @@ export async function getAllRequestsQ() {
         JOIN hospitals h ON r.hospital_id = h.hospital_id 
         JOIN cfg_zones z ON h.zone_id = z.id
         LEFT JOIN request_items_details rid ON r.request_id = rid.request_id
-        WHERE rejection_reason IS NULL
+        WHERE r.status_id = 1
       );
     `
   )
@@ -52,5 +52,15 @@ export async function denyRequestQ({ reqId, rejectionReason }) {
     SET status_id = 2, rejection_reason = $1
     WHERE request_id = $2
     `, [rejectionReason, reqId]
+  )
+}
+
+export async function approveReqQ(reqId) {
+  await pool.query(
+    `
+    UPDATE requests
+    SET status_id = 3, approved_at = CURRENT_TIMESTAMP
+    WHERE request_id = $1
+    `, [reqId]
   )
 }
