@@ -145,7 +145,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           <div class="package-count js-pkg-count js-pkg-count-complete" data-req-id=${reqOrd.requestId}></div>
         </td>
         <td>
-          <button class="btn-view-packages" data-req-id=${reqOrd.requestId}>
+          <button class="btn-view-packages" data-req-id=${reqOrd.requestId}
+            ${!reqOrd.orderId ? 'disabled' : ''} title=${!reqOrd.orderId ? 'Pending' : ''}
+          >
             View Packages
           </button>
         </td>
