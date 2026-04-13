@@ -1,8 +1,9 @@
-import { handleOverlay, orgPortalPagesLink } from "../global.js"
+import { handleOverlay, orgPortalPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../global.js"
 import { renderSidebar } from "./sidebar.js"
 
 document.addEventListener('DOMContentLoaded', async () => {
   renderSidebar('payment')
+  renderSuccessErrorOverlay()
 
   const payOverlayElem = document.getElementById('paymentOverlay')
 
@@ -68,6 +69,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('btnTotAmt').textContent = request.totalAmount
 
         handleOverlay(payOverlayElem)
+
+        const form = document.getElementById('paymentForm')
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault()
+          const reqId = Number(request.requestId.slice(4))
+
+          const msg = await createOrder(reqId)
+          triggerStatus(msg)
+        },{once: true})
       })
     })
 })
@@ -83,4 +93,17 @@ const getAprovedReq = async (hosId) => {
 
   const res = await response.json()
   return res.approved_requests
+}
+
+const createOrder = async (reqId) => {
+  const response = await fetch(`${orgPortalPagesLink}/createOrder`, 
+    {
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json' }, 
+      body: JSON.stringify({reqId})
+    }
+  )
+
+  const res = await response.json()
+  return res.msg
 }

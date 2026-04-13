@@ -45,3 +45,67 @@ export async function getApprovedRequestsQ(hosId) {
 
   return rows[0]
 }
+
+export async function createOrderQ(reqId) {
+  const client = await pool.connect()
+
+  try {
+    await client.query('BEGIN')
+
+    const { rows } = await client.query(
+      `
+      INSERT INTO orders (request_id)
+      VALUES ($1) RETURNING order_id
+      `, [reqId]
+    )
+
+    const ordId = rows[0].order_id
+    if (!ordId) throw new Error('Order not created')
+
+    const orderPackagesRes = await client.query(
+      `
+      INSERT INTO order_packages(order_id, storage_temp_code, status_id)
+      SELECT $1::integer AS order_id, i.storage_temp_code, 4 AS status_id
+      FROM request_items ri 
+      JOIN items i ON ri.item_id = i.item_id 
+      WHERE ri.request_id = $2
+      GROUP BY 2, 1
+      RETURNING package_id 
+      `, [ordId, reqId]
+    )
+
+    const orderPackages = orderPackagesRes.rows
+    if (orderPackages.length === 0) throw new Error('Package not created')
+
+    for (const pkg of orderPackages) {
+      const packageId = pkg.package_id
+      const pkgItemRow = await client.query(
+        `
+        INSERT INTO package_items(package_id, request_item_id)
+        SELECT op.package_id, ri.request_item_id  
+        FROM order_packages op 
+        JOIN orders o ON op.order_id = o.order_id 
+        JOIN request_items ri ON o.request_id = ri.request_id 
+        JOIN items i ON ri.item_id = i.item_id AND op.storage_temp_code = i.storage_temp_code 
+        WHERE op.package_id = $1
+        RETURNING package_item_id
+        `, [packageId]
+      )
+
+      if (!pkgItemRow.rows[0].package_item_id) throw new Error('Package item not created')
+    }
+    
+    await client.query(
+      `UPDATE requests SET status_id = 4 WHERE request_id = $1`
+      , [reqId]
+    )
+
+    await client.query('COMMIT')
+  } catch (e) {
+    await client.query('ROLLBACK')
+    throw e
+  } finally {
+    client.release()
+  }
+}
+
