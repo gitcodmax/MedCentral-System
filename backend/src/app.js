@@ -15,6 +15,7 @@ import orgReportsRouter from './controllers_routes/org_con_routes/c_r_reports.js
 import orgDashRouter from './controllers_routes/org_con_routes/c_r_dash.js';
 import reviewReqRouter from './controllers_routes/wh_manager_con_routes/c_r_review_requests.js';
 import orgPortalPaymentsRouter from './controllers_routes/org_con_routes/c_r_payments.js';
+import clerkAssignmentRouter from './controllers_routes/wh_manager_con_routes/c_r_assign_to_clerk.js';
 
 const app = express();
 
@@ -45,7 +46,7 @@ app.use('/org',
 )
 
 app.use('/whManager', 
-  reviewReqRouter
+  reviewReqRouter, clerkAssignmentRouter
 )
 
 export default app;

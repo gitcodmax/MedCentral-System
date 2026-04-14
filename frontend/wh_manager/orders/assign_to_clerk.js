@@ -1,177 +1,10 @@
 import { renderSidebar } from "../sidebar.js";
 import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
+import { whManagerPagesLink } from "../../global.js";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
-  //Paid orders mock up data
-  const paidOrdersObj = {
-    "paidOrders": [
-      {
-        "orderId": "ORD-2026-102",
-        "institutionName": "Aga Khan University Hospital",
-        "paymentDate": "Jan 25, 07:30 AM",
-        "packages": [
-          {
-            "packageId": "ORD-2026-102-A",
-            "items": [
-              { "sku": "MED-001-P", "name": "Paracetamol 500mg", "location": "Shelf A-12", "batchNo": "AOU123", "quantity": "50 Boxes" },
-              { "sku": "GS-992-M", "name": "Surgical Gloves (M)", "location": "Shelf C-04", "batchNo": "AOU124", "quantity": "180 Pairs" }
-            ]
-          }
-        ]
-      },
-      {
-        "orderId": "ORD-2026-108",
-        "institutionName": "The Nairobi Hospital",
-        "paymentDate": "Jan 25, 06:15 AM",
-        "packages": [
-          {
-            "packageId": "ORD-2026-108-R",
-            "items": [
-              { "sku": "IV-FL-09", "name": "Saline Solution 500ml", "location": "Shelf R-01", "batchNo": "AOU125", "quantity": "40 Vials" }
-            ]
-          },
-          {
-            "packageId": "ORD-2026-108-A",
-            "items": [
-              { "sku": "SYR-10-ML", "name": "10ml Syringes", "location": "Shelf B-05", "batchNo": "AOU126", "quantity": "100 Units" },
-              { "sku": "BDG-EL-02", "name": "Elastic Bandages", "location": "Shelf E-10", "batchNo": "AOU127", "quantity": "15 Rolls" },
-              { "sku": "ANT-SP-04", "name": "Antiseptic Spray", "location": "Shelf D-08", "batchNo": "AOU128", "quantity": "5 Bottles" }
-            ]
-          }
-        ]
-      },
-      {
-        "orderId": "ORD-2026-112",
-        "institutionName": "Mater Misericordiae Hospital",
-        "paymentDate": "Jan 24, 04:45 PM",
-        "packages": [
-          {
-            "packageId": "ORD-2026-112-A",
-            "items": [
-              { "sku": "MSK-N95-01", "name": "N95 Respirator Masks", "location": "Shelf F-02", "batchNo": "AOU129", "quantity": "200 Pieces" },
-              { "sku": "THRM-DIG-05", "name": "Digital Thermometers", "location": "Shelf G-01", "batchNo": "AOU130", "quantity": "10 Units" },
-              { "sku": "BPC-MAN-09", "name": "Manual BP Cuffs", "location": "Shelf G-05", "batchNo": "AOU131", "quantity": "3 Sets" }
-            ]
-          }
-        ]
-      },
-      {
-        "orderId": "ORD-2026-105",
-        "institutionName": "Kenyatta National Hospital",
-        "paymentDate": "Jan 23, 03:30 PM",
-        "packages": [
-          {
-            "packageId": "ORD-2026-105-A",
-            "items": [
-              { "sku": "SYR-50-L", "name": "Luer Lock Syringes", "location": "Shelf B-02", "batchNo": "AOU132", "quantity": "10 Units" }
-            ]
-          }
-        ]
-      },
-      {
-        "orderId": "ORD-2026-115",
-        "institutionName": "MP Shah Hospital",
-        "paymentDate": "Jan 23, 01:20 PM",
-        "packages": [
-          {
-            "packageId": "ORD-2026-115-A",
-            "items": [
-              { "sku": "ANT-AMX-50", "name": "Amoxicillin 500mg", "location": "Shelf A-15", "batchNo": "AOU133", "quantity": "30 Boxes" },
-              { "sku": "VIT-C-100", "name": "Vitamin C 1000mg", "location": "Shelf A-20", "batchNo": "AOU134", "quantity": "50 Bottles" }
-            ]
-          }
-        ]
-      },
-      {
-        "orderId": "ORD-2026-120",
-        "institutionName": "Karen Hospital",
-        "paymentDate": "Jan 22, 11:45 AM",
-        "packages": [
-          {
-            "packageId": "ORD-2026-120-F",
-            "items": [
-              { "sku": "LAB-RGT-01", "name": "COVID-19 Rapid Test", "location": "Shelf F-01", "batchNo": "AOU135", "quantity": "100 Kits" }
-            ]
-          },
-          {
-            "packageId": "ORD-2026-120-A",
-            "items": [
-              { "sku": "CAN-20G-IV", "name": "IV Cannula 20G", "location": "Shelf C-12", "batchNo": "AOU136", "quantity": "200 Units" },
-              { "sku": "TAPE-MIC-01", "name": "Micropore Tape", "location": "Shelf E-02", "batchNo": "AOU137", "quantity": "20 Rolls" }
-            ]
-          }
-        ]
-      },
-      {
-        "orderId": "ORD-2026-125",
-        "institutionName": "Coptic Hospital",
-        "paymentDate": "Jan 22, 09:10 AM",
-        "packages": [
-          {
-            "packageId": "ORD-2026-125-A",
-            "items": [
-              { "sku": "OXY-GEN-02", "name": "Oxygen Mask - Adult", "location": "Shelf H-05", "batchNo": "AOU138", "quantity": "15 Units" },
-              { "sku": "NEB-KIT-01", "name": "Nebulizer Kit", "location": "Shelf H-08", "batchNo": "AOU139", "quantity": "10 Sets" }
-            ]
-          }
-        ]
-      },
-      {
-        "orderId": "ORD-2026-130",
-        "institutionName": "Mediheal Hospital",
-        "paymentDate": "Jan 21, 04:30 PM",
-        "packages": [
-          {
-            "packageId": "ORD-2026-130-C",
-            "items": [
-              { "sku": "GLU-STR-05", "name": "Glucose Test Strips", "location": "Shelf L-02", "batchNo": "AOU140", "quantity": "20 Packs" },
-              { "sku": "GLU-MET-01", "name": "Digital Glucometer", "location": "Shelf L-01", "batchNo": "AOU141", "quantity": "5 Units" },
-              { "sku": "LNC-UNI-01", "name": "Universal Lancets", "location": "Shelf L-03", "batchNo": "AOU142", "quantity": "500 Pieces" }
-            ]
-          }
-        ]
-      },
-      {
-        "orderId": "ORD-2026-135",
-        "institutionName": "PCEA Kikuyu Hospital",
-        "paymentDate": "Jan 21, 02:15 PM",
-        "packages": [
-          {
-            "packageId": "ORD-2026-135-R",
-            "items": [
-              { "sku": "OPTH-DR-01", "name": "Atropine Eye Drops", "location": "Shelf R-05", "batchNo": "AOU143", "quantity": "20 Vials" }
-            ]
-          },
-          {
-            "packageId": "ORD-2026-135-A",
-            "items": [
-              { "sku": "EYE-PAD-02", "name": "Sterile Eye Pads", "location": "Shelf M-06", "batchNo": "AOU144", "quantity": "100 Pieces" }
-            ]
-          }
-        ]
-      },
-      {
-        "orderId": "ORD-2026-140",
-        "institutionName": "Nairobi West Hospital",
-        "paymentDate": "Jan 20, 10:00 AM",
-        "packages": [
-          {
-            "packageId": "ORD-2026-140-A",
-            "items": [
-              { "sku": "SCRB-BLU-L", "name": "Surgical Scrubs (L)", "location": "Shelf S-01", "batchNo": "AOU145", "quantity": "25 Sets" }
-            ]
-          }
-        ]
-      }
-    ],
-    "clerks": [
-      { "clerkId": "CLK-01", "name": "Peter", "activeTasks": 3 },
-      { "clerkId": "CLK-02", "name": "Sarah", "activeTasks": 0 },
-      { "clerkId": "CLK-03", "name": "James", "activeTasks": 5 },
-      { "clerkId": "CLK-04", "name": "Elena", "activeTasks": 2 }
-    ]
-  };
+  const paidOrdersObj = await getOrderPackages()
 
   const paidOrders = paidOrdersObj.paidOrders
   const paidOrdersFragment = document.createDocumentFragment()
@@ -435,3 +268,10 @@ document.addEventListener('DOMContentLoaded', () => {
     noOfPkgShowing.textContent = 'All'
   })
 })
+
+// Fetch assign to clerk page data from the db
+const getOrderPackages = async () => {
+  const response = await fetch(`${whManagerPagesLink}/getOrderPackages`)
+  const res = await response.json()
+  return res.orders_clerk_data
+}
