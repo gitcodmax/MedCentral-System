@@ -1,6 +1,6 @@
 import { renderSidebar } from "../sidebar.js";
 import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
-import {getStorageTempIcon, whManagerPagesLink} from "../../global.js"
+import {getStorageTempIcon, renderSuccessErrorOverlay, triggerStatus, whManagerPagesLink} from "../../global.js"
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             <div class="modal-footer">
               <button class="btn-no js-btn-no">No, Cancel</button>
-              <button class="btn-yes">Yes, Assign</button>
+              <button class="btn-yes" id="assignDriver">Yes, Assign</button>
             </div>
           </div>
         </div>
@@ -103,6 +103,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     `
 
   renderSidebar('assign_to_driver')
+  renderSuccessErrorOverlay()
   displayNoMatch()
 
   const orderDriverData = await getPackagesDriversData()
@@ -110,16 +111,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const pkgToShipElem = document.querySelector('.js-no-of-orders')
   const dispatchGridElem = document.querySelector('.js-dispatch-grid')
   const dispatchOdersFragment = document.createDocumentFragment()
-
-  //Find the number of packages awaiting dispatch
-  function getNoOfPackages() {
-    let noOfPackages = 0
-    orderDriverData['dispatchQueue'].forEach(ord => {
-      noOfPackages += ord.packages.length
-    })
-
-    return noOfPackages
-  }
 
   // Generates the html for each of the cards in the page
   function displayPackages(pkg, order) {
@@ -216,7 +207,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   //Displays the packages in the html
   function displayAllPackages(orderDriverData) {
-    pkgToShipElem.textContent = getNoOfPackages()
+    pkgToShipElem.textContent = orderDriverData.dispatchQueue.length
     dispatchGridElem.innerHTML = ``
 
     orderDriverData['dispatchQueue'].forEach(ord => {
@@ -314,10 +305,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             })
 
             orderDriverData['drivers'].forEach(driver => {
-              if (selectElem.value === driver.driverId)
+              if (Number(selectElem.value) === driver.driverId)
                 document.querySelector('.js-driver-name')
                   .textContent = driver.name
             })
+
+            const packId = Number(packageId.slice(4, -2))
+            const drivId = Number(selectElem.value)
+
+            document.getElementById('assignDriver')
+              .addEventListener('click', async () => {
+                const response = await fetch(`${whManagerPagesLink}/assignPackageDriver`, 
+                  {
+                    method: 'PUT', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({packId, drivId})
+                  }
+                )
+
+                const res = await response.json()
+                triggerStatus(res.msg)
+              }, { once: true }
+              )
 
             xRemoveOverlay(overlay)
           }

@@ -7,7 +7,7 @@ export async function getPackagesDriversDataQ() {
     SELECT 
         jsonb_agg(
             jsonb_build_object(
-                'driverId', 'DRV-' || d.driver_id,
+                'driverId', d.driver_id,
                 'name', d.full_name,
                 'homeCounty', (SELECT c.name 
 									FROM cfg_zones z 
@@ -68,7 +68,7 @@ export async function getPackagesDriversDataQ() {
                         FROM order_packages op
                         JOIN cfg_storage_options cso ON op.storage_temp_code = cso.code
                         WHERE op.order_id = o.order_id 
-                          AND op.status_id = 5
+                          AND op.status_id = 5 
                     )
                 )
             ) AS queue_list
@@ -76,7 +76,10 @@ export async function getPackagesDriversDataQ() {
         JOIN requests r ON o.request_id = r.request_id
         JOIN hospitals h ON r.hospital_id = h.hospital_id
         WHERE EXISTS (
-            SELECT 1 FROM order_packages op WHERE op.order_id = o.order_id AND op.status_id = 5
+            SELECT 1 FROM order_packages op
+            WHERE op.order_id = o.order_id
+              AND op.status_id = 5
+              AND op.assigned_driver_id IS NULL
         )
     )
 
@@ -90,4 +93,14 @@ export async function getPackagesDriversDataQ() {
   )
 
   return rows[0]
+}
+
+export async function assignPackageDriverQ({drivId, packId}) {
+  await pool.query(
+    `
+    UPDATE order_packages
+    SET assigned_driver_id = $1, assigned_at = CURRENT_TIMESTAMP
+    WHERE package_id = $2
+    `, [drivId, packId]
+  )
 }

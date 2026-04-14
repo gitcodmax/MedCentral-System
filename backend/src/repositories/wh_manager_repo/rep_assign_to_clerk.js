@@ -78,7 +78,7 @@ export async function assignClerkQ({ pkgId, clerkId }) {
   await pool.query(
     `
     UPDATE order_packages
-    SET assigned_clerk_id = $1
+    SET assigned_clerk_id = $1, assigned_at = CURRENT_TIMESTAMP 
     WHERE package_id = $2
     `, [clerkId, pkgId]
   )
