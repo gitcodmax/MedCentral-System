@@ -1,8 +1,8 @@
 import { renderSidebar } from "../sidebar.js";
 import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
-import {getStorageTempIcon} from "../../global.js"
+import {getStorageTempIcon, whManagerPagesLink} from "../../global.js"
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
   document.querySelector('.page-container')
     .innerHTML = `
@@ -105,142 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderSidebar('assign_to_driver')
   displayNoMatch()
 
-  const orderDriverData = {
-    "dispatchQueue": [
-      {
-        "orderId": "ORD-101", "institutionName": "Kenyatta National Hospital", "subCounty": "Upper Hill", "county": "Nairobi",
-        "packages": [
-          { "packageId": "ORD-101-R", "storageTemp": "refrigerated", "weightTonnes": 0.05, "items": [{ "itemName": "Insulin Vials", "qty": "50 Units" }, { "itemName": "Oxytocin", "qty": "10 Ampoules" }] },
-          { "packageId": "ORD-101-A", "storageTemp": "ambient", "weightTonnes": 0.40, "items": [{ "itemName": "Standard Syringes 5ml", "qty": "500 Pieces" }, { "itemName": "Gauze Rolls", "qty": "100 Units" }] }
-        ]
-      },
-      {
-        "orderId": "ORD-102", "institutionName": "Aga Khan Hospital", "subCounty": "Parklands", "county": "Nairobi",
-        "packages": [
-          { "packageId": "ORD-102-F", "storageTemp": "frozen", "weightTonnes": 0.12, "items": [{ "itemName": "Lab Reagents", "qty": "5 Kits" }, { "itemName": "Enzyme Samples", "qty": "12 Vials" }] },
-          { "packageId": "ORD-102-R", "storageTemp": "refrigerated", "weightTonnes": 0.08, "items": [{ "itemName": "Vaccine Batch B12", "qty": "100 Vials" }] }
-        ]
-      },
-      {
-        "orderId": "ORD-103", "institutionName": "PCEA Kikuyu Hospital", "subCounty": "Kikuyu", "county": "Kiambu",
-        "packages": [{ "packageId": "ORD-103-C", "storageTemp": "crt", "weightTonnes": 0.15, "items": [{ "itemName": "Antiretroviral Meds", "qty": "100 Packs" }, { "itemName": "Inhaler Units", "qty": "25 Pieces" }] }]
-      },
-      {
-        "orderId": "ORD-104", "institutionName": "Nairobi Women's Hospital", "subCounty": "Hurlingham", "county": "Nairobi",
-        "packages": [
-          { "packageId": "ORD-104-R", "storageTemp": "refrigerated", "weightTonnes": 0.08, "items": [{ "itemName": "Hepatitis B Vaccine", "qty": "30 Doses" }] },
-          { "packageId": "ORD-104-F", "storageTemp": "frozen", "weightTonnes": 0.03, "items": [{ "itemName": "Frozen Plasma", "qty": "2 Units" }] }
-        ]
-      },
-      {
-        "orderId": "ORD-105", "institutionName": "Gertrude's Children's", "subCounty": "Muthaiga", "county": "Nairobi",
-        "packages": [{ "packageId": "ORD-105-F", "storageTemp": "frozen", "weightTonnes": 0.02, "items": [{ "itemName": "Stem Cell Units", "qty": "1 Unit" }] }]
-      },
-      {
-        "orderId": "ORD-106", "institutionName": "MP Shah Hospital", "subCounty": "Parklands", "county": "Nairobi",
-        "packages": [
-          { "packageId": "ORD-106-A", "storageTemp": "ambient", "weightTonnes": 1.10, "items": [{ "itemName": "Bed Linens", "qty": "50 Rolls" }, { "itemName": "Patient Gowns", "qty": "100 Units" }] },
-          { "packageId": "ORD-106-C", "storageTemp": "crt", "weightTonnes": 0.20, "items": [{ "itemName": "Sensitive Antibiotics", "qty": "200 Vials" }] }
-        ]
-      },
-      {
-        "orderId": "ORD-107", "institutionName": "Thika Level 5", "subCounty": "Thika Town", "county": "Kiambu",
-        "packages": [{ "packageId": "ORD-107-C", "storageTemp": "crt", "weightTonnes": 2.50, "items": [{ "itemName": "Cough Syrup", "qty": "500 Bottles" }, { "itemName": "Paracetamol", "qty": "2000 Strips" }] }]
-      },
-      {
-        "orderId": "ORD-108", "institutionName": "Mater Misericordiae", "subCounty": "South B", "county": "Nairobi",
-        "packages": [
-          { "packageId": "ORD-108-A", "storageTemp": "ambient", "weightTonnes": 0.35, "items": [{ "itemName": "First Aid Kits", "qty": "20 Units" }] },
-          { "packageId": "ORD-108-R", "storageTemp": "refrigerated", "weightTonnes": 0.05, "items": [{ "itemName": "Anti-D Immunoglobulin", "qty": "5 Vials" }] }
-        ]
-      },
-      {
-        "orderId": "ORD-109", "institutionName": "Karen Hospital", "subCounty": "Karen", "county": "Nairobi",
-        "packages": [{ "packageId": "ORD-109-R", "storageTemp": "refrigerated", "weightTonnes": 0.04, "items": [{ "itemName": "Tetanus Toxoid", "qty": "15 Vials" }] }]
-      },
-      {
-        "orderId": "ORD-110", "institutionName": "St. Francis Hospital", "subCounty": "Kasarani", "county": "Nairobi",
-        "packages": [{ "packageId": "ORD-110-A", "storageTemp": "ambient", "weightTonnes": 0.90, "items": [{ "itemName": "Wheelchairs", "qty": "5 Units" }, { "itemName": "Crutches", "qty": "15 Pairs" }] }]
-      },
-      {
-        "orderId": "ORD-111", "institutionName": "Limuru Nursing Home", "subCounty": "Limuru", "county": "Kiambu",
-        "packages": [{ "packageId": "ORD-111-C", "storageTemp": "crt", "weightTonnes": 0.10, "items": [{ "itemName": "Supplements", "qty": "200 Bottles" }] }]
-      },
-      {
-        "orderId": "ORD-112", "institutionName": "Coptic Hospital", "subCounty": "Ngong Road", "county": "Nairobi",
-        "packages": [{ "packageId": "ORD-112-R", "storageTemp": "refrigerated", "weightTonnes": 0.22, "items": [{ "itemName": "Blood Bags (O-)", "qty": "10 Units" }] }]
-      },
-      {
-        "orderId": "ORD-113", "institutionName": "Machakos Level 5", "subCounty": "Machakos Central", "county": "Machakos",
-        "packages": [{ "packageId": "ORD-113-A", "storageTemp": "ambient", "weightTonnes": 1.40, "items": [{ "itemName": "I.V. Fluids", "qty": "300 Bags" }] }]
-      },
-      {
-        "orderId": "ORD-114", "institutionName": "Avenue Hospital", "subCounty": "Parklands", "county": "Nairobi",
-        "packages": [
-          { "packageId": "ORD-114-F", "storageTemp": "frozen", "weightTonnes": 0.05, "items": [{ "itemName": "Vaccine Seed", "qty": "2 Vials" }] },
-          { "packageId": "ORD-114-A", "storageTemp": "ambient", "weightTonnes": 0.15, "items": [{ "itemName": "Safety Boxes", "qty": "50 Units" }] }
-        ]
-      },
-      {
-        "orderId": "ORD-115", "institutionName": "Nazareth Hospital", "subCounty": "Limuru", "county": "Kiambu",
-        "packages": [{ "packageId": "ORD-115-R", "storageTemp": "refrigerated", "weightTonnes": 0.18, "items": [{ "itemName": "Anti-Venom", "qty": "5 Vials" }] }]
-      }
-    ],
-    "drivers": [
-      {
-        "driverId": "DRV-1",
-        "name": "Samuel Mutua",
-        "homeCounty": "Nairobi",
-        "primaryZone": "Upper Hill",
-        "vehicle": {
-          "type": "Ref-Van",
-          "category": "Light",
-          "maxTons": 3.5,
-          "currentLoad": 1.2,
-          "tempCaps": ["refrigerated", "crt", "ambient"]
-        }
-      },
-      {
-        "driverId": "DRV-2",
-        "name": "Jane Wanjiku",
-        "homeCounty": "Nairobi",
-        "primaryZone": "Parklands",
-        "vehicle": {
-          "type": "Box-Truck",
-          "category": "Medium",
-          "maxTons": 12.0,
-          "currentLoad": 4.5,
-          "tempCaps": ["ambient", "crt"]
-        }
-      },
-      {
-        "driverId": "DRV-3",
-        "name": "David Otieno",
-        "homeCounty": "Kiambu",
-        "primaryZone": "Kikuyu",
-        "vehicle": {
-          "type": "Cold-Truck",
-          "category": "Medium",
-          "maxTons": 15.0,
-          "currentLoad": 0.0,
-          "tempCaps": ["frozen", "refrigerated", "crt", "ambient"]
-        }
-      },
-      {
-        "driverId": "DRV-4",
-        "name": "Alice Koech",
-        "homeCounty": "Machakos",
-        "primaryZone": "Machakos Central",
-        "vehicle": {
-          "type": "Heavy-Hauler",
-          "category": "Heavy",
-          "maxTons": 28.0,
-          "currentLoad": 18.5,
-          "tempCaps": ["ambient"]
-        }
-      }
-    ]
-  }
+  const orderDriverData = await getPackagesDriversData()
 
   const pkgToShipElem = document.querySelector('.js-no-of-orders')
   const dispatchGridElem = document.querySelector('.js-dispatch-grid')
@@ -294,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <option value="">Select Driver...</option>
             </select>
             <button class="btn-dispatch js-btn-dispatch" data-package-id="${pkg.packageId}">
-              Dispatch
+              Assign
             </button>
           </div>
         </div>
@@ -315,10 +180,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const { tempCaps, currentLoad, maxTons } = vehicleData
       const { primaryZone, homeCounty } = driver
 
+      // Remove vehicles where the storage temp. does not include the packages storage temp.
       if (!tempCaps.includes(storageTemp)) {
         return;
       }
 
+      // Remove vehicle if current load + package load is greater than max. vehicle tonnes
       const totalLoad = Number((currentLoad + packageWt).toFixed(2))
       if (totalLoad >= maxTons) {
         return;
@@ -550,3 +417,9 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   // ##End of code that handles the filtering logic
 })
+
+const getPackagesDriversData = async () => {
+  const response = await fetch(`${whManagerPagesLink}/getPackagesDriversData`)
+  const res = await response.json()
+  return res.packages_drivers_data
+}
