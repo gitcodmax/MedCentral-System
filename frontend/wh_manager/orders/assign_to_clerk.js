@@ -73,6 +73,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         <div class="overlay"></div>
       </section>
+
+      <div class="overlay" id="assignClerkOverlay">
+        <div class="notification-container">
+          <div class="modal-body">
+            <p>Assign
+              <span class="highlight-order js-pkg-id"></span>
+              to
+              <span class="highlight-driver js-clerk-name"></span>?
+            </p>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn-no js-btn-no">No, Cancel</button>
+            <button class="btn-yes" id="confirmClerkBtn">Yes, Assign</button>
+          </div>
+        </div>
+      </div>
     </main>
   
     `
@@ -118,7 +135,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             </select>
           </td>
           <td>
-            <button class="btn-assign">
+            <button class="btn-assign" id="assignClerkBtn" data-pkg-id=${pkg.packageId}>
               Assign Task
             </button>
           </td>
@@ -146,7 +163,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     clerks.forEach(clerk => {
       document.querySelector(`.js-clerk-select-${packageId}`)
         .innerHTML += `
-          <option id=${clerk.clerkId}>${clerk.name} (${clerk.activeTasks} active tasks)</option>
+          <option value=${clerk.clerkId}>${clerk.name} (${clerk.activeTasks} active tasks)</option>
       `
     })
   }
@@ -227,6 +244,40 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   })
 
+  // Assign to clerk
+  document.querySelector('.js-assignment-tbody')
+    .addEventListener('click', (e) => {
+      const btn = e.target.closest('button')
+      if (!btn) return;
+      const btnPkgId = btn.dataset.pkgId
+      const assignmentDialogOverlay = document.getElementById('assignClerkOverlay')
+
+      if (btn.id === 'assignClerkBtn') {
+        const clerkOptionElem = document.querySelector(`.js-clerk-select-${btnPkgId}`)
+        if (clerkOptionElem.value === '') {
+          alert(`Select a clerk for the package ${btnPkgId}!!`)
+        } else {
+          assignmentDialogOverlay.classList.add('active')
+          const pkgId = Number(btnPkgId.slice(4, -2))
+          const assignedClerkId = Number(clerkOptionElem.value)
+          const clerk = paidOrdersObj.clerks.find(clerk => clerk.clerkId === assignedClerkId)
+
+          document.querySelector('.js-pkg-id')
+            .textContent = btnPkgId
+          document.querySelector('.js-clerk-name')
+            .textContent = clerk.name
+
+          document.getElementById('confirmClerkBtn')
+            .addEventListener('click', () => {
+              console.log(pkgId, assignedClerkId)
+            }, {once: true})
+
+          clickToRemoveOverlay(assignmentDialogOverlay)
+          xRemoveOverlay(assignmentDialogOverlay)
+        }
+      }
+    })
+
   //Search logic
   const searchTermElem = document.getElementById('searchTerm')
   const paymentDateElem = document.getElementById('dateFilter')
@@ -241,7 +292,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const searchMatch = ord.institutionName.toLowerCase().includes(searchText)
         || ord.orderId.toLowerCase().includes(searchText)
 
-      const paymentDateMatch = paymentDateValue === 'Invalid Date' 
+      const paymentDateMatch = paymentDateValue === 'Invalid Date'
         || ord.paymentDate.includes(paymentDateValue)
 
       return searchMatch && paymentDateMatch
@@ -249,11 +300,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     assignToClerkTbodyElem.innerHTML = ``
 
-    if(searchResult.length === 0){
+    if (searchResult.length === 0) {
       noMatchElem.classList.remove('hidden')
-    }else{
+    } else {
       noMatchElem.classList.add('hidden')
-      displayAllPackages(searchResult)    
+      displayAllPackages(searchResult)
       noOfPkgShowing.textContent = getNoOfPackages(searchResult)
     }
   }
@@ -262,11 +313,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   paymentDateElem.addEventListener('change', handleSearch)
 
   document.querySelector('.js-btn-reset')
-  .addEventListener('click', () => {
-    searchTermElem.value = paymentDateElem.value = ''
-    handleSearch()
-    noOfPkgShowing.textContent = 'All'
-  })
+    .addEventListener('click', () => {
+      searchTermElem.value = paymentDateElem.value = ''
+      handleSearch()
+      noOfPkgShowing.textContent = 'All'
+    })
 })
 
 // Fetch assign to clerk page data from the db

@@ -188,3 +188,13 @@ tbody .assignment-row {
     background: #f8f9fa;
     font-weight: bold;
 }
+
+.highlight-order{
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.highlight-driver{
+  color: var(--color-secondary);
+  text-decoration: underline;
+}
