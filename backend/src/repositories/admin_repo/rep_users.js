@@ -37,11 +37,52 @@ export async function addNewSysUserQ({fullName, email, roleId, plainPwd}){
   `, [email, hashedPassword, fullName, roleId])
 }
 
-export async function addNewDriverQ({fullName, phoneNo, vehicleNo, zoneId}){
-  await pool.query(`
-    INSERT INTO drivers (full_name, phone_number, vehicle_plates, preferred_zone_id)
-    VALUES ($1, $2, $3, $4)
-  `, [fullName, phoneNo, vehicleNo, zoneId])
+export async function addNewDriverQ({ fullName, phoneNo, vehicleNo, zoneId, 
+  vehicleType, vehicleCategory, maxTon, storageTempCaps
+}) {
+  const client = await pool.connect()
+
+  try {
+    client.query('BEGIN')
+
+    const driversRes = await client.query(`
+      INSERT INTO drivers (full_name, phone_number, vehicle_plates, preferred_zone_id)
+        VALUES ($1, $2, $3, $4) RETURNING driver_id
+      `, [fullName, phoneNo, vehicleNo, zoneId]
+    )
+
+    const driverId = driversRes.rows[0].driver_id
+
+    if (!driverId) throw new Error('Driver details not saved!')
+    
+    const vehiclesRes = await client.query(
+      `
+      INSERT INTO vehicles(plate_number, type_code, category_id, max_tons, temp_cap_codes)
+      VALUES ($1, $2, $3, $4, $5) RETURNING vehicle_id
+      `, [vehicleNo, vehicleType, vehicleCategory, maxTon, storageTempCaps]
+    )
+
+    const vehicleId = vehiclesRes.rows[0].vehicle_id
+
+    if (!vehicleId) throw new Error('Vehicle details not saved!!')
+    
+    const vehAssiRes = await client.query(
+      `
+      INSERT INTO vehicle_assignments (vehicle_id, driver_id, assigned_at)
+      VALUES ($1, $2, CURRENT_TIMESTAMP) RETURNING assignment_id
+      `, [vehicleId, driverId]
+    )
+
+    const vehicleAssignId = vehAssiRes.rows[0].assignment_id
+
+    await client.query('COMMIT')
+    return vehicleAssignId
+  } catch (e) {
+    await client.query('ROLLBACK')
+    throw e
+  } finally {
+    client.release()
+  }
 }
 
 export async function updateSysUsersDataQ({fullName, email, roleId, userId}){

@@ -649,27 +649,30 @@ document.addEventListener('DOMContentLoaded', async () => {
               const vehicleTypeSelected = vehicleTypeSelectElem.value
               const vehicleCategorySelected = vehicleCategorySelectElem.value
               const maxTonValue = maxTonInputElem.value
-              console.log(storageTempCaps)
+
+              const driverFullName = driverFirstName.value + ' ' + driverLastName.value
+              const response = await fetch(`${adminPagesLink}/addNewDriver`,
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    fullName: driverFullName,
+                    phoneNo: driverPhone.value,
+                    vehicleNo: driverVehicleNo.value,
+                    zoneId: addDriverZoneSelectElem.value,
+                    vehicleType: vehicleTypeSelected,
+                    vehicleCategory: vehicleCategorySelected, 
+                    maxTon: maxTonValue, 
+                    storageTempCaps
+                  })
+                }
+              )
+
+              const res = await response.json()
+              triggerStatus(res.msg)
             }
-
-            // const driverFullName = driverFirstName.value + ' ' + driverLastName.value
-            // const response = await fetch(`${adminPagesLink}/addNewDriver`, 
-            //   {
-            //     method: 'POST', 
-            //     headers: {
-            //       'Content-Type': 'application/json'
-            //     }, 
-            //     body: JSON.stringify({
-            //       fullName: driverFullName, 
-            //       phoneNo: driverPhone.value, 
-            //       vehicleNo: driverVehicleNo.value, 
-            //       zoneId: addDriverZoneSelectElem.value
-            //     })
-            //   }
-            // )
-
-            // const res = await response.json()
-            // triggerStatus(res.msg)
           })
       }
     })

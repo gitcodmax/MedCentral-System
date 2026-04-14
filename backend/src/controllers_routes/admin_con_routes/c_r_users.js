@@ -38,10 +38,10 @@ adminUsersRouter.post('/addNewSysUser', async (req, res) => {
 
 adminUsersRouter.post('/addNewDriver', async (req, res) => {
   try{
-    await addNewDriverQ(req.body)
-    res.status(200).json({msg: 'success'})
+    const assignmentId = await addNewDriverQ(req.body)
+    res.status(200).json({msg: 'success', assignmentId})
   }catch(err){
-    res.status(500).json({msg: 'error'})
+    res.status(500).json({msg: 'error', Error: err.message})
   }
 })
 
