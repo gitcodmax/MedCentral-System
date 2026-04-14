@@ -101,3 +101,38 @@ export async function updateDriverDataQ({fullName, phoneNo, vehicleNo, zoneId, d
 
   return rows
 }
+
+export async function vehiclesCategoriesTypesQ() {
+  const { rows } = await pool.query(
+    `
+    WITH veh_categories AS (
+    SELECT 
+      jsonb_agg(
+        jsonb_build_object(
+          'category_id', category_id, 
+          'name', name
+        )
+      ) AS cat_data
+    FROM cfg_vehicle_categories
+    ), veh_types AS 
+      (
+      SELECT 
+        jsonb_agg(
+          jsonb_build_object(
+            'type_code', type_code, 
+            'type_name', display_name
+          )
+        ) AS types_data
+      FROM cfg_vehicle_types
+      )
+
+    SELECT 
+      jsonb_build_object(
+        'vehicle_categories', (SELECT cat_data FROM veh_categories), 
+        'vehicle_types', (SELECT types_data FROM veh_types)
+      ) AS vehicles_categories_types
+    `
+  )
+
+  return rows[0]
+}

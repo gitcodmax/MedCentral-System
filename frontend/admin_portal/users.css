@@ -214,6 +214,11 @@ tr:hover {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
+.add-driver-modal-content{
+  max-height: 100vh;
+  overflow-y: scroll;
+}
+
 .modal-header h2 {
   margin-bottom: 1.5rem;
   font-size: 1.25rem;
@@ -245,7 +250,7 @@ tr:hover {
   margin-bottom: 1.25rem;
 }
 
-.form-group label {
+.form-group label, fieldset legend {
   display: block;
   font-size: 0.85rem;
   font-weight: 600;
@@ -378,6 +383,29 @@ tr:hover {
 
 .input-with-icon .form-control {
   padding-left: 2.5rem;
+}
+
+fieldset{
+  padding: 10px;
+  border-radius: 8px;
+  background: #eff1f3;
+}
+
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-secondary);
+    cursor: pointer;
+}
+
+fieldset label {
+    cursor: pointer;
+    user-select: none;
+    margin: 10px;
+}
+
+fieldset legend{
+  margin: 0 5px;
 }
 
 /* Status Row Styling */

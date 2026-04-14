@@ -1,6 +1,7 @@
 import express from "express";
 import { addNewDriverQ, addNewSysUserQ, deActivateUserQ, getAllDriversQ, getAllSysUsersQ, updateDriverDataQ, 
-  updateSysUsersDataQ, updateSysUsersPasswordQ } from "../../repositories/admin_repo/rep_users.js";
+  updateSysUsersDataQ, updateSysUsersPasswordQ, 
+  vehiclesCategoriesTypesQ} from "../../repositories/admin_repo/rep_users.js";
 
 const adminUsersRouter = express.Router()
 
@@ -77,6 +78,15 @@ adminUsersRouter.put('/updateDriverData', async (req, res) => {
     res.status(200).json({msg: 'success'})
   }catch(err){
     res.status(500).json({msg: 'error', Error: err.message})
+  }
+})
+
+adminUsersRouter.get('/vehiclesCategoriesTypes', async (req, res) => {
+  try {
+    const vehiclesData =  await vehiclesCategoriesTypesQ()
+    res.status(200).json(vehiclesData)
+  } catch (e) {
+    res.status(500).json({Error: e.message})
   }
 })
 

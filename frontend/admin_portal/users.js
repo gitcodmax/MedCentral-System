@@ -140,6 +140,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                                             required>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="form-section-title">Vehicle Details</div>
+                            <div class="form-row">
                                 <div class="form-group">
                                     <label for="vehicleNo">Vehicle Number</label>
                                     <div class="input-with-icon">
@@ -148,7 +152,41 @@ document.addEventListener('DOMContentLoaded', async () => {
                                             required>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="zone">Maximum Tonnes</label>
+                                    <input type="number" id="maxTonInput" class="form-control" min=1 required>
+                                </div>
                             </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="type">Vehicle Type</label>
+                                    <select id="vehicleTypeSelect" class="form-control" required>
+                                      <option value='' disabled selected>Select Vehicle Type</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="category">Vehicle Category</label>
+                                    <select id="vehicleCatSelect" class="form-control" required>
+                                      <option value='' disabled selected>Select Vehicle Category</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <fieldset>
+                              <legend>Vehicle Temperature Support</legend>
+                              <label>
+                                <input type="checkbox" name="temp" class="storage-temp-cap" value="A"> Ambient
+                              </label>
+                              <label>
+                                <input type="checkbox" name="temp" class="storage-temp-cap" value="C"> CRT
+                              </label>
+                              <label>
+                                <input type="checkbox" name="temp" class="storage-temp-cap" value="R"> Refrigerated
+                              </label>
+                              <label>
+                                <input type="checkbox" name="temp" class="storage-temp-cap" value="F"> Frozen
+                              </label>
+                            </fieldset>
 
                             <div class="form-section-title">Logistics Preferences</div>
                             <div class="form-row">
@@ -509,7 +547,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Create a new user and add a new driver overlays
   document.querySelector('.js-header-actions')
-    .addEventListener('click', (e) => {
+    .addEventListener('click', async (e) => {
       const btn = e.target.closest('button')
       if (!btn) return;
 
@@ -556,6 +594,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const addDriverCntySelectElem = document.getElementById('addDriverCtySelect')
         const addDriverZoneSelectElem = document.getElementById('addDriverZoneSelect')
+        const vehicleTypeSelectElem = document.getElementById('vehicleTypeSelect')
+        const vehicleCategorySelectElem = document.getElementById('vehicleCatSelect')
+        const maxTonInputElem = document.getElementById('maxTonInput')
+
+        const vehicleData = await getVehiclesData()
+        const vehicleTypes = vehicleData.vehicle_types
+        const vehicleCategories = vehicleData.vehicle_categories
+
+        vehicleTypes.forEach(vType => {
+          const opt = document.createElement('option')
+          opt.value = vType.type_code
+          opt.textContent = vType.type_name
+          vehicleTypeSelectElem.appendChild(opt)
+        })
+
+        vehicleCategories.forEach(vCat => {
+          const opt = document.createElement('option')
+          opt.value = vCat.category_id
+          opt.textContent = vCat.name
+          vehicleCategorySelectElem.appendChild(opt)
+        })
+
         addDriverZoneSelectElem.value = ``
         displayCountyOptions(GeoReferenceData, addDriverCntySelectElem)
 
@@ -569,29 +629,48 @@ document.addEventListener('DOMContentLoaded', async () => {
         const driverPhone = document.getElementById('driverPhone');
         const driverVehicleNo = document.getElementById('driverVehicleNo');
 
+        // Check if atleast one of the storage temp. has been clicked
+        const tempCboxes = document.querySelectorAll('.storage-temp-cap')
+
         document.getElementById('addDriverForm')
           .addEventListener('submit', async (e) => {
             e.preventDefault()
 
-            const driverFullName = driverFirstName.value + ' ' + driverLastName.value
-            const response = await fetch(`${adminPagesLink}/addNewDriver`, 
-              {
-                method: 'POST', 
-                headers: {
-                  'Content-Type': 'application/json'
-                }, 
-                body: JSON.stringify({
-                  fullName: driverFullName, 
-                  phoneNo: driverPhone.value, 
-                  vehicleNo: driverVehicleNo.value, 
-                  zoneId: addDriverZoneSelectElem.value
-                })
+            let storageTempCaps = []
+            tempCboxes.forEach(cbox => {
+              if (cbox.checked) {
+                storageTempCaps.push(cbox.value)
               }
-            )
+            })
 
-            const res = await response.json()
-            triggerStatus(res.msg)
-          }, {once: true})
+            if (storageTempCaps.length === 0) {
+              alert('Choose atleast one vehicle storage temperature!!')
+            } else {
+              const vehicleTypeSelected = vehicleTypeSelectElem.value
+              const vehicleCategorySelected = vehicleCategorySelectElem.value
+              const maxTonValue = maxTonInputElem.value
+              console.log(storageTempCaps)
+            }
+
+            // const driverFullName = driverFirstName.value + ' ' + driverLastName.value
+            // const response = await fetch(`${adminPagesLink}/addNewDriver`, 
+            //   {
+            //     method: 'POST', 
+            //     headers: {
+            //       'Content-Type': 'application/json'
+            //     }, 
+            //     body: JSON.stringify({
+            //       fullName: driverFullName, 
+            //       phoneNo: driverPhone.value, 
+            //       vehicleNo: driverVehicleNo.value, 
+            //       zoneId: addDriverZoneSelectElem.value
+            //     })
+            //   }
+            // )
+
+            // const res = await response.json()
+            // triggerStatus(res.msg)
+          })
       }
     })
 
@@ -813,4 +892,10 @@ async function updateDbStatus(btnUserId, currentStatus, userType) {
 
   const res = await response.json()
   triggerStatus(res.msg)
+}
+
+const getVehiclesData = async () => {
+  const response = await fetch(`${adminPagesLink}/vehiclesCategoriesTypes`)
+  const res = await response.json()
+  return res.vehicles_categories_types
 }
