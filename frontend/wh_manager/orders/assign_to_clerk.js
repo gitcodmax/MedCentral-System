@@ -1,6 +1,6 @@
 import { renderSidebar } from "../sidebar.js";
 import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
-import { whManagerPagesLink } from "../../global.js";
+import { renderSuccessErrorOverlay, triggerStatus, whManagerPagesLink } from "../../global.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -94,6 +94,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
     `
   renderSidebar('assign_to_clerk')
+  renderSuccessErrorOverlay()
   displayNoMatch()
 
   //Display the rows with packages to assign to a clerk
@@ -268,8 +269,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             .textContent = clerk.name
 
           document.getElementById('confirmClerkBtn')
-            .addEventListener('click', () => {
-              console.log(pkgId, assignedClerkId)
+            .addEventListener('click', async () => {
+              const response = await fetch(`${whManagerPagesLink}/assignClerk`, 
+                {
+                  method: 'PUT', 
+                  headers: { 'Content-Type': 'application/json' }, 
+                  body: JSON.stringify({
+                    pkgId, 
+                    clerkId: assignedClerkId
+                  })
+                }
+              )
+              const res = await response.json()
+              triggerStatus(res.msg)
             }, {once: true})
 
           clickToRemoveOverlay(assignmentDialogOverlay)

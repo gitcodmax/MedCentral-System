@@ -47,7 +47,7 @@ export async function getOrderPackagesQ() {
                         )
                         FROM order_packages op
                         WHERE op.order_id = o.order_id 
-                            AND op.status_id = 4
+                            AND op.status_id = 4 AND op.assigned_clerk_id IS NULL
                     )
                 )
             ) AS order_list
@@ -72,4 +72,14 @@ export async function getOrderPackagesQ() {
   )
 
   return rows[0]
+}
+
+export async function assignClerkQ({ pkgId, clerkId }) {
+  await pool.query(
+    `
+    UPDATE order_packages
+    SET assigned_clerk_id = $1
+    WHERE package_id = $2
+    `, [clerkId, pkgId]
+  )
 }
