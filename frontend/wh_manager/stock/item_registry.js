@@ -2,10 +2,10 @@ import { renderSidebar } from "../sidebar.js";
 import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
 import { populateDropdowns } from "../standards.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-
-    document.querySelector('.page-container')
-        .innerHTML = `
+document.addEventListener('DOMContentLoaded', async () => {
+  console.log('Content loaded')
+  document.querySelector('.page-container')
+    .innerHTML = `
             <nav class="sidebar"></nav>
 
             <div class="registry-container">
@@ -65,7 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             <div class="form-group margin-set">
                                 <label>Units per Bulk</label>
-                                <input type="number" id="pricePerUnit" placeholder="0" min=1 required>
+                                <input type="number" id="unitsPerBulk" placeholder="0" min=1 required>
+                            </div>
+
+                            <div class="form-group margin-set">
+                                <label>Minimum Stock Level</label>
+                                <input type="number" id="minStockLevel" placeholder="0" min=1 required>
                             </div>
 
                             <button type="submit" class="submit-btn">Add to Registry</button>   
@@ -83,28 +88,39 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="confirm-body">
                             <div class="confirm-section">
                                 <span class="label">Product Name</span>
-                                <div class="value large" id="conf-name">Amoxicillin 500mg Capsules</div>
+                                <div class="value large" id="conf-name"></div>
                             </div>
                 
                             <div class="confirm-row">
                                 <div class="confirm-section">
                                     <span class="label">SKU Code</span>
-                                    <div class="value" id="conf-sku">MED-AMX-001</div>
+                                    <div class="value" id="conf-sku"></div>
                                 </div>
                                 <div class="confirm-section">
                                     <span class="label">Category</span>
-                                    <div class="value" id="conf-category">Antibiotics</div>
+                                    <div class="value" id="conf-category"></div>
                                 </div>
                             </div>
                 
                             <div class="confirm-row">
                                 <div class="confirm-section">
                                     <span class="label">Storage Temperature</span>
-                                    <div class="value" id="conf-temp">Ambient (15°C to 25°C)</div>
+                                    <div class="value" id="conf-temp"></div>
                                 </div>
                                 <div class="confirm-section">
                                     <span class="label">Unit Price (Ksh)</span>
-                                    <div class="value highlight" id="conf-price">450.00</div>
+                                    <div class="value highlight" id="conf-price"></div>
+                                </div>
+                            </div>
+                
+                            <div class="confirm-row">
+                                <div class="confirm-section">
+                                    <span class="label">Units Per Bulk</span>
+                                    <div class="value" id="conf-bunits"></div>
+                                </div>
+                                <div class="confirm-section">
+                                    <span class="label">Minimum Stock Level</span>
+                                    <div class="value" id="conf-minstock"></div>
                                 </div>
                             </div>
                 
@@ -178,111 +194,111 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `
 
-    renderSidebar('item_registry')
-    displayNoMatch()
+  renderSidebar('item_registry')
+  displayNoMatch()
 
-    const catalogItems = [
-        {
-            sku: "MED-AMX-001",
-            name: "Amoxicillin 500mg Capsules",
-            category: "Antibiotics",
-            uom: "Carton",
-            sellingUnit: "Strip",
-            temp: "Ambient",
-            price: 450.00
-        },
-        {
-            sku: "VAC-BCG-002",
-            name: "BCG Vaccine (Freeze-Dried)",
-            category: "Vaccines",
-            uom: "Box",
-            sellingUnit: "Vial",
-            temp: "Refrigerated",
-            price: 1200.00
-        },
-        {
-            sku: "SUR-GLV-003",
-            name: "Surgical Gloves (Size 7.5)",
-            category: "Surgical Gear",
-            uom: "Carton",
-            sellingUnit: "Pair",
-            temp: "Ambient",
-            price: 85.50
-        },
-        {
-            sku: "INS-GLR-004",
-            name: "Insulin Glargine (SoloStar)",
-            category: "Diabetes Care",
-            uom: "Pack",
-            sellingUnit: "Pen",
-            temp: "Refrigerated",
-            price: 3200.00
-        },
-        {
-            sku: "PAN-TAB-005",
-            name: "Panadol Extra 500mg",
-            category: "Analgesics",
-            uom: "Box",
-            sellingUnit: "Tablet",
-            temp: "Ambient",
-            price: 5.00
-        },
-        {
-            sku: "IVF-SAL-006",
-            name: "Normal Saline 0.9% (500ml)",
-            category: "IV Fluids",
-            uom: "Crate",
-            sellingUnit: "Bottle",
-            temp: "CRT",
-            price: 180.00
-        },
-        {
-            sku: "VAC-PLI-007",
-            name: "Polio Vaccine (Oral)",
-            category: "Vaccines",
-            uom: "Box",
-            sellingUnit: "Dose",
-            temp: "Frozen",
-            price: 150.00
-        },
-        {
-            sku: "SYR-DIS-008",
-            name: "Disposable Syringes (5ml)",
-            category: "Consumables",
-            uom: "Box",
-            sellingUnit: "Single Item",
-            temp: "Ambient",
-            price: 12.00
-        },
-        {
-            sku: "LAB-RGT-009",
-            name: "Rapid COVID-19 Test Kit",
-            category: "Diagnostics",
-            uom: "Box",
-            sellingUnit: "Kit",
-            temp: "Ambient",
-            price: 750.00
-        },
-        {
-            sku: "ANT-CEF-010",
-            name: "Ceftriaxone 1g Injection",
-            category: "Antibiotics",
-            uom: "Box",
-            sellingUnit: "Vial",
-            temp: "Ambient",
-            price: 280.00
-        }
-    ];
+  const catalogItems = [
+    {
+      sku: "MED-AMX-001",
+      name: "Amoxicillin 500mg Capsules",
+      category: "Antibiotics",
+      uom: "Carton",
+      sellingUnit: "Strip",
+      temp: "Ambient",
+      price: 450.00
+    },
+    {
+      sku: "VAC-BCG-002",
+      name: "BCG Vaccine (Freeze-Dried)",
+      category: "Vaccines",
+      uom: "Box",
+      sellingUnit: "Vial",
+      temp: "Refrigerated",
+      price: 1200.00
+    },
+    {
+      sku: "SUR-GLV-003",
+      name: "Surgical Gloves (Size 7.5)",
+      category: "Surgical Gear",
+      uom: "Carton",
+      sellingUnit: "Pair",
+      temp: "Ambient",
+      price: 85.50
+    },
+    {
+      sku: "INS-GLR-004",
+      name: "Insulin Glargine (SoloStar)",
+      category: "Diabetes Care",
+      uom: "Pack",
+      sellingUnit: "Pen",
+      temp: "Refrigerated",
+      price: 3200.00
+    },
+    {
+      sku: "PAN-TAB-005",
+      name: "Panadol Extra 500mg",
+      category: "Analgesics",
+      uom: "Box",
+      sellingUnit: "Tablet",
+      temp: "Ambient",
+      price: 5.00
+    },
+    {
+      sku: "IVF-SAL-006",
+      name: "Normal Saline 0.9% (500ml)",
+      category: "IV Fluids",
+      uom: "Crate",
+      sellingUnit: "Bottle",
+      temp: "CRT",
+      price: 180.00
+    },
+    {
+      sku: "VAC-PLI-007",
+      name: "Polio Vaccine (Oral)",
+      category: "Vaccines",
+      uom: "Box",
+      sellingUnit: "Dose",
+      temp: "Frozen",
+      price: 150.00
+    },
+    {
+      sku: "SYR-DIS-008",
+      name: "Disposable Syringes (5ml)",
+      category: "Consumables",
+      uom: "Box",
+      sellingUnit: "Single Item",
+      temp: "Ambient",
+      price: 12.00
+    },
+    {
+      sku: "LAB-RGT-009",
+      name: "Rapid COVID-19 Test Kit",
+      category: "Diagnostics",
+      uom: "Box",
+      sellingUnit: "Kit",
+      temp: "Ambient",
+      price: 750.00
+    },
+    {
+      sku: "ANT-CEF-010",
+      name: "Ceftriaxone 1g Injection",
+      category: "Antibiotics",
+      uom: "Box",
+      sellingUnit: "Vial",
+      temp: "Ambient",
+      price: 280.00
+    }
+  ];
 
-    const itemsTbody = document.querySelector('.js-items-tbody')
+  const itemsTbody = document.querySelector('.js-items-tbody')
 
-    function displayItems(catalogItems) {
-        const itemsFragment = document.createDocumentFragment()
-        catalogItems.forEach(item => {
-            const tblRow = document.createElement('tr')
-            const tempLetter = (item.temp).slice(0, 1)
+  function displayItems(catalogItems) {
+    const itemsFragment = document.createDocumentFragment()
+    catalogItems.forEach(item => {
+      const tblRow = document.createElement('tr')
+      const tempLetter = (item.temp).slice(0, 1)
 
-            tblRow.innerHTML = `
+      tblRow.innerHTML = `
                 <td class="sku-code"><strong>${item.sku}</strong></td>
                 <td>${item.name}</td>
                 <td>${item.uom} / ${item.sellingUnit}</td>
@@ -294,84 +310,88 @@ document.addEventListener('DOMContentLoaded', () => {
                 DELETE</button></td>
             `
 
-            itemsFragment.appendChild(tblRow)
-        })
-
-        return itemsFragment
-    }
-
-    itemsTbody.appendChild(displayItems(catalogItems))
-
-    populateDropdowns()
-
-    //Populating the overlay with data from the inputs for confirmation
-    const form = document.getElementById('itemForm')
-    const confirmItemOverlay = document.getElementById('confirmItemOverlay')
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const itemName = form.elements.itemName.value.trim()
-        const sku = form.elements.sku.value.trim()
-        const categorySelected = form.elements.categorySelect.value
-        const tempSelected = form.elements.tempSelect.value
-        const uomSelected = form.elements.uomSelect.value
-        const sellingUnitSelected = form.elements.sellingUnitSelect.value
-        const pricePerUnit = form.elements.pricePerUnit.value
-
-        document.getElementById('conf-name').textContent = itemName
-        document.getElementById('conf-sku').textContent = sku
-        document.getElementById('conf-category').textContent = categorySelected
-        document.getElementById('conf-temp').textContent = tempSelected
-        document.getElementById('conf-price').textContent = pricePerUnit
-        document.getElementById('conf-uom').textContent = uomSelected
-        document.getElementById('conf-sell').textContent = sellingUnitSelected
-
-        confirmItemOverlay.classList.add('active')
-
-        xRemoveOverlay(confirmItemOverlay)
-        clickToRemoveOverlay(confirmItemOverlay)
+      itemsFragment.appendChild(tblRow)
     })
 
-    // Search logic
-    const noMatchContainerElem = document.querySelector('.no-match-container')
-    const searchTerm = document.getElementById('search-input')
-    searchTerm.addEventListener('keyup', handleSearch)
-    function handleSearch() {
-        const searchValue = searchTerm.value.toLowerCase().trim()
-        const searchResult = catalogItems.filter(item => {
-            const searchMatch = item.sku.toLowerCase().includes(searchValue)
-                || item.name.toLowerCase().includes(searchValue)
-            return searchMatch
-        })
+    return itemsFragment
+  }
 
-        itemsTbody.innerHTML = ``
-        if (searchResult.length > 0) {
-            itemsTbody.appendChild(displayItems(searchResult))
-            noMatchContainerElem.classList.add('hidden')
-        } else {
-            noMatchContainerElem.classList.remove('hidden')
-        }
-    }
+  itemsTbody.appendChild(displayItems(catalogItems))
 
-    // Notification Message to delete item
-    const overlay = document.getElementById('delete-item-overlay')
-    itemsTbody.addEventListener('click', (e) => {
-        if (e.target.classList.contains('delete-item-btn')) {
-            const deleteBtn = e.target
-            const btnSku = deleteBtn.dataset.sku
+  await populateDropdowns()
 
-            catalogItems.forEach(item => {
-                if (item.sku === btnSku) {
-                    document.querySelector('.js-confirm-sku')
-                        .textContent = btnSku
-                    document.querySelector('.js-confirm-name')
-                        .textContent = item.name
-                    overlay.classList.add('active')
+  //Populating the overlay with data from the inputs for confirmation
+  const form = document.getElementById('itemForm')
+  const confirmItemOverlay = document.getElementById('confirmItemOverlay')
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
 
-                    clickToRemoveOverlay(overlay)
-                    xRemoveOverlay(overlay)
-                }
-            })
-        }
+    const itemName = form.elements.itemName.value.trim()
+    const sku = form.elements.sku.value.trim()
+    const categorySelected = form.elements.categorySelect.value
+    const tempSelected = form.elements.tempSelect.value
+    const uomSelected = form.elements.uomSelect.value
+    const sellingUnitSelected = form.elements.sellingUnitSelect.value
+    const pricePerUnit = form.elements.pricePerUnit.value
+    const unitsPerBulk = form.elements.unitsPerBulk.value
+    const minStockLevel = form.elements.minStockLevel.value
+
+    document.getElementById('conf-name').textContent = itemName
+    document.getElementById('conf-sku').textContent = sku
+    document.getElementById('conf-category').textContent = categorySelected
+    document.getElementById('conf-temp').textContent = tempSelected
+    document.getElementById('conf-price').textContent = pricePerUnit
+    document.getElementById('conf-uom').textContent = uomSelected
+    document.getElementById('conf-sell').textContent = sellingUnitSelected
+    document.getElementById('conf-bunits').textContent = unitsPerBulk
+    document.getElementById('conf-minstock').textContent = minStockLevel
+
+    confirmItemOverlay.classList.add('active')
+
+    xRemoveOverlay(confirmItemOverlay)
+    clickToRemoveOverlay(confirmItemOverlay)
+  })
+
+  // Search logic
+  const noMatchContainerElem = document.querySelector('.no-match-container')
+  const searchTerm = document.getElementById('search-input')
+  searchTerm.addEventListener('keyup', handleSearch)
+  function handleSearch() {
+    const searchValue = searchTerm.value.toLowerCase().trim()
+    const searchResult = catalogItems.filter(item => {
+      const searchMatch = item.sku.toLowerCase().includes(searchValue)
+        || item.name.toLowerCase().includes(searchValue)
+      return searchMatch
     })
+
+    itemsTbody.innerHTML = ``
+    if (searchResult.length > 0) {
+      itemsTbody.appendChild(displayItems(searchResult))
+      noMatchContainerElem.classList.add('hidden')
+    } else {
+      noMatchContainerElem.classList.remove('hidden')
+    }
+  }
+
+  // Notification Message to delete item
+  const overlay = document.getElementById('delete-item-overlay')
+  itemsTbody.addEventListener('click', (e) => {
+    if (e.target.classList.contains('delete-item-btn')) {
+      const deleteBtn = e.target
+      const btnSku = deleteBtn.dataset.sku
+
+      catalogItems.forEach(item => {
+        if (item.sku === btnSku) {
+          document.querySelector('.js-confirm-sku')
+            .textContent = btnSku
+          document.querySelector('.js-confirm-name')
+            .textContent = item.name
+          overlay.classList.add('active')
+
+          clickToRemoveOverlay(overlay)
+          xRemoveOverlay(overlay)
+        }
+      })
+    }
+  })
 })

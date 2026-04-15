@@ -18,6 +18,7 @@ import orgPortalPaymentsRouter from './controllers_routes/org_con_routes/c_r_pay
 import clerkAssignmentRouter from './controllers_routes/wh_manager_con_routes/c_r_assign_to_clerk.js';
 import assignDriverRouter from './controllers_routes/wh_manager_con_routes/c_r_assign_to_driver.js';
 import allOrdersRouter from './controllers_routes/wh_manager_con_routes/c_r_all_orders.js';
+import { standardsRouter } from './controllers_routes/wh_manager_con_routes/c_r_standards.js';
 
 const app = express();
 
@@ -49,7 +50,8 @@ app.use('/org',
 
 app.use('/whManager', 
   reviewReqRouter, clerkAssignmentRouter, 
-  assignDriverRouter, allOrdersRouter
+  assignDriverRouter, allOrdersRouter, 
+  standardsRouter
 )
 
 export default app;

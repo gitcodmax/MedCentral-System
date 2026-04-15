@@ -1,60 +1,28 @@
-const adminStandards = {
-  categories: [
-      "Antibiotics",
-      "Vaccines",
-      "Analgesics",
-      "Surgical Gear",
-      "IV Fluids",
-      "Diagnostics",
-      "Consumables",
-      "Diabetes Care"
-  ],
+import { whManagerPagesLink } from "../global.js";
 
-  storageTemps: [
-      "Ambient (15°C to 25°C)",
-      "CRT (Controlled Room Temp)",
-      "Refrigerated (2°C to 8°C)",
-      "Frozen (-20°C)"
-  ],
+const getAdminStandards = async () => {
+  const response = await fetch(`${whManagerPagesLink}/getAdminStandards`)
+  const res = await response.json()
+  return res.admin_standards
+}
 
-  uomOptions: [
-      "Pallet",
-      "Crate",
-      "Carton",
-      "Box",
-      "Pack",
-      "Bundle"
-  ],
+export async function populateDropdowns() {
+  const adminStandards = await getAdminStandards()
 
-  sellingUnits: [
-      "Vial",
-      "Tablet",
-      "Strip",
-      "Pen",
-      "Bottle",
-      "Dose",
-      "Pair",
-      "Kit",
-      "Single Item"
-  ]
-};
-
-//Displays all the options in the select tags as defined by the admin
-export function populateDropdowns() {
   const mappings = [
       { data: adminStandards.categories, elementId: 'categorySelect' },
       { data: adminStandards.storageTemps, elementId: 'tempSelect' },
       { data: adminStandards.uomOptions, elementId: 'uomSelect' },
-      { data: adminStandards.sellingUnits, elementId: 'sellingUnitSelect' }
+      { data: adminStandards.uomOptions, elementId: 'sellingUnitSelect' }
   ];
 
   mappings.forEach(mapping => {
       const selectElement = document.getElementById(mapping.elementId);
-      if (selectElement) {
-          mapping.data.forEach(optionText => {
+    if (selectElement) {
+        mapping.data.forEach(obj => {
               const opt = document.createElement('option');
-              opt.value = optionText;
-              opt.textContent = optionText;
+              opt.value = obj.id;
+              opt.textContent = obj.name;
               selectElement.appendChild(opt);
           });
       }
