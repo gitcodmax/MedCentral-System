@@ -1,13 +1,14 @@
 import { renderSidebar } from "../sidebar.js";
 import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
 import { populateDropdowns } from "../standards.js";
+import { renderSuccessErrorOverlay, triggerStatus, whManagerPagesLink } from "../../global.js";
 
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.page-container')
     .innerHTML = `     
     <nav class="sidebar"></nav>
 
-    <div class="shelf-mgmt-container">
+    <main class="shelf-mgmt-container">
       <header class="logo-container"></header>
 
       <section class="shelf-form-card">
@@ -42,10 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="form-group">
               <label>Max Unit Capacity</label>
               <input type="number" id="binCapacity" class="unit-wt-no" placeholder="e.g. 50 Cartons" min="1" required>
-            </div>
-            <div class="form-group">
-              <label>Weight Limit (kg)</label>
-              <input type="number" id="weightLimit" class="unit-wt-no" placeholder="Max load" min="0">
             </div>
           </div>
 
@@ -83,16 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="label">Max Unit Capacity</span>
                 <div class="value" id="show-shelfCap"></div>
               </div>
-              <div class="confirm-section">
-                <span class="label">Max Weight Limit</span>
-                <div class="value" id="show-shelfWeight"></div>
-              </div>
             </div>
           </div>
 
           <div class="confirm-footer">
             <button class="btn-no js-btn-no">Adjust Details</button>
-            <button class="btn-yes">Confirm & Initialize</button>
+            <button class="btn-yes" id="createShelfBtn">Confirm & Initialize</button>
           </div>
         </div>
       </div>
@@ -244,37 +237,53 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
       </section>
-    </div> 
+    </main> 
     `
 
   renderSidebar('wh_layout')
   populateDropdowns()
   displayNoMatch()
+  renderSuccessErrorOverlay()
 
+  // Creating a new shelf
   const shelfDetailsOverlay = document.getElementById('shelfConfirmOverlay')
   const form = document.getElementById('shelfCreationForm')
   form.addEventListener('submit', (e) => {
     e.preventDefault()
 
-    const shelfId = document.getElementById('shelfId').value
+    const shelfLabel = document.getElementById('shelfId').value
     const storageZone = document.getElementById('tempSelect').value
-    const targetUOM = document.getElementById('uomSelect').value
+    const targetUOMElem = document.getElementById('uomSelect')
     const binCapacity = document.getElementById('binCapacity').value
-    const wtLimitElem = document.getElementById('weightLimit')
-    const wtLimit = Number(wtLimitElem.value) || 0;
 
-    document.getElementById('show-shelfId').textContent = shelfId
+    document.getElementById('show-shelfId').textContent = shelfLabel
     document.getElementById('show-shelfZone').textContent = storageZone
-    document.getElementById('show-shelfUom').textContent = targetUOM
+    document.getElementById('show-shelfUom').textContent = targetUOMElem.selectedOptions[0].text
     document.getElementById('show-shelfCap').textContent = binCapacity
-    document.getElementById('show-shelfWeight').textContent = wtLimit
+
+    const bulkUom = targetUOMElem.value
+
+    // Button to send the new shelf details to the server
+    document.getElementById('createShelfBtn')
+      .addEventListener('click', async () => {
+        const response = await fetch(`${whManagerPagesLink}/createNewShelf`, 
+          {
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({shelfLabel, storageZone, bulkUom, binCapacity})
+          }
+        )
+
+        const res = await response.json()
+        triggerStatus(res.msg)
+      }, { once: true })
 
     shelfDetailsOverlay.classList.add('active')
     xRemoveOverlay(shelfDetailsOverlay)
     clickToRemoveOverlay(shelfDetailsOverlay)
   })
 
-
+// Warehouse inventory Map Table
   const warehouseInventoryMap = [
     {
       shelfId: "A1-RACK-01",
