@@ -29,9 +29,19 @@ export async function getCatalogItemsQ() {
         'sellingUnit', (SELECT name FROM cfg_uoms WHERE id = selling_uom_id), 
         'price', price_per_selling
       ))AS catalog_items
-    FROM items;
+    FROM items WHERE is_active = TRUE;
     `
   )
 
   return rows[0]
+}
+
+export async function deleteItemQ(sku) {
+  await pool.query(
+    `
+    UPDATE items 
+    SET is_active = FALSE 
+    WHERE sku_code = ($1);
+    `, [sku]
+  )
 }

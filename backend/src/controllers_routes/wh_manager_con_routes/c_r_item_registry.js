@@ -1,5 +1,6 @@
-import e, { json } from "express";
-import { getCatalogItemsQ, saveNewItemQ } from "../../repositories/wh_manager_repo/rep_item_registry.js";
+import e from "express";
+import { deleteItemQ, getCatalogItemsQ, saveNewItemQ } from "../../repositories/wh_manager_repo/rep_item_registry.js";
+
 
 export const itemRegistryRouter = e.Router()
 
@@ -18,5 +19,14 @@ itemRegistryRouter.get('/getCatalogItems', async (req, res) => {
     res.status(200).json(catalogItems)
   } catch (e) {
     res.status(500).json({Error: e.message})
+  }
+})
+
+itemRegistryRouter.put('/deleteItem', async (req, res) => {
+  try {
+    await deleteItemQ(req.body.sku)
+    res.status(200).json({msg: 'success'})
+  } catch (e) {
+    res.status(500).json({msg: 'error', Error: e.message})
   }
 })

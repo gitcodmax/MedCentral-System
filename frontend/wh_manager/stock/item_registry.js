@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     
                         <div class="buttons">
                             <button class="btn-no js-btn-no" id="cancelDelete">No, Cancel</button>
-                            <button class="btn-yes" id="confirmDelete">Yes, Delete</button>
+                            <button class="btn-yes" id="confirmItemDelete">Yes, Delete</button>
                         </div>
                         </div>
                     </div>
@@ -203,7 +203,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderSuccessErrorOverlay()
 
   const catalogItems = await getCatalogItems()
-  console.log(catalogItems)
   const itemsTbody = document.querySelector('.js-items-tbody')
 
   function displayItems(catalogItems) {
@@ -322,6 +321,22 @@ document.addEventListener('DOMContentLoaded', async () => {
           document.querySelector('.js-confirm-name')
             .textContent = item.name
           overlay.classList.add('active')
+
+          document.getElementById('confirmItemDelete')
+            .addEventListener('click', async () => {
+              const sku = item.sku
+
+              const response = await fetch(`${whManagerPagesLink}/deleteItem`, 
+                {
+                  method: 'PUT', 
+                  headers: { 'Content-Type': 'application/json' }, 
+                  body: JSON.stringify({sku})
+                }
+              )
+
+              const res = await response.json()
+              triggerStatus(res.msg)
+            }, {once: true})
 
           clickToRemoveOverlay(overlay)
           xRemoveOverlay(overlay)
