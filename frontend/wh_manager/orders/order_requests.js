@@ -1,9 +1,10 @@
 import { renderSidebar } from "../sidebar.js";
 import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
+import { whManagerPagesLink } from "../../global.js";
 
 dayjs.extend(window.dayjs_plugin_isBetween);
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
   //Render the page content
   document.querySelector('.page-container')
@@ -134,122 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderSidebar('orders_requests')
   displayNoMatch()
 
-  const orders = [
-    {
-      orderId: "ORD-101",
-      institutionName: "Kenyatta National Hospital",
-      destination: "Upper Hill, Nairobi",
-      creationDate: "2026-01-10",
-      paymentDate: "2026-01-12",
-      delivered: "No",
-      packages: [
-        { packageId: "ORD-101-R", itemCount: 12, processing: "Yes", ready: "Yes", inTransit: "No", completed: "No" },
-        { packageId: "ORD-101-A", itemCount: 45, processing: "Yes", ready: "Yes", inTransit: "No", completed: "No" }
-      ]
-    },
-    {
-      orderId: "ORD-102",
-      institutionName: "Aga Khan Hospital",
-      destination: "Parklands, Nairobi",
-      creationDate: "2026-01-11",
-      paymentDate: "2026-01-11",
-      delivered: "Yes",
-      packages: [
-        { packageId: "ORD-102-F", itemCount: 5, processing: "Yes", ready: "Yes", inTransit: "Yes", completed: "Yes" }
-      ]
-    },
-    {
-      orderId: "ORD-103",
-      institutionName: "The Karen Hospital",
-      destination: "Karen, Nairobi",
-      creationDate: "2026-01-12",
-      paymentDate: "2026-01-12",
-      delivered: "No",
-      packages: [
-        { packageId: "ORD-103-C", itemCount: 30, processing: "Yes", ready: "Yes", inTransit: "Yes", completed: "No" }
-      ]
-    },
-    {
-      orderId: "ORD-104",
-      institutionName: "Machakos Level 5",
-      destination: "Machakos Town, Machakos",
-      creationDate: "2026-01-14",
-      paymentDate: "2026-01-14",
-      delivered: "No",
-      packages: [
-        { packageId: "ORD-104-A", itemCount: 110, processing: "Yes", ready: "Yes", inTransit: "Yes", completed: "No" },
-        { packageId: "ORD-104-R", itemCount: 8, processing: "Yes", ready: "Yes", inTransit: "No", completed: "No" }
-      ]
-    },
-    {
-      orderId: "ORD-105",
-      institutionName: "MP Shah Hospital",
-      destination: "Parklands, Nairobi",
-      creationDate: "2026-01-14",
-      paymentDate: "2026-01-14",
-      delivered: "No",
-      packages: [
-        { packageId: "ORD-105-C", itemCount: 15, processing: "Yes", ready: "No", inTransit: "No", completed: "No" }
-      ]
-    },
-    {
-      orderId: "ORD-106",
-      institutionName: "Kikuyu General Hospital",
-      destination: "Kikuyu, Kiambu",
-      creationDate: "2026-01-13",
-      paymentDate: "2026-01-13",
-      delivered: "No",
-      packages: [
-        { packageId: "ORD-106-A", itemCount: 60, processing: "Yes", ready: "Yes", inTransit: "No", completed: "No" }
-      ]
-    },
-    {
-      orderId: "ORD-107",
-      institutionName: "Nairobi Women's Hospital",
-      destination: "Hurlingham, Nairobi",
-      creationDate: "2026-01-14",
-      paymentDate: "2026-01-14",
-      delivered: "No",
-      packages: [
-        { packageId: "ORD-107-F", itemCount: 4, processing: "Yes", ready: "Yes", inTransit: "No", completed: "No" },
-        { packageId: "ORD-107-R", itemCount: 10, processing: "Yes", ready: "No", inTransit: "No", completed: "No" }
-      ]
-    },
-    {
-      orderId: "ORD-108",
-      institutionName: "Gertrude's Children's Hospital",
-      destination: "Muthaiga, Nairobi",
-      creationDate: "2026-01-09",
-      paymentDate: "2026-01-09",
-      delivered: "Yes",
-      packages: [
-        { packageId: "ORD-108-A", itemCount: 25, processing: "Yes", ready: "Yes", inTransit: "Yes", completed: "Yes" },
-        { packageId: "ORD-108-C", itemCount: 12, processing: "Yes", ready: "Yes", inTransit: "Yes", completed: "Yes" }
-      ]
-    },
-    {
-      orderId: "ORD-109",
-      institutionName: "Thika Level 5 Hospital",
-      destination: "Thika Town, Kiambu",
-      creationDate: "2026-01-14",
-      paymentDate: "2026-01-14",
-      delivered: "No",
-      packages: [
-        { packageId: "ORD-109-R", itemCount: 40, processing: "Yes", ready: "Yes", inTransit: "Yes", completed: "No" }
-      ]
-    },
-    {
-      orderId: "ORD-110",
-      institutionName: "Mater Misericordiae Hospital",
-      destination: "South B, Nairobi",
-      creationDate: "2026-01-14",
-      paymentDate: "2026-01-14",
-      delivered: "No",
-      packages: [
-        { packageId: "ORD-110-A", itemCount: 85, processing: "No", ready: "No", inTransit: "No", completed: "No" }
-      ]
-    }
-  ];
+  const orders = await getOrdersData()
 
   const ordersTableBody = document.querySelector('.js-orders-table')
 
@@ -295,9 +181,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const overlay = document.getElementById('packages-overlay')
   ordersTableBody.addEventListener('click', (e) => {
     const btn = e.target.closest('button')
-    if(!btn) return;
+    if (!btn) return;
 
-    if(btn.classList.contains('js-view-btn')){
+    if (btn.classList.contains('js-view-btn')) {
       overlay.classList.add('active')
       const btnOrdId = btn.dataset.orderId
 
@@ -391,9 +277,9 @@ document.addEventListener('DOMContentLoaded', () => {
     noOfResultsElem.textContent = searchResult.length
     ordersTableBody.innerHTML = ``
 
-    if(searchResult.length === 0) {
+    if (searchResult.length === 0) {
       noMatchContainerElem.classList.remove('hidden')
-    }else{
+    } else {
       noMatchContainerElem.classList.add('hidden')
       ordersTableBody.appendChild(displayOrders(searchResult))
     }
@@ -420,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.js-btn-apply')
     .addEventListener('click', () => {
       searchbarElem.value = startDatetElem.value = endDateElem.value = ''
-      deliveryStatusDropdown.value = 'all'      
+      deliveryStatusDropdown.value = 'all'
       noOfResultsElem.textContent = '0'
 
       filterOrdersCore()
@@ -447,3 +333,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   displayStats()
 })
+
+// Get order details from the db
+const getOrdersData = async () => {
+  const response = await fetch(`${whManagerPagesLink}/getOrdersData`)
+  const res = await response.json()
+  return res.order_summary
+}
