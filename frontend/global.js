@@ -92,7 +92,9 @@ export function renderSuccessErrorOverlay(){
   `
 
   document.querySelector('main')
-    .insertAdjacentHTML('beforeend', successErrorHTML)
+    ?.insertAdjacentHTML('beforeend', successErrorHTML)
+  document.querySelector('.registry-container')
+    ?.insertAdjacentHTML('beforeend', successErrorHTML)
 }
 
 // Display the notification message based on db response

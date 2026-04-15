@@ -59,6 +59,24 @@
     font-size: 14px;
 }
 
+.form-note{
+  font-weight: 300;
+  font-size: 0.5rem;
+  transition: 0.1s ease;
+}
+.form-note:hover{
+  font-weight: 600;
+  font-size: 0.6rem;
+  transform: translateY(-3px);
+  color: black;
+}
+
+.note-container{
+  display: flex;
+  align-items: flex-end;
+  max-width: 200px;
+}
+
 .submit-btn {
     width: 100%;
     margin-top: 20px;

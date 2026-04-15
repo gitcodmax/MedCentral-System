@@ -1,9 +1,9 @@
 import { renderSidebar } from "../sidebar.js";
 import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
 import { populateDropdowns } from "../standards.js";
+import { renderSuccessErrorOverlay, triggerStatus, whManagerPagesLink } from "../../global.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
-  console.log('Content loaded')
   document.querySelector('.page-container')
     .innerHTML = `
             <nav class="sidebar"></nav>
@@ -73,6 +73,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 <input type="number" id="minStockLevel" placeholder="0" min=1 required>
                             </div>
 
+                            <div class="form-group margin-set note-container">
+                                <p class="form-note"><i>*Choose shelf location for the new item in Shelf Details Page.</i></p>
+                            </div>
+
                             <button type="submit" class="submit-btn">Add to Registry</button>   
                         </div>
                     </form>
@@ -139,7 +143,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                         <div class="confirm-footer">
                             <button class="btn-edit js-btn-no">Back to Edit</button>
-                            <button class="btn-confirm">Confirm & Save</button>
+                            <button class="btn-confirm" id="saveNewItemBtn">Confirm & Save</button>
                         </div>
                     </div>
                 </div>
@@ -196,6 +200,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   renderSidebar('item_registry')
   displayNoMatch()
+  renderSuccessErrorOverlay()
 
   const catalogItems = [
     {
@@ -323,30 +328,51 @@ document.addEventListener('DOMContentLoaded', async () => {
   //Populating the overlay with data from the inputs for confirmation
   const form = document.getElementById('itemForm')
   const confirmItemOverlay = document.getElementById('confirmItemOverlay')
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const itemName = form.elements.itemName.value.trim()
     const sku = form.elements.sku.value.trim()
-    const categorySelected = form.elements.categorySelect.value
-    const tempSelected = form.elements.tempSelect.value
-    const uomSelected = form.elements.uomSelect.value
-    const sellingUnitSelected = form.elements.sellingUnitSelect.value
+    const categorySelectedElem = form.elements.categorySelect
+    const tempSelectedElem = form.elements.tempSelect
+    const uomSelectedElem = form.elements.uomSelect
+    const sellingUnitSelectedElem = form.elements.sellingUnitSelect
     const pricePerUnit = form.elements.pricePerUnit.value
     const unitsPerBulk = form.elements.unitsPerBulk.value
     const minStockLevel = form.elements.minStockLevel.value
 
     document.getElementById('conf-name').textContent = itemName
     document.getElementById('conf-sku').textContent = sku
-    document.getElementById('conf-category').textContent = categorySelected
-    document.getElementById('conf-temp').textContent = tempSelected
+    document.getElementById('conf-category').textContent = categorySelectedElem.selectedOptions[0].text
+    document.getElementById('conf-temp').textContent = tempSelectedElem.selectedOptions[0].text
     document.getElementById('conf-price').textContent = pricePerUnit
-    document.getElementById('conf-uom').textContent = uomSelected
-    document.getElementById('conf-sell').textContent = sellingUnitSelected
+    document.getElementById('conf-uom').textContent = uomSelectedElem.selectedOptions[0].text
+    document.getElementById('conf-sell').textContent = sellingUnitSelectedElem.selectedOptions[0].text
     document.getElementById('conf-bunits').textContent = unitsPerBulk
     document.getElementById('conf-minstock').textContent = minStockLevel
 
+    const categoryId = categorySelectedElem.value
+    const storageTempCode = tempSelectedElem.value
+    const bulkUom = uomSelectedElem.value
+    const sellingUom = sellingUnitSelectedElem.value
+
     confirmItemOverlay.classList.add('active')
+
+    document.getElementById('saveNewItemBtn')
+      .addEventListener('click', async () => {
+        const response = await fetch(`${whManagerPagesLink}/saveNewItem`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              itemName, sku, categoryId, storageTempCode, bulkUom,
+              sellingUom, unitsPerBulk, pricePerUnit, minStockLevel
+            })
+          }
+        )
+        const res = await response.json()
+        triggerStatus(res.msg)
+      }, { once: true })
 
     xRemoveOverlay(confirmItemOverlay)
     clickToRemoveOverlay(confirmItemOverlay)
