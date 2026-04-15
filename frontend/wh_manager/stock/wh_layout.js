@@ -3,7 +3,7 @@ import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay
 import { populateDropdowns } from "../standards.js";
 import { renderSuccessErrorOverlay, triggerStatus, whManagerPagesLink } from "../../global.js";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   document.querySelector('.page-container')
     .innerHTML = `     
     <nav class="sidebar"></nav>
@@ -266,11 +266,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Button to send the new shelf details to the server
     document.getElementById('createShelfBtn')
       .addEventListener('click', async () => {
-        const response = await fetch(`${whManagerPagesLink}/createNewShelf`, 
+        const response = await fetch(`${whManagerPagesLink}/createNewShelf`,
           {
-            method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify({shelfLabel, storageZone, bulkUom, binCapacity})
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ shelfLabel, storageZone, bulkUom, binCapacity })
           }
         )
 
@@ -283,131 +283,8 @@ document.addEventListener('DOMContentLoaded', () => {
     clickToRemoveOverlay(shelfDetailsOverlay)
   })
 
-// Warehouse inventory Map Table
-  const warehouseInventoryMap = [
-    {
-      shelfId: "A1-RACK-01",
-      itemSku: "MED-AMX-001",
-      itemName: "Amoxicillin 500mg",
-      tempZone: "A",
-      bulkUOM: "Carton",
-      totalCapacity: 100,
-      remainingUnits: 15,
-      spaceLeftPercent: 15,
-      eligibleItems: []
-    },
-    {
-      shelfId: "FREEZE-S1",
-      itemSku: "—",
-      itemName: "UNALLOCATED",
-      tempZone: "F",
-      bulkUOM: "Box",
-      totalCapacity: 30,
-      remainingUnits: 30,
-      spaceLeftPercent: 100,
-      eligibleItems: [
-        { sku: "VAC-PLI-007", name: "Polio Vaccine" },
-        { sku: "LAB-RGT-009", name: "COVID Test Kit" }
-      ]
-    },
-    {
-      shelfId: "COLD-R04",
-      itemSku: "—",
-      itemName: "UNALLOCATED",
-      tempZone: "R",
-      bulkUOM: "Vial",
-      totalCapacity: 200,
-      remainingUnits: 200,
-      spaceLeftPercent: 100,
-      eligibleItems: [
-        { sku: "INS-GLR-004", name: "Insulin SoloStar" },
-        { sku: "VAC-BCG-002", name: "BCG Vaccine" }
-      ]
-    },
-    {
-      shelfId: "A1-RACK-02",
-      itemSku: "SUR-GLV-003",
-      itemName: "Surgical Gloves",
-      tempZone: "A",
-      bulkUOM: "Carton",
-      totalCapacity: 50,
-      remainingUnits: 5,
-      spaceLeftPercent: 10,
-      eligibleItems: []
-    },
-    {
-      shelfId: "CRT-ZONE-01",
-      itemSku: "—",
-      itemName: "UNALLOCATED",
-      tempZone: "C",
-      bulkUOM: "Crate",
-      totalCapacity: 40,
-      remainingUnits: 40,
-      spaceLeftPercent: 100,
-      eligibleItems: [
-        { sku: "IVF-SAL-006", name: "Normal Saline 0.9%" }
-      ]
-    },
-    {
-      shelfId: "A2-RACK-05",
-      itemSku: "PAN-TAB-005",
-      itemName: "Panadol Extra",
-      tempZone: "A",
-      bulkUOM: "Box",
-      totalCapacity: 500,
-      remainingUnits: 150,
-      spaceLeftPercent: 30,
-      eligibleItems: []
-    },
-    {
-      shelfId: "COLD-R05",
-      itemSku: "ANT-CEF-010",
-      itemName: "Ceftriaxone 1g",
-      tempZone: "R",
-      bulkUOM: "Vial",
-      totalCapacity: 100,
-      remainingUnits: 60,
-      spaceLeftPercent: 60,
-      eligibleItems: []
-    },
-    {
-      shelfId: "FREEZE-S2",
-      itemSku: "—",
-      itemName: "UNALLOCATED",
-      tempZone: "F",
-      bulkUOM: "Box",
-      totalCapacity: 25,
-      remainingUnits: 25,
-      spaceLeftPercent: 100,
-      eligibleItems: [
-        { sku: "LAB-RGT-009", name: "COVID Test Kit" }
-      ]
-    },
-    {
-      shelfId: "A3-RACK-01",
-      itemSku: "SYR-DIS-008",
-      itemName: "Disposable Syringes",
-      tempZone: "A",
-      bulkUOM: "Box",
-      totalCapacity: 120,
-      remainingUnits: 20,
-      spaceLeftPercent: 16.6,
-      eligibleItems: []
-    },
-    {
-      shelfId: "BULK-PAL-01",
-      itemSku: "—",
-      itemName: "UNALLOCATED",
-      tempZone: "A",
-      bulkUOM: "Pallet",
-      totalCapacity: 10,
-      remainingUnits: 10,
-      spaceLeftPercent: 100,
-      eligibleItems: [
-        { sku: "MED-EQP-500", name: "Oxygen Concentrators" }
-      ]
-    }
-  ];
+  // Warehouse inventory Map Table
+  const warehouseInventoryMap = await getWhInventoryMap()
 
   const shelfTableBodyElem = document.getElementById('shelfTableBody')
 
@@ -426,14 +303,14 @@ document.addEventListener('DOMContentLoaded', () => {
         : `${itemName}`
 
       tblRow.innerHTML = `              
-        <td><strong class="grn-cell">${shelf.shelfId}</strong></td>
+        <td><strong class="grn-cell">${shelf.shelfLabel}</strong></td>
         <td>${displayItemName}</td>
         <td><span class="badge ${shelf.tempZone}">${shelf.tempZone}</span></td>
         <td>${shelf.bulkUOM}</td>
         <td>
           <div class="capacity-container">
             <div class="capacity-bar">
-              <div class="fill" style="width: ${shelf.spaceLeftPercent}%;"></div>
+              <div class="fill" style="width: ${shelf.spaceFilledPercent}%;"></div>
             </div>
             <small>${shelf.remainingUnits} / ${shelf.totalCapacity} Left</small>
           </div>
@@ -459,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       //Set up the delete shelf button
       if (e.target.classList.contains('delete-shelf')) {
-        document.querySelector('.js-shelf-id').textContent = btnShelfId
+        document.querySelector('.js-shelf-id').textContent = btnShelfId + ' -> ' + shelfDetails.shelfLabel
         document.querySelector('.js-item-name').textContent = shelfDetails.itemName
 
         deleteItemOverlay.classList.add('active')
@@ -471,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
       //Set up the assign shelf button and display items in the items to assign table
       const assignShelfNoMatchElem = document.getElementById('assignShelfNoMatchContainer')
       if (e.target.classList.contains('assign-shelf')) {
-        document.getElementById('targetShelfId').textContent = shelfDetails.shelfId
+        document.getElementById('targetShelfId').textContent = shelfDetails.shelfId + ' -> ' + shelfDetails.shelfLabel
         displayRegistryItems(shelfDetails.eligibleItems)
 
         assignShelfOverlay.classList.add('active')
@@ -498,7 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //Returns the shelf details that matches the button shelf id
   function getShelf(btnShelfId) {
-    return warehouseInventoryMap.find(shelf => shelf.shelfId === btnShelfId)
+    return warehouseInventoryMap.find(shelf => shelf.shelfId === Number(btnShelfId))
   }
 
   //Show the registry items for assignment to a specific shelf
@@ -586,3 +463,9 @@ document.addEventListener('DOMContentLoaded', () => {
     resetBtn.disabled = true
   })
 })
+
+const getWhInventoryMap = async () => {
+  const response = await fetch(`${whManagerPagesLink}/getWhInvMap`)
+  const res = await response.json()
+  return res.wh_inventory_map
+}
