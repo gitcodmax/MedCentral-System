@@ -15,3 +15,23 @@ export async function saveNewItemQ({ itemName, sku, categoryId, storageTempCode,
     ]
   )
 }
+
+export async function getCatalogItemsQ() {
+  const { rows } = await pool.query(
+    `
+    SELECT jsonb_agg(
+      jsonb_build_object(
+        'name', name, 
+        'sku', sku_code, 
+        'category', (SELECT name FROM cfg_item_categories WHERE id = category_id), 
+        'temp', (SELECT description FROM cfg_storage_options WHERE code = storage_temp_code), 
+        'uom',(SELECT name FROM cfg_uoms WHERE id = bulk_uom_id), 
+        'sellingUnit', (SELECT name FROM cfg_uoms WHERE id = selling_uom_id), 
+        'price', price_per_selling
+      ))AS catalog_items
+    FROM items;
+    `
+  )
+
+  return rows[0]
+}

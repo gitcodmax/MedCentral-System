@@ -1,5 +1,5 @@
-import e from "express";
-import { saveNewItemQ } from "../../repositories/wh_manager_repo/rep_item_registry.js";
+import e, { json } from "express";
+import { getCatalogItemsQ, saveNewItemQ } from "../../repositories/wh_manager_repo/rep_item_registry.js";
 
 export const itemRegistryRouter = e.Router()
 
@@ -9,5 +9,14 @@ itemRegistryRouter.post('/saveNewItem', async (req, res) => {
     res.status(200).json({msg: 'success'})
   } catch (e) {
     res.status(500).json({msg: 'error', Error: e.message})
+  }
+})
+
+itemRegistryRouter.get('/getCatalogItems', async (req, res) => {
+  try {
+    const catalogItems = await getCatalogItemsQ()
+    res.status(200).json(catalogItems)
+  } catch (e) {
+    res.status(500).json({Error: e.message})
   }
 })
