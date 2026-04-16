@@ -21,6 +21,7 @@ import allOrdersRouter from './controllers_routes/wh_manager_con_routes/c_r_all_
 import { standardsRouter } from './controllers_routes/wh_manager_con_routes/c_r_standards.js';
 import { itemRegistryRouter } from './controllers_routes/wh_manager_con_routes/c_r_item_registry.js';
 import { whLayoutRouter } from './controllers_routes/wh_manager_con_routes/c_r_wh_layout.js';
+import { whManagerDashRouter } from './controllers_routes/wh_manager_con_routes/c_r_wh_manager_dash.js';
 
 const app = express();
 
@@ -54,7 +55,7 @@ app.use('/whManager',
   reviewReqRouter, clerkAssignmentRouter, 
   assignDriverRouter, allOrdersRouter, 
   standardsRouter, itemRegistryRouter, 
-  whLayoutRouter
+  whLayoutRouter, whManagerDashRouter
 )
 
 export default app;

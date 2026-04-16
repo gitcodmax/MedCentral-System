@@ -1,6 +1,7 @@
+import { whManagerPagesLink } from "../global.js"
 import { renderSidebar } from "./sidebar.js"
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
   document.querySelector('.js-dashboard-container')
     .innerHTML = `
@@ -48,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </section>
 
         <section class="recent-orders">
-          <h2>Recently Delivered Orders</h2>
+          <h2>Recently Delivered Order Packages</h2>
           <table class="data-table">
             <thead>
               <tr>
@@ -68,12 +69,10 @@ document.addEventListener('DOMContentLoaded', () => {
   //Function to render the sidebar
   renderSidebar('wh_manager_dash')
 
-  //Mock data for dash summary
-  const summaryStats = {
-    "totalPendingReview": 8,
-    "totalToAssignClerk": 10,
-    "totalToAssignDriver": 16
-  }
+  const dashData = await getWhManagerDashData()
+
+  // Summary Stats
+  const { summaryStats } = dashData
 
   //Handles display of summary data in the dash
   document.querySelector('.js-orders-review')
@@ -85,24 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.js-orders-assign-driver')
     .innerText = summaryStats.totalToAssignDriver
 
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  //Code for the stock alerts has been repeated in another file(inv_clerk)
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  //Mock data from the API for use in the stock alerts
-  const inventory = {
-    "PAR-500MG": {
-      itemDetails: "Paracetamol 500mg(20 boxes)",
-      stockLevel: "low" // Value sent from API: 'warning', 'low', 'critical', or 'healthy'
-    },
-    "AMX-250": {
-      itemDetails: "Amoxicillin 250mg(5 bottles)",
-      stockLevel: "critical"
-    },
-    "GLOV-LAT-M": {
-      itemDetails: "Latex Gloves(10 cartons)",
-      stockLevel: "warning"
-    }
-  };
+  // Stock alerts
+  const {inventory} = dashData;
 
   //Handles display of the stock alerts in the dash
   const alertsContainer = document.querySelector('.js-alerts-container')
@@ -113,36 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
     `
   }
 
-  //Mock data for recently delivered orders
-  const recentlyDeliveredOrders = [
-    {
-      "orderId": "ORD-0882",
-      "hospitalName": "Aga Khan University Hospital",
-      "creationDate": "2025-12-28",
-      "deliveredOn": "2026-01-02"
-    },
-    {
-      "orderId": "ORD-0875",
-      "hospitalName": "The Nairobi Hospital",
-      "creationDate": "2025-12-27",
-      "deliveredOn": "2026-01-01"
-    },
-    {
-      "orderId": "ORD-0860",
-      "hospitalName": "Kenyatta National Hospital",
-      "creationDate": "2025-12-24",
-      "deliveredOn": "2025-12-28"
-    },
-    {
-      "orderId": "ORD-0855",
-      "hospitalName": "MediHeal Hospital",
-      "creationDate": "2025-12-22",
-      "deliveredOn": "2025-12-26"
-    }
-  ]
+  // Recently delivered order packages
+  const {recentlyDeliveredOrders} = dashData
 
   recentlyDeliveredOrders.forEach((deliveredOrder) => {
-    console.log(deliveredOrder)
 
     document.querySelector('tbody')
       .innerHTML += `
@@ -157,3 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
 })
+
+const getWhManagerDashData = async () => {
+  const response = await fetch(`${whManagerPagesLink}/getWhManagerDashData`)
+  const res = await response.json()
+  return res.wh_dash_data
+}
