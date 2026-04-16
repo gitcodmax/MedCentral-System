@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const payOverlayElem = document.getElementById('paymentOverlay')
   const approvedReq = await getAprovedReq(hosId)
 
+  // Display approved requests on the pending payments table
   const approvedReqTblBodyElem = document.getElementById('approvedReqTable')
   const approvedReqTblFrag = document.createDocumentFragment()
 
@@ -116,6 +117,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   approvedReqTblBodyElem.appendChild(approvedReqTblFrag)
 
+  // Button to display payment and order details
   document.querySelectorAll('.js-btn-pay')
     .forEach(payBtn => {
       payBtn.addEventListener('click', () => {
@@ -155,7 +157,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           const reqId = Number(request.requestId.slice(4))
 
           const msg = await createOrder(reqId)
-          triggerStatus(msg)
+          console.log(msg)
+          // triggerStatus(msg)
         },{once: true})
       })
     })
