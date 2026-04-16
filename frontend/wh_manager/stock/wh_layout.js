@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="assignment-header">
               <div class="shelf-context">
                 <span class="context-label">Assigning to Shelf:</span>
-                <span class="context-id" id="targetShelfId">AISLE-04-RACK-B</span>
+                <span class="context-id" id="targetShelfId"></span>
               </div>
               <button class="close-overlay-btn js-close-overlay-btn">&times;</button>
             </div>
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                       <th>Select</th>
                       <th>SKU</th>
                       <th>Item Name</th>
-                      <th>No. of Items to Assign</th>
+                      <th>No. of Bulk Items to Assign</th>
                     </tr>
                   </thead>
                   <tbody id="registryItemsToAssign"></tbody>
@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               </div>
               <div class="action-buttons">
                 <button class="btn-no js-btn-no">Cancel</button>
-                <button class="btn-yes">Confirm Assignment</button>
+                <button class="btn-yes" id="assignItemBtn">Confirm Assignment</button>
               </div>
             </div>
           </div>
@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="capacity-bar">
               <div class="fill" style="width: ${shelf.spaceFilledPercent}%;"></div>
             </div>
-            <small>${shelf.remainingUnits} / ${shelf.totalCapacity} Left</small>
+            <small>${shelf.remainingUnits} / ${shelf.totalCapacity} Filled</small>
           </div>
         </td>
         <td class="btn-container">${buttonHtml}</td>             
@@ -341,6 +341,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         deleteItemOverlay.classList.add('active')
 
+        document.getElementById('confirmDelete')
+          .addEventListener('click', async () => {
+            const shelfId = Number(btnShelfId)
+
+            const response = await fetch(`${whManagerPagesLink}/deleteShelf`,
+              {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ shelfId })
+              }
+            )
+            const res = await response.json()
+            triggerStatus(res.msg)
+          }, { once: true })
+
         xRemoveOverlay(deleteItemOverlay)
         clickToRemoveOverlay(deleteItemOverlay)
       }
@@ -349,9 +364,38 @@ document.addEventListener('DOMContentLoaded', async () => {
       const assignShelfNoMatchElem = document.getElementById('assignShelfNoMatchContainer')
       if (e.target.classList.contains('assign-shelf')) {
         document.getElementById('targetShelfId').textContent = shelfDetails.shelfId + ' -> ' + shelfDetails.shelfLabel
-        displayRegistryItems(shelfDetails.eligibleItems)
+        document.getElementById('spaceLimit').textContent = shelfDetails.totalCapacity
+        displayRegistryItems(shelfDetails.eligibleItems, shelfDetails.totalCapacity)
 
         assignShelfOverlay.classList.add('active')
+
+        const shelfId = shelfDetails.shelfId
+        const assignItemShelfBtn = document.getElementById('assignItemBtn')
+        if (shelfDetails.eligibleItems.length === 0) {
+          assignItemShelfBtn.disabled = true
+        } else {
+          assignItemShelfBtn.disabled = false
+        }
+
+        assignItemShelfBtn.addEventListener('click', async () => {
+          const selectedRadio = document.querySelector('input[name="selectedItem"]:checked')
+
+          if (selectedRadio) {
+            const itemSku = selectedRadio.value
+
+            const response = await fetch(`${whManagerPagesLink}/assignShelfItem`, 
+              {
+                method: 'PUT', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({shelfId, itemSku})
+              }
+            )
+            const res = await response.json()
+            triggerStatus(res.msg)
+          } else {
+            alert('Select an item to assign to shelf!')
+          }
+        })
 
         xRemoveOverlay(assignShelfOverlay)
         clickToRemoveOverlay(assignShelfOverlay)
@@ -366,7 +410,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             return searchMatch
           })
-          displayRegistryItems(searchResults)
+          displayRegistryItems(searchResults, shelfDetails.totalCapacity)
 
           displayNoMatchMessage(searchResults, assignShelfNoMatchElem)
         })
@@ -379,7 +423,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   //Show the registry items for assignment to a specific shelf
-  function displayRegistryItems(eligibleItems) {
+  function displayRegistryItems(eligibleItems, maxShelfCapacity) {
     const registryItemsTbody = document.getElementById('registryItemsToAssign')
     registryItemsTbody.innerHTML = ``
 
@@ -393,8 +437,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       <td>${item.name}</td>
       <td>
         <div class="qty-input-wrapper">
-          <input type="number" class="qty-field" value="0" min="0" placeholder="0">
-          <small class="helper-text">Enter quantity if stock exists</small>
+          <input type="number" class="qty-field" id="itemId-${item.sku}"
+          value="${item.currentStock}" min="0" max=${maxShelfCapacity} placeholder="0" 
+          disabled>
+          <small class="helper-text">Maximum shelf capacity is ${maxShelfCapacity}</small>
         </div>
       </td>
     `

@@ -27,20 +27,42 @@ export async function getWhInvMapQ() {
         'spaceFilledPercent', ROUND(
                     ((COALESCE(i.current_stock, 0)::NUMERIC / ws.max_uom_capacity) * 100)
                     , 2), 
-        'eligibleItems', (SELECT COALESCE(
-                      jsonb_agg(
-                        jsonb_build_object('sku', sku_code, 'name', name)
-                      ), '[]'::jsonb)
-                    FROM items 
-                    WHERE shelf_id IS NULL 
-                      AND storage_temp_code = ws.storage_type_code 
-                      AND bulk_uom_id = ws.bulk_uom_id
-                  )
+        'eligibleItems', CASE WHEN i.sku_code IS NOT NULL THEN '[]'::jsonb 
+                  ELSE (SELECT COALESCE(
+                        jsonb_agg(
+                          jsonb_build_object('sku', sku_code, 'name', name, 'currentStock', current_stock)
+                        ), '[]'::jsonb)
+                      FROM items 
+                      WHERE shelf_id IS NULL 
+                        AND storage_temp_code = ws.storage_type_code 
+                        AND bulk_uom_id = ws.bulk_uom_id 
+                        AND is_active = TRUE 
+                        AND current_stock < (ws.max_uom_capacity + 1)
+                    ) END
       )) AS wh_inventory_map
     FROM cfg_warehouse_shelves ws 
-    LEFT JOIN items i ON ws.shelf_id = i.shelf_id 
+    LEFT JOIN (SELECT * FROM items WHERE is_active = TRUE) i ON ws.shelf_id = i.shelf_id
     `
   )
 
   return rows[0]
+}
+
+export async function deleteShelfQ(shelfId) {
+  await pool.query(
+    `
+    DELETE FROM cfg_warehouse_shelves
+    WHERE shelf_id = $1
+    `, [shelfId]
+  )
+}
+
+export async function assignShelfItemQ({ shelfId, itemSku }) {
+  await pool.query(
+    `
+    UPDATE items 
+    SET shelf_id = $1 
+    WHERE sku_code = $2
+    `, [shelfId, itemSku]
+  )
 }
