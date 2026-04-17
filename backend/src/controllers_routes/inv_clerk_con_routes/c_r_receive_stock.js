@@ -15,7 +15,7 @@ receiveStockRouter.get('/getItemsData', async (req, res) => {
 receiveStockRouter.post('/saveNewStockData', async (req, res) => {
   try {
     await saveNewStockDataQ(req.body)
-    res.status(200).json({msg: 'success'})
+    res.status(200).json({msg: 'successful'})
   } catch (e) {
     res.status(500).json({msg: error, Error: e.message})
   }

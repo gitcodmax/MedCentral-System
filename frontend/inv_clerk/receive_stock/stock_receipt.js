@@ -1,4 +1,4 @@
-import { invClerkPagesLink } from "../../global.js";
+import { invClerkPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../../global.js";
 import { userId } from "../inv_clerk_dash.js";
 import { getFormData } from "./receive_stock_functions.js";
 
@@ -74,6 +74,8 @@ document.querySelector('.receipt-container')
   
   `
 
+renderSuccessErrorOverlay()
+
 const stockReceipt = getFormData()
 stockReceipt.deliveryDetails['userId'] = userId
 
@@ -144,13 +146,13 @@ const deliveryDetailsMod = deliveryDetails
 const stockReceiptMod = {}
 stockReceiptMod['deliveryDetails'] = deliveryDetailsMod
 const itemsValues = Object.values(items)
-const modItem =  itemsValues.map(item => {
+const modItem = itemsValues.map(item => {
   const modItem = {}
   Object.entries(item).forEach(([key, value]) => {
     const modKey = key.slice(0, -2)
 
-    if (modKey === 'itemCode' || modKey === 'qtyDelivered' || 
-      modKey === 'expiryDate' || modKey ==='batchNo'
+    if (modKey === 'itemCode' || modKey === 'qtyDelivered' ||
+      modKey === 'expiryDate' || modKey === 'batchNo'
     ) modItem[modKey] = value
   })
 
@@ -160,14 +162,14 @@ stockReceiptMod['items'] = modItem
 
 document.getElementById('receiveStockBtn')
   .addEventListener('click', async () => {
-    const response = await fetch(`${invClerkPagesLink}/saveNewStockData`, 
+    const response = await fetch(`${invClerkPagesLink}/saveNewStockData`,
       {
-        method: 'POST', 
-        headers: { 'Content-Type': 'application/json' }, 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(stockReceiptMod)
       }
     )
 
     const res = await response.json()
-    console.log(res)
+    triggerStatus(res.msg)
   })

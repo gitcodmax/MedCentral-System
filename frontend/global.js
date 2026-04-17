@@ -26,7 +26,7 @@ export function displayNoMatchFound() {
 //Opens the overlay and closes it when the close buttons are clicked
 //Used in org_portal and admin_portal
 export function handleOverlay(overlay) {
-  if(overlay) overlay.classList.add('active')
+  if (overlay) overlay.classList.add('active')
 
   document.querySelectorAll('.js-btn-close-overlay')
     .forEach(closeBtn => {
@@ -68,7 +68,7 @@ export function displayCountyOptions(geoData, selectTag) {
 }
 
 // Add the html to display the success and error messages
-export function renderSuccessErrorOverlay(){
+export function renderSuccessErrorOverlay() {
   const successErrorHTML = `
     <div id="successOverlay" class="modal-overlay">
       <div class="modal-card db-notif-card">
@@ -95,11 +95,13 @@ export function renderSuccessErrorOverlay(){
     ?.insertAdjacentHTML('beforeend', successErrorHTML)
   document.querySelector('.registry-container')
     ?.insertAdjacentHTML('beforeend', successErrorHTML)
+  document.querySelector('.receipt-container')
+    ?.insertAdjacentHTML('beforeend', successErrorHTML)
 }
 
 // Display the notification message based on db response
 export function triggerStatus(type) {
-  const overlayId = type === 'success' ? 'successOverlay' : 'errorOverlay';
+  const overlayId = type === 'success' || type === 'successful' ? 'successOverlay' : 'errorOverlay';
   const dbNotifOverlay = document.getElementById(overlayId);
 
   handleOverlay(dbNotifOverlay)
@@ -107,6 +109,13 @@ export function triggerStatus(type) {
   setTimeout(() => {
     location.reload()
     dbNotifOverlay.classList.remove('active');
+    // 'Successful' is returned when receiving stock items only 
+    // which needs deleting of the stock details stored in the session storage 
+    // if the stock data was successfully saved.
+    if (type === 'successful') {
+      sessionStorage.removeItem("stockReceipt")
+      window.location.href = 'http://localhost:3000/inv_clerk/receive_stock/receive_stock.html';
+    }
   }, 3000);
 }
 

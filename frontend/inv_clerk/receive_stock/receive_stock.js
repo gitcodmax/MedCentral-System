@@ -5,9 +5,6 @@ import {
   getFormData, handleAddingItem, listenChangeInItemCodeName
 } from "./receive_stock_functions.js";
 
-
-console.log('Loaded')
-
 renderHeader()
 
 document.querySelector('.form-wrapper')

@@ -4,55 +4,6 @@ import { invClerkPagesLink } from "../../global.js";
 
 export const getItemsContainer = () => document.getElementById('item-details-section');
 
-// Mock data containing all the items details in the system
-// const masterItems = [
-//   {
-//     sku: "AMOX-250-BT",
-//     itemName: "Amoxicillin 250mg",
-//     category: "Antibiotics",
-//     bulkUom: "Box (100 Units)",
-//     storageTemp: "Room Temp",
-//     shelfId: "B-02-11",
-//     storageCode: "A"
-//   },
-//   {
-//     sku: "INS-V10-VL",
-//     itemName: "Insulin Vials (Fast Acting)",
-//     category: "Diabetes Care",
-//     bulkUom: "Carton (50 Vials)",
-//     storageTemp: "Refrigerated",
-//     shelfId: "REF-01-A",
-//     storageCode: "R"
-//   },
-//   {
-//     sku: "GLOV-LAT-M",
-//     itemName: "Latex Gloves (Size M)",
-//     category: "Consumables",
-//     bulkUom: "Case (10 Boxes)",
-//     storageTemp: "Room Temp",
-//     shelfId: "C-05-22",
-//     storageCode: "A"
-//   },
-//   {
-//     sku: "VAC-COV-05",
-//     itemName: "Standard Vaccine Vials",
-//     category: "Immunization",
-//     bulkUom: "Tray (25 Vials)",
-//     storageTemp: "Frozen",
-//     shelfId: "FRZ-03-B",
-//     storageCode: "F"
-//   },
-//   {
-//     sku: "PAR-500-BX",
-//     itemName: "Paracetamol 500mg Tablets",
-//     category: "Analgesics",
-//     bulkUom: "Bulk Pack (5000 Tabs)",
-//     storageTemp: "Room Temp",
-//     shelfId: "A-12-04",
-//     storageCode: "A"
-//   }
-// ];
-
 export const getMasterItems = async () => {
   const response = await fetch(`${invClerkPagesLink}/getItemsData`)
   const res = await response.json()
@@ -60,7 +11,6 @@ export const getMasterItems = async () => {
 }
 
 const masterItems = await getMasterItems()
-console.log(masterItems)
 
 //HTML for creating an Item Details Container
 export const createAnotherItemDetailsContainer = (itemIndexed) => {
@@ -180,19 +130,13 @@ export function saveFormData(stockForm) {
   const itemContainers = stockForm.querySelectorAll(".js-item-entry-card");
 
   itemContainers.forEach(container => {
-    const itemId = container.id[container.id.length - 1];
+    const itemId = container.id.slice(-1);
     deliveryReceipt.items[itemId] = {};
 
     const fields = container.querySelectorAll("input, select, textarea");
 
     fields.forEach(field => {
-      // Save itemName using the visible text instead of the SKU value
-      if (field.tagName === 'SELECT' && field.id.startsWith('itemName-')) {
-        const selectedOption = field.options[field.selectedIndex];
-        deliveryReceipt.items[itemId][field.id] = selectedOption ? selectedOption.text : field.value;
-      } else {
-        deliveryReceipt.items[itemId][field.id] = field.value;
-      }
+      deliveryReceipt.items[itemId][field.id] = field.value;
     });
   });
 
