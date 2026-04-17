@@ -109,7 +109,12 @@ document.addEventListener('DOMContentLoaded', () => {
         loginForm.reset();
         clearErrors();
         localStorage.setItem('token', res.token)
-        if(res.role === 3) localStorage.setItem('hosId', res.hosId)
+        for (i of ['userId', 'hosId']) {
+          localStorage.removeItem(i)
+        }
+        if (res.role === 1 || res.role === 2) localStorage.setItem('userId', res.userId)
+        if (res.role === 3) localStorage.setItem('hosId', res.hosId)
+
         redirectToDash(res.role)
       }
 

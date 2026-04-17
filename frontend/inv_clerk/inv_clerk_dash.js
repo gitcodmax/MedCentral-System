@@ -1,5 +1,7 @@
 import { renderHeader } from "./header.js";
 
+export const userId = Number(localStorage.getItem('userId'))
+
 document.addEventListener('DOMContentLoaded', () => {
 
     renderHeader()

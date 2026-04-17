@@ -26,10 +26,7 @@ document.querySelector('.form-wrapper')
                     <label for="supplierName">Supplier Name:</label>
                     <input type="text" id="supplierName" required>
                 </div>
-                <div class="input-group">
-                    <label for="deliveryNote">Delivery Note Number:</label>
-                    <input type="text" id="deliveryNote" required>
-                </div>
+
                 <div class="input-group">
                     <label for="deliveryDateTime">Delivery Date and Time:</label>
                     <input type="datetime-local" id="deliveryDateTime" required>

@@ -1,5 +1,5 @@
 import e from 'express';
-import { getItemsDataQ } from '../../repositories/inv_clerk_repo/rep_receive_stock_functions.js';
+import { getItemsDataQ } from '../../repositories/inv_clerk_repo/rep_receive_stock.js';
 
 export const receiveStockRouter = e.Router()
 

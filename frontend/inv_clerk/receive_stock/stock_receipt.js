@@ -1,5 +1,7 @@
+import { userId } from "../inv_clerk_dash.js";
 import { getFormData } from "./receive_stock_functions.js";
 
+const clerkId = userId
 
 document.querySelector('.receipt-container')
   .innerHTML = `    
@@ -11,18 +13,17 @@ document.querySelector('.receipt-container')
       </div>
       <div class="header-right">
         <h1>GOODS RECEIVED NOTE (GRN)</h1>
-        <p>Receipt #<span id="receiptNumber">GRN-005698</span></p>
       </div>
     </header>
 
     <div class="meta-data-grid">
       <div class="meta-item">
         <label>Date Generated:</label>
-        <span id="dateGenerated">2025-12-14 09:50 AM</span>
+        <span id="dateGenerated">${dayjs().format('YYYY-MM-DD hh:mm A')}</span>
       </div>
       <div class="meta-item">
         <label>Clerk ID:</label>
-        <span id="clerkId">Peter_CWH_001</span>
+        <span id="clerkId">${clerkId}</span>
       </div>
       <div class="meta-item">
         <label>Status:</label>
@@ -37,10 +38,7 @@ document.querySelector('.receipt-container')
           <label>Supplier Name:</label>
           <span id="supplierName"></span>
         </div>
-        <div class="summary-item">
-          <label>Delivery Note Number:</label>
-          <span id="deliveryNote"></span>
-        </div>
+
         <div class="summary-item">
           <label>Delivery Date & Time:</label>
           <span id="deliveryDateTime"></span>
@@ -70,12 +68,13 @@ document.querySelector('.receipt-container')
 
     <div class="btn-container">
       <button class="go-back-btn js-go-back-btn">Go Back</button>
-      <button class="print-btn">Confirm Details</button>
+      <button class="print-btn" id="receiveStockBtn">Confirm Details</button>
     </div>
   
   `
 
 const stockReceipt = getFormData()
+console.log(stockReceipt)
 
 const deliveryDetails = stockReceipt.deliveryDetails
 const items = stockReceipt.items
@@ -122,14 +121,6 @@ function renderItemDetails(itemDetailsContainer, itemIndex) {
     `
 }
 
-//Formats the category text from e.g rolled_goods to Rolled Goods
-function formatLabel(text) {
-  return text
-    .split(/[_]/)
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
-}
-
 //Display the right details in the items table
 for (const itemIndex in items) {
   renderItemDetails(itemDetailsContainer, itemIndex)
@@ -141,12 +132,13 @@ for (const itemIndex in items) {
     itemDetailsContainer.querySelectorAll('td')
       .forEach((tableData) => {
         if (tableData.id && tableData.id === itemId) {
-          if (itemId.includes('itemCategory')) {
-            tableData.innerText = formatLabel(itemValue)
-          } else {
-            tableData.innerText = itemValue
-          }
+          tableData.innerText = itemValue
         }
       })
   }
 }
+
+document.getElementById('receiveStockBtn')
+  .addEventListener('click', () => {
+    console.log(stockReceipt)
+  })

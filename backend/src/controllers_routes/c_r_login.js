@@ -22,7 +22,10 @@ loginRouter.post('/getUserDetails', async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: '8h' }
       );
-      res.status(200).json({token, role: savedRoleId, hosId: userDetails.hospital_id, msg: 'success'})
+      res.status(200).json({
+        token, role: savedRoleId, hosId: userDetails.hospital_id,
+        userId: savedUserId, msg: 'success'
+      })
     } else {
       res.status(401).send('Invalid credentials')
     }

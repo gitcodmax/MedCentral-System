@@ -22,7 +22,7 @@ import { standardsRouter } from './controllers_routes/wh_manager_con_routes/c_r_
 import { itemRegistryRouter } from './controllers_routes/wh_manager_con_routes/c_r_item_registry.js';
 import { whLayoutRouter } from './controllers_routes/wh_manager_con_routes/c_r_wh_layout.js';
 import { whManagerDashRouter } from './controllers_routes/wh_manager_con_routes/c_r_wh_manager_dash.js';
-import { receiveStockRouter } from './controllers_routes/inv_clerk_con_routes/c_r_receive_stock_functions.js';
+import { receiveStockRouter } from './controllers_routes/inv_clerk_con_routes/c_r_receive_stock.js';
 
 const app = express();
 

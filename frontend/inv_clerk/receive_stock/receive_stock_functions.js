@@ -118,7 +118,7 @@ export const createAnotherItemDetailsContainer = (itemIndexed) => {
                     </div>
 
                     <div class="input-group">
-                        <label for="shelfId">Shelf ID:</label>
+                        <label for="shelfId">Shelf Label:</label>
                         <input type="text" id="shelfId-${itemIndexed}" readonly>
                     </div>
                 </div>
