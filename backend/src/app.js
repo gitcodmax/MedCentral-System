@@ -23,6 +23,7 @@ import { itemRegistryRouter } from './controllers_routes/wh_manager_con_routes/c
 import { whLayoutRouter } from './controllers_routes/wh_manager_con_routes/c_r_wh_layout.js';
 import { whManagerDashRouter } from './controllers_routes/wh_manager_con_routes/c_r_wh_manager_dash.js';
 import { receiveStockRouter } from './controllers_routes/inv_clerk_con_routes/c_r_receive_stock.js';
+import { reportDamagesRouter } from './controllers_routes/inv_clerk_con_routes/c_r_report_damage.js';
 
 const app = express();
 
@@ -60,7 +61,7 @@ app.use('/whManager',
 )
 
 app.use('/invClerk', 
-  receiveStockRouter
+  receiveStockRouter, reportDamagesRouter
 )
 
 export default app;

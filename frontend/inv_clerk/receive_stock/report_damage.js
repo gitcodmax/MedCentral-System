@@ -1,6 +1,7 @@
+import { invClerkPagesLink } from "../../global.js";
 import { renderHeader } from "../header.js";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   renderHeader()
 
   document.querySelector('.form-wrapper')
@@ -15,12 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
               <h2 class="section-title">Item Identification</h2>
               <div class="form-grid">
                   <div class="input-group">
-                      <label for="damageItemCode">Item Code:</label>
-                      <input type="text" id="damageItemCode" placeholder="e.g., PAR-500MG" required>
-                  </div>
-                  <div class="input-group">
-                      <label for="damageBatchNo">Batch/Lot No.:</label>
-                      <input type="text" id="damageBatchNo" required>
+                      <label for="damageItemName">Item Name:</label>
+                      <select id="damageItemName" required>
+                          <option value="">Select Item Name</option>
+                      </select>
                   </div>
                   <div class="input-group">
                       <label for="discoveryDate">Date & Time Discovered:</label>
@@ -36,12 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
                       <label for="damageType">Nature of Damage:</label>
                       <select id="damageType" required>
                           <option value="">Select Damage Type</option>
-                          <option value="broken_seal">Broken Seal / Tampered</option>
-                          <option value="leakage">Leakage / Spillage</option>
-                          <option value="crushed">Crushed / Physical Damage</option>
-                          <option value="temp_breach">Temperature Breach (Cold Chain)</option>
-                          <option value="expired">Expired on Shelf</option>
-                          <option value="other">Other (Explain Below)</option>
                       </select>
                   </div>
                   <div class="input-group">
@@ -84,15 +77,35 @@ document.addEventListener('DOMContentLoaded', () => {
   // Simple script to set default discovery time to "now"
   document.getElementById('discoveryDate').value = dayjs().format("YYYY-MM-DD HH:mm");
 
+  const itemsDamages = await getItemsDamages()
+
+  // Set up items names as options
+  const damageItemNameSelectElem = document.getElementById('damageItemName')
+  const itemNamesOptions = itemsDamages.items.map(item =>
+    `<option value="${item.itemId}">${item.itemName}</option>`).join(' ')
+  damageItemNameSelectElem.innerHTML += itemNamesOptions
+
+  // Set up damage types as options
   const damageNatureSelectElem = document.getElementById('damageType')
+  const damageTypesOptions = itemsDamages.damageTypes.map(dType =>
+    `<option value="${dType.damageId}">${dType.damageLabel}</option>`).join(' ')
+  damageNatureSelectElem.innerHTML += damageTypesOptions
+
   const damageDescriptionElem = document.getElementById('damageDescription')
 
   //When user chooses other as nature of damage they have fill a detailed explanation
   damageNatureSelectElem.addEventListener('change', () => {
-    if (damageNatureSelectElem.value === 'other') {
+    const dmgType = itemsDamages.damageTypes.find(dmg => dmg.damageLabel.toLowerCase().includes('other'))
+    if (damageNatureSelectElem.value === `${dmgType.damageId}`) {
       damageDescriptionElem.required = true
     } else {
       damageDescriptionElem.required = false
     }
   })
 })
+
+const getItemsDamages = async () => {
+  const response = await fetch(`${invClerkPagesLink}/getItemsDamages`)
+  const res = await response.json()
+  return res.items_damages
+}
