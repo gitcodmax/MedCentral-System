@@ -1,9 +1,8 @@
 import { getFormData } from "./receive_stock_functions.js";
 
-document.addEventListener('DOMContentLoaded', () => {
 
-  document.querySelector('.receipt-container')
-    .innerHTML = `    
+document.querySelector('.receipt-container')
+  .innerHTML = `    
     <header class="receipt-header">
       <div class="header-left">
         <div class="logo">
@@ -76,40 +75,40 @@ document.addEventListener('DOMContentLoaded', () => {
   
   `
 
-  const stockReceipt = getFormData()
+const stockReceipt = getFormData()
 
-  const deliveryDetails = stockReceipt.deliveryDetails
-  const items = stockReceipt.items
+const deliveryDetails = stockReceipt.deliveryDetails
+const items = stockReceipt.items
 
-  //Display the delivery details
-  const deliverySummaryContainer = document.querySelector('.delivery-summary')
-  deliverySummaryContainer.querySelectorAll('.summary-item span')
-    .forEach((detailElem) => {
-      for (const detail in deliveryDetails) {
-        if (detail === detailElem.id) {
-          if (detailElem.id.includes('deliveryDate')) {
-            const savedDeliveryDate = deliveryDetails[detail]
-            const deliveryDate = dayjs(savedDeliveryDate).format('YYYY-MM-DD hh:mm A')
-            detailElem.innerText = deliveryDate
-          } else {
-            detailElem.innerText = deliveryDetails[detail]
-          }
+//Display the delivery details
+const deliverySummaryContainer = document.querySelector('.delivery-summary')
+deliverySummaryContainer.querySelectorAll('.summary-item span')
+  .forEach((detailElem) => {
+    for (const detail in deliveryDetails) {
+      if (detail === detailElem.id) {
+        if (detailElem.id.includes('deliveryDate')) {
+          const savedDeliveryDate = deliveryDetails[detail]
+          const deliveryDate = dayjs(savedDeliveryDate).format('YYYY-MM-DD hh:mm A')
+          detailElem.innerText = deliveryDate
+        } else {
+          detailElem.innerText = deliveryDetails[detail]
         }
       }
-    })
+    }
+  })
 
-  //Go back to the previous page when clicked
-  document.querySelector('.js-go-back-btn')
-    .addEventListener('click', () => {
-      window.history.back()
-    })
+//Go back to the previous page when clicked
+document.querySelector('.js-go-back-btn')
+  .addEventListener('click', () => {
+    window.history.back()
+  })
 
-  //Populate the table with the necessary item details
-  const itemDetailsContainer = document.getElementById('itemDetailsBody')
+//Populate the table with the necessary item details
+const itemDetailsContainer = document.getElementById('itemDetailsBody')
 
-  //Render HTML for the table data
-  function renderItemDetails(itemDetailsContainer, itemIndex) {
-    itemDetailsContainer.innerHTML += `
+//Render HTML for the table data
+function renderItemDetails(itemDetailsContainer, itemIndex) {
+  itemDetailsContainer.innerHTML += `
       <tr>
         <td id="itemCode-${itemIndex}"></td>
         <td id="itemName-${itemIndex}"></td>
@@ -121,36 +120,33 @@ document.addEventListener('DOMContentLoaded', () => {
         <td id="qtyDelivered-${itemIndex}"></td>
       </tr>
     `
-  }
+}
 
-  //Formats the category text from e.g rolled_goods to Rolled Goods
-  function formatLabel(text) {
-    return text
-      .split(/[_]/)
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(" ");
-  }  
+//Formats the category text from e.g rolled_goods to Rolled Goods
+function formatLabel(text) {
+  return text
+    .split(/[_]/)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+}
 
-  //Display the right details in the items table
-  for (const itemIndex in items) {
-    renderItemDetails(itemDetailsContainer, itemIndex)
-    const itemObj = items[itemIndex]
+//Display the right details in the items table
+for (const itemIndex in items) {
+  renderItemDetails(itemDetailsContainer, itemIndex)
+  const itemObj = items[itemIndex]
 
-    for (const itemId in itemObj) {
-      const itemValue = itemObj[itemId]
+  for (const itemId in itemObj) {
+    const itemValue = itemObj[itemId]
 
-      itemDetailsContainer.querySelectorAll('td')
-        .forEach((tableData) => {
-          if (tableData.id && tableData.id === itemId) {
-            if (itemId.includes('itemCategory')) {
-              tableData.innerText = formatLabel(itemValue)
-            } else {
-              tableData.innerText = itemValue
-            }
+    itemDetailsContainer.querySelectorAll('td')
+      .forEach((tableData) => {
+        if (tableData.id && tableData.id === itemId) {
+          if (itemId.includes('itemCategory')) {
+            tableData.innerText = formatLabel(itemValue)
+          } else {
+            tableData.innerText = itemValue
           }
-        })
-    }
+        }
+      })
   }
-
-
-})
+}

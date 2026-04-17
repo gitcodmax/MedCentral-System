@@ -1,55 +1,66 @@
 //This file contains specific functions for the receive stock page
 
+import { invClerkPagesLink } from "../../global.js";
+
 export const getItemsContainer = () => document.getElementById('item-details-section');
 
 // Mock data containing all the items details in the system
-const masterItems = [
-  {
-    sku: "AMOX-250-BT",
-    itemName: "Amoxicillin 250mg",
-    category: "Antibiotics",
-    bulkUom: "Box (100 Units)",
-    storageTemp: "Room Temp",
-    shelfId: "B-02-11",
-    storageCode: "A"
-  },
-  {
-    sku: "INS-V10-VL",
-    itemName: "Insulin Vials (Fast Acting)",
-    category: "Diabetes Care",
-    bulkUom: "Carton (50 Vials)",
-    storageTemp: "Refrigerated",
-    shelfId: "REF-01-A",
-    storageCode: "R"
-  },
-  {
-    sku: "GLOV-LAT-M",
-    itemName: "Latex Gloves (Size M)",
-    category: "Consumables",
-    bulkUom: "Case (10 Boxes)",
-    storageTemp: "Room Temp",
-    shelfId: "C-05-22",
-    storageCode: "A"
-  },
-  {
-    sku: "VAC-COV-05",
-    itemName: "Standard Vaccine Vials",
-    category: "Immunization",
-    bulkUom: "Tray (25 Vials)",
-    storageTemp: "Frozen",
-    shelfId: "FRZ-03-B",
-    storageCode: "F"
-  },
-  {
-    sku: "PAR-500-BX",
-    itemName: "Paracetamol 500mg Tablets",
-    category: "Analgesics",
-    bulkUom: "Bulk Pack (5000 Tabs)",
-    storageTemp: "Room Temp",
-    shelfId: "A-12-04",
-    storageCode: "A"
-  }
-];
+// const masterItems = [
+//   {
+//     sku: "AMOX-250-BT",
+//     itemName: "Amoxicillin 250mg",
+//     category: "Antibiotics",
+//     bulkUom: "Box (100 Units)",
+//     storageTemp: "Room Temp",
+//     shelfId: "B-02-11",
+//     storageCode: "A"
+//   },
+//   {
+//     sku: "INS-V10-VL",
+//     itemName: "Insulin Vials (Fast Acting)",
+//     category: "Diabetes Care",
+//     bulkUom: "Carton (50 Vials)",
+//     storageTemp: "Refrigerated",
+//     shelfId: "REF-01-A",
+//     storageCode: "R"
+//   },
+//   {
+//     sku: "GLOV-LAT-M",
+//     itemName: "Latex Gloves (Size M)",
+//     category: "Consumables",
+//     bulkUom: "Case (10 Boxes)",
+//     storageTemp: "Room Temp",
+//     shelfId: "C-05-22",
+//     storageCode: "A"
+//   },
+//   {
+//     sku: "VAC-COV-05",
+//     itemName: "Standard Vaccine Vials",
+//     category: "Immunization",
+//     bulkUom: "Tray (25 Vials)",
+//     storageTemp: "Frozen",
+//     shelfId: "FRZ-03-B",
+//     storageCode: "F"
+//   },
+//   {
+//     sku: "PAR-500-BX",
+//     itemName: "Paracetamol 500mg Tablets",
+//     category: "Analgesics",
+//     bulkUom: "Bulk Pack (5000 Tabs)",
+//     storageTemp: "Room Temp",
+//     shelfId: "A-12-04",
+//     storageCode: "A"
+//   }
+// ];
+
+export const getMasterItems = async () => {
+  const response = await fetch(`${invClerkPagesLink}/getItemsData`)
+  const res = await response.json()
+  return res.master_inv_items
+}
+
+const masterItems = await getMasterItems()
+console.log(masterItems)
 
 //HTML for creating an Item Details Container
 export const createAnotherItemDetailsContainer = (itemIndexed) => {
@@ -277,24 +288,21 @@ export function renderSavedFormData(itemIndexed) {
     for (const index of itemIndexes) {
       const itemData = items[index]
       const itemContainer = document.getElementById(`item-entry-card-${index}`);
-      const itemCategorySelect = document.getElementById(`itemCategory-${index}`);
-      const unitOfMeasureSelect = document.getElementById(`unitOfMeasure-${index}`);
-
-      const categoryId = `itemCategory-${index}`
-      const savedCategory = itemData[categoryId]
-
-      //Display the unit of measure depending on the category selected
-      if (itemCategorySelect && unitOfMeasureSelect) {
-        itemCategorySelect.value = savedCategory
-
-      }
+      const itemCodeElem = document.getElementById(`itemCode-${index}`)
 
       //Display the details of the other fields
       if (itemContainer) {
         const fields = itemContainer.querySelectorAll("input, select");
 
         fields.forEach(field => {
-          const savedValue = itemData[field.id];
+          let savedValue = '';
+
+          if (field.id.includes('itemName')) {
+            savedValue = itemCodeElem.value
+          } else {
+            savedValue = itemData[field.id]
+          }
+
           if (savedValue !== undefined) {
             field.value = savedValue;
           }

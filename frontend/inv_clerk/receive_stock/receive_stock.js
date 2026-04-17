@@ -5,12 +5,13 @@ import {
   getFormData, handleAddingItem, listenChangeInItemCodeName
 } from "./receive_stock_functions.js";
 
-document.addEventListener('DOMContentLoaded', () => {
 
-  renderHeader()
+console.log('Loaded')
 
-  document.querySelector('.form-wrapper')
-    .innerHTML = `
+renderHeader()
+
+document.querySelector('.form-wrapper')
+  .innerHTML = `
       <header class="form-header">
         <h1 class="main-title">Enter the following details to receive new stock</h1>
         <i>All the fields are required!!</i>
@@ -44,50 +45,48 @@ document.addEventListener('DOMContentLoaded', () => {
       </form>
     `
 
-  //Keeps track of the number of items created
-  let itemIndexed = 0;
+//Keeps track of the number of items created
+let itemIndexed = 0;
 
-  getItemsContainer().innerHTML = createAnotherItemDetailsContainer(itemIndexed)
-  listenChangeInItemCodeName(itemIndexed)
+getItemsContainer().innerHTML = createAnotherItemDetailsContainer(itemIndexed)
+listenChangeInItemCodeName(itemIndexed)
 
-  const stockForm = document.getElementById('receiveStockForm')
+const stockForm = document.getElementById('receiveStockForm')
 
-  // Set the clear details and add another item buttons
-  stockForm.addEventListener('click', (event) => {
-    if (event.target.classList.contains('js-add-item-btn')) {
-      validateStockForm(event, stockForm, () => {
+// Set the clear details and add another item buttons
+stockForm.addEventListener('click', (event) => {
+  if (event.target.classList.contains('js-add-item-btn')) {
+    validateStockForm(event, stockForm, () => {
 
-        const stockData = getFormData()
-        if (stockData.items) {
-          const itemIndexesList = Object.keys(stockData.items)
-          itemIndexed = Math.max(...itemIndexesList)
-          itemIndexed += 1
-          handleAddingItem(itemIndexed)
-        } else {
-          itemIndexed += 1
-          handleAddingItem(itemIndexed)
-        }
-      })
-
-      //Delete the item when clear details button is clicked
-    } else if (event.target.classList.contains('js-clear-details-btn')) {
-      const btnItemIndex = event.target.dataset.itemIndex
-      const formSection = document.querySelector(`.js-form-section-${btnItemIndex}`)
-      formSection.remove()
-    }
-  })
-
-  // Clicking save details button opens the receipt page
-  document.getElementById('save-details-btn')
-    .addEventListener('click', (event) => {
-
-      saveFormData(stockForm)
-      validateStockForm(event, stockForm, () => {
-        window.location.href = 'stock_receipt.html';
-      });
-
+      const stockData = getFormData()
+      if (stockData.items) {
+        const itemIndexesList = Object.keys(stockData.items)
+        itemIndexed = Math.max(...itemIndexesList)
+        itemIndexed += 1
+        handleAddingItem(itemIndexed)
+      } else {
+        itemIndexed += 1
+        handleAddingItem(itemIndexed)
+      }
     })
 
-  renderSavedFormData(itemIndexed)
-
+    //Delete the item when clear details button is clicked
+  } else if (event.target.classList.contains('js-clear-details-btn')) {
+    const btnItemIndex = event.target.dataset.itemIndex
+    const formSection = document.querySelector(`.js-form-section-${btnItemIndex}`)
+    formSection.remove()
+  }
 })
+
+// Clicking save details button opens the receipt page
+document.getElementById('save-details-btn')
+  .addEventListener('click', (event) => {
+
+    saveFormData(stockForm)
+    validateStockForm(event, stockForm, () => {
+      window.location.href = 'stock_receipt.html';
+    });
+
+  })
+
+renderSavedFormData(itemIndexed)
