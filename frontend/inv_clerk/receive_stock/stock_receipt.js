@@ -1,3 +1,4 @@
+import { invClerkPagesLink } from "../../global.js";
 import { userId } from "../inv_clerk_dash.js";
 import { getFormData } from "./receive_stock_functions.js";
 
@@ -74,7 +75,7 @@ document.querySelector('.receipt-container')
   `
 
 const stockReceipt = getFormData()
-console.log(stockReceipt)
+stockReceipt.deliveryDetails['userId'] = userId
 
 const deliveryDetails = stockReceipt.deliveryDetails
 const items = stockReceipt.items
@@ -138,7 +139,35 @@ for (const itemIndex in items) {
   }
 }
 
+// Creating a copy of Stock Recipt and Changing items object to an array in it
+const deliveryDetailsMod = deliveryDetails
+const stockReceiptMod = {}
+stockReceiptMod['deliveryDetails'] = deliveryDetailsMod
+const itemsValues = Object.values(items)
+const modItem =  itemsValues.map(item => {
+  const modItem = {}
+  Object.entries(item).forEach(([key, value]) => {
+    const modKey = key.slice(0, -2)
+
+    if (modKey === 'itemCode' || modKey === 'qtyDelivered' || 
+      modKey === 'expiryDate' || modKey ==='batchNo'
+    ) modItem[modKey] = value
+  })
+
+  return modItem
+})
+stockReceiptMod['items'] = modItem
+
 document.getElementById('receiveStockBtn')
-  .addEventListener('click', () => {
-    console.log(stockReceipt)
+  .addEventListener('click', async () => {
+    const response = await fetch(`${invClerkPagesLink}/saveNewStockData`, 
+      {
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify(stockReceiptMod)
+      }
+    )
+
+    const res = await response.json()
+    console.log(res)
   })
