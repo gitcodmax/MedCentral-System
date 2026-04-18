@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     .innerText = summaryStats.totalToAssignDriver
 
   // Stock alerts
-  const {inventory} = dashData;
+  const { inventory } = dashData;
 
   //Handles display of the stock alerts in the dash
   const alertsContainer = document.querySelector('.js-alerts-container')
@@ -119,4 +119,10 @@ const getWhManagerDashData = async () => {
   const response = await fetch(`${whManagerPagesLink}/getWhManagerDashData`)
   const res = await response.json()
   return res.wh_dash_data
+}
+
+// Send inventory stock alerts to inventory clerk page
+export const inventoryAlerts = async () => {
+  const dashData = await getWhManagerDashData()
+  return dashData.inventory
 }

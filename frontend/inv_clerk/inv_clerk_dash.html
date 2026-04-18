@@ -2,209 +2,209 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedCentral | Inventory Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/inv_clerk/inv_clerk_dash.css">
-    <link rel="stylesheet" href="/global.css">
-    <link rel="stylesheet" href="/inv_clerk/inv_clerk_global.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedCentral | Inventory Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/inv_clerk/inv_clerk_dash.css">
+  <link rel="stylesheet" href="/global.css">
+  <link rel="stylesheet" href="/inv_clerk/inv_clerk_global.css">
 </head>
 
 <body>
 
-    <header class="main-header"></header>
+  <header class="main-header"></header>
 
-    <main class="dashboard-stack">
+  <main class="dashboard-stack">
 
-        <section class="kpi-grid">
-            <div class="card kpi-card">
-                <div class="kpi-content">
-                    <span class="kpi-label">Awaiting Packing</span>
-                    <span class="kpi-value pkgs-to-pack"></span>
-                    <span class="kpi-trend">Orders in preparation</span>
-                </div>
-                <div class="kpi-icon pkgs-to-pack-i">
-                    <i class="fas fa-hand-holding-medical"></i>
-                </div>
+    <section class="kpi-grid">
+      <div class="card kpi-card">
+        <div class="kpi-content">
+          <span class="kpi-label">Awaiting Packing</span>
+          <span class="kpi-value pkgs-to-pack"></span>
+          <span class="kpi-trend">Orders in preparation</span>
+        </div>
+        <div class="kpi-icon pkgs-to-pack-i">
+          <i class="fas fa-hand-holding-medical"></i>
+        </div>
+      </div>
+
+      <div class="card kpi-card">
+        <div class="kpi-content">
+          <span class="kpi-label">Ready for Dispatch</span>
+          <span class="kpi-value packed-pkgs"></span>
+          <span class="kpi-trend">Packages in queue</span>
+        </div>
+        <div class="kpi-icon packed-pkgs-i">
+          <i class="fas fa-boxes-packing"></i>
+        </div>
+      </div>
+
+      <div class="card kpi-card">
+        <div class="kpi-content">
+          <span class="kpi-label">Active In-Transit</span>
+          <span class="kpi-value in-transit"></span>
+          <span class="kpi-trend">Currently on road</span>
+        </div>
+        <div class="kpi-icon in-transit-i">
+          <i class="fas fa-truck-moving"></i>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="stock-alerts card layout-section">
+      <div class="card-title-container">
+        <h2>Stock Alerts</h2>
+        <div class="alert-key">
+          <span class="key-item">
+            <span class="key-color yellow"></span> Warning
+          </span>
+          <span class="key-item">
+            <span class="key-color orange"></span> Low
+          </span>
+          <span class="key-item">
+            <span class="key-color red"></span> Critical
+          </span>
+        </div>
+      </div>
+      <div class="alerts-container js-alerts-container"></div>
+    </section>
+
+    <section class="pending-orders card layout-section">
+      <h2>Pending Orders Packages</h2>
+      <div class="order-cards-container"></div>
+    </section>
+
+    <div class="card table-card">
+      <div class="card-header-actions">
+        <h3><i class="fas fa-dolly"></i> Ready for Dispatch</h3>
+        <span class="badge-info"> <span class="dispatch-pkgs"></span> Packages Pending Dispatch</span>
+      </div>
+
+      <div class="table-responsive">
+        <table class="dispatch-table">
+          <thead>
+            <tr>
+              <th>Package ID</th>
+              <th>Order ID</th>
+              <th>Destination</th>
+              <th>Driver Assigned</th>
+              <th>Vehicle No. Plate</th>
+              <th>Storage Req.</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="dispatchTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card table-card">
+      <div class="card-header-actions">
+        <h3><i class="fas fa-truck-fast"></i> In-Transit Monitoring</h3>
+        <span class="badge-info"> <span class="in-transit-pkgs"></span> Shipments Active</span>
+      </div>
+
+      <div class="table-responsive">
+        <table class="transit-table">
+          <thead>
+            <tr>
+              <th>Delivery ID</th>
+              <th>Package ID</th>
+              <th>Destination</th>
+              <th>Driver / Vehicle</th>
+              <th>Dispatch Date</th>
+              <th>Current Status</th>
+              <th class="text-center">Management Actions</th>
+            </tr>
+          </thead>
+          <tbody id="transitTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="orderOverlay" class="overlay">
+      <div class="overlay-content">
+        <header class="overlay-header">
+          <div class="order-info">
+            <h2>Package <span id="displayPkgId"></span> for <span id="hospital-name">Hospital</span></h2>
+            <div class="order-date-status">
+              <p>Order Created On: <span class="status-tag" id="date-confirmed"></span></p>
+              <p>Storage Temperature: <span class="badge " id="tempBadge"></span></p>
             </div>
+          </div>
+          <button class="close-overlay-btn js-close-overlay-btn">
+            <i class="fas fa-times"></i>
+          </button>
+        </header>
 
-            <div class="card kpi-card">
-                <div class="kpi-content">
-                    <span class="kpi-label">Ready for Dispatch</span>
-                    <span class="kpi-value packed-pkgs"></span>
-                    <span class="kpi-trend">Packages in queue</span>
-                </div>
-                <div class="kpi-icon packed-pkgs-i">
-                    <i class="fas fa-boxes-packing"></i>
-                </div>
-            </div>
+        <section class="overlay-body">
+          <p class="instruction">Please retrieve and verify the following items for this order.</p>
 
-            <div class="card kpi-card">
-                <div class="kpi-content">
-                    <span class="kpi-label">Active In-Transit</span>
-                    <span class="kpi-value in-transit"></span>
-                    <span class="kpi-trend">Currently on road</span>
-                </div>
-                <div class="kpi-icon in-transit-i">
-                    <i class="fas fa-truck-moving"></i>
-                </div>
-            </div>
-
+          <table class="picking-table">
+            <thead>
+              <tr>
+                <th>Item Details</th>
+                <th>Shelf Id</th>
+                <th>Batch/Lot No.</th>
+                <th>Qty to Pack</th>
+                <th>Unit</th>
+              </tr>
+            </thead>
+            <tbody id="pickingItemList"></tbody>
+          </table>
         </section>
 
-        <section class="stock-alerts card layout-section">
-            <div class="card-title-container">
-                <h2>Stock Alerts</h2>
-                <div class="alert-key">
-                    <span class="key-item">
-                        <span class="key-color yellow"></span> Warning
-                    </span>
-                    <span class="key-item">
-                        <span class="key-color orange"></span> Low
-                    </span>
-                    <span class="key-item">
-                        <span class="key-color red"></span> Critical
-                    </span>
-                </div>
-            </div>
-            <div class="alerts-container js-alerts-container"></div>
-        </section>
+        <footer class="overlay-footer">
 
-        <section class="pending-orders card layout-section">
-            <h2>Pending Orders Packages</h2>
-            <div class="order-cards-container"></div>
-        </section>
+          <div class="package-weight-container">
+            <label for="packageWeightInput">Enter Package Weight in KG</label>
+            <input type="number" id="packageWeightInput" class="package-weight-input" placeholder="Enter Package Weight"
+              min="0" step="0.01">
+          </div>
 
-        <div class="card table-card">
-            <div class="card-header-actions">
-                <h3><i class="fas fa-dolly"></i> Ready for Dispatch</h3>
-                <span class="badge-info"> <span class="dispatch-pkgs"></span> Packages Pending Dispatch</span>
-            </div>
+          <button class="packed-btn" id="packedBtn">
+            <i class="fas fa-check-circle"></i> Confirm All Items Packed
+          </button>
+        </footer>
+      </div>
+    </div>
 
-            <div class="table-responsive">
-                <table class="dispatch-table">
-                    <thead>
-                        <tr>
-                            <th>Package ID</th>
-                            <th>Order ID</th>
-                            <th>Destination</th>
-                            <th>Driver Assigned</th>
-                            <th>Vehicle No. Plate</th>
-                            <th>Storage Req.</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="dispatchTbody"></tbody>
-                </table>
-            </div>
+    <div id="confirmationOverlay" class="overlay-backdrop">
+      <div class="modal-card">
+        <div id="modalIconContainer" class="modal-icon">
+          <i id="modalIcon" class="fas fa-question-circle"></i>
+        </div>
+        <h2 id="modalTitle">Confirm Action</h2>
+        <p id="modalMessage">Are you sure you want to proceed with this update?</p>
+
+        <div id="delayReasonContainer" class="input-group">
+          <label>Select Delay Reason:</label>
+          <select id="delayReason">
+            <option value="traffic">Heavy Traffic</option>
+            <option value="weather">Extreme Weather</option>
+            <option value="vehicle">Vehicle Breakdown</option>
+            <option value="other">Other</option>
+          </select>
         </div>
 
-        <div class="card table-card">
-            <div class="card-header-actions">
-                <h3><i class="fas fa-truck-fast"></i> In-Transit Monitoring</h3>
-                <span class="badge-info"> <span class="in-transit-pkgs"></span> Shipments Active</span>
-            </div>
-
-            <div class="table-responsive">
-                <table class="transit-table">
-                    <thead>
-                        <tr>
-                            <th>Delivery ID</th>
-                            <th>Package ID</th>
-                            <th>Destination</th>
-                            <th>Driver / Vehicle</th>
-                            <th>Dispatch Date</th>
-                            <th>Current Status</th>
-                            <th class="text-center">Management Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="transitTbody"></tbody>
-                </table>
-            </div>
+        <div class="modal-actions">
+          <button class="btn-close-overlay">Cancel</button>
+          <button id="confirmActionButton" class="btn-confirm">Confirm</button>
         </div>
+      </div>
+    </div>
 
-        <div id="orderOverlay" class="overlay">
-            <div class="overlay-content">
-                <header class="overlay-header">
-                    <div class="order-info">
-                        <h2>Package <span id="displayPkgId"></span> for <span id="hospital-name">Hospital</span></h2>
-                        <div class="order-date-status">
-                            <p>Order Created On: <span class="status-tag" id="date-confirmed"></span></p>
-                            <p>Storage Temperature: <span class="badge " id="tempBadge"></span></p>
-                        </div>
-                    </div>
-                    <button class="close-overlay-btn js-close-overlay-btn">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </header>
+  </main>
 
-                <section class="overlay-body">
-                    <p class="instruction">Please retrieve and verify the following items for this order.</p>
+  <footer class="main-footer">
+    © 2025 MedCentral
+  </footer>
 
-                    <table class="picking-table">
-                        <thead>
-                            <tr>
-                                <th>Item Details</th>
-                                <th>Shelf Id</th>
-                                <th>Batch/Lot No.</th>
-                                <th>Qty to Pack</th>
-                                <th>Unit</th>
-                            </tr>
-                        </thead>
-                        <tbody id="pickingItemList"></tbody>
-                    </table>
-                </section>
-
-                <footer class="overlay-footer">
-
-                    <div class="package-weight-container">
-                        <label for="packageWeightInput">Enter Package Weight in KG</label>
-                        <input type="number" id="packageWeightInput" class="package-weight-input"
-                            placeholder="Enter Package Weight" min="0" step="0.01">
-                    </div>
-
-                    <button class="packed-btn" id="packedBtn">
-                        <i class="fas fa-check-circle"></i> Confirm All Items Packed
-                    </button>
-                </footer>
-            </div>
-        </div>
-
-        <div id="confirmationOverlay" class="overlay-backdrop">
-            <div class="modal-card">
-                <div id="modalIconContainer" class="modal-icon">
-                    <i id="modalIcon" class="fas fa-question-circle"></i>
-                </div>
-                <h2 id="modalTitle">Confirm Action</h2>
-                <p id="modalMessage">Are you sure you want to proceed with this update?</p>
-
-                <div id="delayReasonContainer" class="input-group">
-                    <label>Select Delay Reason:</label>
-                    <select id="delayReason">
-                        <option value="traffic">Heavy Traffic</option>
-                        <option value="weather">Extreme Weather</option>
-                        <option value="vehicle">Vehicle Breakdown</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-
-                <div class="modal-actions">
-                    <button class="btn-close-overlay">Cancel</button>
-                    <button id="confirmActionButton" class="btn-confirm">Confirm</button>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-    <footer class="main-footer">
-        © 2025 MedCentral
-    </footer>
-
-    <script type="module" src="/inv_clerk/inv_clerk_dash.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <script type="module" src="/inv_clerk/inv_clerk_dash.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 </body>
 
 </html>
