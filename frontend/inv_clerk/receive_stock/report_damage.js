@@ -1,9 +1,11 @@
-import { invClerkPagesLink } from "../../global.js";
+import { invClerkPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../../global.js";
 import { renderHeader } from "../header.js";
+import { userId } from "../inv_clerk_dash.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
   renderHeader()
 
+  const clerkId = userId
   document.querySelector('.form-wrapper')
     .innerHTML = `   
       <header class="form-header">
@@ -53,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               <div class="form-grid">
                   <div class="input-group">
                       <label for="damagePhoto">Upload Photo Evidence:</label>
-                      <input type="file" id="damagePhoto" accept="image/*" required>
+                      <input type="file" id="damagePhoto" accept="image/*">
                   </div>
                   <div class="input-group">
                       <label for="immediateAction">Action Taken:</label>
@@ -73,9 +75,12 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
       </form>
     `
+  
+  renderSuccessErrorOverlay()
 
   // Simple script to set default discovery time to "now"
-  document.getElementById('discoveryDate').value = dayjs().format("YYYY-MM-DD HH:mm");
+  const discoveryDateElem = document.getElementById('discoveryDate')
+  discoveryDateElem.value = dayjs().format("YYYY-MM-DD HH:mm");
 
   const itemsDamages = await getItemsDamages()
 
@@ -102,6 +107,35 @@ document.addEventListener('DOMContentLoaded', async () => {
       damageDescriptionElem.required = false
     }
   })
+
+  // Saving the damaged items data
+  document.getElementById('reportDamageForm')
+    .addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      const itemId = damageItemNameSelectElem.value
+      const discoveryDate = discoveryDateElem.value
+      const damageTypeId = damageNatureSelectElem.value
+      const qtyAffected = document.getElementById('damageQty').value
+      const detailedDesc = damageDescriptionElem.value
+      const photo = document.getElementById('damagePhoto').value
+      const actionTaken = document.getElementById('immediateAction').value
+
+      const response = await fetch(`${invClerkPagesLink}/saveItemDamage`, 
+        {
+          method: 'POST', 
+          headers: { 'Content-Type': 'application/json' }, 
+          body: JSON.stringify({
+            itemId, discoveryDate, damageTypeId,
+            qtyAffected, detailedDesc, photo,
+            actionTaken, userId
+          })
+        }
+      )
+
+      const res = await response.json()
+      triggerStatus(res.msg)
+    }, {once: true})
 })
 
 const getItemsDamages = async () => {
