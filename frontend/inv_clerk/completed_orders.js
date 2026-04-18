@@ -1,6 +1,7 @@
+import { invClerkPagesLink } from "../global.js";
 import { renderHeader } from "./header.js";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   renderHeader()
 
   document.querySelector('.js-container')
@@ -66,29 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
     `
 
-  const completedOrdersData = {
-    "ORD-8821": {
-      customerName: "St. Jude Medical Center",
-      creationDate: "2026-02-15",
-      totalOrderItems: "12",
-      completionDate: "2026-02-20", 
-      packages: ["A", "R"]         
-    },
-    "ORD-8822": {
-      customerName: "City General Clinic",
-      creationDate: "2026-02-16",
-      totalOrderItems: "3",
-      completionDate: "2026-02-21",
-      packages: ["A"] 
-    },
-    "ORD-8823": {
-      customerName: "Hope Children's Hospital",
-      creationDate: "2026-02-18",
-      totalOrderItems: "22",
-      completionDate: "2026-02-22",
-      packages: ["C", "F", "R"]
-    }
-  };
+  const completedOrdersData = await getCompletedOrders()
 
   //Completed orders table body
   const body = document.getElementById('completedOrdersBody');
@@ -200,3 +179,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   renderCompletedOrders();
 })
+
+const getCompletedOrders = async () => {
+  const response = await fetch(`${invClerkPagesLink}/getCompletedOrders`)
+  const res = await response.json()
+  return res.completed_orders
+}
