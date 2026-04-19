@@ -275,6 +275,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         "package_id": "PKG-445",
         "destination": "Central Pharmacy",
         "driver": "Jane Wilson",
+        "driver_phone": "1234567",
         "vehicle_plate": "KBD 123X",
         "dispatch_date": "2026-03-01",
         "status": "Dispatched"
@@ -284,6 +285,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         "package_id": "PKG-440",
         "destination": "City General Hospital",
         "driver": "John Doe",
+        "driver_phone": "2544567",
         "vehicle_plate": "KCC 789Y",
         "dispatch_date": "2026-02-28",
         "status": "Delayed"
@@ -293,6 +295,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         "package_id": "PKG-452",
         "destination": "Northwest Medical",
         "driver": "Mike Ross",
+        "driver_phone": "7654321",
         "vehicle_plate": "KBE 555A",
         "dispatch_date": "2026-03-01",
         "status": "Dispatched"
@@ -359,10 +362,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td><span class="pkg-id">${delivery.package_id}</span></td>
                 <td>${delivery.destination}</td>
                 <td>
-                    <div class="user-info">
-                        <span class="driver-name">${delivery.driver}</span>
-                        <span class="plate-number">${delivery.vehicle_plate}</span>
-                    </div>
+                    <button class="view-vehicle-details-btn" 
+                    id="viewVehicleInfoBtn" data-deliv-id=${delivery.delivery_id}>
+                      View
+                    </button>
                 </td>
                 <td>${delivery.dispatch_date}</td>
                 <td><span class="status-badge badge-${delivery.status.toLowerCase()}">${delivery.status}</span></td>
@@ -461,6 +464,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     if (btn.classList.contains('btn-delivered')) {
       openConfirmation('delivery', btnDeliveryId)
+    }
+
+    if (btn.id === 'viewVehicleInfoBtn') {
+      const vehicleOverlayElem = document.getElementById('vehicleDetailsOverlay')
+      const delivery = in_transit_monitoring.find(deliv => deliv.delivery_id === btnDeliveryId)
+      
+      document.querySelectorAll('.js-vehicle-plates')
+        .forEach(elem => elem.textContent = delivery.vehicle_plate)
+      document.getElementById('ovDriverName')
+        .textContent = delivery.driver
+      document.getElementById('ovDriverPhone')
+        .textContent = delivery.driver_phone
+      vehicleOverlayElem.style.display = 'flex';
+
+      vehicleOverlayElem.addEventListener('click', (e) => {
+        if (e.target.classList.contains('overlay'))
+          vehicleOverlayElem.style.display = 'none';
+      })
     }
   })
 

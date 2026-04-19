@@ -266,7 +266,7 @@ h2 {
 /* Modal Box */
 .overlay-content {
     background-color: #fff;
-    width: 90%;
+    max-width: 90%;
     border-radius: 8px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     overflow: hidden;
@@ -731,6 +731,61 @@ h2 {
 .btn-confirm{
     border: 1px solid;
     color: white;
+}
+
+/* Viewing driver and vehicle details overlay */
+.view-vehicle-details-btn{
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--color-primary);
+  color: white;
+  border: 1px solid;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+.view-vehicle-details-btn:hover{
+  border: 1px solid var(--color-primary);
+  background: transparent;
+  color: var(--color-primary);
+}
+.driver-vehicle-details .vehicle-plates{
+  color: var(--color-secondary);
+}
+.driver-vehicle-details{
+  text-align: center;
+}
+.driver-vehicle-details .overlay-content{
+  padding: 10px;
+}
+.driver-det-cont{
+  border: 1px solid var(--color-primary);
+  border-top: 4px solid var(--color-primary);
+  min-width: 200px;
+  border-radius: 8px;
+  margin: 10px;
+}
+.driver-det-cont i{
+  display: block;
+  border: 1px solid;
+  border-radius: 50%;
+  padding: 10px;
+}
+.driver-det-cont .modal-icon{
+  margin-bottom: 0;
+}
+.cont-content label{
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.cont-content p{
+  padding: 5px;
+  color: var(--color-secondary);
+}
+.driver-details{
+  display: flex;
+  justify-content: space-evenly;
 }
 
 /* Footer Styling */
