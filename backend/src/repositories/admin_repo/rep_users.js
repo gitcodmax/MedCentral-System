@@ -17,13 +17,16 @@ export async function getAllSysUsersQ(){
 export async function getAllDriversQ(){
   const {rows} = await pool.query(`
     SELECT driver_id AS id, full_name, phone_number AS phone, 
-      vehicle_plates AS vehicleNo, 
+      (SELECT v.plate_number 
+      FROM vehicle_assignments va 
+      JOIN vehicles v ON va.vehicle_id = v.vehicle_id  
+      WHERE va.assignment_id = d.assignment_id) AS vehicleNo, 
       (SELECT county_id FROM cfg_zones WHERE id = preferred_zone_id) AS county_id, 
       (SELECT name FROM cfg_counties WHERE id = (SELECT county_id FROM cfg_zones WHERE id = preferred_zone_id)) AS county_name, 
       preferred_zone_id AS zone_id, 
       (SELECT zone_name FROM cfg_zones WHERE id = preferred_zone_id) AS zone_name, 
       CASE WHEN is_active THEN 'Active' ELSE 'Inactive' END AS status 
-    FROM drivers
+    FROM drivers d
   `)
 
   return rows
@@ -46,9 +49,9 @@ export async function addNewDriverQ({ fullName, phoneNo, vehicleNo, zoneId,
     client.query('BEGIN')
 
     const driversRes = await client.query(`
-      INSERT INTO drivers (full_name, phone_number, vehicle_plates, preferred_zone_id)
-        VALUES ($1, $2, $3, $4) RETURNING driver_id
-      `, [fullName, phoneNo, vehicleNo, zoneId]
+      INSERT INTO drivers (full_name, phone_number, preferred_zone_id)
+        VALUES ($1, $2, $3) RETURNING driver_id
+      `, [fullName, phoneNo, zoneId]
     )
 
     const driverId = driversRes.rows[0].driver_id
@@ -73,7 +76,15 @@ export async function addNewDriverQ({ fullName, phoneNo, vehicleNo, zoneId,
       `, [vehicleId, driverId]
     )
 
-    const vehicleAssignId = vehAssiRes.rows[0].assignment_id
+    const vehicleAssignId = vehAssiRes.rows[0].assignment_id 
+
+    const updateDrivers = await client.query(
+      `
+      UPDATE drivers
+      SET assignment_id = $1
+      WHERE driver_id = $2
+      `, [vehicleAssignId, driverId]
+    )
 
     await client.query('COMMIT')
     return vehicleAssignId
@@ -130,15 +141,14 @@ export async function deActivateUserQ({userId, status, userType}){
 }
 
 // Drivers edit, activation and deactivation
-export async function updateDriverDataQ({fullName, phoneNo, vehicleNo, zoneId, driverId}){
+export async function updateDriverDataQ({fullName, phoneNo, zoneId, driverId}){
   const {rows} = await pool.query(`
     UPDATE drivers SET 
       full_name = $1, 
-      phone_number = $2, 
-      vehicle_plates = $3, 
-      preferred_zone_id = $4
-    WHERE driver_id = $5
-  `, [fullName, phoneNo, vehicleNo, zoneId, driverId])
+      phone_number = $2,  
+      preferred_zone_id = $3
+    WHERE driver_id = $4
+  `, [fullName, phoneNo, zoneId, driverId])
 
   return rows
 }

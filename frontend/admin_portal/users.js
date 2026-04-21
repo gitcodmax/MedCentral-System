@@ -293,14 +293,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                                             required>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="editVehicleNo">Vehicle Number</label>
-                                    <div class="input-with-icon">
-                                        <i class="fas fa-truck"></i>
-                                        <input type="text" id="editVehicleNo" class="form-control"
-                                            required>
-                                    </div>
-                                </div>
                             </div>
 
                             <div class="form-section-title">Logistics Preferences</div>
@@ -800,7 +792,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       const editDriverFirstNameElem = document.getElementById('editDriverFirstName')
       const editDriverLastNameElem = document.getElementById('editDriverLastName')
       const editPhoneElem = document.getElementById('editPhone')
-      const editVehicleNoElem = document.getElementById('editVehicleNo')
       const editCountySelectElem = document.getElementById('editDriverCounty')
       const editZoneSelectElem = document.getElementById('editDriverZone')
 
@@ -810,7 +801,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         editDriverFirstNameElem.value = userData.firstName
         editDriverLastNameElem.value = userData.lastName
         editPhoneElem.value = userData.phone
-        editVehicleNoElem.value = userData.vehicleNo
         editCountySelectElem.value = userData.county_id
         editZoneSelectElem.value = userData.zone_id
       }
@@ -834,7 +824,6 @@ document.addEventListener('DOMContentLoaded', async () => {
               body: JSON.stringify({
                 fullName: driverFullName,
                 phoneNo: editPhoneElem.value,
-                vehicleNo: editVehicleNoElem.value,
                 zoneId: editZoneSelectElem.value,
                 driverId: btnDriverId
               })
