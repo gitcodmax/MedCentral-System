@@ -1,7 +1,9 @@
 import { renderHeader } from "./header.js";
-import {inventoryAlerts } from "../wh_manager/wh_manager_dash.js"
+import { inventoryAlerts } from "../wh_manager/wh_manager_dash.js"
+import { invClerkPagesLink } from "../global.js";
 
 export const userId = Number(localStorage.getItem('userId'))
+console.log(userId)
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -232,79 +234,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       closeOrderOverlay()
     })
 
-  const kpiAndTablesMockData = {
-    "kpi_metrics": {
-      "awaiting_packing": 18,
-      "ready_for_dispatch": 12,
-      "active_in_transit": 8,
-      "reported_delays": 2,
-      "delivered_today": 24
-    },
-    "dispatch_queue": [
-      {
-        "package_id": "PKG-445",
-        "order_id": "ORD-905",
-        "destination": "Central Pharmacy",
-        "driver_assigned": "Jane Wilson",
-        "vehicle_plate": "KBD 123X",
-        "storage_req": "Refrigerated",
-        "priority": "High"
-      },
-      {
-        "package_id": "PKG-446",
-        "order_id": "ORD-908",
-        "destination": "City General",
-        "driver_assigned": "John Doe",
-        "vehicle_plate": "KCC 789Y",
-        "storage_req": "Coom Temp",
-        "priority": "Normal"
-      },
-      {
-        "package_id": "PKG-448",
-        "order_id": "ORD-912",
-        "destination": "St. Mary's Clinic",
-        "driver_assigned": "Sarah Smith",
-        "vehicle_plate": "KDA 456Z",
-        "storage_req": "Frozen",
-        "priority": "Urgent"
-      }
-    ],
-    "in_transit_monitoring": [
-      {
-        "delivery_id": "DLV-8825",
-        "package_id": "PKG-445",
-        "destination": "Central Pharmacy",
-        "driver": "Jane Wilson",
-        "driver_phone": "1234567",
-        "vehicle_plate": "KBD 123X",
-        "dispatch_date": "2026-03-01",
-        "status": "Dispatched"
-      },
-      {
-        "delivery_id": "DLV-8821",
-        "package_id": "PKG-440",
-        "destination": "City General Hospital",
-        "driver": "John Doe",
-        "driver_phone": "2544567",
-        "vehicle_plate": "KCC 789Y",
-        "dispatch_date": "2026-02-28",
-        "status": "Delayed"
-      },
-      {
-        "delivery_id": "DLV-8830",
-        "package_id": "PKG-452",
-        "destination": "Northwest Medical",
-        "driver": "Mike Ross",
-        "driver_phone": "7654321",
-        "vehicle_plate": "KBE 555A",
-        "dispatch_date": "2026-03-01",
-        "status": "Dispatched"
-      }
-    ]
-  }
+  const kpiAndTablesData = await getKpiTablesData(userId)
 
   // Populate KPI grid from kpi_metrics
-  const { kpi_metrics, dispatch_queue, in_transit_monitoring } = kpiAndTablesMockData
+  const { kpi_metrics, dispatch_queue, in_transit_monitoring } = kpiAndTablesData
 
   if (kpi_metrics) {
     const awaitingElem = document.querySelector('.kpi-value.pkgs-to-pack')
@@ -469,7 +402,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (btn.id === 'viewVehicleInfoBtn') {
       const vehicleOverlayElem = document.getElementById('vehicleDetailsOverlay')
       const delivery = in_transit_monitoring.find(deliv => deliv.delivery_id === btnDeliveryId)
-      
+
       document.querySelectorAll('.js-vehicle-plates')
         .forEach(elem => elem.textContent = delivery.vehicle_plate)
       document.getElementById('ovDriverName')
@@ -486,3 +419,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   })
 
 })
+
+const getKpiTablesData = async (hosId) => {
+  const response = await fetch(`${invClerkPagesLink}/getKpiTblsData`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ hosId })
+    }
+  )
+
+  const result = await response.json()
+  return result.kpi_tables_data
+}
