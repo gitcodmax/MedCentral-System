@@ -153,11 +153,11 @@ document.addEventListener('DOMContentLoaded', async () => {
           const packageId = Number(confirmPackedBtnElem.dataset.packageId.slice(4))
           const packageWeight = pkgWtInputElem.value
           // Send to db
-          const response = await fetch(`${invClerkPagesLink}/packedOrderPkgs`, 
+          const response = await fetch(`${invClerkPagesLink}/packedOrderPkgs`,
             {
-              method: 'PUT', 
-              headers: { 'Content-Type': 'application/json' }, 
-              body: JSON.stringify({packageId, packageWeight})
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ packageId, packageWeight })
             }
           )
 
@@ -303,8 +303,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     overlay.style.display = 'flex';
 
     // Set the action for the confirm button
-    confirmBtn.onclick = () => {
-      console.log(`Action: ${type} confirmed for ID: ${id}`);
+    confirmBtn.onclick = async () => {
+      const packageId = Number(id.slice(4))
+
+      if (type === 'dispatch') {
+        console.log(`Action: dispatch confirmed for ID: ${packageId}`);
+        const response = await fetch(`${invClerkPagesLink}/dispatchOrderPkgs`, 
+          {
+            method: 'PUT', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({packageId})
+          }
+        )
+
+        const res = await response.json()
+        triggerStatus(res.msg)
+      } else if (type === 'delay') {
+        console.log(`Action: delay confirmed for ID: ${packageId}`);
+      } else if (type === 'delivery') {
+        console.log(`Action: delivery confirmed for ID: ${packageId}`);
+
+      }
       closeOverlay();
       // Here you would call your API update function
     };
@@ -374,11 +393,11 @@ const getKpiTablesData = async (clerkId) => {
 }
 
 const getOrdersData = async (clerkId) => {
-  const response = await fetch(`${invClerkPagesLink}/getOrdersData`, 
+  const response = await fetch(`${invClerkPagesLink}/getOrdersData`,
     {
-      method: 'POST', 
-      headers: { 'Content-Type': 'application/json' }, 
-      body: JSON.stringify({clerkId})
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ clerkId })
     }
   )
 

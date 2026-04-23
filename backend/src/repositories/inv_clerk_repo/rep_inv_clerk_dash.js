@@ -147,3 +147,41 @@ export async function packedOrderPkgsQ({ packageId, packageWeight }) {
     `, [packageWeight, packageId]
   )
 }
+
+export async function dispatchOrderPkgsQ(pkgId) {
+  const client = await pool.connect()
+
+  try {
+    await client.query('BEGIN')
+
+    const updatePkgStatus = await client.query(
+      `
+      UPDATE order_packages 
+      SET status_id = 6 
+      WHERE package_id = $1
+      RETURNING package_id 
+      `, [pkgId]
+    )
+
+    const retPkgId = updatePkgStatus.rows[0].package_id
+    if (!retPkgId) throw new Error('Package status not updated!')
+    
+    const insertDeliveries = await client.query(
+      `
+      INSERT INTO deliveries (package_id, dispatched_at) 
+      VALUES ($1, CURRENT_TIMESTAMP) 
+      RETURNING delivery_id
+      `, [pkgId]
+    )
+
+    const retDeliveryId = insertDeliveries.rows[0].delivery_id
+    if (!retDeliveryId) throw new Error('Delivery record not created!')
+    
+    await client.query('COMMIT')
+  } catch (e) {
+    await client.query('ROLLBACK')
+    throw e
+  } finally {
+    client.release()
+  }
+}
