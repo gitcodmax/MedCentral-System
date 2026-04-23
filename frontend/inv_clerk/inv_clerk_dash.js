@@ -338,10 +338,17 @@ document.addEventListener('DOMContentLoaded', async () => {
       } else if (type === 'delivery') {
         console.log(`Action: delivery confirmed for ID: ${packageId}`);
       } else if (type === 'proceed') {
-        console.log(`Action: proceed confirmed for ID: ${packageId}`);
+        const response = await fetch(`${invClerkPagesLink}/fixDelayPkg`, 
+          {
+            method: 'PUT', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({packageId})
+          }
+        )
+
+        const res = await response.json()
+        triggerStatus(res.msg)
       }
-      closeOverlay();
-      // Here you would call your API update function
     };
 
     document.querySelector('.btn-close-overlay').onclick = closeOverlay

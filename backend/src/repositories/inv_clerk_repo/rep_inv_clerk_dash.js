@@ -195,3 +195,13 @@ export async function delayOrderPkgsQ(pkgId) {
     `, [pkgId]
   )
 }
+
+export async function fixDelayPkgQ(pkgId) {
+  await pool.query(
+    `
+    UPDATE order_packages 
+    SET status_id = 6 
+    WHERE package_id = $1
+    `,[pkgId]
+  )
+}
