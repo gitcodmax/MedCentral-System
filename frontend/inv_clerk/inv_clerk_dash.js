@@ -243,14 +243,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td>${delivery.dispatch_date}</td>
                 <td><span class="status-badge badge-${delivery.status.toLowerCase()}">${delivery.status}</span></td>
                 <td class="action-cell">
-                    <button class="btn-action btn-delay"
-                        ${isDelayed ? ' disabled style="opacity: 0.5; cursor: not-allowed;"' : ''} 
-                        title="Mark as Delayed" data-deliv-id=${delivery.delivery_id}
+                    <button class="btn-action  ${isDelayed ? 'btn-disp' : 'btn-delay'}"    
+                        title="Mark as ${isDelayed ? 'Delay Issue fixed' : 'Delayed'}" data-deliv-id=${delivery.delivery_id}
                     >
-                        <i class="fas fa-clock"></i> ${isDelayed ? 'Delayed' : 'Delay'}
+                        <i class="fas fa-clock"></i> ${isDelayed ? 'Proceed' : 'Delay'}
                     </button>
                     <button class="btn-action btn-delivered" 
-                        title="Confirm Delivery" data-deliv-id=${delivery.delivery_id}
+                        ${isDelayed ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}
+                        title="${isDelayed ? 'Fix delay issue' : 'Confirm Delivery'}" data-deliv-id=${delivery.delivery_id}
                     >
                         <i class="fas fa-house-circle-check"></i> Delivered
                     </button>
@@ -292,6 +292,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       delayInput.style.display = 'block';
       confirmBtn.style.backgroundColor = '#f97316';
     }
+    else if (type === 'proceed') {
+      title.innerText = 'Delay Issue Fixed';
+      message.innerHTML = `Delay for Shipment <span class="overlay-id">${id}</span> sorted.`;
+      icon.className = 'fas fa-shipping-fast';
+      iconContainer.classList.add('theme-dispatch');
+      confirmBtn.style.backgroundColor = '#10b981';
+    }
     else if (type === 'delivery') {
       title.innerText = 'Confirm Delivery';
       message.innerHTML = `Finalize delivery for Shipment <span class="overlay-id">${id}</span>?`;
@@ -307,7 +314,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       const packageId = Number(id.slice(4))
 
       if (type === 'dispatch') {
-        console.log(`Action: dispatch confirmed for ID: ${packageId}`);
         const response = await fetch(`${invClerkPagesLink}/dispatchOrderPkgs`, 
           {
             method: 'PUT', 
@@ -319,10 +325,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         const res = await response.json()
         triggerStatus(res.msg)
       } else if (type === 'delay') {
-        console.log(`Action: delay confirmed for ID: ${packageId}`);
+        const response = await fetch(`${invClerkPagesLink}/delayOrderPkgs`, 
+          {
+            method: 'PUT', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({packageId})
+          }
+        )
+
+        const res = await response.json()
+        triggerStatus(res.msg)
       } else if (type === 'delivery') {
         console.log(`Action: delivery confirmed for ID: ${packageId}`);
-
+      } else if (type === 'proceed') {
+        console.log(`Action: proceed confirmed for ID: ${packageId}`);
       }
       closeOverlay();
       // Here you would call your API update function
@@ -357,6 +373,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (btn.classList.contains('btn-delivered')) {
       openConfirmation('delivery', btnDeliveryId)
     }
+    if (btn.classList.contains('btn-disp')) {
+      openConfirmation('proceed', btnDeliveryId)
+    }   
 
     if (btn.id === 'viewVehicleInfoBtn') {
       const vehicleOverlayElem = document.getElementById('vehicleDetailsOverlay')

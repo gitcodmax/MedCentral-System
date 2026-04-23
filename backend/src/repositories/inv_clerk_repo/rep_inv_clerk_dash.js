@@ -50,7 +50,7 @@ export async function getKpiTblsDataQ(clerkId) {
                     'vehicle_plate', v.plate_number,
                     'dispatch_date', TO_CHAR(dl.dispatched_at, 'YYYY-MM-DD'),
                     'status', CASE 
-                                WHEN EXISTS (SELECT 1 FROM delivery_issues di WHERE di.delivery_id = dl.delivery_id) THEN 'Delayed'
+                                WHEN op.status_id = 7 THEN 'Delayed'
                                 ELSE 'Dispatched'
                               END
                 )
@@ -184,4 +184,14 @@ export async function dispatchOrderPkgsQ(pkgId) {
   } finally {
     client.release()
   }
+}
+
+export async function delayOrderPkgsQ(pkgId) {
+  await pool.query(
+    `
+    UPDATE order_packages 
+    SET status_id = 7 
+    WHERE package_id = $1
+    `, [pkgId]
+  )
 }

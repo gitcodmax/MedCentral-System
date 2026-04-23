@@ -647,6 +647,15 @@ h2 {
   background: var(--completed);
 }
 
+.btn-disp{
+  color: var(--dispatched);
+  border: 1px solid var(--dispatched);
+}
+.btn-disp:hover{
+  background: var(--dispatched);
+  color: white;
+}
+
 .overlay-backdrop {
   position: fixed;
   top: 0;

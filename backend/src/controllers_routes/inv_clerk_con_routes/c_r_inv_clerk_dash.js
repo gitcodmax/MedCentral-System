@@ -1,5 +1,5 @@
 import e from "express";
-import { dispatchOrderPkgsQ, getKpiTblsDataQ, getOrdersDataQ, packedOrderPkgsQ } from "../../repositories/inv_clerk_repo/rep_inv_clerk_dash.js";
+import { delayOrderPkgsQ, dispatchOrderPkgsQ, getKpiTblsDataQ, getOrdersDataQ, packedOrderPkgsQ } from "../../repositories/inv_clerk_repo/rep_inv_clerk_dash.js";
 
 export const invClerkDashRouter = e.Router()
 
@@ -35,6 +35,15 @@ invClerkDashRouter.put('/dispatchOrderPkgs', async (req, res) => {
   try {
     await dispatchOrderPkgsQ(req.body.packageId)
     res.status(200).json({msg: 'success'})
+  } catch (e) {
+    res.status(500).json({msg: 'error', Error: e.message})
+  }
+})
+
+invClerkDashRouter.put('/delayOrderPkgs', async (req, res) => {
+  try {
+    await delayOrderPkgsQ(req.body.packageId)
+    res.status(200).json({ msg: 'success'})
   } catch (e) {
     res.status(500).json({msg: 'error', Error: e.message})
   }
