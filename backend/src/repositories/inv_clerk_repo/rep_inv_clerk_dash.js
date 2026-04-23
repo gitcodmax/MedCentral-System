@@ -1,6 +1,6 @@
 import pool from "../../config/db.js"; 
 
-export async function getKpiTblsDataQ(hosId) {
+export async function getKpiTblsDataQ(clerkId) {
   const { rows } = await pool.query(
     `
     WITH kpi_data AS (
@@ -29,7 +29,7 @@ export async function getKpiTblsDataQ(hosId) {
             ) AS queue_list
         FROM order_packages op
         JOIN orders o ON op.order_id = o.order_id 
-      JOIN requests r ON o.request_id = r.request_id 
+        JOIN requests r ON o.request_id = r.request_id 
         JOIN hospitals h ON r.hospital_id = h.hospital_id
         JOIN cfg_storage_options cso ON op.storage_temp_code = cso.code
         
@@ -72,7 +72,66 @@ export async function getKpiTblsDataQ(hosId) {
             'dispatch_queue', COALESCE((SELECT queue_list FROM queue_data), '[]'::jsonb),
             'in_transit_monitoring', COALESCE((SELECT monitoring_list FROM monitoring_data), '[]'::jsonb)
         ) AS kpi_tables_data;
-    `, [hosId]
+    `, [clerkId]
+  )
+
+  return rows[0]
+}
+
+export async function getOrdersDataQ(clerkId) {
+  const { rows } = await pool.query(
+    `
+    SELECT jsonb_agg(
+        jsonb_build_object(
+            'orderId', 'ORD-' || o.order_id,
+            'customerName', h.name,
+            'orderCreatedDate', TO_CHAR(o.created_at, 'YYYY-MM-DD'),
+            'packages', (
+                SELECT jsonb_agg(
+                    jsonb_build_object(
+                        'packageId', 'PKG-' || op.package_id,
+                        'storageRequirement', cso_pkg.description,
+                        'items', (
+                            SELECT jsonb_agg(
+                                jsonb_build_object(
+                                    'itemName', i.name,
+                                    'sku', i.sku_code,
+                                    'shelfId', cws.shelf_label,
+                                    'storageTemp', cso_item.description,
+                                    'batchNumber', 'A0OWE',
+                                    'quantityToPack', ri.quantity_requested,
+                                    'unitOfMeasure', uom.name
+                                )
+                            )
+                            FROM package_items pi 
+                            JOIN request_items ri ON pi.request_item_id = ri.request_item_id 
+                            JOIN items i ON ri.item_id = i.item_id
+                            JOIN cfg_storage_options cso_item ON i.storage_temp_code = cso_item.code
+                            JOIN cfg_uoms uom ON i.bulk_uom_id = uom.id
+                            JOIN cfg_warehouse_shelves cws ON i.shelf_id = cws.shelf_id
+                            WHERE pi.package_id = op.package_id
+                        )
+                    )
+                )
+                FROM order_packages op
+                JOIN cfg_storage_options cso_pkg ON op.storage_temp_code = cso_pkg.code
+                WHERE op.order_id = o.order_id
+                  AND op.status_id = 4 
+                  AND op.assigned_clerk_id = $1
+            )
+        )
+    ) AS orders_data
+    FROM orders o
+    JOIN requests r ON o.request_id = r.request_id
+    JOIN hospitals h ON r.hospital_id = h.hospital_id 
+    WHERE EXISTS (
+      SELECT 1 
+      FROM order_packages op 
+      WHERE op.order_id = o.order_id
+        AND op.status_id = 4 
+        AND op.assigned_clerk_id = $1
+    )
+    `, [clerkId]
   )
 
   return rows[0]

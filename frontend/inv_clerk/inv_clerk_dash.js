@@ -3,7 +3,6 @@ import { inventoryAlerts } from "../wh_manager/wh_manager_dash.js"
 import { invClerkPagesLink } from "../global.js";
 
 export const userId = Number(localStorage.getItem('userId'))
-console.log(userId)
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -63,78 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  //Mock up data for the order
-  const ordersData = [
-    {
-      orderId: "ORD-8821",
-      customerName: "St. Jude Medical Center",
-      orderCreatedDate: "2026-02-18",
-      // An order contains an array of distinct packages
-      packages: [
-        {
-          packageId: "PKG-440",
-          storageRequirement: "Ambient",
-          items: [
-            {
-              itemName: "Paracetamol 500mg",
-              sku: "PAR-500MG",
-              shelfId: "A-12-04",
-              storageTemp: "Ambient",
-              batchNumber: "A30B45",
-              quantityToPack: 50,
-              unitOfMeasure: "BOX"
-            },
-            {
-              itemName: "Latex Gloves (Size M)",
-              sku: "GLOV-LAT-M",
-              shelfId: "C-05-22",
-              storageTemp: "CRT",
-              batchNumber: "C45F20",
-              quantityToPack: 5,
-              unitOfMeasure: "CARTON"
-            }
-          ]
-        },
-        {
-          packageId: "PKG-441",
-          storageRequirement: "Refrigerated",
-          items: [
-            {
-              itemName: "Insulin Vials",
-              sku: "INS-V10",
-              shelfId: "REF-01-A",
-              storageTemp: "Refrigerated",
-              batchNumber: "ICE-442",
-              quantityToPack: 20,
-              unitOfMeasure: "VIAL"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      orderId: "ORD-8822",
-      customerName: "City General Clinic",
-      orderCreatedDate: "2026-02-19",
-      packages: [
-        {
-          packageId: "PKG-442",
-          storageRequirement: "CRT",
-          items: [
-            {
-              itemName: "Amoxicillin 250mg",
-              sku: "AMOX-250",
-              shelfId: "B-02-11",
-              storageTemp: "Frozen",
-              batchNumber: "AMX-992",
-              quantityToPack: 20,
-              unitOfMeasure: "BOTTLE"
-            }
-          ]
-        }
-      ]
-    }
-  ];
+  const ordersData = await getOrdersData(userId)
 
   // Generate a packages list
   function getPackagesFromOrders(orders) {
@@ -158,8 +86,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   //Display all the pending orders
   const ordersContainer = document.querySelector('.order-cards-container')
-  const packagesData = getPackagesFromOrders(ordersData)
-  packagesData.forEach((pkg) => {
+  const packagesData = await getPackagesFromOrders(ordersData)
+  packagesData.forEach(async (pkg) => {
     ordersContainer.innerHTML += `
             <div class="order-card-item">
                 <h3>
@@ -420,15 +348,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 })
 
-const getKpiTablesData = async (hosId) => {
+const getKpiTablesData = async (clerkId) => {
   const response = await fetch(`${invClerkPagesLink}/getKpiTblsData`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ hosId })
+      body: JSON.stringify({ clerkId })
     }
   )
 
   const result = await response.json()
   return result.kpi_tables_data
+}
+
+const getOrdersData = async (clerkId) => {
+  const response = await fetch(`${invClerkPagesLink}/getOrdersData`, 
+    {
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json' }, 
+      body: JSON.stringify({clerkId})
+    }
+  )
+
+  const res = await response.json()
+  return res.orders_data
 }
