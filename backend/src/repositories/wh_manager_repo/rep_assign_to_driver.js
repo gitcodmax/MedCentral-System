@@ -68,7 +68,8 @@ export async function getPackagesDriversDataQ() {
                         FROM order_packages op
                         JOIN cfg_storage_options cso ON op.storage_temp_code = cso.code
                         WHERE op.order_id = o.order_id 
-                          AND op.status_id = 5 
+                          AND op.status_id = 5
+                          AND op.assigned_driver_id IS NULL
                     )
                 )
             ) AS queue_list

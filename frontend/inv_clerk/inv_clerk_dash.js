@@ -1,12 +1,13 @@
 import { renderHeader } from "./header.js";
 import { inventoryAlerts } from "../wh_manager/wh_manager_dash.js"
-import { invClerkPagesLink } from "../global.js";
+import { invClerkPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../global.js";
 
 export const userId = Number(localStorage.getItem('userId'))
 
 document.addEventListener('DOMContentLoaded', async () => {
 
   renderHeader()
+  renderSuccessErrorOverlay()
 
   const inventory = await inventoryAlerts()
 
@@ -144,13 +145,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Confirm orders packed Button
   if (document.getElementById('orderOverlay')) {
-    confirmPackedBtnElem.addEventListener('click', () => {
+    confirmPackedBtnElem.addEventListener('click', async () => {
       if (confirmPackedBtnElem.dataset.packageId === pkgWtInputElem.dataset.packageId) {
         if (pkgWtInputElem.value === '') {
           alert('Enter package weight!!')
         } else {
+          const packageId = Number(confirmPackedBtnElem.dataset.packageId.slice(4))
+          const packageWeight = pkgWtInputElem.value
           // Send to db
-          console.log('Package packed', pkgWtInputElem.value)
+          const response = await fetch(`${invClerkPagesLink}/packedOrderPkgs`, 
+            {
+              method: 'PUT', 
+              headers: { 'Content-Type': 'application/json' }, 
+              body: JSON.stringify({packageId, packageWeight})
+            }
+          )
+
+          const res = await response.json()
+          triggerStatus(res.msg)
         }
       }
     })

@@ -36,7 +36,7 @@ export async function getKpiTblsDataQ(clerkId) {
         LEFT JOIN vehicle_assignments va ON op.assigned_driver_id = va.driver_id 
         LEFT JOIN drivers d ON va.driver_id = d.driver_id
         LEFT JOIN vehicles v ON va.vehicle_id = v.vehicle_id
-        WHERE op.status_id = 5 AND op.assigned_clerk_id = $1
+        WHERE op.status_id = 5 AND op.assigned_clerk_id = $1 AND op.assigned_driver_id IS NOT NULL
     ),
     monitoring_data AS (
         SELECT 
@@ -135,4 +135,15 @@ export async function getOrdersDataQ(clerkId) {
   )
 
   return rows[0]
+}
+
+// UPDATES
+export async function packedOrderPkgsQ({ packageId, packageWeight }) {
+  await pool.query(
+    `
+    UPDATE order_packages 
+    SET status_id = 5, weight_tonnes = $1 
+    WHERE package_id = $2
+    `, [packageWeight, packageId]
+  )
 }
