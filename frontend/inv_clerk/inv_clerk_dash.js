@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   function getPackagesFromOrders(orders) {
     const packagesList = []
 
+    if(orders)
     orders.forEach(order => {
       order.packages.forEach(pkg => {
         packagesList.push({
@@ -185,7 +186,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const inTransitElem = document.querySelector('.kpi-value.in-transit')
 
     if (awaitingElem) awaitingElem.textContent = kpi_metrics.awaiting_packing
-    if (readyElem) readyElem.textContent = kpi_metrics.ready_for_dispatch
+    if (readyElem) readyElem.textContent = dispatch_queue.length
     if (inTransitElem) inTransitElem.textContent = kpi_metrics.active_in_transit
   }
 
@@ -244,13 +245,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td><span class="status-badge badge-${delivery.status.toLowerCase()}">${delivery.status}</span></td>
                 <td class="action-cell">
                     <button class="btn-action  ${isDelayed ? 'btn-disp' : 'btn-delay'}"    
-                        title="Mark as ${isDelayed ? 'Delay Issue fixed' : 'Delayed'}" data-deliv-id=${delivery.delivery_id}
+                        title="Mark as ${isDelayed ? 'Delay Issue fixed' : 'Delayed'}" data-pkg-id=${delivery.package_id}
                     >
                         <i class="fas fa-clock"></i> ${isDelayed ? 'Proceed' : 'Delay'}
                     </button>
                     <button class="btn-action btn-delivered" 
                         ${isDelayed ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}
-                        title="${isDelayed ? 'Fix delay issue' : 'Confirm Delivery'}" data-deliv-id=${delivery.delivery_id}
+                        title="${isDelayed ? 'Fix delay issue' : 'Confirm Delivery'}" data-pkg-id=${delivery.package_id}
                     >
                         <i class="fas fa-house-circle-check"></i> Delivered
                     </button>
@@ -337,6 +338,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         triggerStatus(res.msg)
       } else if (type === 'delivery') {
         console.log(`Action: delivery confirmed for ID: ${packageId}`);
+        const response = await fetch(`${invClerkPagesLink}/deliveredOrderPkgs`, 
+          {
+            method: 'PUT', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({packageId})
+          }
+        )
+
+        const res = await response.json()
+        triggerStatus(res.msg)
       } else if (type === 'proceed') {
         const response = await fetch(`${invClerkPagesLink}/fixDelayPkg`, 
           {
@@ -349,6 +360,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const res = await response.json()
         triggerStatus(res.msg)
       }
+
+      closeOverlay()
     };
 
     document.querySelector('.btn-close-overlay').onclick = closeOverlay
@@ -372,16 +385,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btn = e.target.closest('button')
     if (!btn) return;
 
-    const btnDeliveryId = btn.dataset.delivId
+    const btnPackageId = btn.dataset.pkgId
 
     if (btn.classList.contains('btn-delay')) {
-      openConfirmation('delay', btnDeliveryId)
+      openConfirmation('delay', btnPackageId)
     }
     if (btn.classList.contains('btn-delivered')) {
-      openConfirmation('delivery', btnDeliveryId)
+      openConfirmation('delivery', btnPackageId)
     }
     if (btn.classList.contains('btn-disp')) {
-      openConfirmation('proceed', btnDeliveryId)
+      openConfirmation('proceed', btnPackageId)
     }   
 
     if (btn.id === 'viewVehicleInfoBtn') {

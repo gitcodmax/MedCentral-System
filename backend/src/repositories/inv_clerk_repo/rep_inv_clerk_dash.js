@@ -7,10 +7,7 @@ export async function getKpiTblsDataQ(clerkId) {
     SELECT 
         jsonb_build_object(
             'awaiting_packing', COUNT(*) FILTER (WHERE op.status_id = 4),
-            'ready_for_dispatch', COUNT(*) FILTER (WHERE op.status_id = 5),
-            'active_in_transit', COUNT(*) FILTER (WHERE op.status_id = 6),
-            'reported_delays', (SELECT COUNT(*) FROM delivery_issues),
-            'delivered_today', (SELECT COUNT(*) FROM deliveries WHERE delivered_at::DATE = CURRENT_DATE)
+            'active_in_transit', COUNT(*) FILTER (WHERE op.status_id = 6)
         ) AS metrics
     FROM order_packages op 
       WHERE op.assigned_clerk_id = $1
@@ -204,4 +201,43 @@ export async function fixDelayPkgQ(pkgId) {
     WHERE package_id = $1
     `,[pkgId]
   )
+}
+
+export async function deliveredOrderPkgsQ(pkgId) {
+  const client = await pool.connect()
+
+  try {
+    await client.query('BEGIN')
+
+    const updateStatus = await client.query(
+      `
+      UPDATE order_packages 
+      SET status_id = 8 
+      WHERE package_id = $1
+      RETURNING package_id
+      `, [pkgId]
+    )
+
+    const packageId = updateStatus.rows[0].package_id
+    if (!packageId) throw new Error('Package Status not updated!')
+    
+    const deliveryTime = await client.query(
+      `
+      UPDATE deliveries
+      SET delivered_at = CURRENT_TIMESTAMP
+      WHERE package_id = $1 
+      RETURNING delivery_id
+      `, [pkgId]
+    )
+
+    const deliveryId = deliveryTime.rows[0].delivery_id
+    if (!deliveryId) throw new Error('Delivery Time not set!!')
+    
+    await client.query('COMMIT')
+  } catch (e) {
+    await client.query('ROLLBACK')
+    throw e
+  } finally {
+    client.release()
+  }
 }
