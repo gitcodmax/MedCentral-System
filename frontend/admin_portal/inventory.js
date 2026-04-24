@@ -349,7 +349,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     `
 
   renderSuccessErrorOverlay()
-  renderSidebar()
+  await renderSidebar()
   document.querySelector('.js-header-left')
     .innerHTML = `
     <div class="dashboard-header">
@@ -369,7 +369,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   displayNoMatchFound()
 
   const itemsDetails = await getItemsDetails()
-  console.log(itemsDetails)
   const SystemConfig = await getSystemConfig()
 
   // Get Category Name

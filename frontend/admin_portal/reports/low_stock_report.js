@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       
     <div class="sidebar" id="sidebar"></div>
 
-    <div class="main-wrapper">
+    <main class="main-wrapper">
       <header class="top-header" id="topHeader"></header>
 
       <div class="container">
@@ -105,10 +105,10 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
         </section>
       </div>
-    </div>
+    </main>
     `
 
-  renderSidebar()
+  await renderSidebar()
   renderReportsNavbar('low_stock_report')
 
   const lowStockReportData = await getLowStockReportData()

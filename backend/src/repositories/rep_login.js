@@ -8,3 +8,13 @@ export async function getUserDetailsQ(email) {
   
   return rows[0]
 }
+
+export async function getUserNameQ(userId) {
+  const { rows } = await pool.query(
+    `
+    SELECT full_name FROM users WHERE user_id = $1
+    `, [userId]
+  )
+
+  return rows[0]
+}

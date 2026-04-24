@@ -119,6 +119,19 @@ export function triggerStatus(type) {
   }, 3000);
 }
 
+export const getUserName = async (userId) => {
+  const response = await fetch(`http://localhost:3000/login/getUserName`, 
+    {
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json' }, 
+      body: JSON.stringify({ userId })
+    }
+  )
+
+  const res = await response.json()
+  return res.full_name
+}
+
 export const adminPagesLink = `http://localhost:3000/admin`
 export const orgPortalPagesLink = `http://localhost:3000/org`
 export const whManagerPagesLink = `http://localhost:3000/whManager`

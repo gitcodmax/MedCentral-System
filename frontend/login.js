@@ -110,13 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
         clearErrors();
         localStorage.setItem('token', res.token)
         for (i of ['userId', 'hosId']) {
-          localStorage.removeItem(i)
+          sessionStorage.removeItem(i)
         }
 
         if (res.role === 3) {
-          localStorage.setItem('hosId', res.hosId)
+          sessionStorage.setItem('hosId', res.hosId)
         } else {
-          localStorage.setItem('userId', res.userId)
+          sessionStorage.setItem('userId', res.userId)
         }
 
         redirectToDash(res.role)

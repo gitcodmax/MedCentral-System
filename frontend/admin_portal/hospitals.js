@@ -4,7 +4,7 @@ import { handleOverlay, displayNoMatchFound,
  renderSuccessErrorOverlay, triggerStatus,
  adminPagesLink} from "../global.js"
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   document.querySelector('.app-container')
     .innerHTML = `    
       <div class="sidebar" id="sidebar"></div>
@@ -389,7 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `
 
   renderSuccessErrorOverlay()
-  renderSidebar()
+  await renderSidebar()
   document.querySelector('.js-header-left')
     .innerHTML = `
     <div class="page-title">

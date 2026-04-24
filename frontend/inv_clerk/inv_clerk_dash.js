@@ -2,7 +2,7 @@ import { renderHeader } from "./header.js";
 import { inventoryAlerts } from "../wh_manager/wh_manager_dash.js"
 import { invClerkPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../global.js";
 
-export const userId = Number(localStorage.getItem('userId'))
+export const userId = Number(sessionStorage.getItem('userId'))
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -337,7 +337,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const res = await response.json()
         triggerStatus(res.msg)
       } else if (type === 'delivery') {
-        console.log(`Action: delivery confirmed for ID: ${packageId}`);
         const response = await fetch(`${invClerkPagesLink}/deliveredOrderPkgs`, 
           {
             method: 'PUT', 

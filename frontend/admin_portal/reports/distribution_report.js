@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     .innerHTML = `   
     <div class="sidebar" id="sidebar"></div>
 
-    <div class="main-wrapper">
+    <main class="main-wrapper">
       <header class="top-header" id="topHeader"></header>
 
       <div class="container">
@@ -134,10 +134,10 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
         </section>
       </div>
-    </div>
+    </main>
     `
 
-  renderSidebar()
+  await renderSidebar()
   renderReportsNavbar('distribution_report')
 
   const distroReportData = await getDistroReportData()

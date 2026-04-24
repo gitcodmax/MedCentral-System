@@ -54,3 +54,13 @@ export async function getOrgDashDataQ(hosId) {
 
   return rows[0]
 }
+
+export async function getHospNameQ(hosId) {
+  const { rows } = await pool.query(
+    `
+    SELECT name FROM hospitals WHERE hospital_id = $1
+    `, [hosId]
+  )
+
+  return rows[0]
+}

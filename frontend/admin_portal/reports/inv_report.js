@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
     `
 
-  renderSidebar()
+  await renderSidebar()
   renderReportsNavbar('inventory_report')
 
   const invReportData = await getInvReportData()

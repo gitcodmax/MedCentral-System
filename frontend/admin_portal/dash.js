@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     </div>
     `
 
-  renderSidebar()
+  await renderSidebar()
   document.querySelector('.js-header-left')
     .innerHTML = `
       <div class="page-title">

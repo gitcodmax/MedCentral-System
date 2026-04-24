@@ -1,5 +1,9 @@
+import { getUserName } from "../global.js"
 
-export function renderSidebar(pageName) {
+export async function renderSidebar(pageName) {
+
+  const whManagerId = sessionStorage.getItem('userId')
+  const name = await getUserName(whManagerId)
 
   //Display the logo
   document.querySelector('.logo-container')
@@ -12,7 +16,7 @@ export function renderSidebar(pageName) {
       <div class="user-profile">
         <div class="avatar"></div>
         <div class="user-info">
-          <h3>John Doe</h3>
+          <h3>${name}</h3>
           <p>Warehouse Manager</p>
         </div>
         <button id="sidebarToggle" class="toggle-btn">
@@ -67,11 +71,6 @@ export function renderSidebar(pageName) {
             Shelf Details</a>
         </li>
       </ul>
-
-      <div class="sidebar-footer">
-        <p id="current-time">10:42 AM</p>
-        <p id="current-date">Fri, 10 Dec 2025</p>
-      </div>
     
     `
 

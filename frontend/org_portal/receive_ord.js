@@ -363,7 +363,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (btn.classList.contains('js-btn-confirm-inspection')) {
       const confirmBtnPkgId = btn.dataset.packageId
-      console.log(confirmBtnPkgId)
 
       // Validate the inputs for item inspection
       for (const pkg of receivingData) {
@@ -415,7 +414,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           // Success - now you have ALL issues collected properly
           if (deliveryIssuesArr.length > 0) {
-            console.log("Delivery Issues:", deliveryIssuesArr);
 
             const response = await fetch(`${orgPortalPagesLink}/saveDeliveredItemsWithIssues`, 
               {

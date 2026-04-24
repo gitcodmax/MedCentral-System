@@ -157,8 +157,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           const reqId = Number(request.requestId.slice(4))
 
           const msg = await createOrder(reqId)
-          console.log(msg)
-          // triggerStatus(msg)
+          triggerStatus(msg)
         },{once: true})
       })
     })

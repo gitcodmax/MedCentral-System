@@ -1,7 +1,10 @@
-import { hosId } from "./dash.js"
+import { getHospName, hosId } from "./dash.js"
 import { noHospCartItems } from "./request_items/order_summary.js"
 
-export function renderSidebar(pageName) {
+export async function renderSidebar(pageName) {
+  const name = await getHospName(hosId)
+  const nameInitials = name.split(' ').map(n => n.slice(0, 1)).join('')
+
   const sidebar = document.querySelector('.js-sidebar')
   const logoImg = `<img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">`
   document.querySelector('.main-content-logo')
@@ -41,9 +44,9 @@ export function renderSidebar(pageName) {
 
     <div class="sidebar-footer">
       <div class="user-info">
-        <img src="https://ui-avatars.com/api/?name=Karen+Hospital&background=0D8ABC&color=fff" alt="User">
+        <img src="https://ui-avatars.com/api/?name=H&background=0D8ABC&color=fff" alt="User">
         <div class="user-text">
-          <p class="u-name">Karen Hospital</p>
+          <p class="u-name">${name}</p>
           <p class="u-role">Procurement Dept.</p>
         </div>
       </div>

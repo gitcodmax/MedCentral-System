@@ -1,6 +1,9 @@
-import { adminPagesLink, handleOverlay, renderSuccessErrorOverlay, triggerStatus } from "../global.js"
+import {
+  adminPagesLink, getUserName, handleOverlay,
+  renderSuccessErrorOverlay, triggerStatus
+} from "../global.js"
 
-export function renderSidebar() {
+export async function renderSidebar() {
   const logoImage = `<img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">`
   const sidebarElem = document.getElementById('sidebar')
 
@@ -91,6 +94,10 @@ export function renderSidebar() {
     }
   })
 
+  const adminUserId = sessionStorage.getItem('userId')
+  const name = await getUserName(adminUserId)
+  const nameInitials = name.split(' ').map(n => n.slice(0, 1)).join('').toUpperCase()
+
   // Display the page header
   document.getElementById('topHeader')
     .innerHTML = `     
@@ -107,9 +114,9 @@ export function renderSidebar() {
           </div>
           <button class="profile-section">
             <div class="profile">
-              <div class="avatar">JS</div>
+              <div class="avatar">${nameInitials}</div>
               <div class="admin-info">
-                <span>John Smith</span>
+                <span>${name}</span>
               </div>
             </div>
             <i class="fa-solid caret fa-caret-right"></i>
@@ -138,7 +145,7 @@ export function renderSidebar() {
             </div>
           </div>
 
-          <div class="modal-footer">
+          <div class="admin-pwd-modal-footer">
               <button type="button" class="btn close-overlay-btn js-btn-close-overlay">Cancel</button>
               <button type="submit" class="btn save-btn">Confirm Reset</button>
           </div>
@@ -176,7 +183,6 @@ export function renderSidebar() {
       }
     })
 
-  const adminUserId = localStorage.getItem('userId')
   
   const updateAdminPwdOverlayBtnElem = document.getElementById('updateAdminPwdBtn')
   const resetPwdOverlayElem = document.getElementById('resetAdminPasswordOverlay')

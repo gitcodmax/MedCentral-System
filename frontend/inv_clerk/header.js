@@ -1,6 +1,13 @@
+import { getUserName } from "../global.js";
+import { userId } from "./inv_clerk_dash.js";
+
 //This file contains the code to display the header
 
-export function renderHeader() {
+export async function renderHeader() {
+  
+  const name = await getUserName(userId)
+  const firstName = name.split(' ')[0]
+
     document.querySelector('.main-header')
         .innerHTML = `    
         <div class="logo">
@@ -28,7 +35,7 @@ export function renderHeader() {
 
         <div class="user-info">
             <div class="user-details">
-                Peter, Inventory Clerk (Nairobi)
+                ${firstName}, Inventory Clerk
             </div>
             <div class="time-and-alerts">
                 <span id="current-time"></span>

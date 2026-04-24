@@ -1,7 +1,7 @@
 import { orgPortalPagesLink } from "../global.js";
 import { renderSidebar } from "./sidebar.js";
 
-export const hosId = Number(localStorage.getItem('hosId'))
+export const hosId = Number(sessionStorage.getItem('hosId'))
 
 document.addEventListener('DOMContentLoaded', async () => {
   document.querySelector('.app-container')
@@ -146,4 +146,17 @@ const getOrgDashData = async (hosId) => {
 
   const res = await response.json()
   return res.dashboard_data
+}
+
+export const getHospName = async (hosId) => {
+  const response = await fetch(`${orgPortalPagesLink}/getHospName`, 
+    {
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json' }, 
+      body: JSON.stringify({hosId})
+    }
+  )
+
+  const res = await response.json()
+  return res.name
 }

@@ -2,7 +2,7 @@ import express from 'express'
 import bcrypt from 'bcrypt'
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
-import { getUserDetailsQ } from '../repositories/rep_login.js'
+import { getUserDetailsQ, getUserNameQ } from '../repositories/rep_login.js'
 
 dotenv.config()
 const loginRouter = express.Router()
@@ -31,6 +31,15 @@ loginRouter.post('/getUserDetails', async (req, res) => {
     }
   } catch (err) {
     res.status(500).json({Error: err.message})
+  }
+})
+
+loginRouter.post('/getUserName', async (req, res) => {
+  try {
+    const name = await getUserNameQ(req.body.userId)
+    res.status(200).json(name)
+  } catch (e) {
+    res.status(500).json({Error:e.message})
   }
 })
 

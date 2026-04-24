@@ -146,7 +146,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     body.innerHTML = '';
     orders.forEach(([id, info]) => {
       const packagesElems = info.packages.map(pkg => `<span class="badge ${pkg}"> ${pkg} </span>`).join('')
-      console.log()
 
       const row = `
             <tr>
