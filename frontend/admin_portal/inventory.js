@@ -369,6 +369,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   displayNoMatchFound()
 
   const itemsDetails = await getItemsDetails()
+  console.log(itemsDetails)
   const SystemConfig = await getSystemConfig()
 
   // Get Category Name
@@ -393,7 +394,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       <td>${getCatName(item.category_id)}</td>
       <td><span class="badge ${item.storage_temp_code}">${item.storage_temp_code}</span></td>
       <td>${getUnitName(item.bulk_uom_id)} / ${getUnitName(item.selling_uom_id)} (${item.units_per_bulk} units)</td>
-      <td>${item.current_stock} ${getUnitName(item.selling_uom_id)}</td>
+      <td>${item.current_stock} ${getUnitName(item.bulk_uom_id)}</td>
       <td><span class="status-badge 
         ${item.status.toLowerCase() === 'out of stock' ? 'out' : item.status.toLowerCase()}"
         >${item.status}</span>
@@ -654,9 +655,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         : item.status.toLowerCase()
         }`
       document.getElementById('viewCurrentStock')
-        .textContent = `${item.current_stock} ${getUnitName(item.selling_uom_id)}${item.current_stock > 1 ? 's' : ''}`
+        .textContent = `${item.total_selling_units} ${getUnitName(item.selling_uom_id)}${item.total_selling_units > 1 ? 's' : ''}`
       document.getElementById('viewMinLevel')
-        .textContent = `${item.min_stock_level} ${getUnitName(item.selling_uom_id)}${item.min_stock_level !== 1 ? 's' : ''}`
+        .textContent = `${item.min_stock_level} ${getUnitName(item.bulk_uom_id)}${item.min_stock_level !== 1 ? 's' : ''}`
       document.getElementById('viewPrice')
         .textContent = `$${Number(item.price_per_selling).toFixed(2)}`
     }
@@ -740,7 +741,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       handleOverlay(adjustStockOverlayElem)
 
       document.getElementById('currentStockCount')
-        .textContent = item.current_stock
+        .textContent = item.total_selling_units
       document.getElementById('adjustUnitLabel')
         .textContent = getUnitName(item.selling_uom_id)
 
@@ -778,7 +779,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       handleOverlay(deleteItemOverlayElem)
 
       document.getElementById('currentStockSellUom')
-        .textContent = `${item.current_stock} ${getUnitName(item.selling_uom_id)}`
+        .textContent = `${item.total_selling_units} ${getUnitName(item.selling_uom_id)}`
 
       document.getElementById('confirmDeleteBtn')
         .addEventListener('click', async () => {

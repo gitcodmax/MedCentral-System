@@ -22,7 +22,7 @@ export async function getAdminDashDataQ(){
         SELECT 
             'ORD-' || o.order_id AS order_id,
             h.name AS hospital_name,
-            o.created_at AS order_date
+            TO_CHAR(o.created_at, 'YYYY-MM-DD') AS order_date
         FROM orders o
         JOIN requests r ON o.request_id = r.request_id
         JOIN hospitals h ON r.hospital_id = h.hospital_id
@@ -36,7 +36,7 @@ export async function getAdminDashDataQ(){
             i.min_stock_level AS min_required,
             u.name AS unit
         FROM items i
-        JOIN cfg_uoms u ON i.selling_uom_id = u.id
+        JOIN cfg_uoms u ON i.bulk_uom_id = u.id
         WHERE i.current_stock <= i.min_stock_level
         ORDER BY i.current_stock ASC
     )

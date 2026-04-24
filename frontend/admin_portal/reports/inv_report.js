@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                   <th class="text-right">Min Level</th>
                   <th>Stock Status</th>
                   <th class="text-right">Unit Price</th>
+                  <th class="text-right">Total Selling Units</th>
                   <th class="text-right">Total Value</th>
                 </tr>
               </thead>
@@ -156,6 +157,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       <td class="text-right">${item.min_level}</td>
       <td><span class="stock-badge badge-${item.stock_status.toLowerCase()}">${item.stock_status}</span></td>
       <td class="text-right">${item.unit_price}</td>
+      <td class="text-right">${item.total_selling_units}</td>
       <td class="text-right tot-value">${item.total_value}</td>
     `
 

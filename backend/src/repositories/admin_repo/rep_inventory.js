@@ -3,7 +3,8 @@ import pool from "../../config/db.js";
 export async function getAllItemsQ() {
   const { rows } = await pool.query(`
     SELECT item_id, name, sku_code, category_id, storage_temp_code, bulk_uom_id,
-     selling_uom_id, units_per_bulk, price_per_selling, current_stock, min_stock_level
+     selling_uom_id, units_per_bulk, price_per_selling, current_stock, min_stock_level, 
+     total_selling_units
     FROM items`)
 
   return rows
@@ -74,23 +75,26 @@ export async function updateCurrentStockQ({itemId, newStockQty, adjustReason}){
     await client.query('BEGIN')
 
     const res = await client.query(`
-      SELECT current_stock FROM items WHERE item_id = $1
+      SELECT total_selling_units FROM items WHERE item_id = $1 
     `, [itemId])
 
     if (res.rows.length === 0) throw new Error("Item does not exist!");
 
-    const currentStock = res.rows[0].current_stock;
+    const currentStock = res.rows[0].total_selling_units;
     const qtyChange = currentStock - newStockQty;
 
     if(qtyChange === 0) throw new Error("The item quantity was not changed!")
 
-    await client.query(`
+    const stockLogIn = await client.query(`
       INSERT INTO stock_log(item_id, quantity_change, new_stock_level, adjustment_reason)
-      VALUES ($1, $2, $3, $4)
+      VALUES ($1, $2, $3, $4) RETURNING log_id
     `, [itemId, -qtyChange, newStockQty, adjustReason]);
 
+    const logId = stockLogIn.rows[0].log_id
+    if(!logId) throw new Error("Stock change not recorded in stock log!")
+
     const updated = await client.query(`
-      UPDATE items SET current_stock = $1 WHERE item_id = $2 RETURNING *
+      UPDATE items SET total_selling_units = $1 WHERE item_id = $2 RETURNING *
     `, [newStockQty, itemId]);
 
     await client.query('COMMIT')

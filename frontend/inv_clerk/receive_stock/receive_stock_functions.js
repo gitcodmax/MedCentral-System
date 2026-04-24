@@ -48,7 +48,7 @@ export const createAnotherItemDetailsContainer = (itemIndexed) => {
                     </div>
 
                     <div class="input-group">
-                      <label for="qtyDelivered">Quantity Delivered:</label>
+                      <label for="qtyDelivered">Quantity Delivered(Selling Units):</label>
                       <input type="number" id="qtyDelivered-${itemIndexed}" required min="1">
                     </div>
 

@@ -67,7 +67,7 @@ export async function saveNewStockDataQ({ deliveryDetails, items }) {
       const itemsUpdate = await client.query(
         `
         UPDATE items 
-        SET current_stock = (current_stock + $1) 
+        SET total_selling_units = (total_selling_units + $1) 
         WHERE sku_code = $2 
         RETURNING name
         `, [qtyReceived, skuCode]

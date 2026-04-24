@@ -1,3 +1,5 @@
+import { adminPagesLink, handleOverlay, renderSuccessErrorOverlay, triggerStatus } from "../global.js"
+
 export function renderSidebar() {
   const logoImage = `<img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">`
   const sidebarElem = document.getElementById('sidebar')
@@ -51,22 +53,22 @@ export function renderSidebar() {
   
   `
   const windowLink = window.location.href
-  if(windowLink.includes('dash')){
+  if (windowLink.includes('dash')) {
     document.getElementById('dashLink')
       .classList.add('active')
-  }else if(windowLink.includes('hospitals')){
+  } else if (windowLink.includes('hospitals')) {
     document.getElementById('hospitalsLink')
       .classList.add('active')
-  }else if(windowLink.includes('inventory')){
+  } else if (windowLink.includes('inventory')) {
     document.getElementById('inventoryLink')
       .classList.add('active')
-  }else if(windowLink.includes('orders')){
+  } else if (windowLink.includes('orders')) {
     document.getElementById('ordersLink')
       .classList.add('active')
-  }else if(windowLink.includes('users')){
+  } else if (windowLink.includes('users')) {
     document.getElementById('usersLink')
       .classList.add('active')
-  }else if(windowLink.includes('reports')){
+  } else if (windowLink.includes('reports')) {
     document.getElementById('reportsLink')
       .classList.add('active')
   }
@@ -103,15 +105,106 @@ export function renderSidebar() {
             <i class="far fa-bell"></i>
             <span class="sidebar-badge">4</span>
           </div>
-          <div class="profile-section">
-            <div class="avatar">JS</div>
-            <div class="admin-info">
-              <span>John Smith</span>
+          <button class="profile-section">
+            <div class="profile">
+              <div class="avatar">JS</div>
+              <div class="admin-info">
+                <span>John Smith</span>
+              </div>
             </div>
-          </div>
+            <i class="fa-solid caret fa-caret-right"></i>
+            <i class="fa-solid caret fa-caret-down hidden"></i>
+          </button>
+
+          <button class="update-pwd-btn hidden" id="updateAdminPwdBtn">
+            Update Admin Password
+          </button>
         </div>
       </div>
     `
+  
+  // Set up update of admin password
+  const updateAdminPwdHTML = `
+    <div class="modal-overlay" id="resetAdminPasswordOverlay">
+      <div class="reset-pwd-modal-content reset-admin-pwd-overlay" style="max-width: 400px;">
+        <h2>Reset Admin Password</h2>
+
+        <form id="resetAdminPasswordForm">
+          <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <div class="password-wrapper">
+                <input type="text" id="newAdminPassword" placeholder="••••••••"
+                    required>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+              <button type="button" class="btn close-overlay-btn js-btn-close-overlay">Cancel</button>
+              <button type="submit" class="btn save-btn">Confirm Reset</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `
+  document.querySelector('main')
+    .insertAdjacentHTML("beforeend", updateAdminPwdHTML)
+  
+  renderSuccessErrorOverlay()
+  
+  // Show/Hide the button to reset admin password
+  let showPwdBtn = true
+  const rightCaretElem = document.querySelector('.fa-caret-right')
+  const downCaretElem = document.querySelector('.fa-caret-down')
+  const updateAdminPwdElem = document.querySelector('.update-pwd-btn')
+  document.querySelector('.page-header')
+    .addEventListener('click', (e) => {
+      const btn = e.target.closest('button')
+      if (!btn) return;
+
+      if (btn.classList.contains('profile-section')) {
+        if (showPwdBtn) {
+          rightCaretElem.classList.add('hidden')
+          downCaretElem.classList.remove('hidden')
+          updateAdminPwdElem.classList.remove('hidden')
+          showPwdBtn = false
+        } else {
+          rightCaretElem.classList.remove('hidden')
+          downCaretElem.classList.add('hidden')
+          updateAdminPwdElem.classList.add('hidden')
+          showPwdBtn = true
+        }
+      }
+    })
+
+  const adminUserId = localStorage.getItem('userId')
+  
+  const updateAdminPwdOverlayBtnElem = document.getElementById('updateAdminPwdBtn')
+  const resetPwdOverlayElem = document.getElementById('resetAdminPasswordOverlay')
+  const newPwdTextboxElem = document.getElementById('newAdminPassword')
+  if (updateAdminPwdOverlayBtnElem) {
+    updateAdminPwdOverlayBtnElem.addEventListener('click', () => {
+      handleOverlay(resetPwdOverlayElem)
+
+      document.getElementById('resetAdminPasswordForm')
+        .addEventListener('submit', async (e) => {
+          e.preventDefault()
+
+          const response = await fetch(`${adminPagesLink}/updateSysUsersPassword`, 
+            {
+              method: 'PUT', 
+              headers: { 'Content-Type': 'application/json' }, 
+              body: JSON.stringify({
+                userId: adminUserId, 
+                plainPwd: newPwdTextboxElem.value
+              })
+            }
+          )
+          
+          const res = await response.json()
+          triggerStatus(res.msg)
+        })
+    })
+  }
 }
 
 // Navigation bar to reports pages
@@ -138,13 +231,13 @@ export function renderReportsNavbar(pageName) {
       </div>
     `
 
-  if(pageName === 'distribution_report'){
+  if (pageName === 'distribution_report') {
     document.getElementById('distroReportLink')
       .classList.add('active')
-  }else if(pageName === 'low_stock_report'){
+  } else if (pageName === 'low_stock_report') {
     document.getElementById('lowStockReportLink')
       .classList.add('active')
-  }else if(pageName === 'inventory_report'){
+  } else if (pageName === 'inventory_report') {
     document.getElementById('invReportLink')
       .classList.add('active')
   }

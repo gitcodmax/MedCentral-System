@@ -13,7 +13,7 @@ export async function getAllRequestsQ() {
                       'quantity', ri.quantity_requested,
                       'uom', u.name,
                       'subtotal', (ri.quantity_requested * ri.unit_price_at_request),
-                      'warehouseStock', i.current_stock
+                      'warehouseStock', i.total_selling_units
                   )
               ) AS items_list
           FROM request_items ri

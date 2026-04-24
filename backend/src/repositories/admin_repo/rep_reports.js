@@ -6,7 +6,7 @@ export async function invReportDataQ(){
       WITH category_data AS (
           SELECT 
               c.name AS category_name, 
-              SUM(i.current_stock) AS total_stock
+              SUM(i.total_selling_units) AS total_stock
           FROM items i
           JOIN cfg_item_categories c ON i.category_id = c.id
           GROUP BY c.name
@@ -22,8 +22,8 @@ export async function invReportDataQ(){
           'kpi_metrics', (
               SELECT jsonb_build_object(
                   'total_unique_items', COUNT(item_id),
-                  'total_stock_units', SUM(current_stock),
-                  'total_inventory_value', ROUND(SUM(current_stock * price_per_selling)::numeric, 2),
+                  'total_stock_units', SUM(total_selling_units),
+                  'total_inventory_value', ROUND(SUM(total_selling_units * price_per_selling)::numeric, 2),
                   'low_stock_alerts', COUNT(CASE WHEN current_stock < min_stock_level THEN 1 END)
               ) FROM items
           ), 
@@ -41,7 +41,8 @@ export async function invReportDataQ(){
                           ELSE 'Healthy' 
                       END),
                       'unit_price', i.price_per_selling, 
-                      'total_value', (i.current_stock * i.price_per_selling)
+                      'total_selling_units', i.total_selling_units, 
+                      'total_value', (i.total_selling_units * i.price_per_selling)
                   )
               )
               FROM items i

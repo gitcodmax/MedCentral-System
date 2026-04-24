@@ -112,10 +112,17 @@ document.addEventListener('DOMContentLoaded', () => {
         for (i of ['userId', 'hosId']) {
           localStorage.removeItem(i)
         }
-        if (res.role === 1 || res.role === 2) localStorage.setItem('userId', res.userId)
-        if (res.role === 3) localStorage.setItem('hosId', res.hosId)
+
+        if (res.role === 3) {
+          localStorage.setItem('hosId', res.hosId)
+        } else {
+          localStorage.setItem('userId', res.userId)
+        }
 
         redirectToDash(res.role)
+      } 
+      if (res.msg === `Invalid credentials`) {
+        alert(`Invalid credentials!! Try Again!!`)
       }
 
     } else {

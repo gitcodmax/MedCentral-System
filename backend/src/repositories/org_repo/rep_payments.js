@@ -103,14 +103,14 @@ export async function createOrderQ(reqId) {
     await client.query(
       `
       WITH new_stock_calc AS (
-        SELECT i.item_id, (i.current_stock - ri.quantity_requested) AS new_stock
+        SELECT i.item_id, (i.total_selling_units - ri.quantity_requested) AS new_stock
         FROM request_items ri 
         JOIN items i ON ri.item_id = i.item_id 
         WHERE request_id = $1
       )
       
       UPDATE items i
-      SET current_stock = ns.new_stock
+      SET total_selling_units = ns.new_stock
       FROM new_stock_calc ns
       WHERE i.item_id = ns.item_id
       `, [reqId]

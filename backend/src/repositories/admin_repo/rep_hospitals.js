@@ -214,7 +214,7 @@ export async function activateHosQ(hosId){
 export async function updateHosPasswordQ({hosId, password}){
   const hashedPassword = await hashPassword(password)
   await pool.query(`
-    UPDATE hospitals 
+    UPDATE users 
     SET password_hash = $1
     WHERE hospital_id = $2
     `, [hashedPassword, hosId])

@@ -27,7 +27,7 @@ loginRouter.post('/getUserDetails', async (req, res) => {
         userId: savedUserId, msg: 'success'
       })
     } else {
-      res.status(401).send('Invalid credentials')
+      res.status(401).json({msg: 'Invalid credentials'})
     }
   } catch (err) {
     res.status(500).json({Error: err.message})

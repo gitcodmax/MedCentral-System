@@ -97,77 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       </div> 
     `
 
-  const AdminDashboardData = {
-    stats: {
-      totalHospitals: 24,
-      totalInventoryItems: 1842,
-      lowStockItems: 12,
-      pendingOrders: 15,
-      ordersInTransit: 8,
-      completedOrders: 142
-    },
-
-    recentOrders: [
-      {
-        id: "ORD-8821",
-        hospital: "General Medical Center",
-        status: "Dispatched",
-        date: "Feb 15, 2026",
-        amount: 1250.00
-      },
-      {
-        id: "ORD-8819",
-        hospital: "St. Jude's Hospital",
-        status: "Pending",
-        date: "Feb 15, 2026",
-        amount: 430.50
-      },
-      {
-        id: "ORD-8815",
-        hospital: "City Children's Clinic",
-        status: "Packed",
-        date: "Feb 14, 2026",
-        amount: 2100.00
-      },
-      {
-        id: "ORD-8810",
-        hospital: "Westside Trauma Unit",
-        status: "Completed",
-        date: "Feb 14, 2026",
-        amount: 890.25
-      }
-    ],
-
-    lowStockAlerts: [
-      {
-        itemName: "Latex Gloves (L)",
-        currentStock: 120,
-        minRequired: 500,
-        unit: "Boxes"
-      },
-      {
-        itemName: "Surgical Masks",
-        currentStock: 450,
-        minRequired: 2000,
-        unit: "Units"
-      },
-      {
-        itemName: "Insulin Vials",
-        currentStock: 12,
-        minRequired: 100,
-        unit: "Vials"
-      },
-      {
-        itemName: "Saline Solution (500ml)",
-        currentStock: 85,
-        minRequired: 300,
-        unit: "Bags"
-      }
-    ]
-  };
-
   const adminDashData = await getDashData()
-  console.log(adminDashData)
 
   document.getElementById('totalHospitals')
     .textContent = adminDashData.stats.total_hospitals
