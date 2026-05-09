@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 
 // This file contains the SQL scripts used to manipulate hospitals page.
 
- export async function hashPassword(plainPassword){
+export async function hashPassword(plainPassword) {
   const saltRounds = 12
   const hashedPassword = await bcrypt.hash(plainPassword, saltRounds)
   return hashedPassword
@@ -14,7 +14,7 @@ export async function getSavedHospitalsQ() {
   const text = `
     SELECT 
       h.hospital_id AS id,
-      h.name,
+      u.full_name AS name,
       h.contact_person AS "contactPerson",
       h.phone_number AS phone,
       u.email,
@@ -80,36 +80,35 @@ export async function getDepartmentsQ() {
 export async function saveNewHosDetailsQ({ name, contact, phone, email,
   zone, password, status }) {
   const hashedPassword = await hashPassword(password)
-  
+
   // Save the hospital in the hospitals table and insert it into the users 
-  //  table(email and password) for login
+  //  table(name, email and password) for login
   const client = await pool.connect()
 
   try {
     await client.query('BEGIN')
 
-    const hosDetails  = await client.query(`INSERT INTO hospitals ( 
-        name,
+    const hosDetails = await client.query(`INSERT INTO hospitals ( 
         contact_person,
         phone_number, 
         zone_id, 
         status
       ) VALUES 
-      ($1, $2, $3, $4, $5) RETURNING *
-    `, [name, contact, phone, zone, status])
+      ($1, $2, $3, $4) RETURNING *
+    `, [contact, phone, zone, status])
 
     const hospData = hosDetails.rows[0]
     const hospId = hospData.hospital_id
     if (!hospId) throw new Error('Hospital not created!')
-    
+
     let activeStatus = true
-    if(hospData.status !== 'active'){activeStatus = false}
-    
+    if (hospData.status !== 'active') { activeStatus = false }
+
     const { rows } = await client.query(
       `INSERT INTO users (email, password_hash, full_name, role_id, hospital_id, is_active) 
       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
-      , [email, hashedPassword, hospData.name, 3, hospId, activeStatus])
-    
+      , [email, hashedPassword, name, 3, hospId, activeStatus])
+
     await client.query('COMMIT')
 
     return hospData
@@ -135,87 +134,140 @@ export async function saveHosDeptQ(hosId, deptId) {
   return rows[0]
 }
 
+// Update the hospital details in the hospitals and users table
 export async function updateHosDetailsQ({ hosId, name, contact, phone,
   email, zone, status }) {
-  const text = `
-    UPDATE hospitals
-    SET 
-      name = $1,
-      email = $2,
-      zone_id = $3,
-      contact_person = $4,
-      phone_number = $5,
-      status = $6
-    WHERE hospital_id = $7 RETURNING *
-  `
-  const values = [name, email, zone, contact, phone, status, hosId]
-  const {rows} = await pool.query(text, values)
-  return rows[0]
+  const client = await pool.connect()
+
+  try {
+    await client.query('BEGIN')
+
+    const hospRow = await client.query(
+      `
+      UPDATE hospitals
+      SET 
+        zone_id = $1,
+        contact_person = $2,
+        phone_number = $3,
+        status = $4
+      WHERE hospital_id = $5 RETURNING hospital_id
+      `, [zone, contact, phone, status, hosId]
+    )
+
+    const hospId = hospRow.rows[0].hospital_id
+    if (!hospId) throw new Error('Hospitals table not updated!')
+
+    const usersRow = await client.query(
+      `
+      UPDATE users
+      SET
+        full_name = $1,
+        email = $2
+      WHERE hospital_id = $3 RETURNING hospital_id
+      `, [name, email, hosId]
+    )
+
+    const hosiId = usersRow.rows[0].hospital_id
+    if (!hosiId) throw new Error('Hospital details in users table not updated!')
+
+    const hospDeptsArr = await client.query(
+      `
+      SELECT jsonb_agg(jsonb_build_object(
+        'id', id,
+        'deptId', department_id
+      )) AS hos_dept_id
+      FROM hospital_department_mapping 
+      WHERE hospital_id = $1
+      `, [hosId]
+    )
+
+    const hospDeptsA = hospDeptsArr.rows[0].hos_dept_id
+
+    await client.query('COMMIT')
+    return { hosiId, hospDeptsA }
+  } catch (e) {
+    await client.query('ROLLBACK')
+    throw e
+  } finally {
+    client.release()
+  }
 }
 
 // Check whether hospital and department id exist in the table b4 inserting them
-export async function checkHosDeptIdQ(hosId, deptId){
+export async function checkHosDeptIdQ(hosId, deptId) {
   const text = `
     SELECT * FROM hospital_department_mapping  
     WHERE hospital_id = $1 AND department_id = $2
   `
   const values = [hosId, deptId]
-  const {rows} = await pool.query(text, values)
+  const { rows } = await pool.query(text, values)
   return rows
 }
 
 // Transaction query to deactivate an hospital
-export async function deactivateHosQ({hosId, reason}){
+export async function deactivateHosQ({ hosId, reason }) {
   const client = await pool.connect();
 
-  try{
+  try {
     await client.query('BEGIN');
 
     const updatedHos = await client.query(
       `UPDATE hospitals 
       SET status = 'inactive' 
       WHERE hospital_id = $1 
-      RETURNING *`, 
+      RETURNING *`,
       [hosId]
     )
 
-    if(updatedHos.rowCount === 0){
+    if (updatedHos.rowCount === 0) {
       throw new Error('Hospital not found')
     }
 
     await client.query(
       `INSERT INTO hospital_deactivation_log (hospital_id, reason)
-       VALUES ($1, $2)`, 
-       [hosId, reason]
+       VALUES ($1, $2)`,
+      [hosId, reason]
     );
 
     await client.query('COMMIT')
 
     return updatedHos.rows[0]
-  }catch (err){
+  } catch (err) {
     await client.query('ROLLBACK')
     throw err
-  }finally{
+  } finally {
     client.release()
   }
 }
 
 // Activate an hospital
-export async function activateHosQ(hosId){
-  const {rows} = await pool.query(
+export async function activateHosQ(hosId) {
+  const { rows } = await pool.query(
     `UPDATE hospitals 
     SET status = 'active' 
-    WHERE hospital_id = $1 RETURNING *`, 
+    WHERE hospital_id = $1 RETURNING *`,
     [hosId]
   )
   return rows[0]
 }
 
-export async function updateHosPasswordQ({hosId, password}){
+export async function updateHosPasswordQ({ hosId, password }) {
   const hashedPassword = await hashPassword(password)
   await pool.query(`
     UPDATE users 
     SET password_hash = $1
     WHERE hospital_id = $2
     `, [hashedPassword, hosId])
+}
+
+// Update the hospital departments
+export async function deleteHospDepartmQ(deptArr) {
+  for (const dpt of deptArr) {
+    await pool.query(
+      `
+      DELETE FROM hospital_department_mapping
+      WHERE id = $1
+      `, [dpt]
+    )
+  }
 }

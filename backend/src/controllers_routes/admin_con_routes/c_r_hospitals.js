@@ -8,7 +8,8 @@ import {
   checkHosDeptIdQ,
   deactivateHosQ,
   activateHosQ,
-  updateHosPasswordQ
+  updateHosPasswordQ,
+  deleteHospDepartmQ
 } from '../../repositories/admin_repo/rep_hospitals.js'
 
 const adminHosRouter = express.Router()
@@ -64,8 +65,9 @@ adminHosRouter.put('/updateHosDetails', async (req, res) => {
   try {
     const { selectedDeptIds } = req.body
     const updatedHosDetails = await updateHosDetailsQ(req.body)
+    const {hospDeptsA} = updatedHosDetails
     if (updatedHosDetails && selectedDeptIds) {
-      const updatedHosId = updatedHosDetails.hospital_id
+      const updatedHosId = updatedHosDetails.hosiId
 
       // Check first if the hospital & department ids are available in the
       // hospital_department_mapping b4 inserting the details
@@ -73,6 +75,14 @@ adminHosRouter.put('/updateHosDetails', async (req, res) => {
         const hosDeptIds = await checkHosDeptIdQ(updatedHosId, deptId)
         if (hosDeptIds.length === 0) await saveHosDeptQ(updatedHosId, deptId)
       }
+      
+      // Get and delete the removed departments 
+      let removeMapIds = []
+      for (const hosDept of hospDeptsA) {
+        const idToRemove = selectedDeptIds.filter(id => id === hosDept.deptId)
+        if(idToRemove.length === 0) removeMapIds.push(hosDept.id)
+      }
+      await deleteHospDepartmQ(removeMapIds)
     }
     res.status(200).json({ updatedHosDetails })
   } catch (err) {
