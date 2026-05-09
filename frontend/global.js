@@ -120,10 +120,10 @@ export function triggerStatus(type) {
 }
 
 export const getUserName = async (userId) => {
-  const response = await fetch(`http://localhost:3000/login/getUserName`, 
+  const response = await fetch(`http://localhost:3000/login/getUserName`,
     {
-      method: 'POST', 
-      headers: { 'Content-Type': 'application/json' }, 
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId })
     }
   )

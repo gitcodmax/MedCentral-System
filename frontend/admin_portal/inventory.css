@@ -230,6 +230,13 @@ tr:hover {
   grid-column: span 2;
 }
 
+.add-item-form-footer{
+  min-width: 100%;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
 /* Config Modal Tabs */
 .tab-nav {
   display: flex;

@@ -2,6 +2,7 @@ import { renderSidebar } from "./sidebar.js";
 import { handleOverlay, displayNoMatchFound, 
   renderSuccessErrorOverlay, triggerStatus, 
   adminPagesLink} from "../global.js";
+import { saveNewInvItem } from "../wh_manager/stock/item_registry.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -70,11 +71,11 @@ document.addEventListener('DOMContentLoaded', async () => {
               <form class="form-grid">
                 <div class="form-group full-width">
                   <label>Item Name</label>
-                  <input type="text" class="input-field" required>
+                  <input type="text" id="addItemName" class="input-field" required>
                 </div>
                 <div class="form-group">
                   <label>SKU</label>
-                  <input type="text" class="input-field" required>
+                  <input type="text" id="addItemSku" class="input-field" required>
                 </div>
                 <div class="form-group">
                   <label>Category</label>
@@ -94,21 +95,22 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
                 <div class="form-group">
                   <label>Units per Bulk</label>
-                  <input type="number" class="input-field">
+                  <input type="number" id="addItemBulkUnits" class="input-field" required>
                 </div>
                 <div class="form-group">
                   <label>Min. Stock Level</label>
-                  <input type="number" class="input-field">
+                  <input type="number" id="addItemMinStock" class="input-field" required>
                 </div>
                 <div class="form-group">
                   <label>Price per selling unit</label>
-                  <input type="number" class="input-field">
+                  <input type="number" id="addItemSellPrice" class="input-field" required>
+                </div>
+
+                <div class="add-item-form-footer full-width">
+                  <button class="btn discard-btn js-btn-close-overlay">Discard</button>
+                  <button type="submit" class="btn btn-primary">Save to Inventory</button>
                 </div>
               </form>
-            </div>
-            <div class="modal-footer">
-              <button class="btn discard-btn js-btn-close-overlay">Discard</button>
-              <button class="btn btn-primary">Save to Inventory</button>
             </div>
           </div>
         </div>
@@ -555,6 +557,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       setSelectOptions(bulkUomInputElem, uomItems)
       const sellingUomInputElem = document.getElementById('addItemSellingUomInput')
       setSelectOptions(sellingUomInputElem, uomItems)
+
+      document.addEventListener('submit', async (e) => {
+        e.preventDefault()
+
+        const itmNameElem = document.getElementById('addItemName')
+        const itmSkuElem = document.getElementById('addItemSku')
+        const itmBulkUntElem = document.getElementById('addItemBulkUnits')
+        const itmMinStockElem = document.getElementById('addItemMinStock')
+        const itmSellPriceElem = document.getElementById('addItemSellPrice')
+
+        await saveNewInvItem(itmNameElem.value, itmSkuElem.value, selectCategoryInputElem.value, 
+          selectStorageTempInputElem.value, bulkUomInputElem.value, sellingUomInputElem.value, 
+          itmBulkUntElem.value, itmSellPriceElem.value, itmMinStockElem.value
+        )
+      }, {once: true})
     })
 
   // Get an item
@@ -656,7 +673,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('viewCurrentStock')
         .textContent = `${item.total_selling_units} ${getUnitName(item.selling_uom_id)}${item.total_selling_units > 1 ? 's' : ''}`
       document.getElementById('viewMinLevel')
-        .textContent = `${item.min_stock_level} ${getUnitName(item.bulk_uom_id)}${item.min_stock_level !== 1 ? 's' : ''}`
+        .textContent = `${item.min_stock_level} ${getUnitName(item.selling_uom_id)}${item.min_stock_level !== 1 ? 's' : ''}`
       document.getElementById('viewPrice')
         .textContent = `$${Number(item.price_per_selling).toFixed(2)}`
     }

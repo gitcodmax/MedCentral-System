@@ -268,18 +268,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.getElementById('saveNewItemBtn')
       .addEventListener('click', async () => {
-        const response = await fetch(`${whManagerPagesLink}/saveNewItem`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              itemName, sku, categoryId, storageTempCode, bulkUom,
-              sellingUom, unitsPerBulk, pricePerUnit, minStockLevel
-            })
-          }
+        await saveNewInvItem(
+          itemName, sku, categoryId, storageTempCode, bulkUom,
+          sellingUom, unitsPerBulk, pricePerUnit, minStockLevel
         )
-        const res = await response.json()
-        triggerStatus(res.msg)
       }, { once: true })
 
     xRemoveOverlay(confirmItemOverlay)
@@ -350,4 +342,23 @@ const getCatalogItems = async () => {
   const response = await fetch(`${whManagerPagesLink}/getCatalogItems`)
   const res = await response.json()
   return res.catalog_items
+}
+
+// Used in item registry page in wh manager portal and admin's inventory page
+// to add a new item to the inventory
+export async function saveNewInvItem(itemName, sku, categoryId, storageTempCode, bulkUom,
+  sellingUom, unitsPerBulk, pricePerUnit, minStockLevel
+) {
+  const response = await fetch(`${whManagerPagesLink}/saveNewItem`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        itemName, sku, categoryId, storageTempCode, bulkUom,
+        sellingUom, unitsPerBulk, pricePerUnit, minStockLevel
+      })
+    }
+  )
+  const res = await response.json()
+  triggerStatus(res.msg)
 }
