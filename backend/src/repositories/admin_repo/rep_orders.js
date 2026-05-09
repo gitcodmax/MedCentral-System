@@ -57,7 +57,7 @@ export async function getOrdReqQ(){
     (SELECT json_build_object(
       'requestId', 'REQ-' || r.request_id,
       'orderId', 'ORD-' || o.order_id,
-      'hospitalName', h.name,
+      'hospitalName', (SELECT full_name FROM users WHERE hospital_id = h.hospital_id),
       'requestDate', r.created_at::date,
       'paymentDate', r.paid_at::date, -- Assuming payment is confirmed via request status or separate column
       'totalItems', (SELECT COUNT(*) FROM request_items ri WHERE ri.request_id = r.request_id),

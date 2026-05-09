@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <span><i class="far fa-calendar-alt"></i> Requested: <strong id="reqDateOv"></strong></span>
                     <span><i class="far fa-credit-card"></i> Paid: <strong id="payDateOv"></strong></span>
                     <span><i class="fas fa-box"></i> <strong id="pkgsCount"></strong> | <strong
-                        id="itemsCount"></strong> Total</span>
+                        id="itemsCount"></strong> Type</span>
                   </div>
                 </div>
                 <button class="modal-close-btn js-btn-close-overlay">&times;</button>
