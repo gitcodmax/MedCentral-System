@@ -367,6 +367,12 @@ tr:hover {
   letter-spacing: 0.05em;
 }
 
+.small-msg{
+  font-size: 0.5rem;
+  color: var(--color-quarantine);
+  text-transform: none;
+}
+
 /* Input Icons */
 .input-with-icon {
   position: relative;

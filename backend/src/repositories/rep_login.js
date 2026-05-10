@@ -18,3 +18,13 @@ export async function getUserNameQ(userId) {
 
   return rows[0]
 }
+
+export async function updateLastLoginQ(userId) {
+  await pool.query(
+    `
+    UPDATE users
+    SET last_login = CURRENT_TIMESTAMP
+    WHERE user_id = $1
+    `, [userId]
+  )
+}

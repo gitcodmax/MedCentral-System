@@ -2,7 +2,7 @@ import express from 'express'
 import bcrypt from 'bcrypt'
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
-import { getUserDetailsQ, getUserNameQ } from '../repositories/rep_login.js'
+import { getUserDetailsQ, getUserNameQ, updateLastLoginQ } from '../repositories/rep_login.js'
 
 dotenv.config()
 const loginRouter = express.Router()
@@ -22,6 +22,7 @@ loginRouter.post('/getUserDetails', async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: '8h' }
       );
+      await updateLastLoginQ(savedUserId)
       res.status(200).json({
         token, role: savedRoleId, hosId: userDetails.hospital_id,
         userId: savedUserId, msg: 'success'

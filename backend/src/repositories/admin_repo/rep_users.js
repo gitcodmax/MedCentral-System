@@ -2,8 +2,8 @@ import { hash } from "bcrypt";
 import pool from "../../config/db.js";
 import { hashPassword } from "./rep_hospitals.js";
 
-export async function getAllSysUsersQ(){
-  const {rows} = await pool.query(`
+export async function getAllSysUsersQ() {
+  const { rows } = await pool.query(`
     SELECT user_id AS id, full_name, email, 
       (SELECT id FROM cfg_roles WHERE id = role_id) AS role_id, 
       CASE WHEN is_active THEN 'Active' ELSE 'Inactive' END AS status , 
@@ -14,25 +14,28 @@ export async function getAllSysUsersQ(){
   return rows
 }
 
-export async function getAllDriversQ(){
-  const {rows} = await pool.query(`
-    SELECT driver_id AS id, full_name, phone_number AS phone, 
-      (SELECT v.plate_number 
-      FROM vehicle_assignments va 
-      JOIN vehicles v ON va.vehicle_id = v.vehicle_id  
-      WHERE va.assignment_id = d.assignment_id) AS vehicleNo, 
+export async function getAllDriversQ() {
+  const { rows } = await pool.query(`
+    SELECT d.driver_id AS id, d.full_name, d.phone_number AS phone, 
+      v.plate_number AS vehicle_no, 
+      v.max_tons AS max_tons, 
+      v.type_code AS veh_type, 
+      v.category_id AS veh_cat, 
+      v.temp_cap_codes AS temp_codes,
       (SELECT county_id FROM cfg_zones WHERE id = preferred_zone_id) AS county_id, 
       (SELECT name FROM cfg_counties WHERE id = (SELECT county_id FROM cfg_zones WHERE id = preferred_zone_id)) AS county_name, 
       preferred_zone_id AS zone_id, 
       (SELECT zone_name FROM cfg_zones WHERE id = preferred_zone_id) AS zone_name, 
       CASE WHEN is_active THEN 'Active' ELSE 'Inactive' END AS status 
-    FROM drivers d
+    FROM drivers d 
+    JOIN vehicle_assignments va ON d.driver_id = va.driver_id 
+    JOIN vehicles v ON v.vehicle_id = va.vehicle_id
   `)
 
   return rows
 }
 
-export async function addNewSysUserQ({fullName, email, roleId, plainPwd}){
+export async function addNewSysUserQ({ fullName, email, roleId, plainPwd }) {
   const hashedPassword = await hashPassword(plainPwd)
   await pool.query(`
     INSERT INTO users (email, password_hash, full_name, role_id)
@@ -40,7 +43,7 @@ export async function addNewSysUserQ({fullName, email, roleId, plainPwd}){
   `, [email, hashedPassword, fullName, roleId])
 }
 
-export async function addNewDriverQ({ fullName, phoneNo, vehicleNo, zoneId, 
+export async function addNewDriverQ({ fullName, phoneNo, vehicleNo, zoneId,
   vehicleType, vehicleCategory, maxTon, storageTempCaps
 }) {
   const client = await pool.connect()
@@ -57,7 +60,7 @@ export async function addNewDriverQ({ fullName, phoneNo, vehicleNo, zoneId,
     const driverId = driversRes.rows[0].driver_id
 
     if (!driverId) throw new Error('Driver details not saved!')
-    
+
     const vehiclesRes = await client.query(
       `
       INSERT INTO vehicles(plate_number, type_code, category_id, max_tons, temp_cap_codes)
@@ -68,7 +71,7 @@ export async function addNewDriverQ({ fullName, phoneNo, vehicleNo, zoneId,
     const vehicleId = vehiclesRes.rows[0].vehicle_id
 
     if (!vehicleId) throw new Error('Vehicle details not saved!!')
-    
+
     const vehAssiRes = await client.query(
       `
       INSERT INTO vehicle_assignments (vehicle_id, driver_id, assigned_at)
@@ -76,7 +79,7 @@ export async function addNewDriverQ({ fullName, phoneNo, vehicleNo, zoneId,
       `, [vehicleId, driverId]
     )
 
-    const vehicleAssignId = vehAssiRes.rows[0].assignment_id 
+    const vehicleAssignId = vehAssiRes.rows[0].assignment_id
 
     const updateDrivers = await client.query(
       `
@@ -96,8 +99,8 @@ export async function addNewDriverQ({ fullName, phoneNo, vehicleNo, zoneId,
   }
 }
 
-export async function updateSysUsersDataQ({fullName, email, roleId, userId}){
-  const {rows} = await pool.query(`
+export async function updateSysUsersDataQ({ fullName, email, roleId, userId }) {
+  const { rows } = await pool.query(`
     UPDATE users SET 
       full_name = $1, 
       email = $2, 
@@ -108,9 +111,9 @@ export async function updateSysUsersDataQ({fullName, email, roleId, userId}){
   return rows
 }
 
-export async function updateSysUsersPasswordQ({userId, plainPwd}){
+export async function updateSysUsersPasswordQ({ userId, plainPwd }) {
   const pwdHash = await hashPassword(plainPwd)
-  const {rows} = await pool.query(`
+  const { rows } = await pool.query(`
     UPDATE users SET 
     password_hash = $1
     WHERE user_id = $2
@@ -120,21 +123,21 @@ export async function updateSysUsersPasswordQ({userId, plainPwd}){
 }
 
 // Deactivates and activates the sys. users and the drivers
-export async function deActivateUserQ({userId, status, userType}){
-  if(status === 'active'){
-    userType === 'sysUser' ? 
-    await pool.query(`
+export async function deActivateUserQ({ userId, status, userType }) {
+  if (status === 'active') {
+    userType === 'sysUser' ?
+      await pool.query(`
       UPDATE users SET is_active = false WHERE user_id = $1
-    `, [userId]) : 
-    await pool.query(`
+    `, [userId]) :
+      await pool.query(`
       UPDATE drivers SET is_active = false WHERE driver_id = $1
     `, [userId])
-  }else{
-    userType === 'sysUser' ? 
-    await pool.query(`
+  } else {
+    userType === 'sysUser' ?
+      await pool.query(`
       UPDATE users SET is_active = true WHERE user_id = $1
-    `, [userId]) : 
-    await pool.query(`
+    `, [userId]) :
+      await pool.query(`
       UPDATE drivers SET is_active = true WHERE driver_id = $1
     `, [userId])
   }
