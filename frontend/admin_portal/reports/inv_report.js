@@ -1,3 +1,4 @@
+import { catStorageData } from "../inventory.js"
 import { renderSidebar, renderReportsNavbar } from "../sidebar.js"
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -23,33 +24,27 @@ document.addEventListener('DOMContentLoaded', async () => {
           <div class="filter-grid">
             <div class="filter-group">
               <label>Category</label>
-              <select>
-                <option>All Categories</option>
-                <option>Vaccines</option>
-                <option>Surgical Supplies</option>
-                <option>Antibiotics</option>
+              <select id="filterCategories">
+                <option value='all'>All Categories</option>
               </select>
             </div>
             <div class="filter-group">
               <label>Storage Temperature</label>
-              <select>
-                <option>Any Temperature</option>
-                <option>Room Temp (20-25°C)</option>
-                <option>Refrigerated (2-8°C)</option>
-                <option>Frozen (-20°C)</option>
+              <select id="filterStorageTemp">
+                <option value='any'>Any Temperature</option>
               </select>
             </div>
             <div class="filter-group">
               <label>Stock Status</label>
-              <select>
-                <option>All Statuses</option>
-                <option>Healthy</option>
-                <option>Low</option>
-                <option>Out of Stock</option>
+              <select id="filterStockStatus">
+                <option value="all">All Statuses</option>
+                <option value="healthy">Healthy</option>
+                <option value="low">Low</option>
+                <option value="out">Out of Stock</option>
               </select>
             </div>
             <div class="filter-group align-end">
-              <button class="btn btn-secondary full-width">Apply Filters</button>
+              <button class="btn btn-secondary full-width" id="applyInvFilterBtn">Apply Filters</button>
             </div>
           </div>
         </section>
@@ -108,9 +103,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         <section class="card chart-card">
           <h3>Stock Distribution by Category</h3>
-          <div class="chart-placeholder">
-            <canvas id="stockDistroBarChart"></canvas>
-          </div>
+          <div class="chart-placeholder"></div>
         </section>
 
         <section class="card chart-card">
@@ -121,8 +114,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
           </div>
 
-          <div class="chart-drawing-area">
-            <canvas id="stockStatusPieChart"></canvas>
+          <div class="chart-drawing-area"></div> 
         </section>
       </main>
     </div>
@@ -132,24 +124,63 @@ document.addEventListener('DOMContentLoaded', async () => {
   await renderSidebar()
   renderReportsNavbar('inventory_report')
 
-  const invReportData = await getInvReportData()
+  let invReportData = await getInvReportData('all', 'any', 'all')
+  const catTempStorageData = await catStorageData()
 
-  // Show Kpi data
-  document.getElementById('totItemsMetric')
-    .textContent = invReportData.kpi_metrics.total_unique_items
-  document.getElementById('totUnitsMetric')
-    .textContent = invReportData.kpi_metrics.total_stock_units
-  document.getElementById('totInvMetric')
-    .textContent = invReportData.kpi_metrics.total_inventory_value
-  document.getElementById('belowMinMetric')
-    .textContent = invReportData.kpi_metrics.low_stock_alerts
+  // Filtering logic
+  // Populate the dropdown options
+  const filterCategoriesElem = document.getElementById('filterCategories')
+  const filterCatFrag = document.createDocumentFragment()
+  catTempStorageData.categories.forEach(cat => {
+    const optElem = document.createElement('option')
+    optElem.value = cat.id
+    optElem.textContent = cat.name
+    filterCatFrag.appendChild(optElem)
+  })
+  filterCategoriesElem.appendChild(filterCatFrag)
 
-  // Populate the items table
-  const invTableFrag = document.createDocumentFragment()
-  invReportData.inventory_table.forEach(item => {
-    const tblRow = document.createElement('tr')
+  const filterStorageTempElem = document.getElementById('filterStorageTemp')
+  const filterTempFrag = document.createDocumentFragment()
+  catTempStorageData.storageTemps.forEach(tem => {
+    const opt = document.createElement('option')
+    opt.value = tem.code
+    opt.textContent = `${tem.description} (${tem.temp_range})`
+    filterTempFrag.appendChild(opt)
+  })
+  filterStorageTempElem.appendChild(filterTempFrag)
 
-    tblRow.innerHTML = `
+  // Clicking the filter button
+  const filterStockStatusElem = document.getElementById('filterStockStatus')
+  document.getElementById('applyInvFilterBtn')
+    .addEventListener('click', async () => {
+      invReportData = await getInvReportData(filterCategoriesElem.value,
+        filterStorageTempElem.value,
+        filterStockStatusElem.value
+      )
+      displayInvReport(invReportData)
+    })
+
+  displayInvReport(invReportData)
+
+  // Display report data
+  function displayInvReport(invReportData) {
+    // Show Kpi data
+    document.getElementById('totItemsMetric')
+      .textContent = invReportData.kpi_metrics.total_unique_items
+    document.getElementById('totUnitsMetric')
+      .textContent = invReportData.kpi_metrics.total_stock_units
+    document.getElementById('totInvMetric')
+      .textContent = invReportData.kpi_metrics.total_inventory_value
+    document.getElementById('belowMinMetric')
+      .textContent = invReportData.kpi_metrics.low_stock_alerts
+
+    // Populate the items table
+    const invTbodyElem = document.getElementById('invTbody')
+    const invTableFrag = document.createDocumentFragment()
+    invReportData.inventory_table.forEach(item => {
+      const tblRow = document.createElement('tr')
+
+      tblRow.innerHTML = `
       <td><strong class="item-name">${item.item_name}</strong></td>
       <td>${item.category}</td>
       <td> <span class="badge ${item.storage_temp}">${item.storage_temp}</span></td>
@@ -161,74 +192,87 @@ document.addEventListener('DOMContentLoaded', async () => {
       <td class="text-right tot-value">${item.total_value}</td>
     `
 
-    invTableFrag.appendChild(tblRow)
-  })
-  document.getElementById('invTbody')
-    .appendChild(invTableFrag)
+      invTableFrag.appendChild(tblRow)
+    })
+    invTbodyElem.innerHTML = ''
+    invTbodyElem.appendChild(invTableFrag)
 
-  // Form the Stock Distribution  bar chart by category
-  const labels = invReportData.category_distribution_bar_chart.map(cat => cat.category)
-  const dataValues = invReportData.category_distribution_bar_chart.map(cat => cat.current_stock)
+    // Form the Stock Distribution  bar chart by category
+    const labels = invReportData.category_distribution_bar_chart.map(cat => cat.category)
+    const dataValues = invReportData.category_distribution_bar_chart.map(cat => cat.current_stock)
 
-  const stockDistroCtx = document.getElementById("stockDistroBarChart")
-  new Chart(stockDistroCtx, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Current Stock Units',
-        data: dataValues,
-        backgroundColor: '#007BFF22',
-        borderColor: '#007BFF',
-        borderWidth: 2,
-        borderRadius: 5,
-        barThickness: 25
-      }]
-    },
-    options: {
-      indexAxis: 'y',
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false }
+    const barContainerElem = document.querySelector('.chart-placeholder')
+    barContainerElem.innerHTML = `<canvas id="stockDistroBarChart"></canvas>`
+
+    const stockDistroCtx = document.getElementById("stockDistroBarChart")
+    new Chart(stockDistroCtx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Current Stock Units',
+          data: dataValues,
+          backgroundColor: '#007BFF22',
+          borderColor: '#007BFF',
+          borderWidth: 2,
+          borderRadius: 5,
+          barThickness: 25
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        }
       }
-    }
-  })
+    })
 
-  // Stock Status distro
-  const statusLabels = invReportData.stock_status_pie_chart.map(status => status.status)
-  const statusCounts = invReportData.stock_status_pie_chart.map(status => status.count)
+    // Stock Status distro
+    const statusLabels = invReportData.stock_status_pie_chart.map(status => status.status)
+    const statusCounts = invReportData.stock_status_pie_chart.map(status => status.count)
 
-  const stockStatusDistroCtx = document.getElementById('stockStatusPieChart')
-  new Chart(stockStatusDistroCtx, {
-    type: 'doughnut',
-    data: {
-      labels: statusLabels,
-      datasets: [{
-        data: statusCounts,
-        backgroundColor: [
-          '#DC3545',          
-          '#FF8C00',
-          '#008B00'
-        ],
-        hoverOffset: 15,
-        borderWidth: 2,
-        borderColor: '#FFFFFF'
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      cutout: '70%',
-      plugins: {
-        legend: { position: 'bottom' }
+    const pieContainerElem = document.querySelector('.chart-drawing-area')
+    pieContainerElem.innerHTML = `<canvas id="stockStatusPieChart"></canvas>`
+
+    const stockStatusDistroCtx = document.getElementById('stockStatusPieChart')
+    new Chart(stockStatusDistroCtx, {
+      type: 'doughnut',
+      data: {
+        labels: statusLabels,
+        datasets: [{
+          data: statusCounts,
+          backgroundColor: [
+            '#008B00',
+            '#FF8C00',
+            '#DC3545'
+          ],
+          hoverOffset: 15,
+          borderWidth: 2,
+          borderColor: '#FFFFFF'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '70%',
+        plugins: {
+          legend: { position: 'bottom' }
+        }
       }
-    }
-  })
+    })
+  }
 })
 
-async function getInvReportData(){
-  const response = await fetch('http://localhost:3000/admin/invReportData')
+async function getInvReportData(cat, temp, stockStat){
+  const response = await fetch('http://localhost:3000/admin/invReportData', 
+    {
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json' }, 
+      body: JSON.stringify({cat, temp, stockStat})
+    }
+  )
   const res = await response.json()
   return(res.invReportData.inv_report_data)
 }

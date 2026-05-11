@@ -422,7 +422,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       id: temp.code,
       name: `${temp.label} (${temp.range})`
     })
-    )
+  )
 
   // Arrays used to populate data in the select tags
   const categoryItems = (SystemConfig.categories || [])
@@ -882,6 +882,12 @@ async function getSystemConfig() {
   const response = await fetch(`${adminPagesLink}/getCatStorageUom`)
   const result = await response.json()
   return result.catStorageUomDetails
+}
+
+export async function catStorageData() {
+  const sysConfigData = await getSystemConfig()
+  if (sysConfigData)
+    return { 'categories': sysConfigData.categories, 'storageTemps': sysConfigData.storageOptions }
 }
 
 // Get all item details

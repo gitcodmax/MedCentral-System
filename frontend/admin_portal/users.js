@@ -453,7 +453,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const sysUsers = await getAllSysUsers()
   const drivers = await getAllDrivers()
-  console.log(drivers)
 
   const systemUsersTbodyElem = document.getElementById('sysUsersTbody')
   const driversTbodyElem = document.getElementById('driversTbody')

@@ -3,9 +3,9 @@ import { distroReportDataQ, invReportDataQ, lowStockReportDataQ } from "../../re
 
 const adminReportsRouter = express.Router()
 
-adminReportsRouter.get('/invReportData', async (req, res) => {
+adminReportsRouter.post('/invReportData', async (req, res) => {
   try{
-    const invReportData = await invReportDataQ()
+    const invReportData = await invReportDataQ(req.body)
     res.status(200).json({invReportData})
   }catch(err){
     res.status(500).json({Error: err.message})

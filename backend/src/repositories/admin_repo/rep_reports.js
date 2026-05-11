@@ -1,7 +1,33 @@
 import pool from "../../config/db.js";
 
-export async function invReportDataQ(){
-  const {rows} = await pool.query(
+export async function invReportDataQ({ cat, temp, stockStat }) {
+  const conditions = [];
+  const values = [];
+  let paramIndex = 1;
+
+  if (cat !== 'all') {
+    conditions.push(`category_id = $${paramIndex++}`);
+    values.push(cat);
+  }
+
+  if (temp !== 'any') {
+    conditions.push(`storage_temp_code = $${paramIndex++}`);
+    values.push(temp);
+  }
+
+  if (stockStat !== 'all') {
+    const stockStatusSQL = `(CASE 
+      WHEN current_stock = 0 THEN 'Out of Stock' 
+      WHEN current_stock <= min_stock_level THEN 'Low' 
+      ELSE 'Healthy' 
+    END)`;
+    conditions.push(`${stockStatusSQL} = $${paramIndex++}`);
+    values.push(stockStat);
+  }
+
+  const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+
+  const { rows } = await pool.query(
     `
       WITH category_data AS (
           SELECT 
@@ -9,13 +35,16 @@ export async function invReportDataQ(){
               SUM(i.total_selling_units) AS total_stock
           FROM items i
           JOIN cfg_item_categories c ON i.category_id = c.id
+          ${whereClause}
           GROUP BY c.name
-      ),stock_status_data AS (
+      ), stock_status_data AS (
         SELECT COUNT(current_stock) AS stock_count, 
         (CASE WHEN current_stock = 0 THEN 'Out of Stock' 
             WHEN current_stock <= min_stock_level THEN 'Low' 
             WHEN current_stock > min_stock_level THEN 'Healthy' END) AS status FROM items 
-        GROUP BY status
+        ${whereClause}
+        GROUP BY status 
+        ORDER BY status
       )
 
       SELECT jsonb_build_object(
@@ -26,6 +55,7 @@ export async function invReportDataQ(){
                   'total_inventory_value', ROUND(SUM(total_selling_units * price_per_selling)::numeric, 2),
                   'low_stock_alerts', COUNT(CASE WHEN current_stock < min_stock_level THEN 1 END)
               ) FROM items
+              ${whereClause}
           ), 
           'inventory_table', (
               SELECT json_agg(
@@ -47,6 +77,7 @@ export async function invReportDataQ(){
               )
               FROM items i
               JOIN cfg_item_categories c ON i.category_id = c.id
+              ${whereClause}
           ), 
           'category_distribution_bar_chart', (
               SELECT json_agg(
@@ -67,14 +98,15 @@ export async function invReportDataQ(){
           FROM stock_status_data
         )
       ) AS inv_report_data;
-    `
+    `,
+    values
   )
 
   return rows[0]
 }
 
-export async function lowStockReportDataQ(){
-  const {rows} = await pool.query(`
+export async function lowStockReportDataQ() {
+  const { rows } = await pool.query(`
     SELECT jsonb_build_object(
       'kpi_metrics', (
           SELECT jsonb_build_object(
@@ -129,8 +161,8 @@ export async function lowStockReportDataQ(){
   return rows[0]
 }
 
-export async function distroReportDataQ(){
-  const {rows} = await pool.query(`
+export async function distroReportDataQ() {
+  const { rows } = await pool.query(`
     WITH kpi_data AS (
         SELECT 
             COUNT(d.delivery_id) AS total_deliveries,
