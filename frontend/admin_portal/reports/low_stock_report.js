@@ -1,5 +1,7 @@
 import { adminPagesLink } from "../../global.js"
+import { catStorageData } from "../inventory.js"
 import { renderSidebar, renderReportsNavbar } from "../sidebar.js"
+import { populateFilterCatTempOptions } from "./inv_report.js"
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -53,29 +55,25 @@ document.addEventListener('DOMContentLoaded', async () => {
           <div class="filter-row">
             <div class="filter-group">
               <label><i class="fas fa-search"></i> Item Name</label>
-              <input type="text" placeholder="Search items...">
+              <input type="text" id="filterName" placeholder="Search items...">
             </div>
-            <div class="filter-group">
-              <label><i class="fas fa-filter"></i> Category</label>
-              <select>
-                <option>All Categories</option>
-                <option>Vaccines</option>
-                <option>Antibiotics</option>
-                <option>Surgical Supplies</option>
-              </select>
+            <div class="filter-cat-temp-section">
+              <div class="filter-group">
+                <label><i class="fas fa-filter"></i> Category</label>
+                <select id="filterCat">
+                  <option value='all'>All Categories</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label><i class="fas fa-temperature-half"></i> Storage Temp.</label>
+                <select id="filterTemp">
+                  <option value='any'>Any Temperature</option>
+                </select>
+              </div>
+              <button class="btn-apply" id="applyLowStockFilterBtn">
+                Apply Filters
+              </button>
             </div>
-            <div class="filter-group">
-              <label><i class="fas fa-temperature-half"></i> Storage Temp.</label>
-              <select>
-                <option>Any Temp</option>
-                <option>Room Temp</option>
-                <option>Refrigerated</option>
-                <option>Frozen</option>
-              </select>
-            </div>
-            <button class="btn-apply">
-              Apply Filters
-            </button>
           </div>
         </section>
 
@@ -100,9 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         <section class="card chart-section">
           <h3><i class="fas fa-chart-bar"></i> Low Stock Items by Category</h3>
-          <div class="chart-placeholder">
-            <canvas id="lowStockCategoryBars"></canvas>
-          </div>
+          <div class="chart-placeholder"></div>
         </section>
       </div>
     </main>
@@ -111,23 +107,48 @@ document.addEventListener('DOMContentLoaded', async () => {
   await renderSidebar()
   renderReportsNavbar('low_stock_report')
 
-  const lowStockReportData = await getLowStockReportData()
+  let lowStockReportData = await getLowStockReportData('all', 'any')
+  const catTempStorageData = await catStorageData()
 
-  document.getElementById('totLowStockItemsKpi')
-    .textContent = lowStockReportData.kpi_metrics.total_low_stock_items
-  document.getElementById('outOfStockItemsKpi')
-    .textContent = lowStockReportData.kpi_metrics.out_of_stock_items
-  document.getElementById('affectedCategories')
-    .textContent = lowStockReportData.kpi_metrics.affected_categories
+  // Filtering logic
+  const filterCategoriesElem = document.getElementById('filterCat')
+  const filterStorageTempElem = document.getElementById('filterTemp')
+  populateFilterCatTempOptions(catTempStorageData, filterCategoriesElem, filterStorageTempElem)
 
-  const lowStockRprtTblFrag = document.createDocumentFragment()
-  lowStockReportData.inventory_table.forEach(item => {
-    const tblRow = document.createElement('tr')
-    const itemStatusLower = item.stock_status.toLowerCase()
-    tblRow.className = `row-${itemStatusLower === 'out of stock' ?
-      itemStatusLower.replaceAll(' ', '-') : itemStatusLower}`
+  // Search logic for the items table
+  const filterItemNameElem = document.getElementById('filterName')
+  filterItemNameElem.addEventListener('keyup', () => {
+    const searchVal = filterItemNameElem.value.toLowerCase().trim()
+    const searchRes = lowStockReportData.inventory_table.filter(item => {
+      const itemName = item.item_name.toLowerCase()
+      return itemName.includes(searchVal)
+    })
 
-    tblRow.innerHTML = `
+    displayItemsTable(searchRes)
+  })
+
+  // Filtering button
+  document.getElementById('applyLowStockFilterBtn')
+    .addEventListener('click', async () => {
+      lowStockReportData = await getLowStockReportData(filterCategoriesElem.value, filterStorageTempElem.value)
+      displayItemsTable(lowStockReportData.inventory_table)
+      displayLowStockKpiChart(lowStockReportData)
+    })
+
+  const lowStockItemTbodyElem = document.getElementById('lowStockReportTbody')
+  displayItemsTable(lowStockReportData.inventory_table)
+  displayLowStockKpiChart(lowStockReportData)
+
+  function displayItemsTable(itemsRecords) {
+    lowStockItemTbodyElem.innerHTML = ``
+    const lowStockRprtTblFrag = document.createDocumentFragment()
+    itemsRecords.forEach(item => {
+      const tblRow = document.createElement('tr')
+      const itemStatusLower = item.stock_status.toLowerCase()
+      tblRow.className = `row-${itemStatusLower === 'out of stock' ?
+        itemStatusLower.replaceAll(' ', '-') : itemStatusLower}`
+
+      tblRow.innerHTML = `
       <td><strong class="tbl-item-name">${item.item_name}</strong></td>
       <td>${item.category}</td>
       <td class="text-right">${item.current_stock}</td>
@@ -137,41 +158,60 @@ document.addEventListener('DOMContentLoaded', async () => {
       <td><span class="stock-badge badge-${itemStatusLower}">${item.stock_status}</span></td>
     `
 
-    lowStockRprtTblFrag.appendChild(tblRow)
-  })
-  document.getElementById('lowStockReportTbody')
-    .appendChild(lowStockRprtTblFrag)
+      lowStockRprtTblFrag.appendChild(tblRow)
+    })
 
-  // Low Stock by Category bar chart
-  const labels = lowStockReportData.low_stock_by_category_bar_chart.map(cat => cat.category)
-  const dataValues = lowStockReportData.low_stock_by_category_bar_chart.map(cat => cat.low_stock_count)
+    lowStockItemTbodyElem.appendChild(lowStockRprtTblFrag)
+  }
 
-  const lowStockCatCtx = document.getElementById('lowStockCategoryBars').getContext('2d')
-  new Chart(lowStockCatCtx, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Number of Low Stock SKUs',
-        data: dataValues,
-        backgroundColor: '#FF8C0022',
-        borderColor: '#FF8C00',
-        borderWidth: 2,
-        borderRadius: 4,
-        barThichness: 30
-      }]
-    },
-    options: {
-      indexAxis: 'y',
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } }
-    }
-  })
+  function displayLowStockKpiChart(lowStockRepData) {
+    document.getElementById('totLowStockItemsKpi')
+      .textContent = lowStockRepData.kpi_metrics.total_low_stock_items
+    document.getElementById('outOfStockItemsKpi')
+      .textContent = lowStockRepData.kpi_metrics.out_of_stock_items
+    document.getElementById('affectedCategories')
+      .textContent = lowStockRepData.kpi_metrics.affected_categories
+
+    // Low Stock by Category bar chart
+    const labels = lowStockRepData.low_stock_by_category_bar_chart.map(cat => cat.category)
+    const dataValues = lowStockRepData.low_stock_by_category_bar_chart.map(cat => cat.low_stock_count)
+
+    const chartContainer = document.querySelector('.chart-placeholder')
+    chartContainer.innerHTML = `<canvas id="lowStockCategoryBars"></canvas>`
+
+    const lowStockCatCtx = document.getElementById('lowStockCategoryBars').getContext('2d')
+    new Chart(lowStockCatCtx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Number of Low Stock SKUs',
+          data: dataValues,
+          backgroundColor: '#FF8C0022',
+          borderColor: '#FF8C00',
+          borderWidth: 2,
+          borderRadius: 4,
+          barThichness: 30
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } }
+      }
+    })
+  }
 })
 
-async function getLowStockReportData(){
-  const response = await fetch(`${adminPagesLink}/lowStockReportData`)
+async function getLowStockReportData(cat, temp) {
+  const response = await fetch(`${adminPagesLink}/lowStockReportData`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cat, temp })
+    }
+  )
   const res = await response.json()
   return res.lowStockReportData.low_stock_data
 }

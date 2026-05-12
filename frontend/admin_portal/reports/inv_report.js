@@ -128,26 +128,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const catTempStorageData = await catStorageData()
 
   // Filtering logic
-  // Populate the dropdown options
   const filterCategoriesElem = document.getElementById('filterCategories')
-  const filterCatFrag = document.createDocumentFragment()
-  catTempStorageData.categories.forEach(cat => {
-    const optElem = document.createElement('option')
-    optElem.value = cat.id
-    optElem.textContent = cat.name
-    filterCatFrag.appendChild(optElem)
-  })
-  filterCategoriesElem.appendChild(filterCatFrag)
-
   const filterStorageTempElem = document.getElementById('filterStorageTemp')
-  const filterTempFrag = document.createDocumentFragment()
-  catTempStorageData.storageTemps.forEach(tem => {
-    const opt = document.createElement('option')
-    opt.value = tem.code
-    opt.textContent = `${tem.description} (${tem.temp_range})`
-    filterTempFrag.appendChild(opt)
-  })
-  filterStorageTempElem.appendChild(filterTempFrag)
+  populateFilterCatTempOptions(catTempStorageData, filterCategoriesElem, filterStorageTempElem)
 
   // Clicking the filter button
   const filterStockStatusElem = document.getElementById('filterStockStatus')
@@ -265,14 +248,37 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 })
 
-async function getInvReportData(cat, temp, stockStat){
-  const response = await fetch('http://localhost:3000/admin/invReportData', 
+// Populate the dropdown options
+export function populateFilterCatTempOptions(catTempStorageData, filterCategoriesElem, 
+  filterStorageTempElem
+) {
+  const filterCatFrag = document.createDocumentFragment()
+  catTempStorageData.categories.forEach(cat => {
+    const optElem = document.createElement('option')
+    optElem.value = cat.id
+    optElem.textContent = cat.name
+    filterCatFrag.appendChild(optElem)
+  })
+  filterCategoriesElem.appendChild(filterCatFrag)
+
+  const filterTempFrag = document.createDocumentFragment()
+  catTempStorageData.storageTemps.forEach(tem => {
+    const opt = document.createElement('option')
+    opt.value = tem.code
+    opt.textContent = `${tem.description} (${tem.temp_range})`
+    filterTempFrag.appendChild(opt)
+  })
+  filterStorageTempElem.appendChild(filterTempFrag)
+}
+
+async function getInvReportData(cat, temp, stockStat) {
+  const response = await fetch('http://localhost:3000/admin/invReportData',
     {
-      method: 'POST', 
-      headers: { 'Content-Type': 'application/json' }, 
-      body: JSON.stringify({cat, temp, stockStat})
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cat, temp, stockStat })
     }
   )
   const res = await response.json()
-  return(res.invReportData.inv_report_data)
+  return (res.invReportData.inv_report_data)
 }

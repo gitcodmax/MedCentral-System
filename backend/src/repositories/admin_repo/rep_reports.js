@@ -1,10 +1,6 @@
 import pool from "../../config/db.js";
 
-export async function invReportDataQ({ cat, temp, stockStat }) {
-  const conditions = [];
-  const values = [];
-  let paramIndex = 1;
-
+function setCatTempConditions(cat, temp, conditions, paramIndex, values) {
   if (cat !== 'all') {
     conditions.push(`category_id = $${paramIndex++}`);
     values.push(cat);
@@ -14,6 +10,14 @@ export async function invReportDataQ({ cat, temp, stockStat }) {
     conditions.push(`storage_temp_code = $${paramIndex++}`);
     values.push(temp);
   }
+}
+
+export async function invReportDataQ({ cat, temp, stockStat }) {
+  const conditions = [];
+  const values = [];
+  let paramIndex = 1;
+
+  setCatTempConditions(cat, temp, conditions, paramIndex, values)
 
   if (stockStat !== 'all') {
     const stockStatusSQL = `(CASE 
@@ -105,7 +109,16 @@ export async function invReportDataQ({ cat, temp, stockStat }) {
   return rows[0]
 }
 
-export async function lowStockReportDataQ() {
+export async function lowStockReportDataQ({cat, temp}) {
+  const conditions = [];
+  const values = [];
+  let paramIndex = 1;
+
+  setCatTempConditions(cat, temp, conditions, paramIndex, values)
+
+  const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+  const addCondition = conditions.length > 0 ? `AND ${conditions.join(' AND ')}` : '';
+
   const { rows } = await pool.query(`
     SELECT jsonb_build_object(
       'kpi_metrics', (
@@ -115,6 +128,7 @@ export async function lowStockReportDataQ() {
               'affected_categories', COUNT(DISTINCT CASE WHEN current_stock <= min_stock_level THEN category_id END)
           ) 
           FROM items
+          ${whereClause}
       ),
 
       'inventory_table', (
@@ -137,6 +151,7 @@ export async function lowStockReportDataQ() {
           )
           FROM items i
           JOIN cfg_item_categories c ON i.category_id = c.id
+          ${whereClause}
       ),
 
       'low_stock_by_category_bar_chart', (
@@ -150,13 +165,14 @@ export async function lowStockReportDataQ() {
               SELECT c.name, COUNT(i.item_id) as low_count
               FROM cfg_item_categories c
               JOIN items i ON c.id = i.category_id
-              WHERE i.current_stock <= i.min_stock_level
+              WHERE i.current_stock <= i.min_stock_level 
+              ${addCondition}
               GROUP BY c.name
               ORDER BY low_count DESC
           ) AS category_summary
       )
   ) AS low_stock_data;
-  `)
+  `, values)
 
   return rows[0]
 }

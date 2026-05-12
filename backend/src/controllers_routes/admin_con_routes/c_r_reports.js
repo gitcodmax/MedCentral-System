@@ -12,9 +12,9 @@ adminReportsRouter.post('/invReportData', async (req, res) => {
   }
 })
 
-adminReportsRouter.get('/lowStockReportData', async (req, res) => {
+adminReportsRouter.post('/lowStockReportData', async (req, res) => {
   try{
-    const lowStockReportData = await lowStockReportDataQ()
+    const lowStockReportData = await lowStockReportDataQ(req.body)
     res.status(200).json({lowStockReportData})
   }catch(err){
     res.status(500).json({Error: err.message})

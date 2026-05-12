@@ -131,6 +131,16 @@
   font-family: inherit;
 }
 
+.filter-cat-temp-section{
+  border: 1px solid var(--color-quarantine);
+  background: rgb(194, 193, 193);
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  padding: 5px;
+  border-radius: 8px;
+}
+
 .btn-apply {
   background-color: #2D3748;
   color: white;
