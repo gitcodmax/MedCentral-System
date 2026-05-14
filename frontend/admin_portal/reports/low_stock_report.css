@@ -95,15 +95,26 @@
 }
 
 /*Filters*/
+.search-container{
+  border: 1px solid var(--color-quarantine);
+  padding: 10px;
+  max-width: 400px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
 .filter-section {
+  margin: 0 auto;
   margin-bottom: 2rem;
+  width: 630px;
 }
 
 .filter-row {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   gap: 1rem;
   align-items: flex-end;
+  justify-content: center;
 }
 
 .filter-group {
@@ -132,8 +143,6 @@
 }
 
 .filter-cat-temp-section{
-  border: 1px solid var(--color-quarantine);
-  background: rgb(194, 193, 193);
   display: flex;
   align-items: flex-end;
   gap: 1rem;

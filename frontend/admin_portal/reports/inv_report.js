@@ -1,5 +1,6 @@
 import { catStorageData } from "../inventory.js"
 import { renderSidebar, renderReportsNavbar } from "../sidebar.js"
+import { toggleNoMatchFound } from "./distribution_report.js"
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -98,6 +99,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               </thead>
               <tbody id="invTbody"></tbody>
             </table>
+            <div class="no-match-container js-no-match-found hidden"></div>
           </div>
         </section>
 
@@ -127,6 +129,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   let invReportData = await getInvReportData('all', 'any', 'all')
   const catTempStorageData = await catStorageData()
 
+  const noMatchFoundElem = document.querySelector('.js-no-match-found')
+
   // Filtering logic
   const filterCategoriesElem = document.getElementById('filterCategories')
   const filterStorageTempElem = document.getElementById('filterStorageTemp')
@@ -140,6 +144,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         filterStorageTempElem.value,
         filterStockStatusElem.value
       )
+      toggleNoMatchFound(invReportData.inventory_table, noMatchFoundElem)
       displayInvReport(invReportData)
     })
 
@@ -159,8 +164,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Populate the items table
     const invTbodyElem = document.getElementById('invTbody')
+    invTbodyElem.innerHTML = ``
     const invTableFrag = document.createDocumentFragment()
-    invReportData.inventory_table.forEach(item => {
+    invReportData.inventory_table?.forEach(item => {
       const tblRow = document.createElement('tr')
 
       tblRow.innerHTML = `
@@ -181,8 +187,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     invTbodyElem.appendChild(invTableFrag)
 
     // Form the Stock Distribution  bar chart by category
-    const labels = invReportData.category_distribution_bar_chart.map(cat => cat.category)
-    const dataValues = invReportData.category_distribution_bar_chart.map(cat => cat.current_stock)
+    const labels = invReportData.category_distribution_bar_chart?.map(cat => cat.category)
+    const dataValues = invReportData.category_distribution_bar_chart?.map(cat => cat.current_stock)
 
     const barContainerElem = document.querySelector('.chart-placeholder')
     barContainerElem.innerHTML = `<canvas id="stockDistroBarChart"></canvas>`
@@ -213,8 +219,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     })
 
     // Stock Status distro
-    const statusLabels = invReportData.stock_status_pie_chart.map(status => status.status)
-    const statusCounts = invReportData.stock_status_pie_chart.map(status => status.count)
+    const statusLabels = invReportData.stock_status_pie_chart?.map(status => status.status)
+    const statusCounts = invReportData.stock_status_pie_chart?.map(status => status.count)
 
     const pieContainerElem = document.querySelector('.chart-drawing-area')
     pieContainerElem.innerHTML = `<canvas id="stockStatusPieChart"></canvas>`

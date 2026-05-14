@@ -1,4 +1,4 @@
-import { adminPagesLink } from "../../global.js"
+import { adminPagesLink, displayNoMatchFound } from "../../global.js"
 import { renderSidebar, renderReportsNavbar } from "../sidebar.js"
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -17,45 +17,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             <p>Overview of warehouse delivery and distribution activities</p>
           </div>
         </header>
-
-        <section class="kpi-grid">
-          <div class="card kpi-card tot-deliv-card">
-            <div class="kpi-content">
-              <span class="kpi-label">Total Dispatches</span>
-              <span class="kpi-value tot-deliveries-val" id="totDelivValue"></span>
-            </div>
-            <div class="kpi-icon bg-blue-lite">
-              <i class="fas fa-truck-ramp-box"></i>
-            </div>
-          </div>
-          <div class="card kpi-card deliv-card">
-            <div class="kpi-content">
-              <span class="kpi-label">Delivered</span>
-              <span class="kpi-value teal-text" id="deliveredCount"></span>
-            </div>
-            <div class="kpi-icon bg-teal-lite">
-              <i class="fa-solid fa-truck-fast"></i>
-            </div>
-          </div>
-          <div class="card kpi-card completed-card">
-            <div class="kpi-content">
-              <span class="kpi-label">Completed</span>
-              <span class="kpi-value green-text" id="completedDeliv"></span>
-            </div>
-            <div class="kpi-icon bg-green-lite">
-              <i class="fas fa-house-medical-circle-check"></i>
-            </div>
-          </div>
-          <div class="card kpi-card delayed-deliv-card">
-            <div class="kpi-content">
-              <span class="kpi-label">Delayed Deliveries</span>
-              <span class="kpi-value orange-text" id="delayedDeliv"></span>
-            </div>
-            <div class="kpi-icon bg-orange-lite">
-              <i class="fas fa-clock-rotate-left"></i>
-            </div>
-          </div>
-        </section>
 
         <section class="card filter-section">
           <div class="filter-row">
@@ -116,9 +77,48 @@ document.addEventListener('DOMContentLoaded', async () => {
               </select>
             </div>
             <button class="btn-apply" id="applyDistroFiltersBtn">Apply Filters</button>
+            <button class="btn-reset" id="resetDistroFiltersBtn">Reset Filters</button>
           </div>
         </section>
 
+        <section class="kpi-grid">
+          <div class="card kpi-card tot-deliv-card">
+            <div class="kpi-content">
+              <span class="kpi-label">Total Dispatches</span>
+              <span class="kpi-value tot-deliveries-val" id="totDelivValue"></span>
+            </div>
+            <div class="kpi-icon bg-blue-lite">
+              <i class="fas fa-truck-ramp-box"></i>
+            </div>
+          </div>
+          <div class="card kpi-card deliv-card">
+            <div class="kpi-content">
+              <span class="kpi-label">Delivered</span>
+              <span class="kpi-value teal-text" id="deliveredCount"></span>
+            </div>
+            <div class="kpi-icon bg-teal-lite">
+              <i class="fa-solid fa-truck-fast"></i>
+            </div>
+          </div>
+          <div class="card kpi-card completed-card">
+            <div class="kpi-content">
+              <span class="kpi-label">Completed</span>
+              <span class="kpi-value green-text" id="completedDeliv"></span>
+            </div>
+            <div class="kpi-icon bg-green-lite">
+              <i class="fas fa-house-medical-circle-check"></i>
+            </div>
+          </div>
+          <div class="card kpi-card delayed-deliv-card">
+            <div class="kpi-content">
+              <span class="kpi-label">Delayed Deliveries</span>
+              <span class="kpi-value orange-text" id="delayedDeliv"></span>
+            </div>
+            <div class="kpi-icon bg-orange-lite">
+              <i class="fas fa-clock-rotate-left"></i>
+            </div>
+          </div>
+        </section>
 
         <section class="card table-card">
             <div class="search-filter-group">
@@ -142,6 +142,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               </thead>
               <tbody id="deliveriesTbody"></tbody>
             </table>
+            <div class="no-match-container js-no-match-found hidden"></div>
           </div>
         </section>
 
@@ -163,6 +164,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   await renderSidebar()
   renderReportsNavbar('distribution_report')
+  displayNoMatchFound()
 
   // Opening and closing the container to display the date filters
   const delivFiltersGrpElem = document.getElementById('delivFilGrp')
@@ -204,7 +206,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   })
   filterHosSelectElem.appendChild(hospOptionsFrag)
 
-  let distroReportData = await getDistroReportData(null, null, null, null, 'all', 'all')
+  const distroReportData = await getDistroReportData(null, null, null, null, 'all', 'all')
 
   // Get input from text box and return required value
   const getDispDelivDates = (dateString) => {
@@ -214,18 +216,39 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Apply filters button
+  const filterStatusElem = document.getElementById('filterStatus')
+  const noMatchFoundElem = document.querySelector('.js-no-match-found')
   document.getElementById('applyDistroFiltersBtn')
     .addEventListener('click', async () => {
       const dispFromDate = getDispDelivDates('dispFromDate')
       const dispToDate = getDispDelivDates('dispToDate')
       const delivFromDate = getDispDelivDates('delivFromDate')
       const delivToDate = getDispDelivDates('delivToDate')
-      const filterStatusElem = document.getElementById('filterStatus')
       if (dispToDate && !dispFromDate) alert('Choose the dispatch start date!')
       if (delivToDate && !delivFromDate) alert('Choose the delivery start date!')
-      
-      distroReportData = await getDistroReportData(dispFromDate, dispToDate, delivFromDate, delivToDate,
+
+      const filDistroReportData = await getDistroReportData(dispFromDate, dispToDate, delivFromDate, delivToDate,
         filterHosSelectElem.value, filterStatusElem.value)
+      toggleNoMatchFound(filDistroReportData.deliveries_table, noMatchFoundElem)
+      displayDeliveriesTbl(filDistroReportData.deliveries_table)
+      displayDistroKpiCharts(filDistroReportData)
+    })
+
+  // Button to reset the filters
+  document.getElementById('resetDistroFiltersBtn')
+    .addEventListener('click', () => {
+      document.querySelectorAll('.dates-filter-groups')
+        .forEach(dateFilElem => {
+          dateFilElem.classList.add('hidden')
+        })
+      document.querySelectorAll('.fil-date-cont')
+        .forEach(elem => {
+          elem.classList.remove('selected-date')
+        })
+      filterHosSelectElem.value = 'all'
+      filterStatusElem.value = 'all'
+
+      toggleNoMatchFound(distroReportData.deliveries_table, noMatchFoundElem)
       displayDeliveriesTbl(distroReportData.deliveries_table)
       displayDistroKpiCharts(distroReportData)
     })
@@ -243,6 +266,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       return delivIdRes || pkgIdRes || ordIdRes
     })
 
+    const searchResult = searchRes.length === 0 ? null : searchRes
+    toggleNoMatchFound(searchResult, noMatchFoundElem)
     displayDeliveriesTbl(searchRes)
   })
 
@@ -288,8 +313,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       .textContent = distroData.kpi_metrics.delayed_deliveries
 
     // Distro over time line chart
-    const labels = distroData.volume_over_time_line_chart.map(deliv => deliv.date)
-    const dataValues = distroData.volume_over_time_line_chart.map(deliv => deliv.deliveries)
+    const labels = distroData.volume_over_time_line_chart?.map(deliv => deliv.date)
+    const dataValues = distroData.volume_over_time_line_chart?.map(deliv => deliv.deliveries)
 
     document.getElementById('distroOverTimeChart')
       .innerHTML = `<canvas id="distroOverTimeLine"></canvas>`
@@ -324,8 +349,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     })
 
     // Destination Distro Bar chart
-    const destLabels = distroData.destination_distribution_bar_chart.map(dest => dest.destination)
-    const destValues = distroData.destination_distribution_bar_chart.map(dest => dest.count)
+    const destLabels = distroData.destination_distribution_bar_chart?.map(dest => dest.destination)
+    const destValues = distroData.destination_distribution_bar_chart?.map(dest => dest.count)
 
     document.getElementById('destDistroChart')
       .innerHTML = `<canvas id="destDistroBar"></canvas>`
@@ -380,4 +405,10 @@ async function getHosIdData() {
   const response = await fetch(`${adminPagesLink}/getHosIdName`)
   const res = await response.json()
   return res
+}
+
+export const toggleNoMatchFound = (deliveriesTbl, noMatchFoundElem) => {
+  !deliveriesTbl ?
+    noMatchFoundElem.classList.remove('hidden') :
+    noMatchFoundElem.classList.add('hidden')
 }

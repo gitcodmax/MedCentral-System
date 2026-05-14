@@ -211,6 +211,20 @@
   cursor: pointer;
 }
 
+.btn-reset{
+  padding: 7px;
+  background: white;
+  color: red;
+  border-radius: 8px;
+  border: 1px solid red;
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+.btn-reset:hover{
+  background: red;
+  color: white;
+}
+
 /*Table Section*/
 .table-card {
   padding: 0;

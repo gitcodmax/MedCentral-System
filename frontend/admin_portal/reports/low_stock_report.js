@@ -1,6 +1,7 @@
 import { adminPagesLink } from "../../global.js"
 import { catStorageData } from "../inventory.js"
 import { renderSidebar, renderReportsNavbar } from "../sidebar.js"
+import { toggleNoMatchFound } from "./distribution_report.js"
 import { populateFilterCatTempOptions } from "./inv_report.js"
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -20,6 +21,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             <p>Items below minimum stock levels</p>
           </div>
         </div>
+
+        <section class="card filter-section">
+          <div class="filter-row">
+            <div class="filter-cat-temp-section">
+              <div class="filter-group">
+                <label><i class="fas fa-filter"></i> Category</label>
+                <select id="filterCat">
+                  <option value='all'>All Categories</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label><i class="fas fa-temperature-half"></i> Storage Temp.</label>
+                <select id="filterTemp">
+                  <option value='any'>Any Temperature</option>
+                </select>
+              </div>
+              <button class="btn-apply" id="applyLowStockFilterBtn">
+                Apply Filters
+              </button>
+            </div>
+          </div>
+        </section>
 
         <section class="kpi-grid">
           <div class="card kpi-card tot-low-stock-card">
@@ -51,33 +74,11 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
         </section>
 
-        <section class="card filter-section">
-          <div class="filter-row">
-            <div class="filter-group">
-              <label><i class="fas fa-search"></i> Item Name</label>
-              <input type="text" id="filterName" placeholder="Search items...">
-            </div>
-            <div class="filter-cat-temp-section">
-              <div class="filter-group">
-                <label><i class="fas fa-filter"></i> Category</label>
-                <select id="filterCat">
-                  <option value='all'>All Categories</option>
-                </select>
-              </div>
-              <div class="filter-group">
-                <label><i class="fas fa-temperature-half"></i> Storage Temp.</label>
-                <select id="filterTemp">
-                  <option value='any'>Any Temperature</option>
-                </select>
-              </div>
-              <button class="btn-apply" id="applyLowStockFilterBtn">
-                Apply Filters
-              </button>
-            </div>
-          </div>
-        </section>
-
         <section class="card table-card">
+          <div class="filter-group search-container">
+            <label><i class="fas fa-search"></i> Item Name</label>
+            <input type="text" id="filterName" placeholder="Search items...">
+          </div>
           <div class="table-responsive">
             <table>
               <thead>
@@ -93,6 +94,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               </thead>
               <tbody id="lowStockReportTbody"></tbody>
             </table>
+            <div class="no-match-container js-no-match-found hidden"></div>
           </div>
         </section>
 
@@ -110,6 +112,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   let lowStockReportData = await getLowStockReportData('all', 'any')
   const catTempStorageData = await catStorageData()
 
+  const noMatchFoundElem = document.querySelector('.js-no-match-found')
+
   // Filtering logic
   const filterCategoriesElem = document.getElementById('filterCat')
   const filterStorageTempElem = document.getElementById('filterTemp')
@@ -124,6 +128,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       return itemName.includes(searchVal)
     })
 
+    const searchResult = searchRes.length === 0 ? null : searchRes
+    toggleNoMatchFound(searchResult, noMatchFoundElem)
     displayItemsTable(searchRes)
   })
 
@@ -131,6 +137,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('applyLowStockFilterBtn')
     .addEventListener('click', async () => {
       lowStockReportData = await getLowStockReportData(filterCategoriesElem.value, filterStorageTempElem.value)
+      toggleNoMatchFound(lowStockReportData.inventory_table, noMatchFoundElem)
       displayItemsTable(lowStockReportData.inventory_table)
       displayLowStockKpiChart(lowStockReportData)
     })
@@ -142,7 +149,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   function displayItemsTable(itemsRecords) {
     lowStockItemTbodyElem.innerHTML = ``
     const lowStockRprtTblFrag = document.createDocumentFragment()
-    itemsRecords.forEach(item => {
+    itemsRecords?.forEach(item => {
       const tblRow = document.createElement('tr')
       const itemStatusLower = item.stock_status.toLowerCase()
       tblRow.className = `row-${itemStatusLower === 'out of stock' ?
@@ -173,8 +180,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       .textContent = lowStockRepData.kpi_metrics.affected_categories
 
     // Low Stock by Category bar chart
-    const labels = lowStockRepData.low_stock_by_category_bar_chart.map(cat => cat.category)
-    const dataValues = lowStockRepData.low_stock_by_category_bar_chart.map(cat => cat.low_stock_count)
+    const labels = lowStockRepData.low_stock_by_category_bar_chart?.map(cat => cat.category)
+    const dataValues = lowStockRepData.low_stock_by_category_bar_chart?.map(cat => cat.low_stock_count)
 
     const chartContainer = document.querySelector('.chart-placeholder')
     chartContainer.innerHTML = `<canvas id="lowStockCategoryBars"></canvas>`
