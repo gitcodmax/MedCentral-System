@@ -4,7 +4,7 @@ import {
 } from "../global.js"
 
 export async function renderSidebar() {
-  const logoImage = `<img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">`
+  const logoImage = `<img src="/images/MedCentralis_logo.png" alt="MedCentralis Logo" class="logo">`
   const sidebarElem = document.getElementById('sidebar')
 
   // Display the sidebar
@@ -129,7 +129,7 @@ export async function renderSidebar() {
         </div>
       </div>
     `
-  
+
   // Set up update of admin password
   const updateAdminPwdHTML = `
     <div class="modal-overlay" id="resetAdminPasswordOverlay">
@@ -155,9 +155,9 @@ export async function renderSidebar() {
   `
   document.querySelector('main')
     .insertAdjacentHTML("beforeend", updateAdminPwdHTML)
-  
+
   renderSuccessErrorOverlay()
-  
+
   // Show/Hide the button to reset admin password
   let showPwdBtn = true
   const rightCaretElem = document.querySelector('.fa-caret-right')
@@ -183,7 +183,7 @@ export async function renderSidebar() {
       }
     })
 
-  
+
   const updateAdminPwdOverlayBtnElem = document.getElementById('updateAdminPwdBtn')
   const resetPwdOverlayElem = document.getElementById('resetAdminPasswordOverlay')
   const newPwdTextboxElem = document.getElementById('newAdminPassword')
@@ -195,17 +195,17 @@ export async function renderSidebar() {
         .addEventListener('submit', async (e) => {
           e.preventDefault()
 
-          const response = await fetch(`${adminPagesLink}/updateSysUsersPassword`, 
+          const response = await fetch(`${adminPagesLink}/updateSysUsersPassword`,
             {
-              method: 'PUT', 
-              headers: { 'Content-Type': 'application/json' }, 
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                userId: adminUserId, 
+                userId: adminUserId,
                 plainPwd: newPwdTextboxElem.value
               })
             }
           )
-          
+
           const res = await response.json()
           triggerStatus(res.msg)
         })

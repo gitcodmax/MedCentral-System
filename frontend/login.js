@@ -1,11 +1,11 @@
 //
-// JavaScript for Form Validation (MedCentral Login)
+// JavaScript for Form Validation (MedCentralis Login)
 //
 
 document.querySelector('.js-login-container')
   .innerHTML = `        
     <header class="system-header">
-        <img src="images/MedCentral_logo_small.png">
+        <img src="images/MedCentralis_logo.png">
     </header>
 
     <div class="login-card">
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         redirectToDash(res.role)
-      } 
+      }
       if (res.msg === `Invalid credentials`) {
         alert(`Invalid credentials!! Try Again!!`)
       }

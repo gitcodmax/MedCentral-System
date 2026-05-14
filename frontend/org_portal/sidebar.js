@@ -3,12 +3,12 @@ import { noHospCartItems } from "./request_items/order_summary.js"
 
 export async function renderSidebar(pageName) {
   const name = await getHospName(hosId)
-  const nameInitials = name.split(' ').map(n => n.slice(0, 1)).join('')
+  const nameInitials = name?.split(' ').map(n => n.slice(0, 1)).join('')
 
   const sidebar = document.querySelector('.js-sidebar')
-  const logoImg = `<img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">`
+  const logoImg = `<img src="/images/MedCentralis_logo.png" alt="MedCentralis Logo" class="logo">`
   document.querySelector('.main-content-logo')
-  .innerHTML = logoImg
+    .innerHTML = logoImg
 
   sidebar.innerHTML = `
     <div class="sidebar-logo">${logoImg}</div>
@@ -54,7 +54,7 @@ export async function renderSidebar(pageName) {
     </div>
   `
 
-  if(window.location.href.includes(`${pageName}`)){
+  if (window.location.href.includes(`${pageName}`)) {
     document.querySelector(`.${pageName}-li`)
       .classList.add('active')
   }
@@ -74,15 +74,15 @@ export async function renderSidebar(pageName) {
 }
 
 // Display the navigation bar in the request items page
-export async function renderRequestItemsNavbar(){
+export async function renderRequestItemsNavbar() {
   document.querySelector('.js-view-navigation')
     .addEventListener('click', (e) => {
       const btn = e.target.closest('button')
-      if(!btn) return;
-      
-      if(btn.classList.contains('js-catalog-nav')){
+      if (!btn) return;
+
+      if (btn.classList.contains('js-catalog-nav')) {
         window.location.href = `/org_portal/request_items/product_catalog.html`
-      }else{
+      } else {
         window.location.href = `/org_portal/request_items/order_summary.html`
       }
     })
@@ -106,17 +106,17 @@ export async function renderRequestItemsNavbar(){
   document.getElementById('navCartCount')
     .textContent = await noHospCartItems(hosId)
 
-  if(window.location.href.includes('product_catalog')){
+  if (window.location.href.includes('product_catalog')) {
     document.querySelector('.js-catalog-nav')
       .classList.add('active')
-  }else{
+  } else {
     document.querySelector('.js-ord-sum-nav')
       .classList.add('active')
   }
 }
 
 // Display the navigation bar in the reports pages
-export function renderReportsNavbar(){
+export function renderReportsNavbar() {
   const navbarElem = document.querySelector('.js-report-tabs')
 
   navbarElem.innerHTML = `
@@ -130,21 +130,21 @@ export function renderReportsNavbar(){
     </div>
   `
 
-  if(window.location.href.includes('item_consumption')){
+  if (window.location.href.includes('item_consumption')) {
     document.querySelector('.item-consumption')
       .classList.add('active')
-  }else if(window.location.href.includes('cost_report')){
+  } else if (window.location.href.includes('cost_report')) {
     document.querySelector('.finance')
       .classList.add('active')
   }
 
   navbarElem.addEventListener('click', (e) => {
     const pageLink = e.target.closest('a')
-    if(!pageLink) return;
+    if (!pageLink) return;
 
-    if(pageLink.classList.contains('item-consumption')){
+    if (pageLink.classList.contains('item-consumption')) {
       window.location.href = '/org_portal/reports/item_consumption.html'
-    } else if(pageLink.classList.contains('finance')){
+    } else if (pageLink.classList.contains('finance')) {
       window.location.href = `/org_portal/reports/cost_report.html`
     }
   })

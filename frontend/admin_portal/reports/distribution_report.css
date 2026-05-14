@@ -121,6 +121,18 @@
   min-width: 180px;
 }
 
+.dest-stat-group{
+  max-width: 400px;
+}
+
+.search-filter-group{
+  max-width: 400px;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: flex-end;
+}
+
+.search-filter-group label,
 .filter-group label {
   display: block;
   font-size: 0.8rem;
@@ -128,6 +140,11 @@
   margin-bottom: 0.5rem;
 }
 
+.search-filter-group label{
+  min-width: 100px;
+}
+
+.search-filter-group input,
 .filter-group input,
 .filter-group select {
   width: 100%;
@@ -135,6 +152,53 @@
   border: 1px solid var(--color-quarantine);
   border-radius: 6px;
   font-size: 0.875rem;
+}
+
+.date-filter-container{
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  border: 1px solid;
+  padding: 3px;
+  border-radius: 5px;
+}
+.select-date-container label{
+  font-size: 0.875rem;
+}
+.fil-date-cont{
+  padding: 5px;
+  border: 1px solid var(--color-quarantine);
+  background: rgb(226, 226, 226);
+  border-radius: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+  margin-top: 8px;
+}
+.fil-date-cont:hover{
+  transform: translateY(-3px);
+}
+.dates-filter-groups{
+  display: flex;
+  gap: 8px;
+}
+.hidden{
+  display: none;
+}
+.selected-date{
+  background: var(--color-secondary);
+  color: white;
+}
+.dispatch-delivery-cont{
+  display: flex;
+  align-items: flex-end;
+  border: 1px solid #007BFF;
+  background: hsl(211, 100%, 98%);
+  border-radius: 8px;
+  padding: 6px;
+  gap: 0.7rem;
 }
 
 .btn-apply {

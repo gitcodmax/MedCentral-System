@@ -9,7 +9,7 @@ document.querySelector('.receipt-container')
     <header class="receipt-header">
       <div class="header-left">
         <div class="logo">
-          <img src="../../images/MedCentral_logo_small.png" class="dash-logo">
+          <img src="../../images/MedCentralis_logo.png" class="dash-logo">
         </div>
       </div>
       <div class="header-right">

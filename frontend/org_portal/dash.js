@@ -158,5 +158,5 @@ export const getHospName = async (hosId) => {
   )
 
   const res = await response.json()
-  return res.name
+  return res.full_name
 }

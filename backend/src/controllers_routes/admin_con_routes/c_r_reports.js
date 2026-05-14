@@ -1,5 +1,5 @@
 import express from "express";
-import { distroReportDataQ, invReportDataQ, lowStockReportDataQ } from "../../repositories/admin_repo/rep_reports.js";
+import { distroReportDataQ, getHosIdNameQ, invReportDataQ, lowStockReportDataQ } from "../../repositories/admin_repo/rep_reports.js";
 
 const adminReportsRouter = express.Router()
 
@@ -21,12 +21,21 @@ adminReportsRouter.post('/lowStockReportData', async (req, res) => {
   }
 })
 
-adminReportsRouter.get('/distroReportData', async (req, res) => {
+adminReportsRouter.post('/distroReportData', async (req, res) => {
   try{
-    const distroReportData = await distroReportDataQ()
+    const distroReportData = await distroReportDataQ(req.body)
     res.status(200).json({distroReportData})
   }catch(err){
     res.status(500).json({Error: err.message})
+  }
+})
+
+adminReportsRouter.get('/getHosIdName', async (req, res) => {
+  try {
+    const hosIdNameData = await getHosIdNameQ()
+    res.status(200).json(hosIdNameData)
+  } catch (e) {
+    res.status(500).json({Error: e.message})
   }
 })
 

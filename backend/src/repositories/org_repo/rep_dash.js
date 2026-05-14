@@ -58,7 +58,7 @@ export async function getOrgDashDataQ(hosId) {
 export async function getHospNameQ(hosId) {
   const { rows } = await pool.query(
     `
-    SELECT name FROM hospitals WHERE hospital_id = $1
+    SELECT full_name FROM users WHERE hospital_id = $1
     `, [hosId]
   )
 

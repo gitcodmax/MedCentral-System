@@ -109,7 +109,7 @@ export async function invReportDataQ({ cat, temp, stockStat }) {
   return rows[0]
 }
 
-export async function lowStockReportDataQ({cat, temp}) {
+export async function lowStockReportDataQ({ cat, temp }) {
   const conditions = [];
   const values = [];
   let paramIndex = 1;
@@ -177,8 +177,44 @@ export async function lowStockReportDataQ({cat, temp}) {
   return rows[0]
 }
 
-export async function distroReportDataQ() {
-  const { rows } = await pool.query(`
+export async function distroReportDataQ({ dispFromDate, dispToDate,
+  delivFromDate, delivToDate, hosId, statusId}) {
+  const conditions = [];
+  const values = [];
+  let paramIndex = 1;
+
+  if (dispFromDate && dispToDate) {
+    conditions.push(`dispatched_at BETWEEN $${paramIndex++} AND $${paramIndex++}`)
+    values.push(dispFromDate, [dispToDate, '23:59:00'].join(' '))
+  }
+  if (dispFromDate && !dispToDate) {
+    conditions.push(`dispatched_at BETWEEN $${paramIndex++} AND CURRENT_TIMESTAMP`)
+    values.push(dispFromDate)
+  }
+
+  if (delivFromDate && delivToDate) {
+    conditions.push(`delivered_at BETWEEN $${paramIndex++} AND $${paramIndex++}`)
+    values.push(delivFromDate, [delivToDate, '23:59:00'].join(' '))
+  }
+  if (delivFromDate && !delivToDate) {
+    conditions.push(`delivered_at BETWEEN $${paramIndex++} AND CURRENT_TIMESTAMP`)
+    values.push(delivFromDate)
+  }
+
+  if (hosId !== 'all') {
+    conditions.push(`r.hospital_id = $${paramIndex++}`)
+    values.push(hosId)
+  }
+  if (statusId !== 'all') {
+    conditions.push(`p.status_id = $${paramIndex++}`)
+    values.push(statusId)
+  }
+
+  const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(` AND `)}` : ''
+  const addCondition = conditions.length > 0 ? `AND ${conditions.join(` AND `)}` : ''
+
+  const { rows } = await pool.query(
+    `
     WITH kpi_data AS (
         SELECT 
             COUNT(d.delivery_id) AS total_deliveries,
@@ -186,26 +222,20 @@ export async function distroReportDataQ() {
             COUNT(CASE WHEN p.status_id = 10 THEN 1 END) AS completed_count,
             COUNT(CASE WHEN p.status_id = 7 THEN 1 END) AS delayed_deliveries
         FROM deliveries d
-        JOIN order_packages p ON d.package_id = p.package_id
+        JOIN order_packages p ON d.package_id = p.package_id 
+		JOIN orders o ON p.order_id = o.order_id 
+		JOIN requests r ON o.request_id = r.request_id
+		${whereClause}
     ),
     table_data AS (
         SELECT 
             'DLV-' || d.delivery_id AS delivery_id,
-            'PKG-' || d.package_id || '-' || (
-          SELECT op.storage_temp_code 
-          FROM package_items pi 
-          JOIN order_packages op ON pi.package_id = op.package_id 
-          WHERE pi.package_id = d.package_id
-          LIMIT 1
-        ) AS package_id,
+            'PKG-' || d.package_id || '-' || p.storage_temp_code AS package_id,
             'ORD-' || p.order_id AS order_id,
             d.dispatched_at AS dispatch_date,
-            h.name AS destination,
+            (SELECT full_name FROM users WHERE hospital_id = h.hospital_id) AS destination,
             u.full_name AS driver,
-            (SELECT SUM(ri.quantity_requested) 
-            FROM package_items pi
-            JOIN request_items ri ON pi.request_item_id = ri.request_item_id
-            WHERE pi.package_id = d.package_id) AS total_units,
+            t.total_units,
             s.status_name AS status,
             d.delivered_at AS delivery_date
         FROM deliveries d
@@ -213,28 +243,45 @@ export async function distroReportDataQ() {
         JOIN orders o ON p.order_id = o.order_id
         JOIN requests r ON o.request_id = r.request_id
         JOIN hospitals h ON r.hospital_id = h.hospital_id
-        LEFT JOIN drivers u ON p.assigned_driver_id = u.driver_id
-        JOIN cfg_statuses s ON p.status_id = s.id
+        LEFT JOIN drivers u ON p.assigned_driver_id = u.driver_id 
+        JOIN cfg_statuses s ON p.status_id = s.id 
+        LEFT JOIN (
+        SELECT 
+            pi.package_id,
+            SUM(ri.quantity_requested) AS total_units
+        FROM package_items pi
+        JOIN request_items ri 
+          ON pi.request_item_id = ri.request_item_id
+        GROUP BY pi.package_id
+        ) t ON t.package_id = d.package_id
+        ${whereClause}
+        ORDER BY d.dispatched_at DESC
     ),
     time_chart AS (
         SELECT 
             delivered_at::DATE AS date,
             COUNT(delivery_id) AS deliveries
-        FROM deliveries
-        WHERE delivered_at IS NOT NULL
-        GROUP BY delivered_at::DATE
-        ORDER BY date DESC
+        FROM deliveries d
+		JOIN order_packages p ON d.package_id = p.package_id 
+		JOIN orders o ON p.order_id = o.order_id 
+		JOIN requests r ON o.request_id = r.request_id
+    WHERE delivered_at IS NOT NULL
+			${addCondition}
+    GROUP BY delivered_at::DATE
+    ORDER BY date DESC
     ),
     dist_chart AS (
         SELECT 
-            h.name AS destination,
+            u.full_name AS destination,
             COUNT(d.delivery_id) AS count
         FROM deliveries d
         JOIN order_packages p ON d.package_id = p.package_id
         JOIN orders o ON p.order_id = o.order_id
         JOIN requests r ON o.request_id = r.request_id
-        JOIN hospitals h ON r.hospital_id = h.hospital_id
-        GROUP BY h.name
+        JOIN hospitals h ON r.hospital_id = h.hospital_id 
+        JOIN users u ON h.hospital_id = u.hospital_id 
+        ${whereClause}
+        GROUP BY u.full_name
         ORDER BY count DESC
     )
     SELECT jsonb_build_object(
@@ -243,7 +290,21 @@ export async function distroReportDataQ() {
         'volume_over_time_line_chart', (SELECT json_agg(time_chart) FROM time_chart),
         'destination_distribution_bar_chart', (SELECT json_agg(dist_chart) FROM dist_chart)
     ) AS distro_report;
-  `)
+    `, values
+  )
 
   return rows[0]
+}
+
+export async function getHosIdNameQ() {
+  const { rows } = await pool.query(
+    `
+    SELECT h.hospital_id, u.full_name
+    FROM hospitals h 
+    JOIN users u ON h.hospital_id = u.hospital_id
+    ORDER BY u.full_name
+    `
+  )
+
+  return rows
 }

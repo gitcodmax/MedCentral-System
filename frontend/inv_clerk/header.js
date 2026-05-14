@@ -11,7 +11,7 @@ export async function renderHeader() {
     document.querySelector('.main-header')
         .innerHTML = `    
         <div class="logo">
-            <img src="../../images/MedCentral_logo_small.png" class="dash-logo">
+            <img src="../../images/MedCentralis_logo.png" class="dash-logo">
         </div>
 
         <nav class="main-nav">

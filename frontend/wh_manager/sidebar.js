@@ -8,7 +8,7 @@ export async function renderSidebar(pageName) {
   //Display the logo
   document.querySelector('.logo-container')
     .innerHTML = `
-    <img src="/images/MedCentral_logo_small.png" alt="MedCentral Logo" class="logo">
+    <img src="/images/MedCentralis_logo.png" alt="MedCentralis Logo" class="logo">
     `
   //Display the nav links
   document.querySelector('nav')
@@ -76,7 +76,7 @@ export async function renderSidebar(pageName) {
 
   controlSidebar()
 
-  if(window.location.href.includes(pageName)){
+  if (window.location.href.includes(pageName)) {
     document.querySelector(`.${pageName}`)
       .classList.add('active')
   }
