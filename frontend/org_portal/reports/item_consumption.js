@@ -1,5 +1,8 @@
-import { orgPortalPagesLink } from "../../global.js"
+import { toggleNoMatchFound } from "../../admin_portal/reports/distribution_report.js"
+import { displayNoMatchFound, orgPortalPagesLink } from "../../global.js"
+import { orgReportsFilCat } from "../../wh_manager/standards.js"
 import { hosId } from "../dash.js"
+import { getHospDept } from "../request_items/order_summary.js"
 import { renderSidebar, renderReportsNavbar } from "../sidebar.js"
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -33,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                   <label for="start-date">From Date</label>
                   <div class="input-with-icon">
                       <i class="far fa-calendar-alt"></i>
-                      <input type="date" id="start-date" class="filter-input">
+                      <input type="date" id="filStartDate" class="filter-input">
                   </div>
               </div>
       
@@ -41,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                   <label for="end-date">To Date</label>
                   <div class="input-with-icon">
                       <i class="far fa-calendar-alt"></i>
-                      <input type="date" id="end-date" class="filter-input">
+                      <input type="date" id="filEndDate" class="filter-input">
                   </div>
               </div>
       
@@ -49,22 +52,27 @@ document.addEventListener('DOMContentLoaded', async () => {
                   <label for="category-filter">Category</label>
                   <div class="input-with-icon">
                       <i class="fas fa-tags"></i>
-                      <select id="category-filter" class="filter-input">
-                          <option value="all">All Categories</option>
-                          <option value="PPE">PPE</option>
-                          <option value="Surgical">Surgical</option>
-                          <option value="Pharma">Pharmaceuticals</option>
-                          <option value="Fluids">Medical Fluids</option>
-                          <option value="Wound Care">Wound Care</option>
+                      <select id="selectCatFil" class="filter-input">
+                        <option value="all">All Categories</option>
+                      </select>
+                  </div>
+              </div>
+
+              <div class="filter-group">
+                  <label for="dept-filter">Department</label>
+                  <div class="input-with-icon">
+                      <i class="fas fa-tags"></i>
+                      <select id="selectDptFil" class="filter-input">
+                        <option value="all">All Departments</option>
                       </select>
                   </div>
               </div>
       
               <div class="filter-actions">
-                  <button class="btn btn-apply-filters" id="btn-apply">
+                  <button class="btn btn-apply-filters" id="btnApplyFil">
                       Apply Filters
                   </button>
-                  <button class="btn btn-reset" id="btn-reset">
+                  <button class="btn btn-reset" id="btnResetFil">
                       Reset
                   </button>
               </div>
@@ -111,20 +119,33 @@ document.addEventListener('DOMContentLoaded', async () => {
               <i data-lucide="calendar"></i>
             </div>
           </div>
+
+          <div class="kpi-card dept-cons-kpi">
+            <div class="kpi-content">
+              <span class="kpi-label">Highest Dept Consumption</span>
+              <div class="kpi-value js-dept-consum-kpi"></div>
+            </div>
+            <div class="kpi-icon-wrapper dept-i-col">
+              <i data-lucide="hospital"></i>
+            </div>
+          </div>
         </section>
+
+        <div class="consumption-trend-charts-container">
+          <section class="card chart-card">
+            <h2 class="section-title">Consumption Trend Over Time</h2>
+            <div class="chart-placeholder" id="lineCrtHolder"></div>
+          </section>
+        </div>
 
         <div class="charts-container">
           <section class="card chart-card">
-            <h2 class="section-title">Consumption Trend Over Time</h2>
-            <div class="chart-placeholder">
-              <canvas id="consumptionTrendChart"></canvas>
-            </div>
+            <h3 class="card-title">Department Consumption</h3>
+            <div class="chart-main chart-small" id="duoghnutCrtHolder"></div>
           </section>
           <section class="card chart-card">
             <h2 class="section-title">Top 10 Most Consumed Categories</h2>
-            <div class="chart-placeholder">
-              <canvas id="topCategoriesChart"></canvas>
-            </div>
+            <div class="chart-placeholder" id="barCrtHolder"></div>
           </section>
         </div>
 
@@ -144,6 +165,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               </thead>
               <tbody id="rankedItemsTbody"></tbody>
             </table>
+            <div class="no-match-container js-no-match-found hidden"></div>
           </div>
         </section>
       </div>
@@ -154,68 +176,153 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderSidebar('reports')
   renderReportsNavbar()
   lucide.createIcons();
+  displayNoMatchFound()
 
-  const reportData = await getItemConsumptionReportData(hosId)
+  const reportData = await getItemConsumptionReportData(hosId, null, null, 'all', 'all')
+  const hosDepts = await getHospDept(hosId)
+  const itmCategories = await orgReportsFilCat()
 
-  // Set up the kpi summary details
-  document.querySelector('.js-total-items-kpi')
-    .textContent = reportData.summary.totalItems
-  document.querySelector('.js-total-cat-kpi')
-    .textContent = reportData.summary.totalCategories
-  document.querySelector('.js-most-consum-kpi')
-    .textContent = reportData.summary.mostConsumed
-  document.querySelector('.js-avg-consum-kpi')
-    .textContent = reportData.summary.avgMonthly
-
-  // Consumption trend chart
-  const trendCtx = document.getElementById('consumptionTrendChart').getContext('2d')
-  new Chart(trendCtx, {
-    type: 'line',
-    data: {
-      labels: reportData.trends.labels,
-      datasets: [{
-        label: 'Consumption',
-        data: reportData.trends.values,
-        borderColor: '#007BFF',
-        backgroundColor: 'rgba(14, 165, 233, 0.1)',
-        fill: true,
-        tension: 0.4
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } }
-    }
+  // Set filter department options
+  const filDeptFrag = document.createDocumentFragment()
+  hosDepts.forEach(dpt => {
+    const opt = document.createElement('option')
+    opt.value = dpt.id
+    opt.textContent = dpt.name
+    filDeptFrag.appendChild(opt)
   })
+  document.getElementById('selectDptFil')
+    .appendChild(filDeptFrag)
 
-  // Top Categories Chart
-  const barCtx = document.getElementById('topCategoriesChart').getContext('2d')
-  new Chart(barCtx, {
-    type: 'bar',
-    data: {
-      labels: reportData.categories.labels,
-      datasets: [{
-        label: 'Quantity',
-        data: reportData.categories.values,
-        backgroundColor: '#008B00',
-        borderRadius: 4
-      }]
-    },
-    options: {
-      indexAxis: 'y',
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } }
-    }
+  // Set filter categories options
+  const filCatFrag = document.createDocumentFragment()
+  itmCategories.forEach(cat => {
+    const opt = document.createElement('option')
+    opt.value = cat.id
+    opt.textContent = cat.name
+    filCatFrag.appendChild(opt)
   })
+  document.getElementById('selectCatFil')
+    .appendChild(filCatFrag)
 
-  // Render the table data in the ranked table
-  const rankedTblFrag = document.createDocumentFragment()
-  reportData.tableData.forEach(item => {
-    const tblRow = document.createElement('tr')
+  const filStartDateElem = document.getElementById('filStartDate')
+  const filEndDateElem = document.getElementById('filEndDate')
+  const filItmCatElem = document.getElementById('selectCatFil')
+  const filDptElem = document.getElementById('selectDptFil')
 
-    tblRow.innerHTML = `
+  const noMatchFoundElem = document.querySelector('.js-no-match-found')
+  document.getElementById('btnApplyFil')
+    .addEventListener('click', async () => {
+      const filStartDateVal = filStartDateElem.value
+      const filEndDateVal = !filEndDateElem.value ? null : filEndDateElem.value
+
+      if (!filStartDateVal && filEndDateVal) {
+        alert('Enter the start date!!')
+      } else {
+        const reportDataFil = await getItemConsumptionReportData(hosId, filStartDateVal, filEndDateVal,
+          filItmCatElem.value, filDptElem.value)
+        displayItemConsumptionReport(reportDataFil)
+      }
+    })
+  
+  document.getElementById('btnResetFil')
+    .addEventListener('click', () => {
+      filStartDateElem.value = ``
+      filEndDateElem.value = ''
+      filItmCatElem.value = 'all'
+      filDptElem.value = 'all'
+      displayItemConsumptionReport(reportData)
+    })
+
+  displayItemConsumptionReport(reportData)
+
+  function displayItemConsumptionReport(reportData) {
+    // Set up the kpi summary details
+    document.querySelector('.js-total-items-kpi')
+      .textContent = reportData.summary.totalItems
+    document.querySelector('.js-total-cat-kpi')
+      .textContent = reportData.summary.totalCategories
+    document.querySelector('.js-most-consum-kpi')
+      .textContent = reportData.summary.mostConsumed
+    document.querySelector('.js-avg-consum-kpi')
+      .textContent = reportData.summary.avgMonthly
+    document.querySelector('.js-dept-consum-kpi')
+      .textContent = reportData.summary.deptConsName
+
+    // Consumption trend chart
+    document.getElementById('lineCrtHolder')
+      .innerHTML = `<canvas id="consumptionTrendChart"></canvas>`
+
+    const trendCtx = document.getElementById('consumptionTrendChart').getContext('2d')
+    new Chart(trendCtx, {
+      type: 'line',
+      data: {
+        labels: reportData.trends.labels,
+        datasets: [{
+          label: 'Consumption',
+          data: reportData.trends.values,
+          borderColor: '#007BFF',
+          backgroundColor: 'rgba(14, 165, 233, 0.1)',
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } }
+      }
+    })
+
+    // Department Consumption Doughnut
+    document.getElementById('duoghnutCrtHolder')
+      .innerHTML = `<canvas id="deptConsumptionChart"></canvas>`
+    const deptConsCrt = document.getElementById('deptConsumptionChart').getContext('2d')
+    new Chart(deptConsCrt, {
+      type: 'doughnut',
+      data: {
+        labels: reportData.deptConsumption.labels,
+        datasets: [{
+          data: reportData.deptConsumption.values,
+          hoverOffset: 10,
+          borderWidth: 2
+        }]
+      },
+      options: {
+        maintainAspectRatio: false
+      }
+    })
+
+    // Top Categories Chart
+    document.getElementById('barCrtHolder')
+      .innerHTML = `<canvas id="topCategoriesChart"></canvas>`
+    const barCtx = document.getElementById('topCategoriesChart').getContext('2d')
+    new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: reportData.categories.labels,
+        datasets: [{
+          label: 'Quantity',
+          data: reportData.categories.values,
+          backgroundColor: '#008B00',
+          borderRadius: 4
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } }
+      }
+    })
+
+    // Render the table data in the ranked table
+    const rankedItemsTbodyElem = document.getElementById('rankedItemsTbody')
+    rankedItemsTbodyElem.innerHTML = ''
+    const rankedTblFrag = document.createDocumentFragment()
+    reportData.tableData?.forEach(item => {
+      const tblRow = document.createElement('tr')
+
+      tblRow.innerHTML = `
       <td><strong>${item.name}</strong></td>
       <td><span class="badge">${item.cat}</span></td>
       <td>${item.qty}</td>
@@ -224,19 +331,25 @@ document.addEventListener('DOMContentLoaded', async () => {
       <td>${item.last}</td>
     `
 
-    rankedTblFrag.appendChild(tblRow)
-  })
+      rankedTblFrag.appendChild(tblRow)
+    })
 
-  document.getElementById('rankedItemsTbody')
-    .appendChild(rankedTblFrag)
+    rankedItemsTbodyElem.appendChild(rankedTblFrag)
+    toggleNoMatchFound(reportData.tableData, noMatchFoundElem)
+  }
 })
 
-const getItemConsumptionReportData = async (hosId) => {
+const getItemConsumptionReportData = async (hosId, startDate, endDate,
+  itemCatId, deptId) => {
   const response = await fetch(`${orgPortalPagesLink}/getItemConsumptionReportData`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ hosId })
+      body: JSON.stringify({
+        hosId, startDate, endDate,
+        itemCatId, deptId
+      }
+      )
     }
   )
 

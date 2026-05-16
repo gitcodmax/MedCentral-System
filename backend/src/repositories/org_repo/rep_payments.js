@@ -25,7 +25,7 @@ export async function getApprovedRequestsQ(hosId) {
     SELECT 
         jsonb_build_object(
             'requestId', 'REQ' || '-' || r.request_id,
-            'hospital', h.name,
+            'hospital', (SELECT full_name FROM users WHERE hospital_id = h.hospital_id),
             'location', (z.zone_name || ', ' || (SELECT name FROM cfg_counties WHERE id = z.county_id)),
             'itemCount', ria.item_count,
             'totalAmount', r.total_estimated_value,
@@ -52,6 +52,7 @@ export async function createOrderQ(reqId) {
   try {
     await client.query('BEGIN')
 
+    // Change to order
     const { rows } = await client.query(
       `
       INSERT INTO orders (request_id)
@@ -62,6 +63,7 @@ export async function createOrderQ(reqId) {
     const ordId = rows[0].order_id
     if (!ordId) throw new Error('Order not created')
 
+    // Create the order packages
     const orderPackagesRes = await client.query(
       `
       INSERT INTO order_packages(order_id, storage_temp_code, status_id)
@@ -77,6 +79,7 @@ export async function createOrderQ(reqId) {
     const orderPackages = orderPackagesRes.rows
     if (orderPackages.length === 0) throw new Error('Package not created')
 
+    // Create the package items
     for (const pkg of orderPackages) {
       const packageId = pkg.package_id
       const pkgItemRow = await client.query(

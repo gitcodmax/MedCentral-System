@@ -28,3 +28,8 @@ export async function populateDropdowns() {
       }
   });
 }
+
+export async function orgReportsFilCat() {
+  const adminStandards = await getAdminStandards()
+  return adminStandards.categories
+}

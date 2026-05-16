@@ -27,7 +27,7 @@ export async function getAllDeliveredPackagesQ(hosId) {
             op.package_id,
             json_agg(
                 jsonb_build_object(
-                    'packageId', sibling.package_id,
+                    'packageId', 'PKG-' || sibling.package_id || '-' || sibling.storage_temp_code,
                     'status', ds.status_name
                 )
             ) FILTER (WHERE sibling.package_id <> op.package_id) AS siblings

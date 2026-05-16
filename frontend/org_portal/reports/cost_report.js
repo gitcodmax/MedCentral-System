@@ -32,13 +32,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
             <div class="filter-group">
               <label for="category">Category</label>
-              <select id="category">
-                <option>All Categories</option>
-                <option>Pharmaceuticals</option>
-                <option>Surgical Supplies</option>
-                <option>Laboratory</option>
-                <option>Radiology</option>
-              </select>
+                <select id="selectCatFil">
+                    <option value="all">All Categories</option>
+                </select>
             </div>
             <div class="filter-actions">
               <button class="btn btn-apply">Apply Filters</button>

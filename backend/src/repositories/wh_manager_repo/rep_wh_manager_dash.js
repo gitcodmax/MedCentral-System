@@ -31,7 +31,7 @@ export async function getWhManagerDashDataQ() {
                       jsonb_agg(
                         jsonb_build_object(
                           'orderId', 'ORD' || '-' || op.order_id,
-                          'hospitalName', (SELECT name FROM hospitals WHERE hospital_id = r.hospital_id),
+                          'hospitalName', (SELECT full_name FROM users WHERE hospital_id = r.hospital_id),
                           'creationDate', TO_CHAR(o.created_at, 'Mon DD, YYYY'),
                           'deliveredOn', TO_CHAR(d.delivered_at, 'Mon DD, YYYY')
                         )

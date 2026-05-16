@@ -22,7 +22,7 @@ export async function getOrderPackagesQ() {
             jsonb_agg(
                 jsonb_build_object(
                     'orderId', 'ORD' || '-' || o.order_id,
-                    'institutionName', h.name,
+                    'institutionName', (SELECT full_name FROM users WHERE hospital_id = h.hospital_id),
                     'paymentDate', TO_CHAR(o.created_at, 'Mon DD, HH:MI AM'),
                     'packages', (
                         SELECT jsonb_agg(
@@ -58,7 +58,7 @@ export async function getOrderPackagesQ() {
             SELECT 1 
             FROM order_packages op 
             WHERE op.order_id = o.order_id 
-              AND op.status_id = 4
+              AND op.status_id = 4 AND op.assigned_clerk_id IS NULL
         )
     )
 

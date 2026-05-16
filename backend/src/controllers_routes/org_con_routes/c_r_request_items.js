@@ -13,10 +13,10 @@ orgPortalRouter.get('/getProductCatalogData', async (req, res) => {
 })
 
 // Order Summary / Cart
-orgPortalRouter.get('/getAllDept', async (req, res) => {
+orgPortalRouter.post('/getAllDept', async (req, res) => {
   try{
-    const allDept = await getAllDeptQ()
-    res.status(200).json(allDept)
+    const allDept = await getAllDeptQ(req.body.hosId)
+    res.status(200).json(allDept.hosdepts)
   }catch(err){
     res.status(500).json({Error: err.message})
   }

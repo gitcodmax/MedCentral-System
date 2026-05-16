@@ -5,7 +5,7 @@ const orgReportsRouter = express.Router()
 
 orgReportsRouter.post('/getItemConsumptionReportData', async (req, res) => {
   try {
-    const itemConsumptionData = await getItemConsumptionReportDataQ(req.body.hosId)
+    const itemConsumptionData = await getItemConsumptionReportDataQ(req.body)
     res.status(200).json({itemConsumptionData})
   } catch (e) {
     res.status(500).json({Error: e.message})

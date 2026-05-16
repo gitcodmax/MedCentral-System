@@ -5,7 +5,7 @@ export async function getOrdersDataQ() {
     `
     SELECT jsonb_agg(jsonb_build_object(
           'orderId', 'ORD-' || o.order_id,
-          'institutionName', h.name,
+          'institutionName', (SELECT full_name FROM users WHERE hospital_id = h.hospital_id),
           'destination', (SELECT z.zone_name || ', ' || c.name 
                           FROM cfg_zones z 
                           JOIN cfg_counties c ON z.county_id = c.id 

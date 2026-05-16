@@ -7,7 +7,7 @@ export async function getCompletedOrdersQ() {
     jsonb_object_agg(
         'ORD-' || o.order_id, 
         jsonb_build_object(
-            'customerName', h.name,
+            'customerName', (SELECT full_name FROM users WHERE hospital_id = h.hospital_id),
             'creationDate', TO_CHAR(o.created_at, 'YYYY-MM-DD'),
             'totalOrderItems', (
                 SELECT SUM(ri.quantity_requested)::TEXT
@@ -21,7 +21,6 @@ export async function getCompletedOrdersQ() {
 				FROM order_packages op 
 				JOIN deliveries d ON op.package_id = d.package_id
 				WHERE op.order_id = o.order_id AND op.status_id = 10 AND d.inspected = 'yes' 
-					AND NOT EXISTS (SELECT 1 FROM delivery_issues WHERE delivery_id = d.delivery_id)
             ),
             'packages', (
                 SELECT jsonb_agg(DISTINCT op.storage_temp_code)
@@ -33,12 +32,10 @@ export async function getCompletedOrdersQ() {
     FROM orders o
     JOIN requests r ON o.request_id = r.request_id
     JOIN hospitals h ON r.hospital_id = h.hospital_id
-    WHERE EXISTS (
+    WHERE NOT EXISTS (
         SELECT 1 
         FROM order_packages op 
-      JOIN deliveries d ON op.package_id = d.package_id
-        WHERE op.order_id = o.order_id AND op.status_id = 10 AND d.inspected = 'yes' 
-        AND NOT EXISTS (SELECT 1 FROM delivery_issues WHERE delivery_id = d.delivery_id)
+        WHERE op.order_id = o.order_id AND op.status_id != 10 
     );
     `
   )

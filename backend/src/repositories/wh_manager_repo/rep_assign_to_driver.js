@@ -38,7 +38,7 @@ export async function getPackagesDriversDataQ() {
             jsonb_agg(
                 jsonb_build_object(
                     'orderId', 'ORD-' || o.order_id,
-                    'institutionName', h.name,
+                    'institutionName', (SELECT full_name FROM users WHERE hospital_id = h.hospital_id),
                     'subCounty', (SELECT zone_name FROM cfg_zones WHERE id = h.zone_id),
                     'county', (SELECT c.name 
                       FROM cfg_zones z 

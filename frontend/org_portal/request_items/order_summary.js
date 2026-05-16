@@ -77,9 +77,6 @@ document.addEventListener('DOMContentLoaded', async () => {
               <button class="btn-confirm-order js-btn-confirm-order">
                 Confirm Requisition Details
               </button>
-              <button class="btn-back-catalog">
-                <i class="fas fa-arrow-left"></i> Back to Catalog
-              </button>
             </div>
           </div>
 
@@ -134,11 +131,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderRequestItemsNavbar()
   renderSuccessErrorOverlay()
 
-  const hospitalDepartmentData = await getAllDept();
+  const hospitalDepartmentData = await getHospDept(hosId);
   const hospitalRequestData = await getHospCartItems(hosId)
 
   const cartItems = hospitalRequestData.items
-  const cartItemsCopy = structuredClone(cartItems)
+  const cartItemsCopy = structuredClone(cartItems)//To make updates on it
 
   document.querySelectorAll('.js-total-items')
     .forEach(elem => { if (hospitalRequestData.items) elem.textContent = hospitalRequestData.items.length })
@@ -185,6 +182,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (summaryTbodyElem !== null) { summaryTbodyElem.appendChild(summaryTbodyFragment) }
 
+  // Changing the item quantity in the cart items copy
   document.querySelectorAll('.row-qty')
     .forEach(qtyInputElem => {
       qtyInputElem.addEventListener('input', () => {
@@ -199,7 +197,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   //Display all the departments for the user to select
   if (hospitalRequestData.items) {
     hospitalRequestData.items.forEach(item => {
-      hospitalDepartmentData.departments.forEach(dpt => {
+      hospitalDepartmentData.forEach(dpt => {
         document.querySelector(`.js-row-dept-${item.sku}`)
           .innerHTML += `<option value=${dpt.id} 
         ${item.department === dpt.id ? 'selected' : ''} 
@@ -208,6 +206,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     })
   }
 
+  // Changing the department id in the cart items copy
   document.querySelectorAll('.row-dept')
     .forEach(deptInputElem => {
       deptInputElem.addEventListener('change', () => {
@@ -243,6 +242,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     })
   }
 
+  // Button to update cart item details
   document.getElementById('updateCartBtn')
     .addEventListener('click', async () => {
       const updCartItems = updateCartItemsObj(cartItems)
@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   //Returns the name of a department
   function getDeptName(deptId) {
-    const dept = hospitalDepartmentData.departments.find(dept => dept.id === Number(deptId))
+    const dept = hospitalDepartmentData.find(dept => dept.id === Number(deptId))
     return dept.name
   }
 
@@ -356,8 +356,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 })
 
-const getAllDept = async () => {
-  const response = await fetch(`${orgPortalPagesLink}/getAllDept`)
+export const getHospDept = async (hosId) => {
+  const response = await fetch(`${orgPortalPagesLink}/getAllDept`, 
+    {
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json' }, 
+      body: JSON.stringify({hosId})
+    }
+  )
+
   const res = await response.json()
   return res
 }

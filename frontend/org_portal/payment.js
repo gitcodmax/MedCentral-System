@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       <td class="req-id"><strong>${req.requestId}</strong></td>
       <td><span class="status-badge approved">Approved</span></td>
       <td>${req.itemCount}</td>
-      <td class="amount">$${req.totalAmount}</td>
+      <td class="amount">${req.totalAmount}</td>
       <td>${req.requestedAt}</td>
       <td><strong>${req.approvedAt}</strong></td>
       <td>
@@ -156,8 +156,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           e.preventDefault()
           const reqId = Number(request.requestId.slice(4))
 
-          const msg = await createOrder(reqId)
-          triggerStatus(msg)
+          await createOrder(reqId)          
         },{once: true})
       })
     })
@@ -186,5 +185,5 @@ const createOrder = async (reqId) => {
   )
 
   const res = await response.json()
-  return res.msg
+  triggerStatus(res.msg)
 }

@@ -29,9 +29,13 @@
 .filter-card {
   background: white;
   border-radius: var(--radius);
-  padding: 1.5rem !important;
-  margin-bottom: 2rem;
+  padding: 1.5rem;
   box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+  margin: 0 auto;
+  margin-bottom: 2rem;
 }
 
 .filter-header {
@@ -62,8 +66,8 @@
 }
 
 .filters-grid {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-wrap: wrap;
   gap: 1.5rem;
   align-items: flex-end;
 }
@@ -193,6 +197,9 @@
 .kpi-card.avg-cons-kpi:hover{
   border: 1px solid #ea580c;
 }
+.kpi-card.dept-cons-kpi:hover{
+  border: 1px solid #0cbeea;
+}
 
 .total-items-kpi{
   background: linear-gradient(30deg,white 40%, var(--color-primary) 100%);
@@ -205,6 +212,9 @@
 }
 .avg-cons-kpi{
   background: linear-gradient(30deg,white 40%, #ea580c 100%);
+}
+.dept-cons-kpi{
+  background: linear-gradient(30deg,white 40%, #0cbeea 100%);
 }
 
 .kpi-content {
@@ -253,6 +263,10 @@
   background: #fff7ed;
   color: #ea580c;
 }
+.kpi-icon-wrapper.dept-i-col {
+  background: #c9eef7;
+  color: #0cbeea;
+}
 
 .kpi-icon-wrapper i {
   width: 24px;
@@ -262,7 +276,7 @@
 /*  Charts Area  */
 .charts-container {
   display: grid;
-  grid-template-columns: 3fr 2fr;
+  grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
 }
 

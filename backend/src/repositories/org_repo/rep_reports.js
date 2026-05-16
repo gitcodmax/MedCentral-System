@@ -1,21 +1,68 @@
 import pool from "../../config/db.js";
 
-export async function getItemConsumptionReportDataQ(hosId) {
+export async function getItemConsumptionReportDataQ({ hosId, startDate, endDate,
+  itemCatId, deptId }) {
+  const conditions = []
+  const values = [hosId]
+  let paramIndex = 2
+  
+  if (startDate && !endDate) {
+    conditions.push(`r.created_at BETWEEN $${paramIndex++} AND CURRENT_TIMESTAMP`)
+    values.push(startDate)
+  }
+  if (startDate && endDate) {
+    conditions.push(`r.created_at BETWEEN $${paramIndex++} AND $${paramIndex++}`)
+    values.push(startDate, [endDate, '23:59:00'].join(' '))
+  }
+
+  if (itemCatId !== 'all') {
+    conditions.push(`c.id = $${paramIndex++}`)
+    values.push(itemCatId)
+  }
+
+  if (deptId !== 'all') {
+    conditions.push(`ri.department_id = $${paramIndex}`)
+    values.push(deptId)
+  }
+
+  const addConditions = conditions.length > 0 ? `AND ${conditions.join(' AND ')}` : ''
+
   const { rows } = await pool.query(
     `
       WITH summary_cte AS (
           SELECT 
               TO_CHAR(SUM(ri.quantity_requested), 'FM99,999') as total_items,
               COUNT(DISTINCT i.category_id)::text as total_categories,
-              (SELECT name FROM items WHERE item_id = (
-                  SELECT item_id FROM request_items 
-                  GROUP BY item_id ORDER BY SUM(quantity_requested) DESC LIMIT 1
-              )) as most_consumed,
-              TO_CHAR(SUM(ri.quantity_requested) / 6, 'FM99,999') as avg_monthly
+              (SELECT i.name
+              FROM requests r
+              JOIN request_items ri ON r.request_id = ri.request_id
+              JOIN items i  ON ri.item_id = i.item_id
+              JOIN cfg_item_categories c ON i.category_id = c.id
+              WHERE r.hospital_id = $1
+                ${addConditions}
+              GROUP BY i.name
+              ORDER BY MAX(ri.quantity_requested) DESC
+              LIMIT 1) as most_consumed,
+              TO_CHAR(SUM(ri.quantity_requested) / 6, 'FM99,999') as avg_monthly,
+              (SELECT 
+              name
+              FROM(
+                SELECT
+                d.name, SUM(ri.quantity_requested) AS total_items_qty
+                FROM requests r 
+                JOIN request_items ri ON r.request_id = ri.request_id
+                JOIN cfg_hospital_departments d ON ri.department_id = d.id
+                WHERE hospital_id = $1
+                GROUP BY d.name 
+                ORDER BY total_items_qty DESC 
+                LIMIT 1
+              )r) AS dept_cons_name
           FROM request_items ri
           JOIN items i ON ri.item_id = i.item_id
-        LEFT JOIN requests r ON r.request_id = ri.request_id
-          WHERE r.hospital_id = $1 
+          LEFT JOIN requests r ON r.request_id = ri.request_id
+		      JOIN cfg_item_categories c ON i.category_id = c.id 
+          WHERE r.hospital_id = $1
+          ${addConditions}
           AND r.created_at >= CURRENT_DATE - INTERVAL '6 months'
       ),
       trends_cte AS (
@@ -30,8 +77,11 @@ export async function getItemConsumptionReportDataQ(hosId) {
           LEFT JOIN (
               SELECT date_trunc('month', r.created_at) as m, SUM(ri.quantity_requested) as monthly_sum
               FROM request_items ri
-          LEFT JOIN requests r ON r.request_id = ri.request_id
+              LEFT JOIN requests r ON r.request_id = ri.request_id 
+		      JOIN items i ON ri.item_id = i.item_id
+          JOIN cfg_item_categories c ON i.category_id = c.id
           WHERE r.hospital_id = $1 
+          ${addConditions}
               GROUP BY 1
           ) actual_data ON date_trunc('month', month_series) = actual_data.m
       ),
@@ -48,6 +98,7 @@ export async function getItemConsumptionReportDataQ(hosId) {
               RIGHT JOIN cfg_item_categories c ON i.category_id = c.id 
           JOIN requests r on ri.request_id = r.request_id
           WHERE r.hospital_id = $1 
+          ${addConditions}
               GROUP BY c.name
               ORDER BY total_qty DESC
               LIMIT 10
@@ -79,34 +130,55 @@ export async function getItemConsumptionReportDataQ(hosId) {
               JOIN cfg_uoms u ON i.selling_uom_id = u.id
           LEFT JOIN requests r ON r.request_id = ri.request_id 
           WHERE r.hospital_id = $1 
+          ${addConditions} 
               GROUP BY i.name, c.name, u.name
               ORDER BY total_qty DESC
               LIMIT 7
           ) AS item_summaries
-      )
+      ), dept_cons_cte AS (
+        SELECT 
+        jsonb_agg(name ORDER BY total_items_qty) AS labels,
+        jsonb_agg(total_items_qty ORDER BY total_items_qty) AS values 
+        FROM(
+          SELECT
+          d.name, SUM(ri.quantity_requested) AS total_items_qty
+          FROM requests r 
+          JOIN request_items ri ON r.request_id = ri.request_id
+          JOIN cfg_hospital_departments d ON ri.department_id = d.id 
+          JOIN items i ON ri.item_id = i.item_id
+                  JOIN cfg_item_categories c ON i.category_id = c.id
+          WHERE hospital_id = $1 
+          ${addConditions}
+          GROUP BY d.name
+        ) AS dept_cons
+	  )
 
-      SELECT 
-          jsonb_build_object(
-              'summary', (SELECT jsonb_build_object(
-                  'totalItems', total_items,
-                  'totalCategories', total_categories,
-                  'mostConsumed', most_consumed,
-                  'avgMonthly', avg_monthly
-              ) FROM summary_cte),
-              'trends', (SELECT jsonb_build_object('labels', labels, 'values', values) FROM trends_cte),
-              'categories', (SELECT jsonb_build_object(
-                  'labels', labels,
-                  'values', values
-              ) FROM categories_cte),
-              'tableData', (SELECT rows FROM table_data_cte)
-          ) AS report_data;
-    `, [hosId]
+    SELECT 
+      jsonb_build_object(
+          'summary', (SELECT jsonb_build_object(
+              'totalItems', total_items,
+              'totalCategories', total_categories,
+              'mostConsumed', most_consumed,
+              'avgMonthly', avg_monthly,
+              'deptConsName', dept_cons_name
+          ) FROM summary_cte),
+          'trends', (SELECT jsonb_build_object('labels', labels, 'values', values) FROM trends_cte),
+          'categories', (SELECT jsonb_build_object(
+              'labels', labels,
+              'values', values
+          ) FROM categories_cte),
+          'tableData', (SELECT rows FROM table_data_cte), 
+          'deptConsumption', (SELECT jsonb_build_object(
+            'labels', labels, 
+            'values', values
+          ) FROM dept_cons_cte)
+      ) AS report_data;
+    `, values
   )
 
   return rows[0]
 }
 
-// Get the financial/cost report data
 export async function getFinancialReportDataQ(hosId) {
   const { rows } = await pool.query(
     `

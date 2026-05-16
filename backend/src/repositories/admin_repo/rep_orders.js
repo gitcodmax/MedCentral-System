@@ -21,7 +21,7 @@ export async function getAdminDashDataQ(){
     recent_orders_list AS (
         SELECT 
             'ORD-' || o.order_id AS order_id,
-            h.name AS hospital_name,
+            (SELECT full_name FROM users WHERE hospital_id = h.hospital_id) AS hospital_name,
             TO_CHAR(o.created_at, 'YYYY-MM-DD') AS order_date
         FROM orders o
         JOIN requests r ON o.request_id = r.request_id

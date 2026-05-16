@@ -1,24 +1,17 @@
 import pool from "../../config/db.js";
 
+
 export async function getProductCatalogDataQ() {
   const { rows } = await pool.query(
     `
-      SELECT json_build_object(
-        'departments', (
-            SELECT json_agg(dept) 
-            FROM (SELECT * FROM cfg_hospital_departments) dept
-        ),
-        'catalog', (
-            SELECT json_agg(item_list) 
-            FROM (
-                SELECT i.item_id AS id, i.name AS name, i.sku_code AS sku, u.name AS uom, 
-                      LOWER(s.description) AS tempZone, i.price_per_selling AS price
-                FROM items i 
-                JOIN cfg_uoms u ON i.selling_uom_id = u.id
-                JOIN cfg_storage_options s ON i.storage_temp_code = s.code
-            ) item_list
-        )
-    ) AS product_catalog;
+      SELECT json_agg(item_list) AS product_catalog
+      FROM (
+          SELECT i.item_id AS id, i.name AS name, i.sku_code AS sku, u.name AS uom, 
+                LOWER(s.description) AS tempZone, i.price_per_selling AS price
+          FROM items i 
+          JOIN cfg_uoms u ON i.selling_uom_id = u.id
+          JOIN cfg_storage_options s ON i.storage_temp_code = s.code
+      ) item_list
     `
   )
 
@@ -26,11 +19,13 @@ export async function getProductCatalogDataQ() {
 }
 
 // Order Summary / Cart
-export const getAllDeptQ = async () => {
+export const getAllDeptQ = async (hosId) => {
   const { rows } = await pool.query(`
-    SELECT json_agg(jsonb_build_object('id', id, 'name', name)) 
-    AS departments FROM cfg_hospital_departments 
-  `)
+    SELECT json_agg(jsonb_build_object('id', hd.id, 'name', hd.name)) AS hosDepts
+    FROM hospital_department_mapping hdm
+    JOIN cfg_hospital_departments hd ON hdm.department_id = hd.id
+    WHERE hospital_id = $1
+  `, [hosId])
 
   return rows[0]
 }

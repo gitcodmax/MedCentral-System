@@ -1,6 +1,7 @@
 import { renderSidebar, renderRequestItemsNavbar } from "../sidebar.js";
 import { displayNoMatchFound, orgPortalPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../../global.js";
 import { hosId } from "../dash.js";
+import { getHospDept } from "./order_summary.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -79,10 +80,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderSuccessErrorOverlay()
 
   const productCatalogData = await getProductCatalogData()
+  const hosDeparts = await getHospDept(hosId)
 
   // Populate the data to select a global department for the items selected
   const globalDeptSelectFrag = document.createDocumentFragment()
-  productCatalogData.departments.forEach(dept => {
+  hosDeparts.forEach(dept => {
     const option = document.createElement('option')
     option.value = dept.id
     option.textContent = dept.name
@@ -136,7 +138,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     productGridElem.appendChild(productsCatalogFragment)
   }
 
-  displayProducts(productCatalogData.catalog)
+  displayProducts(productCatalogData)
 
   const globalDeptSelectElem = document.getElementById('globalDeptSelect')
   const globalDeptValue = localStorage.getItem('globalDept')
@@ -156,7 +158,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btnProductId = btn.dataset.productId
 
     if (btn.classList.contains('btn-add')) {
-      productCatalogData.catalog.forEach(async (prd) => {
+      productCatalogData.forEach(async (prd) => {
         if (prd.id === Number(btnProductId)) {
           const itemQty = document.querySelector(`.js-qty-input-${prd.id}`).value
           if (globalDeptValue === '') {
@@ -191,7 +193,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   function handleSearchTempFilter() {
     const searchValue = searchBarElem.value.toLowerCase().trim()
 
-    const searchResult = productCatalogData.catalog.filter(prd => {
+    const searchResult = productCatalogData.filter(prd => {
       const searchMatch = prd.name.toLowerCase().includes(searchValue)
         || prd.sku.toLowerCase().includes(searchValue)
 

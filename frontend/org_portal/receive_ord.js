@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
 
           <div class="summary-counter">
-            <span class="count-value">12</span>
+            <span class="count-value" id="noDeliveredPkgs"></span>
             <span class="count-label">Packages Awaiting Confirmation</span>
           </div>
         </header>
@@ -125,6 +125,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const commonDamageTypes = await getCommonDamageTypes()
 
   const receivingData = await getDeliveredPackages(hosId)
+  console.log(receivingData)
+  const noDelivPkgElem = document.getElementById('noDeliveredPkgs')
+  noDelivPkgElem.textContent = !receivingData ? '0' : receivingData.length
   const receiveItemsTbodyElem = document.getElementById('packagesTbody')
 
   // Display the packages in the page
@@ -227,7 +230,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div class="sibling-card">
                       <div class="sibling-id">${pkg.packageId}</div>
                       <div class="sibling-status">
-                        <span class="status-indicator ${pkg.status === 'delivered with issue' ? 'delivered-issue' : pkg.status}"></span>
+                        <span class="status-indicator ${pkg.status.toLowerCase() === 'delivered with issue' ?
+                          'delivered-issue' : pkg.status.toLowerCase()}"
+                        ></span>
                         ${pkg.status}
                       </div>
                     </div>

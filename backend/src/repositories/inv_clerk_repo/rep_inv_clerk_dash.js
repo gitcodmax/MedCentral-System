@@ -18,7 +18,7 @@ export async function getKpiTblsDataQ(clerkId) {
                 jsonb_build_object(
                     'package_id', 'PKG' || '-' || op.package_id,
                     'order_id', 'ORD-' || o.order_id,
-                    'destination', h.name,
+                    'destination', (SELECT full_name FROM users WHERE hospital_id = h.hospital_id),
                     'driver_assigned', d.full_name,
                     'vehicle_plate', v.plate_number,
                     'storage_req', cso.description
@@ -41,7 +41,7 @@ export async function getKpiTblsDataQ(clerkId) {
                 jsonb_build_object(
                     'delivery_id', 'DLV-' || dl.delivery_id,
                     'package_id', 'PKG' || '-' || op.package_id,
-                    'destination', h.name,
+                    'destination', (SELECT full_name FROM users WHERE hospital_id = h.hospital_id),
                     'driver', d.full_name,
                     'driver_phone', d.phone_number,
                     'vehicle_plate', v.plate_number,
@@ -81,7 +81,7 @@ export async function getOrdersDataQ(clerkId) {
     SELECT jsonb_agg(
         jsonb_build_object(
             'orderId', 'ORD-' || o.order_id,
-            'customerName', h.name,
+            'customerName', (SELECT full_name FROM users WHERE hospital_id = h.hospital_id),
             'orderCreatedDate', TO_CHAR(o.created_at, 'YYYY-MM-DD'),
             'packages', (
                 SELECT jsonb_agg(

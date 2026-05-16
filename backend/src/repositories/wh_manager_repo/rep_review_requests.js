@@ -27,7 +27,7 @@ export async function getAllRequestsQ() {
         SELECT 
             jsonb_build_object(
                 'requestId', r.request_id,
-                'orgName', h.name,
+                'orgName', (SELECT full_name FROM users WHERE hospital_id = h.hospital_id),
                 'location', z.zone_name || ', ' || (SELECT name FROM cfg_counties WHERE id = z.county_id), 
                 'createdAt', TO_CHAR(r.created_at, 'Mon DD, HH12:MI AM'),
                 'totalAmount', r.total_estimated_value,
