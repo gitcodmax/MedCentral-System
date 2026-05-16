@@ -4,6 +4,7 @@ import { orgReportsFilCat } from "../../wh_manager/standards.js"
 import { hosId } from "../dash.js"
 import { getHospDept } from "../request_items/order_summary.js"
 import { renderSidebar, renderReportsNavbar } from "../sidebar.js"
+import { setupFilters } from "./cost_report.js"
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -52,9 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                   <label for="category-filter">Category</label>
                   <div class="input-with-icon">
                       <i class="fas fa-tags"></i>
-                      <select id="selectCatFil" class="filter-input">
-                        <option value="all">All Categories</option>
-                      </select>
+                      <select id="selectCatFil" class="filter-input"></select>
                   </div>
               </div>
 
@@ -62,9 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                   <label for="dept-filter">Department</label>
                   <div class="input-with-icon">
                       <i class="fas fa-tags"></i>
-                      <select id="selectDptFil" class="filter-input">
-                        <option value="all">All Departments</option>
-                      </select>
+                      <select id="selectDptFil" class="filter-input"></select>
                   </div>
               </div>
       
@@ -181,57 +178,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   const reportData = await getItemConsumptionReportData(hosId, null, null, 'all', 'all')
   const hosDepts = await getHospDept(hosId)
   const itmCategories = await orgReportsFilCat()
-
-  // Set filter department options
-  const filDeptFrag = document.createDocumentFragment()
-  hosDepts.forEach(dpt => {
-    const opt = document.createElement('option')
-    opt.value = dpt.id
-    opt.textContent = dpt.name
-    filDeptFrag.appendChild(opt)
-  })
-  document.getElementById('selectDptFil')
-    .appendChild(filDeptFrag)
-
-  // Set filter categories options
-  const filCatFrag = document.createDocumentFragment()
-  itmCategories.forEach(cat => {
-    const opt = document.createElement('option')
-    opt.value = cat.id
-    opt.textContent = cat.name
-    filCatFrag.appendChild(opt)
-  })
-  document.getElementById('selectCatFil')
-    .appendChild(filCatFrag)
-
-  const filStartDateElem = document.getElementById('filStartDate')
-  const filEndDateElem = document.getElementById('filEndDate')
-  const filItmCatElem = document.getElementById('selectCatFil')
-  const filDptElem = document.getElementById('selectDptFil')
-
   const noMatchFoundElem = document.querySelector('.js-no-match-found')
-  document.getElementById('btnApplyFil')
-    .addEventListener('click', async () => {
-      const filStartDateVal = filStartDateElem.value
-      const filEndDateVal = !filEndDateElem.value ? null : filEndDateElem.value
 
-      if (!filStartDateVal && filEndDateVal) {
-        alert('Enter the start date!!')
-      } else {
-        const reportDataFil = await getItemConsumptionReportData(hosId, filStartDateVal, filEndDateVal,
-          filItmCatElem.value, filDptElem.value)
-        displayItemConsumptionReport(reportDataFil)
-      }
-    })
-  
-  document.getElementById('btnResetFil')
-    .addEventListener('click', () => {
-      filStartDateElem.value = ``
-      filEndDateElem.value = ''
-      filItmCatElem.value = 'all'
-      filDptElem.value = 'all'
-      displayItemConsumptionReport(reportData)
-    })
+  populateDeptCatFil(hosDepts, itmCategories)
+  setupFilters(hosId, {
+    fetchData: getItemConsumptionReportData,
+    displayReport: displayItemConsumptionReport,
+    initialData: reportData
+  })
 
   displayItemConsumptionReport(reportData)
 
@@ -355,4 +309,32 @@ const getItemConsumptionReportData = async (hosId, startDate, endDate,
 
   const res = await response.json()
   return res.itemConsumptionData.report_data
+}
+// Populate the options for the filter in categories and department
+export function populateDeptCatFil(hosDepts, itmCategories) {
+  // Set filter department options
+  const selectDptFilElem = document.getElementById('selectDptFil')
+  selectDptFilElem.innerHTML = ''
+  selectDptFilElem.innerHTML = '<option value="all">All Departments</option>'
+  const filDeptFrag = document.createDocumentFragment()
+  hosDepts.forEach(dpt => {
+    const opt = document.createElement('option')
+    opt.value = dpt.id
+    opt.textContent = dpt.name
+    filDeptFrag.appendChild(opt)
+  })
+  selectDptFilElem.appendChild(filDeptFrag)
+
+  // Set filter categories options
+  const selectCatFilElem = document.getElementById('selectCatFil')
+  selectCatFilElem.innerHTML = ''
+  selectCatFilElem.innerHTML = '<option value="all">All Categories</option>'
+  const filCatFrag = document.createDocumentFragment()
+  itmCategories.forEach(cat => {
+    const opt = document.createElement('option')
+    opt.value = cat.id
+    opt.textContent = cat.name
+    filCatFrag.appendChild(opt)
+  })
+  selectCatFilElem.appendChild(filCatFrag)
 }

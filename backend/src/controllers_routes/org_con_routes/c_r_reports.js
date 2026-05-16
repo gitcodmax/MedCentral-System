@@ -14,7 +14,7 @@ orgReportsRouter.post('/getItemConsumptionReportData', async (req, res) => {
 
 orgReportsRouter.post('/getFinancialReportData', async (req, res) => {
   try {
-    const costsData = await getFinancialReportDataQ(req.body.hosId)
+    const costsData = await getFinancialReportDataQ(req.body)
     res.status(200).json(costsData)
   } catch (e) {
     res.status(500).json({Error: e.message})

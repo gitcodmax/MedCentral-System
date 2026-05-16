@@ -125,7 +125,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const commonDamageTypes = await getCommonDamageTypes()
 
   const receivingData = await getDeliveredPackages(hosId)
-  console.log(receivingData)
   const noDelivPkgElem = document.getElementById('noDeliveredPkgs')
   noDelivPkgElem.textContent = !receivingData ? '0' : receivingData.length
   const receiveItemsTbodyElem = document.getElementById('packagesTbody')
