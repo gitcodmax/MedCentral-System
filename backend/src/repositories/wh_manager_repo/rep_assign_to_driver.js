@@ -39,6 +39,11 @@ export async function getPackagesDriversDataQ() {
                 jsonb_build_object(
                     'orderId', 'ORD-' || o.order_id,
                     'institutionName', (SELECT full_name FROM users WHERE hospital_id = h.hospital_id),
+                    'zoneId', h.zone_id,
+                    'countyId', (SELECT c.id 
+                      FROM cfg_zones z 
+                      JOIN cfg_counties c ON z.county_id = c.id 
+                      WHERE h.zone_id = z.id),
                     'subCounty', (SELECT zone_name FROM cfg_zones WHERE id = h.zone_id),
                     'county', (SELECT c.name 
                       FROM cfg_zones z 
@@ -96,12 +101,52 @@ export async function getPackagesDriversDataQ() {
   return rows[0]
 }
 
-export async function assignPackageDriverQ({drivId, packId}) {
-  await pool.query(
-    `
-    UPDATE order_packages
-    SET assigned_driver_id = $1, assigned_at = CURRENT_TIMESTAMP
-    WHERE package_id = $2
-    `, [drivId, packId]
-  )
+// Update driver id in order packages and 
+// current vehicle load in vehicles table
+export async function assignPackageDriverQ({ drivId, packId }) {
+  const client = await pool.connect()
+
+  try {
+    await client.query('BEGIN')
+
+    const upOrdPkgs = await client.query(
+      `
+      UPDATE order_packages
+      SET assigned_driver_id = $1, assigned_at = CURRENT_TIMESTAMP
+      WHERE package_id = $2 RETURNING assigned_driver_id
+      `, [drivId, packId]
+    )
+
+    const drvId = upOrdPkgs.rows[0].assigned_driver_id
+    if (!drvId) throw new Error('Order packages not updated!')
+    
+    const upVehicles = await client.query(
+      `
+      WITH weight_to_add AS (
+        SELECT weight_tonnes 
+        FROM order_packages 
+        WHERE package_id = $1
+      )
+
+      UPDATE vehicles 
+      SET current_load_tons = current_load_tons + (SELECT weight_tonnes FROM weight_to_add)
+      WHERE vehicle_id = (SELECT va.vehicle_id
+      FROM vehicle_assignments va
+      JOIN drivers d ON va.driver_id = d.driver_id
+      JOIN vehicles v ON va.vehicle_id = v.vehicle_id
+      WHERE d.driver_id = $2)
+      RETURNING vehicle_id
+      `, [packId, drvId]
+    )
+
+    const vehId = upVehicles.rows[0].vehicle_id
+    if (!vehId) throw new Error(`Vehicle's current load not updated!`)
+    
+    await client.query('COMMIT')
+  } catch (e) {
+    await client.query('ROLLBACK')
+    throw e
+  } finally {
+    client.release()
+  }
 }

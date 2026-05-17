@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         <p>Select a clerk to fulfill these paid orders.</p>
       </div>
       <div class="status-indicator">
-        <span class="dot pulse"></span> ${getNoOfPackages(paidOrders)} Packages Awaiting Assignment
+        <span class="dot pulse"></span> <span id="noOfAssignPkgs"></span> Packages Awaiting Assignment
       </div>
 
       <section class="filter-container">
@@ -96,6 +96,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderSidebar('assign_to_clerk')
   renderSuccessErrorOverlay()
   displayNoMatch()
+
+  const headerPkgsLabelElem = document.getElementById('noOfAssignPkgs')
+  headerPkgsLabelElem.textContent = getNoOfPackages(paidOrders)
 
   //Display the rows with packages to assign to a clerk
   const assignToClerkTbodyElem = document.querySelector('.js-assignment-tbody')
@@ -270,19 +273,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           document.getElementById('confirmClerkBtn')
             .addEventListener('click', async () => {
-              const response = await fetch(`${whManagerPagesLink}/assignClerk`, 
+              const response = await fetch(`${whManagerPagesLink}/assignClerk`,
                 {
-                  method: 'PUT', 
-                  headers: { 'Content-Type': 'application/json' }, 
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({
-                    pkgId, 
+                    pkgId,
                     clerkId: assignedClerkId
                   })
                 }
               )
               const res = await response.json()
               triggerStatus(res.msg)
-            }, {once: true})
+            }, { once: true })
 
           clickToRemoveOverlay(assignmentDialogOverlay)
           xRemoveOverlay(assignmentDialogOverlay)
@@ -317,6 +320,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
       noMatchElem.classList.add('hidden')
       displayAllPackages(searchResult)
+      searchResult.forEach(order => {
+        order.packages.forEach(pkg => {
+          displayClerks(pkg.packageId)
+        })
+      })
+      headerPkgsLabelElem.textContent = getNoOfPackages(searchResult)
       noOfPkgShowing.textContent = getNoOfPackages(searchResult)
     }
   }

@@ -1,6 +1,7 @@
 import { renderSidebar } from "../sidebar.js";
 import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
 import {getStorageTempIcon, renderSuccessErrorOverlay, triggerStatus, whManagerPagesLink} from "../../global.js"
+import { getGeoRefData } from "../../admin_portal/hospitals.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -25,9 +26,6 @@ document.addEventListener('DOMContentLoaded', async () => {
               <label><i class="fas fa-map-marked-alt"></i> County</label>
               <select id="countyFilter">
                 <option value="">All Counties</option>
-                <option value="Nairobi">Nairobi</option>
-                <option value="Kiambu">Kiambu</option>
-                <option value="Machakos">Machakos</option>
               </select>
             </div>
 
@@ -35,9 +33,6 @@ document.addEventListener('DOMContentLoaded', async () => {
               <label><i class="fas fa-map-pin"></i> Zone (Sub-County)</label>
               <select id="zoneFilter">
                 <option value="">All Zones</option>
-                <option value="Upper Hill">Upper Hill</option>
-                <option value="Parklands">Parklands</option>
-                <option value="Kikuyu">Kikuyu</option>
               </select>
             </div>
           </div>
@@ -107,6 +102,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   displayNoMatch()
 
   const orderDriverData = await getPackagesDriversData()
+  const geoRefData = await getGeoRefData()
 
   const pkgToShipElem = document.querySelector('.js-no-of-orders')
   const dispatchGridElem = document.querySelector('.js-dispatch-grid')
@@ -345,8 +341,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const searchTerm = searchText.toLowerCase().trim()
 
     return orders.map(order => {
-      const countyMatch = selectedCounty === `` || order.county === selectedCounty
-      const zoneMatch = selectedZone === '' || order.subCounty === selectedZone
+      const countyMatch = selectedCounty === `` || order.countyId === Number(selectedCounty)
+      const zoneMatch = selectedZone === '' || order.zoneId === Number(selectedZone)
 
       const hospitalMatch = order.institutionName.toLowerCase().includes(searchTerm)
 
@@ -369,6 +365,33 @@ document.addEventListener('DOMContentLoaded', async () => {
   const countyDropdown = document.getElementById('countyFilter')
   const zoneDropdown = document.getElementById('zoneFilter')
   const noMatchElem = document.querySelector('.js-no-match-container')
+
+  // Populate the filter counties options and 
+  // set the zones to change depending on the county picked
+  const ctyFilFrag = document.createDocumentFragment()
+  geoRefData.forEach(cty => {
+    const optElem = document.createElement('option')
+    optElem.value = cty.county_id
+    optElem.textContent = cty.county_name
+    ctyFilFrag.appendChild(optElem)
+  })
+  countyDropdown.appendChild(ctyFilFrag)
+  countyDropdown.addEventListener('change', (e) => {
+    zoneDropdown.innerHTML = ''
+    zoneDropdown.innerHTML = '<option value="">All Zones</option>'
+    const countyId = e.target.value
+    const ctyZones = geoRefData.find(cty => cty.county_id === Number(countyId))
+    const zones = ctyZones?.zones
+
+    const zonesFilFrag = document.createDocumentFragment()
+    zones?.forEach(zn => {
+      const opt = document.createElement('option')
+      opt.value = zn.id
+      opt.textContent = zn.name
+      zonesFilFrag.appendChild(opt)
+    })
+    zoneDropdown.appendChild(zonesFilFrag)
+  })
 
   let currentTempFilter = ``
   document.querySelectorAll('.t-btn')
