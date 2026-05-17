@@ -26,10 +26,10 @@ export async function getAllRequestsQ() {
       FROM(
         SELECT 
             jsonb_build_object(
-                'requestId', r.request_id,
+                'requestId', 'REQ-' || r.request_id,
                 'orgName', (SELECT full_name FROM users WHERE hospital_id = h.hospital_id),
                 'location', z.zone_name || ', ' || (SELECT name FROM cfg_counties WHERE id = z.county_id), 
-                'createdAt', TO_CHAR(r.created_at, 'Mon DD, HH12:MI AM'),
+                'createdAt', TO_CHAR(r.created_at, 'Mon DD YYYY, HH12:MI AM'),
                 'totalAmount', r.total_estimated_value,
                 'items', COALESCE(rid.items_list, '[]'::jsonb)
             ) AS request_payload

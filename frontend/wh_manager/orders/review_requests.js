@@ -124,7 +124,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!btn) return
 
     const btnReqId = btn.dataset.reqId
-    const { orgName, items, totalAmount } = getReqDetails(Number(btnReqId))
+    console.log(btnReqId)
+    const { orgName, items, totalAmount } = getReqDetails(btnReqId)
 
     if (btn.classList.contains('js-btn-deny')) {
       const denyRequestInputElem = document.getElementById(`denyReason-${btnReqId}`)
@@ -150,7 +151,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                reqId: Number(btnReqId),
+                reqId: Number(btnReqId.slice(4)),
                 rejectionReason: denyRequestInputElem.value
               })
             }
@@ -178,25 +179,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       document.getElementById('approveReqBtn')
         .addEventListener('click', async () => {
-          const reqId = Number(btnReqId)
-          const response = await fetch(`${whManagerPagesLink}/approveReq`, 
+          const reqId = Number(btnReqId.slice(4))
+          const response = await fetch(`${whManagerPagesLink}/approveReq`,
             {
-              method: 'PUT', 
-              headers: { 'Content-Type': 'application/json' }, 
-              body: JSON.stringify({reqId})
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ reqId })
             }
           )
 
           const res = await response.json()
           triggerStatus(res.msg)
 
-        }, {once: true})
+        }, { once: true })
     }
   })
 
   //Display the pending reviews
-  pendingReview.forEach((request) => {
-    requestsContainerElem.innerHTML += `
+  function displayPendingReviews(pendingReview) {
+    requestsContainerElem.innerHTML = ''
+    pendingReview.forEach((request) => {
+      requestsContainerElem.innerHTML += `
       <div class="request-card" data-request-id=${request.requestId}>
         <div class="request-header">
           <div class="hospital-meta">
@@ -245,8 +248,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       </div>
     `
 
-    displayItems(request)
-  })
+      displayItems(request)
+    })
+  }
+
+  displayPendingReviews(pendingReview)
 
   //Displays the items requested
   function displayItems(request) {
@@ -271,42 +277,37 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   //Filtering logic
   function filterRequests() {
-    const input = document.getElementById('hospitalSearch').value.toLowerCase();
+    const input = document.getElementById('hospitalSearch').value.toLowerCase().trim();
     const dateSelection = document.getElementById('dateFilter').value;
-    const cards = document.getElementsByClassName('request-card');
+    const cards = document.querySelectorAll('.request-card');
     const noMatchElem = document.querySelector('.js-no-match-container')
 
     const now = dayjs();
     const today = now.format('YYYY-MM-DD')
     const yesterday = now.subtract(1, 'day').format('YYYY-MM-DD')
 
-    let visibleCount = 0;
-
-    Array.from(cards).forEach(card => {
-      const orgName = card.querySelector('.hospital-name').innerText.toLowerCase();
-      const cardDate = dayjs(card.querySelector('.js-creation-date').innerText)
-        .year(dayjs().year()).format('YYYY-MM-DD');
-
-      //Check for hospital match
-      const matchesHospital = orgName.includes(input);
-
-      //Check for date match
+    const searchRes = pendingReview.filter(req => {
+      const searchMatch = req.orgName.toLowerCase().trim().includes(input)
+      const reqCreationDate = dayjs(req.createdAt, 'MMM D, hh:mm A').format('YYYY-MM-DD')
       let matchesDate = true;
       if (dateSelection === 'today') {
-        matchesDate = (cardDate === today)
+        matchesDate = (reqCreationDate === today)
       } else if (dateSelection === 'yesterday') {
-        matchesDate = (cardDate === yesterday)
+        matchesDate = (reqCreationDate === yesterday)
+      } else if (dateSelection === 'older') {
+        matchesDate = (reqCreationDate < yesterday)
       }
 
-      if (matchesHospital && matchesDate) {
-        noMatchElem.classList.add('hidden')
-        card.style.display = "block";
-        visibleCount++;
-      } else {
-        card.style.display = "none";
-        noMatchElem.classList.remove('hidden')
-      }
+      return searchMatch && matchesDate
     })
+
+    const visibleCount = searchRes.length
+    if (searchRes.length === 0) {
+      noMatchElem.classList.remove('hidden')
+    } else {
+      noMatchElem.classList.add('hidden')
+    }
+    displayPendingReviews(searchRes)
 
     document.getElementById('showingCount').innerText = `Showing ${visibleCount} Requests`;
   }
