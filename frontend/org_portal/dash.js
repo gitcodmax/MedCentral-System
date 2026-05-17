@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
           <div class="metric-card pending">
             <div class="metric-info">
-              <span class="label">Pending</span>
+              <span class="label">Pending Requests</span>
               <span class="value js-pending-value"></span>
             </div>
             <i class="fas fa-clock m-icon"></i>
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           <div class="card table-card">
             <div class="card-header">
-              <h3>Recent Orders</h3>
+              <h3>Recent Orders Packages</h3>
               <a href="/org_portal/ord_history.html" class="btn-link">
                 <button class="view-all-btn">View All</button>
               </a>
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <table class="recent-orders-table">
               <thead>
                 <tr>
-                  <th>Order ID</th>
+                  <th>Order ID-(Temp.)</th>
                   <th>Creation Date</th>
                   <th>Status</th>
                 </tr>

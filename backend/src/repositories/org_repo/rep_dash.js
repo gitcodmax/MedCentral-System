@@ -8,7 +8,8 @@ export async function getOrgDashDataQ(hosId) {
         o.order_id,
         o.created_at,
         ds.status_name,
-        op.status_id
+        op.status_id,
+        op.storage_temp_code
     FROM orders o
     JOIN requests r ON o.request_id = r.request_id
     JOIN order_packages op ON o.order_id = op.order_id
@@ -18,14 +19,14 @@ export async function getOrgDashDataQ(hosId) {
     metrics_cte AS (
         SELECT 
             COUNT(DISTINCT order_id) AS total_orders,
-            COUNT(DISTINCT order_id) FILTER (WHERE status_name = 'Pending') AS pending,
+            (SELECT COUNT(*) FROM requests WHERE hospital_id = $1 AND status_id = 1) AS pending,
             COUNT(DISTINCT order_id) FILTER (WHERE status_name = 'Dispatched') AS in_transit,
             COUNT(DISTINCT order_id) FILTER (WHERE status_name = 'Completed') AS delivered
         FROM order_base
     ),
     distro_cte AS (
         SELECT jsonb_build_array(
-            COUNT(DISTINCT order_id) FILTER (WHERE status_name = 'Rejected'), 
+            (SELECT COUNT(*) FROM requests WHERE hospital_id = $1 AND status_id = 2), 
             COUNT(DISTINCT order_id) FILTER (WHERE status_id > 2), 
             COUNT(DISTINCT order_id) FILTER (WHERE status_name = 'Completed')
         ) AS distro_array
@@ -35,7 +36,7 @@ export async function getOrgDashDataQ(hosId) {
         SELECT jsonb_agg(recent_row) AS recent_list
         FROM (
             SELECT 
-                order_id AS "orderId",
+                'ORD-' || order_id || '-' || storage_temp_code AS "orderId",
                 to_char(created_at, 'Mon DD, HH12:MI AM') AS "creationDate",
                 status_name AS status
             FROM order_base

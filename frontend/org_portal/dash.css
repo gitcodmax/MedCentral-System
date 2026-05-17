@@ -164,6 +164,11 @@
   background: var(--pending);
 }
 
+.b-processing{
+  background: var(--processing);
+  color: white;
+}
+
 .b-approved{
   background: var(--color-primary);
   color: white;
