@@ -313,6 +313,23 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
         </div>
 
+        <div class="modal-overlay" id="activateItmOverlay">
+          <div class="dialog">
+      
+            <div class="dialog-icon">
+              <i class="fas fa-check"></i>
+            </div>
+      
+            <h2>Activate <span id="activItmName"></span>?</h2>
+      
+            <div class="dialog-buttons">
+              <button class="yes-act-btn" id="activItmBtn">Yes, activate</button>
+              <button class="no-act-btn js-btn-close-overlay">No, cancel</button>
+            </div>
+      
+          </div>
+        </div>
+
         <div class="modal-overlay" id="deleteItemOverlay">
           <div class="modal-card delete-modal">
             <div class="modal-body text-center">
@@ -387,6 +404,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     itemsData.forEach(item => {
       const tblRow = document.createElement('tr')
 
+      let adjustActivateHTML = ''
+      if (item.is_active) {
+        adjustActivateHTML = `<i class="fas fa-balance-scale" title="Adjust Stock Amount"></i>`
+      } else {
+        adjustActivateHTML = `<i class="fas fa-check activ-i" title="Activate item"></i>`
+      }
+
+      tblRow.className = item.is_active ? '' : 'inactiv-tbl-row'
+
       tblRow.innerHTML = `
       <td>
         <strong>${item.name}</strong><br>
@@ -403,7 +429,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       <td class="actions-cell" data-item-id=${item.item_id}>
         <i class="fas fa-eye" title="View"></i>
         <i class="fas fa-edit" title="Edit"></i>
-        <i class="fas fa-balance-scale" title="Adjust Stock Amount"></i>
+        ${adjustActivateHTML}
         <i class="fas fa-trash" title="Delete"></i>
       </td>
     `
@@ -638,6 +664,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const viewItemOverlayElem = document.getElementById('viewItemOverlay')
   const editItemOverlayElem = document.getElementById('editItemOverlay')
   const adjustStockOverlayElem = document.getElementById('adjustStockOverlay')
+  const activateItmOverlayElem = document.getElementById('activateItmOverlay')
   const deleteItemOverlayElem = document.getElementById('deleteItemOverlay')
   itemsTbodyElem.addEventListener('click', (e) => {
     const btnItemId = e.target.parentElement.dataset.itemId
@@ -788,6 +815,28 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
 
         })
+    }
+
+    // Activate item
+    if (e.target.classList.contains('activ-i')) {
+      handleOverlay(activateItmOverlayElem)
+
+      document.getElementById('activItmName')
+        .textContent = item.name
+      
+      document.getElementById('activItmBtn')
+        .addEventListener('click', async () => {
+          const response = await fetch(`${adminPagesLink}/activateItm`, 
+            {
+              method: 'PATCH', 
+              headers: { 'Content-Type': 'application/json' }, 
+              body: JSON.stringify({itemId: btnItemId})
+            }
+          )
+          
+          const res = await response.json()
+          triggerStatus(res.msg)
+        }, {once: true})
     }
 
     // Delete an item

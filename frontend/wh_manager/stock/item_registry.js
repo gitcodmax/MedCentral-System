@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <section class="form-panel">
                     <div class="header">
                         <h2><i class="fas fa-plus-circle"></i> Register New Item</h2>
-                        <p>Classify stock based on Admin-defined standards.</p>
+                        <p>Classify stock.</p>
                     </div>
 
                     <form id="itemForm">
@@ -31,14 +31,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                             </div>
 
                             <div class="form-group">
-                                <label>Category <small>(Admin Standard)</small></label>
+                                <label>Category</label>
                                 <select id="categorySelect" required>
                                     <option value="">Select category...</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
-                                <label>Storage Temp <small>(Admin Standard)</small></label>
+                                <label>Storage Temp</label>
                                 <select id="tempSelect" required>
                                     <option value="">Select Storage Temp...</option>
                                 </select>
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                     <th>UOM / Selling Unit</th>
                                     <th>Temp</th>
                                     <th>Price</th>
-                                    <th>Delete</th>
+                                    <th>Disable</th>
                                 </tr>
                             </thead>
                             <tbody class="js-items-tbody"></tbody>
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <h3>Confirm Deletion</h3>
                         
                         <p class="item-info">
-                            Delete <strong>SKU: <span class="confirm-sku js-confirm-sku"></span> </strong>
+                            Disable <strong>SKU: <span class="confirm-sku js-confirm-sku"></span> </strong>
                             Name: <span class="confirm-name js-confirm-name"></span>?
                         </p>
                     
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td class="btn-td"><button 
                 class="delete-item-btn" 
                 data-sku="${item.sku}">
-                DELETE</button></td>
+                DISABLE</button></td>
             `
 
       itemsFragment.appendChild(tblRow)

@@ -230,7 +230,7 @@ tr:hover {
   grid-column: span 2;
 }
 
-.add-item-form-footer{
+.add-item-form-footer {
   min-width: 100%;
   display: flex;
   gap: 10px;
@@ -269,11 +269,12 @@ tr:hover {
   border-radius: 8px;
   display: flex;
   flex-wrap: wrap;
-  border: 1px solid  var(--color-primary);
+  border: 1px solid var(--color-primary);
   overflow-y: auto;
   max-height: 60vh;
 }
-.config-list:hover{
+
+.config-list:hover {
   border: 1px solid var(--color-secondary);
 }
 
@@ -527,7 +528,7 @@ input[readonly] {
   margin-bottom: 1.5rem;
 }
 
-.delete-item-name{
+.delete-item-name {
   color: var(--color-primary);
 }
 
@@ -545,7 +546,7 @@ input[readonly] {
   margin-bottom: 2rem;
 }
 
-.delete-sku-label{
+.delete-sku-label {
   color: var(--color-secondary);
 }
 
@@ -555,13 +556,14 @@ input[readonly] {
   gap: 10px;
 }
 
-.delete-close-overlay-btn{
+.delete-close-overlay-btn {
   justify-content: center;
   background: var(--color-primary);
   color: white;
   border: 1px solid var(--color-primary);
 }
-.delete-close-overlay-btn:hover{
+
+.delete-close-overlay-btn:hover {
   border: 1px solid var(--color-primary);
   background: white;
   color: var(--color-primary);
@@ -579,6 +581,103 @@ input[readonly] {
 .btn-danger-action:hover {
   background: #dc2626;
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Activate item */
+.activ-i{
+  background: var(--color-secondary);
+  color: white;
+}
+.activ-i:hover{
+  border-color: var(--color-secondary);
+  color: var(--color-secondary);
+  background-color: transparent;
+}
+.inactiv-tbl-row{
+  background: hsl(0, 100%, 96%);
+}
+.inactiv-tbl-row:hover{
+  background: hsl(0, 100%, 96%);
+}
+.dialog {
+  background: #ffffff;
+  border: 0.5px solid rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  padding: 2rem 2.5rem;
+  width: 340px;
+  text-align: center;
+}
+
+/* Icon circle */
+.dialog-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: hsl(120, 100%, 95%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+}
+
+.dialog-icon i {
+  font-size: 22px;
+  color: var(--color-secondary);
+}
+
+/* Title */
+.dialog h2 {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #1a1a1a;
+}
+
+/* Subtitle */
+.dialog p.subtitle {
+  font-size: 14px;
+  color: #6b6b6b;
+  margin-bottom: 1.75rem;
+  line-height: 1.6;
+}
+
+/* Button row */
+.dialog-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Shared button styles */
+.dialog-buttons button {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: 8px;
+  border: 0.5px solid rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+/* Yes button */
+.yes-act-btn{
+  background: var(--color-secondary);
+  color: white;
+}
+.yes-act-btn:hover{
+  background: transparent;
+  border-color: var(--color-secondary);
+  color: var(--color-secondary);
+}
+
+.no-act-btn{
+  background: transparent;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+.no-act-btn:hover{
+  background: var(--color-primary);
+  color: white;
 }
 
 /*RESPONSIVE*/

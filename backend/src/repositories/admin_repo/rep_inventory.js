@@ -4,7 +4,7 @@ export async function getAllItemsQ() {
   const { rows } = await pool.query(`
     SELECT item_id, name, sku_code, category_id, storage_temp_code, bulk_uom_id,
      selling_uom_id, units_per_bulk, price_per_selling, current_stock, min_stock_level, 
-     total_selling_units
+     total_selling_units, is_active
     FROM items`)
 
   return rows
@@ -111,4 +111,14 @@ export async function updateCurrentStockQ({itemId, newStockQty, adjustReason}){
 
 export async function deleteItemQ(itemId){
   await pool.query(`DELETE FROM items WHERE item_id = $1`, [itemId])
+}
+
+export async function activateItemQ({ itemId }) {
+  await pool.query(
+    `
+    UPDATE items 
+    SET is_active = TRUE 
+    WHERE item_id = ($1);
+    `, [itemId]
+  )
 }
