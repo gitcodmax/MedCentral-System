@@ -475,6 +475,10 @@
   color: var(--color-secondary);
 }
 
+.hidden{
+  display: none;
+}
+
 /* Responsive Table */
 @media (max-width: 1100px) {
   .summary-layout {

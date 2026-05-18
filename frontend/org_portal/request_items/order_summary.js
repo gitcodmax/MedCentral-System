@@ -1,4 +1,4 @@
-import { orgPortalPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../../global.js";
+import { displayNoRecordsNotif, orgPortalPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../../global.js";
 import { hosId } from "../dash.js";
 import { renderSidebar, renderRequestItemsNavbar } from "../sidebar.js";
 import { handleOverlay } from "/global.js";
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <p>Verify quantities and departmental allocations below.</p>
           </div>
 
-          <div class="items-review-container">
+          <div class="items-review-container" id="itmReviewContainer">
 
             <table class="summary-table">
               <thead>
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               </thead>
               <tbody id="summaryTableBody"></tbody>
             </table>
-            <div class="update-btn-container">
+            <div class="update-btn-container cart-itm-up">
               <button class="update-cart-btn" id="updateCartBtn">Update Cart Details</button>
             </div>
 
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
           </div>
 
-          <div class="submission-container">
+          <div class="submission-container cart-itm-up">
             <div class="checkout-card">
               <h3>Order Totals</h3>
               <div class="totals-breakdown">
@@ -137,6 +137,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const cartItems = hospitalRequestData.items
   const cartItemsCopy = structuredClone(cartItems)//To make updates on it
 
+  if (!cartItems) {
+    document.querySelectorAll('.cart-itm-up')
+      .forEach(elem => {
+        elem.classList.add('hidden')
+      })
+  }
+
   document.querySelectorAll('.js-total-items')
     .forEach(elem => { if (hospitalRequestData.items) elem.textContent = hospitalRequestData.items.length })
   document.querySelectorAll('.js-grand-total')
@@ -178,6 +185,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       summaryTbodyFragment.appendChild(tblRow)
     })
+  } else {
+    displayNoRecordsNotif('Cart items', 'itmReviewContainer')
   }
 
   if (summaryTbodyElem !== null) { summaryTbodyElem.appendChild(summaryTbodyFragment) }
@@ -324,7 +333,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                   },
                   body: JSON.stringify({
                     cartItemId: Number(btnCartItemId),
-                    hosId: 3
+                    hosId
                   })
                 }
               )

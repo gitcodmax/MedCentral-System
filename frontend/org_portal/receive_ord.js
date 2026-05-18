@@ -1,4 +1,4 @@
-import { orgPortalPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../global.js"
+import { displayNoRecordsNotif, orgPortalPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../global.js"
 import { hosId } from "./dash.js"
 import { renderSidebar } from "./sidebar.js"
 import { handleOverlay } from "/global.js"
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
         </header>
 
-        <section class="table-card">
+        <section class="table-card" id="pkgsTblSec">
           <table class="packages-table">
             <thead>
               <tr>
@@ -130,6 +130,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const receiveItemsTbodyElem = document.getElementById('packagesTbody')
 
   // Display the packages in the page
+  if (!receivingData) {
+    displayNoRecordsNotif('Delivered Packages', 'pkgsTblSec')
+  }
   const incomingPackagesTblFrag = document.createDocumentFragment()
   receivingData.forEach(pkg => {
     const tblRow = document.createElement('tr')

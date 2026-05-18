@@ -81,6 +81,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const productCatalogData = await getProductCatalogData()
   const hosDeparts = await getHospDept(hosId)
+  const globalDeptSelectElem = document.getElementById('globalDeptSelect')
+  const globalDeptValue = sessionStorage.getItem('globalDept')
 
   // Populate the data to select a global department for the items selected
   const globalDeptSelectFrag = document.createDocumentFragment()
@@ -91,8 +93,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     globalDeptSelectFrag.appendChild(option)
   })
-  document.getElementById('globalDeptSelect')
-    .appendChild(globalDeptSelectFrag)
+  globalDeptSelectElem.appendChild(globalDeptSelectFrag)
+  if (globalDeptValue) {
+    globalDeptSelectElem.value = globalDeptValue
+  }
 
   const productGridElem = document.querySelector('.js-product-grid')
 
@@ -140,17 +144,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   displayProducts(productCatalogData)
 
-  const globalDeptSelectElem = document.getElementById('globalDeptSelect')
-  const globalDeptValue = localStorage.getItem('globalDept')
-  globalDeptSelectElem.value = globalDeptValue
   globalDeptSelectElem.addEventListener('change', (e) => {
     const deptId = e.target.value
-    if (!localStorage.getItem('globalDept') !== null) {
-      localStorage.removeItem('globalDept')
+    if (globalDeptValue) {
+      sessionStorage.removeItem('globalDept')
     }
-    localStorage.setItem('globalDept', deptId)
+    sessionStorage.setItem('globalDept', deptId)
   })
 
+  // Add an item in the cart
   productGridElem.addEventListener('click', (e) => {
     const btn = e.target.closest('button')
     if (!btn) return
@@ -161,7 +163,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       productCatalogData.forEach(async (prd) => {
         if (prd.id === Number(btnProductId)) {
           const itemQty = document.querySelector(`.js-qty-input-${prd.id}`).value
-          if (globalDeptValue === '') {
+          if (!globalDeptSelectElem.value) {
             alert('Enter default department')
           } else {
             const response = await fetch(`${orgPortalPagesLink}/saveItemToCart`,
@@ -171,7 +173,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 body: JSON.stringify({
                   hosId,
                   itemId: prd.id,
-                  deptId: globalDeptValue,
+                  deptId: globalDeptSelectElem.value,
                   qty: itemQty
                 })
               }

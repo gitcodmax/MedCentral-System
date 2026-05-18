@@ -1,6 +1,6 @@
 import { renderSidebar } from "../sidebar.js";
 import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
-import { renderSuccessErrorOverlay, triggerStatus, whManagerPagesLink } from "../../global.js";
+import { displayNoRecordsNotif, renderSuccessErrorOverlay, triggerStatus, whManagerPagesLink } from "../../global.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
       </section>
 
-      <section class="assignment-section">
+      <section class="assignment-section" id="clerkAssSec">
         <table class="assignment-table">
           <thead>
             <tr>
@@ -151,6 +151,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     assignToClerkTbodyElem.appendChild(paidOrdersFragment)
   }
 
+  if (paidOrders.length === 0) {
+    displayNoRecordsNotif('Packages to assign', 'clerkAssSec')
+  }
   displayAllPackages(paidOrders)
 
   //Display the clerks options 

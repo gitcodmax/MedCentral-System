@@ -1,6 +1,6 @@
 import { renderSidebar } from "../sidebar.js";
 import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
-import {getStorageTempIcon, renderSuccessErrorOverlay, triggerStatus, whManagerPagesLink} from "../../global.js"
+import {displayNoRecordsNotif, getStorageTempIcon, renderSuccessErrorOverlay, triggerStatus, whManagerPagesLink} from "../../global.js"
 import { getGeoRefData } from "../../admin_portal/hospitals.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
         </div>
 
-        <section class="dispatch-grid js-dispatch-grid"></section>
+        <section class="dispatch-grid js-dispatch-grid" id="dispGrid"></section>
 
         <div class="no-match-container hidden js-no-match-container"></div>
 
@@ -216,8 +216,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     dispatchGridElem.appendChild(dispatchOdersFragment)
   }
 
-  displayAllPackages(orderDriverData)
-  displayRightDrivers(orderDriverData)
+  if (orderDriverData.dispatchQueue.length === 0) {
+    displayNoRecordsNotif('Packages to assign drivers to', 'dispGrid')
+  } else {
+    displayAllPackages(orderDriverData)
+    displayRightDrivers(orderDriverData)
+  }
 
   function displayRightDrivers(orderDriverData) {
     orderDriverData['dispatchQueue'].forEach(ord => {

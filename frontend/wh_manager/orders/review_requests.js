@@ -1,6 +1,6 @@
 import { renderSidebar } from "../sidebar.js";
 import { displayNoMatch, xRemoveOverlay, clickToRemoveOverlay } from "../overlay.js";
-import { renderSuccessErrorOverlay, triggerStatus, whManagerPagesLink } from "../../global.js";
+import { displayNoRecordsNotif, renderSuccessErrorOverlay, triggerStatus, whManagerPagesLink } from "../../global.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
       </div>
 
-      <section class="request-container js-request-container"></section>
+      <section class="request-container js-request-container" id="reqContainer"></section>
     
     `
 
@@ -105,8 +105,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const pendingReview = await getAllReqData()
 
+  const noOfReq = !pendingReview ? 0 : pendingReview.length
   document.querySelector('.requests')
-    .innerText = pendingReview.length
+    .innerText = noOfReq
 
   //Get the organization name, items and total amount in a request
   function getReqDetails(requestId) {
@@ -124,7 +125,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!btn) return
 
     const btnReqId = btn.dataset.reqId
-    console.log(btnReqId)
     const { orgName, items, totalAmount } = getReqDetails(btnReqId)
 
     if (btn.classList.contains('js-btn-deny')) {
@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   //Display the pending reviews
   function displayPendingReviews(pendingReview) {
     requestsContainerElem.innerHTML = ''
-    pendingReview.forEach((request) => {
+    pendingReview?.forEach((request) => {
       requestsContainerElem.innerHTML += `
       <div class="request-card" data-request-id=${request.requestId}>
         <div class="request-header">
@@ -252,7 +252,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     })
   }
 
-  displayPendingReviews(pendingReview)
+  if (noOfReq === 0) {
+    displayNoRecordsNotif('Requests to approve', 'reqContainer')
+  } else {
+    displayPendingReviews(pendingReview)
+  }
 
   //Displays the items requested
   function displayItems(request) {

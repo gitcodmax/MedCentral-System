@@ -1,4 +1,4 @@
-import { handleOverlay, orgPortalPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../global.js"
+import { displayNoRecordsNotif, handleOverlay, orgPortalPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../global.js"
 import { hosId } from "./dash.js"
 import { renderSidebar } from "./sidebar.js"
 
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       <main class="app-content">
         <div class="main-content-logo"></div>
 
-        <div class="table-container">
+        <div class="table-container" id="appReqTblCont">
           <div class="table-header">
             <h2>Pending Payments</h2>
             <p>Select an approved request to authorize disbursement.</p>
@@ -96,6 +96,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Display approved requests on the pending payments table
   const approvedReqTblBodyElem = document.getElementById('approvedReqTable')
   const approvedReqTblFrag = document.createDocumentFragment()
+  if (!approvedReq) {
+    displayNoRecordsNotif('Approved Request', 'appReqTblCont')
+  }
 
   approvedReq.forEach(req => {
     const tblRow = document.createElement('tr')
