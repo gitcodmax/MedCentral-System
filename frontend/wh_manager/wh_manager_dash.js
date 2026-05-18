@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <td class="order-id">${deliveredOrder.orderId}</td>
           <td>${deliveredOrder.creationDate}</td>
           <td>${deliveredOrder.deliveredOn}</td>
-          <td><span class="badge">DELIVERED</span></td>
+          <td><span class="dash-deliv-badge">DELIVERED</span></td>
         </tr>
       `
   })

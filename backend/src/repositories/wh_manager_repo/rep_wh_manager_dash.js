@@ -28,19 +28,33 @@ export async function getWhManagerDashDataQ() {
               )t 
               WHERE stock_level IS NOT NULL ),
       'recentlyDeliveredOrders', (SELECT 
-                      jsonb_agg(
-                        jsonb_build_object(
-                          'orderId', 'ORD' || '-' || op.order_id,
-                          'hospitalName', (SELECT full_name FROM users WHERE hospital_id = r.hospital_id),
-                          'creationDate', TO_CHAR(o.created_at, 'Mon DD, YYYY'),
-                          'deliveredOn', TO_CHAR(d.delivered_at, 'Mon DD, YYYY')
-                        )
-                      ) AS recently_delivered_orders
-                      FROM deliveries d 
-                      JOIN order_packages op ON d.package_id = op.package_id 
-                      JOIN orders o ON op.order_id = o.order_id 
-                      JOIN requests r ON o.request_id = r.request_id 
-                      LIMIT 5)
+              jsonb_agg(
+                  jsonb_build_object(
+                      'orderId', 'ORD-' || sub.order_id,
+                      'hospitalName', sub.hospital_name,
+                      'creationDate', TO_CHAR(sub.created_at, 'Mon DD, YYYY'),
+                      'deliveredOn', TO_CHAR(sub.delivered_at, 'Mon DD, YYYY')
+                  )
+              ) AS recently_delivered_orders
+              FROM (
+                  SELECT 
+                      op.order_id,
+                      o.created_at,
+                      d.delivered_at,
+                      (SELECT full_name 
+                      FROM users 
+                      WHERE hospital_id = r.hospital_id) AS hospital_name
+                  FROM deliveries d 
+                  JOIN order_packages op 
+                      ON d.package_id = op.package_id 
+                  JOIN orders o 
+                      ON op.order_id = o.order_id 
+                  JOIN requests r 
+                      ON o.request_id = r.request_id
+                  ORDER BY d.delivered_at DESC
+                  LIMIT 5
+              ) sub
+            )
               
     ) AS wh_dash_data
     `
