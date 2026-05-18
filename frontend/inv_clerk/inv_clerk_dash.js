@@ -1,6 +1,6 @@
 import { renderHeader } from "./header.js";
 import { inventoryAlerts } from "../wh_manager/wh_manager_dash.js"
-import { invClerkPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../global.js";
+import { displayNoRecordsNotif, invClerkPagesLink, renderSuccessErrorOverlay, triggerStatus } from "../global.js";
 
 export const userId = Number(sessionStorage.getItem('userId'))
 
@@ -89,6 +89,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   //Display all the pending orders
   const ordersContainer = document.querySelector('.order-cards-container')
   const packagesData = await getPackagesFromOrders(ordersData)
+  if (packagesData.length === 0) {
+    displayNoRecordsNotif('Packages to pack', 'ordCardsContainer')
+  }
   packagesData.forEach(async (pkg) => {
     ordersContainer.innerHTML += `
             <div class="order-card-item">
@@ -98,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </h3>
                 <p>Storage Temp.: <span class="pkg-value">${pkg.storageReq}</span></p>
                 <p>Hospital: <span class="pkg-value">${pkg.customer}</span></p>
-                <p>Items: <span class="pkg-value">${pkg.items.length} Item(s)</span></p>
+                <p>Items: <span class="pkg-value">${pkg.items?.length} Item(s)</span></p>
                 <button class="action-btn primary small-pack-btn js-pack-order-btn" data-package-id=${pkg.packageId}>Pack Order</button>
             </div>
         `
@@ -196,6 +199,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Populate Ready for Dispatch table
   const dispatchTblFrag = document.createDocumentFragment()
   const dispatchTbodyElem = document.getElementById('dispatchTbody')
+  if (dispatch_queue.length === 0) {
+    displayNoRecordsNotif('Packages ready for dispatch', 'dispatchTbl')
+  }
   dispatch_queue.forEach(pkg => {
     const tblRow = document.createElement('tr')
 
@@ -226,13 +232,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   const transitTbodyElem = document.getElementById('transitTbody')
 
   if (transitTbodyElem && Array.isArray(in_transit_monitoring)) {
+    if (in_transit_monitoring.length === 0) {
+      displayNoRecordsNotif('Packages in transit', 'inTransitTbl')
+    }
 
     in_transit_monitoring.forEach((delivery) => {
       const isDelayed = delivery.status === 'Delayed'
 
       const tblRow = document.createElement('tr')
       tblRow.innerHTML = `
-                <td><strong>#${delivery.delivery_id}</strong></td>
+                <td><strong>${delivery.delivery_id}</strong></td>
                 <td><span class="pkg-id">${delivery.package_id}</span></td>
                 <td>${delivery.destination}</td>
                 <td>
@@ -397,6 +406,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }   
 
     if (btn.id === 'viewVehicleInfoBtn') {
+      const btnDeliveryId = btn.dataset.delivId
       const vehicleOverlayElem = document.getElementById('vehicleDetailsOverlay')
       const delivery = in_transit_monitoring.find(deliv => deliv.delivery_id === btnDeliveryId)
 

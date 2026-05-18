@@ -132,6 +132,23 @@ export const getUserName = async (userId) => {
   return res.full_name
 }
 
+// Displays message when there is no record to show
+export function displayNoRecordsNotif(msg, elemId) {
+  const noRecordsHTML = `
+  <div class="no-records-container">
+    <div class="no-records-cont">
+      <div class="no-records-img-cont">
+        <img src="/images/no_records_svg.svg" alt="">
+      </div>
+      <p>No <span class="rec-name">${msg}</span>.</p>
+    </div>
+  </div>
+  `
+
+  document.getElementById(elemId)
+    .insertAdjacentHTML('beforeend', noRecordsHTML)
+}
+
 export const adminPagesLink = `http://localhost:3000/admin`
 export const orgPortalPagesLink = `http://localhost:3000/org`
 export const whManagerPagesLink = `http://localhost:3000/whManager`

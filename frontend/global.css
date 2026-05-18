@@ -214,3 +214,28 @@ body {
   font-size: 1rem;
   margin-bottom: 1.5rem;
 }
+
+/* No records container styling */
+.no-records-cont {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-primary);
+  align-items: center;
+  padding: 10px 30px;
+  margin: 0 auto;
+  background: white;
+  color: var(--color-primary);
+}
+.no-records-img-cont{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.no-records-cont img{
+  color: var(--color-primary);
+  height: 100px;
+}
+.rec-name{
+  font-weight: 600;
+}
