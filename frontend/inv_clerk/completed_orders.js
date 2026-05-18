@@ -31,16 +31,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         <input type="date" id="end-date">
       </div>
 
-      <div class="filter-group">
-        <label for="status">Status</label>
-        <select id="status">
-          <option value="all">All Statuses</option>
-          <option value="pending">Pending</option>
-          <option value="shipped">Shipped</option>
-          <option value="delivered">Delivered</option>
-        </select>
-      </div>
-
       <button class="filter-btn" id="filter-btn">Apply Filter</button>
       <button class="clear-filter-btn" id="clear-filter-btn">Clear Filter</button>
     </div>
@@ -96,7 +86,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const dateType = document.getElementById('date-type')
   const startDate = document.getElementById('start-date')
   const endDate = document.getElementById('end-date')
-  const statusFilter = document.getElementById('status')
 
   //Set the button to filter orders
   applyBtn.addEventListener('click', () => {
@@ -104,7 +93,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const dateTypeValue = dateType.value
     const startDateValue = startDate.value
     const endDateValue = endDate.value
-    const statusValue = statusFilter.value
 
     const filteredResults = Object.entries(completedOrdersData).filter(([orderId, details]) => {
       //Checks whether the order id or customer name matches any of the values
@@ -122,10 +110,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (endDateValue && orderTargetDate > endDateValue) {
         matchesDate = false
       }
-
-      //Checks the status selected and returns the one that matches
-      const matchesStatus = (statusValue === 'all')
-        || (details.status.toLowerCase() === statusValue)
 
       //Result should contain both the values as true
       return matchesSearch && matchesDate && matchesStatus
@@ -170,7 +154,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     dateType.selectedIndex = 0
     startDate.value = ''
     endDate.value = ''
-    statusFilter.selectedIndex = 0
 
     renderCompletedOrders()
   })
