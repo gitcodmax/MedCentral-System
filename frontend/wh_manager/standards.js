@@ -29,6 +29,11 @@ export async function populateDropdowns() {
   });
 }
 
+export async function shelfFilUom() {
+  const adminStandards = await getAdminStandards()
+  return adminStandards.uomOptions
+}
+
 export async function orgReportsFilCat() {
   const adminStandards = await getAdminStandards()
   return adminStandards.categories

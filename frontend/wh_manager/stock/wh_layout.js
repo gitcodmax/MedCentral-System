@@ -1,6 +1,6 @@
 import { renderSidebar } from "../sidebar.js";
 import { xRemoveOverlay, clickToRemoveOverlay, displayNoMatch } from "../overlay.js";
-import { populateDropdowns } from "../standards.js";
+import { populateDropdowns, shelfFilUom } from "../standards.js";
 import { renderSuccessErrorOverlay, triggerStatus, whManagerPagesLink } from "../../global.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -131,10 +131,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                   <label><i class="fas fa-box-open"></i> Bulk UOM</label>
                   <select id="filterUOM">
                     <option value="">All Units</option>
-                    <option value="Pallet">Pallet</option>
-                    <option value="Crate">Crate</option>
-                    <option value="Carton">Carton</option>
-                    <option value="Box">Box</option>
                   </select>
                 </div>
               </div>
@@ -285,6 +281,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Warehouse inventory Map Table
   const warehouseInventoryMap = await getWhInventoryMap()
+  const uoms = await shelfFilUom()
 
   const shelfTableBodyElem = document.getElementById('shelfTableBody')
 
@@ -456,6 +453,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   const tempElem = document.getElementById('filterTemp')
   const uomElem = document.getElementById('filterUOM')
 
+  const uomFilFrag = document.createDocumentFragment()
+  uoms.forEach(uom => {
+    const opt = document.createElement('option')
+    opt.value = uom.id
+    opt.textContent = uom.name
+    uomFilFrag.appendChild(opt)
+  })
+  uomElem.appendChild(uomFilFrag)
+
   const noMatchContainerElem = document.querySelector('.no-match-container')
 
   const resetBtn = document.querySelector('.js-reset-btn')
@@ -463,7 +469,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   function filterShelves() {
     resetBtn.disabled = false
     const result = warehouseInventoryMap.filter(shelf => {
-      const shelfIdMatch = shelf.shelfId.toLowerCase().includes(invSearchElem.value.toLowerCase().trim())
+      const shelfIdMatch = shelf.shelfLabel.toLowerCase().includes(invSearchElem.value.toLowerCase().trim())
       const itemNameMatch = shelf.itemName.toLowerCase().includes(invSearchElem.value.toLowerCase().trim())
 
       const unallocatedMatch = occupancyElem.value === ''
@@ -473,7 +479,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const tempMatch = tempElem.value === '' || shelf.tempZone === tempElem.value
 
-      const uomMatch = uomElem.value === '' || shelf.bulkUOM.toLowerCase() === uomElem.value.toLowerCase()
+      const uomMatch = uomElem.value === '' || shelf.bulkUOMId === Number(uomElem.value)
 
       return (shelfIdMatch || itemNameMatch) && (unallocatedMatch || allocatedMatch)
         && tempMatch && uomMatch
