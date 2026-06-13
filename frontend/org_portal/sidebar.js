@@ -59,18 +59,29 @@ export async function renderSidebar(pageName) {
       .classList.add('active')
   }
 
+  const sidebarOpenStorage = sessionStorage.getItem("sidebarOpen") ?? 1;
+  let sidebarOpen = sidebarOpenStorage
+  if(sidebarOpen === "0") openCloseSidebar("block", sidebar)
+
   document.querySelector('.js-close-sidebar-btn')
     .addEventListener('click', () => {
-      sidebar.classList.add('collapsed')
-      document.querySelector('.main-content-logo')
-        .style.display = 'block'
+      openCloseSidebar("block", sidebar)
+      sidebarOpen = 0
+      sessionStorage.setItem("sidebarOpen", sidebarOpen)
     })
   document.querySelector('.js-open-sidebar-btn')
     .addEventListener('click', () => {
-      sidebar.classList.remove('collapsed')
-      document.querySelector('.main-content-logo')
-        .style.display = 'none'
+      openCloseSidebar("none", sidebar)
+      sidebarOpen = 1
+      sessionStorage.setItem("sidebarOpen", sidebarOpen)
     })
+}
+
+function openCloseSidebar(mainContentLogoDisplay, sidebar) {
+  mainContentLogoDisplay === "block" ? sidebar.classList.add('collapsed') : 
+    sidebar.classList.remove('collapsed')
+  document.querySelector('.main-content-logo')
+    .style.display = `${mainContentLogoDisplay}`
 }
 
 // Display the navigation bar in the request items page
@@ -111,7 +122,7 @@ export async function renderRequestItemsNavbar() {
       .classList.add('active')
   } else {
     document.querySelector('.js-ord-sum-nav')
-      .classList.add('active')
+      ?.classList.add('active')
   }
 }
 

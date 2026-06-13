@@ -126,14 +126,18 @@ export const updateCartItemsToRequestQ = async ({ hosId, totalItemsValue }) => {
     }
 
     // Insert the cart items in the request_items table 
-    await client.query(`
+    const insReqItms = await client.query(`
       INSERT INTO request_items(request_id, item_id, department_id, quantity_requested, 
       unit_price_at_request) 
       SELECT $1, c.item_id, c.department_id, c.quantity, i.price_per_selling 
       FROM cart_items c 
       JOIN items i ON c.item_id = i.item_id 
-      WHERE c.hospital_id = $2
+      WHERE c.hospital_id = $2 
+      RETURNING request_item_id
     `, [requestId, hosId])
+
+    const reqItmId = insReqItms.rows[0].request_item_id
+    if(!reqItmId) throw new Error('Items not inserted in request items table')
 
     // Clear all the items in the cart
     await client.query(`

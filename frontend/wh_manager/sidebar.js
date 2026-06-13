@@ -87,7 +87,12 @@ function controlSidebar() {
   const sidebar = document.querySelector('.sidebar');
   const toggleBtn = document.getElementById('sidebarToggle');
 
+  let sidebarOpen = sessionStorage.getItem("whSidebarOpen") ?? 1;
+  if(sidebarOpen === "0") sidebar.classList.add("collapsed")
+
   toggleBtn.addEventListener('click', () => {
-    sidebar.classList.toggle('collapsed');
+    const isCollapsed = sidebar.classList.toggle('collapsed')
+    sidebarOpen = isCollapsed ? 0 : 1;
+    sessionStorage.setItem("whSidebarOpen", sidebarOpen)
   });
 }

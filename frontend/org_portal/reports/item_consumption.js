@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       tblRow.innerHTML = `
       <td><strong>${item.name}</strong></td>
-      <td><span class="badge">${item.cat}</span></td>
+      <td><span class="badge-cat-r">${item.cat}</span></td>
       <td>${item.qty}</td>
       <td>${item.unit}</td>
       <td>${item.orders}</td>

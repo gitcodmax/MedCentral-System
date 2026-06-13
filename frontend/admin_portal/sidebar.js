@@ -76,21 +76,24 @@ export async function renderSidebar() {
       .classList.add('active')
   }
 
+  let isSidebarOpen = sessionStorage.getItem("isSidebarOpen") ?? 1
+  if (isSidebarOpen === "0") openCloseSidebar(sidebarElem) 
+
   // Set up the buttons to open and close the sidebar
   sidebarElem.addEventListener('click', (e) => {
     const btn = e.target.closest('button')
     if (!btn) return;
 
     if (btn.classList.contains('close-sidebar-btn')) {
-      sidebarElem.classList.add('collapsed')
-      document.querySelector('.top-header')
-        .classList.add('collapsed')
+      openCloseSidebar(sidebarElem)
+      isSidebarOpen = 0
+      sessionStorage.setItem("isSidebarOpen", isSidebarOpen)
     }
 
     if (btn.classList.contains('open-sidebar-btn')) {
-      sidebarElem.classList.remove('collapsed')
-      document.querySelector('.top-header')
-        .classList.remove('collapsed')
+      openCloseSidebar(sidebarElem)
+      isSidebarOpen = 1
+      sessionStorage.setItem("isSidebarOpen", isSidebarOpen)
     }
   })
 
@@ -211,6 +214,12 @@ export async function renderSidebar() {
         })
     })
   }
+}
+
+function openCloseSidebar(sidebarElem) {
+  sidebarElem.classList.toggle('collapsed')
+  document.querySelector('.top-header')
+    .classList.toggle('collapsed')
 }
 
 // Navigation bar to reports pages
