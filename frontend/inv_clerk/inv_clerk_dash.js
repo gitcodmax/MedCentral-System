@@ -38,20 +38,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     tableBody.innerHTML = ``
   }
 
-  // Function to handle the packing confirmation
-  //========================================
-  //Once an order has been packed, update the table in the database and 
-  // remove it from pending orders
-  function markOrderAsPacked() {
-    const packageId = document.getElementById('displayPkgId').innerText;
-
-    // In a real system, you'd send an API call here
-    alert(`Package ${packageId} has been successfully packed and inventory levels updated!`);
-
-    closeOrderOverlay();
-    // You could also refresh the UI here to show the order as 'Packed'
-  }
-
   // Close overlay if user clicks outside the modal box
   window.onclick = function (event) {
     const overlay = document.getElementById('orderOverlay');
@@ -135,7 +121,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                                             <small>SKU: ${item.sku}</small>
                                         </td>
                                         <td><span class="shelf-tag">${item.shelfId}</span></td>
-                                        <td><span class="batch-tag">${item.batchNumber}</span></td>
                                         <td class="qty-cell">${item.quantityToPack}</td>
                                         <td>${item.unitOfMeasure}</td>
                                     </tr>

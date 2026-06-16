@@ -93,7 +93,8 @@ export async function getOrdersDataQ(clerkId) {
                                 jsonb_build_object(
                                     'itemName', i.name,
                                     'sku', i.sku_code,
-                                    'shelfId', cws.shelf_label,
+                                    'shelfId', COALESCE((SELECT shelf_label FROM cfg_warehouse_shelves 
+			                                WHERE i.shelf_id = shelf_id), 'NA'),
                                     'storageTemp', cso_item.description,
                                     'batchNumber', 'A0OWE',
                                     'quantityToPack', ri.quantity_requested,
@@ -105,7 +106,6 @@ export async function getOrdersDataQ(clerkId) {
                             JOIN items i ON ri.item_id = i.item_id
                             JOIN cfg_storage_options cso_item ON i.storage_temp_code = cso_item.code
                             JOIN cfg_uoms uom ON i.bulk_uom_id = uom.id
-                            JOIN cfg_warehouse_shelves cws ON i.shelf_id = cws.shelf_id
                             WHERE pi.package_id = op.package_id
                         )
                     )

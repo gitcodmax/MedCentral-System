@@ -11,6 +11,7 @@ export async function getProductCatalogDataQ() {
           FROM items i 
           JOIN cfg_uoms u ON i.selling_uom_id = u.id
           JOIN cfg_storage_options s ON i.storage_temp_code = s.code
+          WHERE current_stock IS NOT NULL OR current_stock != 0
       ) item_list
     `
   )
