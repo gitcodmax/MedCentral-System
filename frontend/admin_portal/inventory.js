@@ -446,7 +446,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const storageTempArr = SystemConfig.storageOptions
     .map(temp => ({
       id: temp.code,
-      name: `${temp.label} (${temp.range})`
+      name: `${temp.description} (${temp.temp_range})`
     })
   )
 
