@@ -1,5 +1,19 @@
 # MedCentralis: A Medical Central Warehouse Ordering and Distribution System 🏥
 
+## 📌 Table of Contents
+
+- [Overview](#overview)
+- [Problem Statement](#problem-statement)
+- [Objectives](#objectives)
+- [Features](#features)
+- [Technology Stack](#technology-stack)
+- [Project Structure](#project-structure)
+- [Database Design](#database-design)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Screenshots](#screenshots)
+
 ## 📖 Overview
 MedCentralis is a centralized digital application for managing the ordering, inventory, and 
 distribution of medical supplies from a central warehouse to healthcare institutions. It 
@@ -161,6 +175,7 @@ Make sure you have installed:
 * Node.js
 * npm
 * PostgreSQL
+* pgAdmin 4
 
 **Clone the Repository**
 ```
@@ -172,6 +187,33 @@ cd MedCentral-System
 ```
 npm install bcrypt cors dotenv express jsonwebtoken nodemon pg
 ```
+
+**Set Up the Database**  
+
+To set up a PostgreSQL database with all the tables used in the project, run 
+[MedCentralDB.sql](.MedCentralDB.sql) in pgAdmin.
+
+Steps to follow in pdAdmin 4:
+
+1. Create an empty database:  
+   In the left-hand **Object Explorer** tree, right-click on **Databases**, select **Create**, **Database...**  
+   Type a **Database name** (e.g., MedCentralisDB) and click **Save**.
+
+3. Open the Restore dialog:  
+   Right-click your newly created database in the Object Explorer.  
+   Select **Restore...** from the context menu to open the modal setup window.
+
+4. Configure the General options:  
+   Set the Format dropdown to **Plain**.  
+   Click the folder icon next to **Filename** to select [MedCentralDB.sql](.MedCentralDB.sql) from your local machine. If the file selector doesn't show the file, change the file type filter in the file browser to .sql.
+
+5. Run the restore process:  
+   Click the **Restore** button at the bottom right.  
+   A background process notification will appear in the bottom right corner showing progress. Click **More details** to view the pg_restore output log.
+
+6. Refresh and verify:  
+   Once the notification status shows **Process completed successfully**, expand your database in the Object Explorer.  
+   Navigate to **Schemas**, **public**, right-click **Tables** and select **Refresh** to view all populated tables.
 
 ## 🔐 Configuration
 
@@ -188,3 +230,50 @@ JWT_SECRET='your_jwt_secret'
 ```
 
 ```.env.example``` file contains the variables that are needed.
+
+## ▶️ Usage  
+
+In the backend folder, start the development server:
+```
+npm run dev
+```
+
+Then open:
+```
+http://localhost:3000/login.html
+```
+to access the login page.
+
+From the login page, you can access the user interfaces which are  
+administrator, warehouse manager, organization/hospital and inventory clerk by 
+providing the correct email and password.
+
+## 📸 Screenshots
+
+**Admin Dashboard**
+
+![Admin dash](./frontend/images/readme_images/admin_dash.png)
+
+**Organization/Hospital Dashboard**
+
+![Hospital dash](./frontend/images/readme_images/org_portal_dash.png)
+
+**Inventory Clerk's Receive Stock Form**
+
+![Inv clerk receive stock](./frontend/images/readme_images/inv_clerk_input_receive_stock.png)
+
+**Hospital's Request Items Form**
+
+![Inv clerk receive stock](./frontend/images/readme_images/org_input_request_items.png)
+
+**Warehouse Manager Register New Item Form**
+
+![Warehouse manager item registry](./frontend/images/readme_images/wh_manager_input_new_item.jpg)
+
+**Admin Inventory Report**
+
+![Admin Inventory report](./frontend/images/readme_images/admin_report_inv.png)
+
+```
+                                                                MMAX CODES
+``` 
