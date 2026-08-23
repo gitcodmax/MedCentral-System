@@ -1,19 +1,5 @@
 # MedCentralis: A Medical Central Warehouse Ordering and Distribution System 🏥
 
-## 📌 Table of Contents
-
-- [Overview](#overview)
-- [Problem Statement](#problem-statement)
-- [Objectives](#objectives)
-- [Features](#features)
-- [Technology Stack](#technology-stack)
-- [Project Structure](#project-structure)
-- [Database Design](#database-design)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Screenshots](#screenshots)
-
 ## 📖 Overview
 MedCentralis is a centralized digital application for managing the ordering, inventory, and 
 distribution of medical supplies from a central warehouse to healthcare institutions. It 
