@@ -108,7 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (res.msg === 'success') {
         loginForm.reset();
         clearErrors();
-        localStorage.setItem('token', res.token)
         for (i of ['userId', 'hosId']) {
           sessionStorage.removeItem(i)
         }

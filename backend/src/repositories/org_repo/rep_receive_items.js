@@ -22,20 +22,19 @@ export async function getAllDeliveredPackagesQ(hosId) {
         GROUP BY pi.package_id
     ),
     sibling_packages_cte AS (
-        SELECT 
-            op.order_id,
-            op.package_id,
-            json_agg(
-                jsonb_build_object(
-                    'packageId', 'PKG-' || sibling.package_id || '-' || sibling.storage_temp_code,
-                    'status', ds.status_name
-                )
-            ) FILTER (WHERE sibling.package_id <> op.package_id) AS siblings
-        FROM order_packages op
-        JOIN order_packages sibling ON op.order_id = sibling.order_id
-        JOIN deliveries d ON sibling.package_id = d.package_id 
-        JOIN cfg_statuses ds ON op.status_id = ds.id
-        GROUP BY op.order_id, op.package_id
+      SELECT 
+        op.order_id,
+        op.package_id,
+        (SELECT json_agg(jsonb_build_object(
+            'packageId', 'PKG-' || package_id || '-' || storage_temp_code, 
+            'status', status_name
+            ))
+          FROM order_packages opp 
+          JOIN cfg_statuses ds ON opp.status_id = ds.id
+          WHERE op.package_id != package_id 
+            AND op.order_id = order_id) AS siblings
+      FROM order_packages op 
+      GROUP BY op.order_id, op.package_id
     )
 
     SELECT json_agg(delivery_payload) AS deliveries_made 
